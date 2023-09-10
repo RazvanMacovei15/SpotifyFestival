@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane fx:controller="com.example.spotifyfestival.mainController"
+          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20"
+          style="-fx-border-color: black; -fx-border-width: 2px;">
+
+    <rowConstraints>
+        <RowConstraints percentHeight="20"/>
+        <RowConstraints percentHeight="75"/>
+        <RowConstraints percentHeight="5"/>
+    </rowConstraints>
+
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+        <image>
+            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>
+        </image>
+    </ImageView>
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" spacing="10" alignment="CENTER">
+        <Button
+                text="Top Artists"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                onAction="#onTopArtistsButtonClicked"/>
+        <Button
+                text="Top Tracks"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                onAction="#onTopTracksButtonClicked"/>
+        <Button
+                text="Top Genres"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                onAction="#onTopGenresButtonClicked"/>
+    </VBox>
+
+    <Button alignment="CENTER"
+            GridPane.halignment="CENTER"
+            GridPane.rowIndex="2"
+            text="Get back to main screen"
+            style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px"
+            onAction="#onGetBackButtonClicked"/>
+
+
+</GridPane>
+
+
+

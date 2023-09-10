@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.geometry.Insets?>
+<GridPane fx:controller="com.example.spotifyfestival.mainController"
+          xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
+
+    <padding>
+        <Insets top="5" bottom="5"/>
+    </padding>
+
+    <rowConstraints>
+        <RowConstraints percentHeight="20" maxHeight="25"/>
+        <RowConstraints percentHeight="10" maxHeight="5"/>
+        <RowConstraints percentHeight="5" maxHeight="10"/>
+        <RowConstraints percentHeight="70"/>
+        <RowConstraints percentHeight="5"/>
+    </rowConstraints>
+
+    <ImageView GridPane.rowIndex="0">
+        <image>
+            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>
+        </image>
+    </ImageView>
+
+    <Label text="Top Artists" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="360"
+           style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 25px"/>
+
+    <GridPane
+            GridPane.rowIndex="2" GridPane.halignment="CENTER" alignment="TOP_CENTER">
+
+        <fx:define>
+            <ToggleGroup fx:id="ToggleGroup2"/>
+        </fx:define>
+
+        <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
+            <Button text="4 weeks" alignment="CENTER">
+                <minWidth>120</minWidth>
+                <prefWidth>120</prefWidth>
+            </Button>
+        </HBox>
+
+        <HBox GridPane.columnIndex="1" GridPane.halignment="CENTER" alignment="CENTER">
+            <Button text="6 months" alignment="CENTER">
+                <minWidth>120</minWidth>
+                <prefWidth>120</prefWidth>
+            </Button>
+        </HBox>
+
+        <HBox GridPane.columnIndex="2" GridPane.halignment="CENTER" alignment="CENTER">
+            <Button text="All Time" alignment="CENTER" >
+                <minWidth>120</minWidth>
+                <prefWidth>120</prefWidth>
+            </Button>
+        </HBox>
+    </GridPane>
+
+    <ListView GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
+
+    </ListView>
+
+    <Button alignment="CENTER"
+            GridPane.halignment="CENTER"
+            GridPane.rowIndex="4"
+            text="Get back to main screen"
+            style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px"
+            onAction="#onGetBackButtonClicked"/>
+</GridPane>
