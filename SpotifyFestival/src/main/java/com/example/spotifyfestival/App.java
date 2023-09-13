@@ -19,29 +19,27 @@ public class App extends Application {
     }
 
     public static Stage primaryStage;
-    HelperMethods helperMethods = new HelperMethods();
-
 
     @Override
     public void start(Stage primaryStage) throws IOException {
 
         this.primaryStage = primaryStage;
 
-
         Parent root = FXMLLoader.load(getClass().getResource("mainScreen.fxml"));
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
-
-//        Stage primaryStage = new Stage(); // You need a Stage to pass as an argument
-//        Scene loginScene = helperMethods.createLoginScene(primaryStage);
-//        primaryStage.setScene(loginScene);
-//        primaryStage.show();
-
     }
 
 
 
-    public static void main(String[] args) throws UnsupportedEncodingException {
+
+    public static void main(String[] args) throws Exception {
+
+
         launch();
+
+
+
+
     }
 }

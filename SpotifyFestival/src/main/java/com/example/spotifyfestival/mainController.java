@@ -23,20 +23,27 @@ import java.util.TimerTask;
 public class mainController {
 
     HelperMethods helperMethods = new HelperMethods();
+    SpotifyAPI spotifyAPI = new SpotifyAPI();
 
     public void loginWithSpotify() throws Exception {
-//        HelperMethods.switchScene(event, "awaitConfirmation.fxml");
 
 
-//        SpotifyAPI.main();
+        spotifyAPI.backendThatNeedsChange();
+
         helperMethods.createLoginSimulation();
         helperMethods.simulateConfirmation();
-
 
     }
 
     public void onAwaitingConfirmationScene(ActionEvent event) throws Exception {
         HelperMethods.switchScene(event, "awaitConfirmation.fxml");
+    }
+
+    public void onArtistsButtonClicked(ActionEvent event) throws IOException, InterruptedException {
+
+        String retrievedString = spotifyAPI.printTracksButton();
+        System.out.println(retrievedString);
+
     }
 
     public void onGetBackButtonClicked(ActionEvent event) throws IOException {
