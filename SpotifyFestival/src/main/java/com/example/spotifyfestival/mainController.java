@@ -1,49 +1,40 @@
 package com.example.spotifyfestival;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.scene.control.Button;
-import java.awt.*;
+
+import javax.security.auth.callback.ConfirmationCallback;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
 //import static com.example.spotifyfestival.HelperMethods.checkStatusCode;
 
 public class mainController {
 
-    HelperMethods helperMethods = new HelperMethods();
-    SpotifyAPI spotifyAPI = new SpotifyAPI();
-
-    public void loginWithSpotify() throws Exception {
 
 
-        spotifyAPI.backendThatNeedsChange();
+    public void loginWithSpotify(ActionEvent event) throws Exception {
+
+        SpotifyAuthFlowService spotifyAuthFlowService = new SpotifyAuthFlowService();
+
+        HelperMethods helperMethods = new HelperMethods();
+
+        SpotifyService spotifyService = new SpotifyService();
+
+        spotifyAuthFlowService.backendThatNeedsChange();
+
 
         helperMethods.createLoginSimulation();
+
         helperMethods.simulateConfirmation();
 
+        System.out.println(spotifyAuthFlowService.getAccessTokenFromAuth());
+
+//        System.out.println(spotifyService.getUserTopTracks();
+
     }
+
 
     public void onAwaitingConfirmationScene(ActionEvent event) throws Exception {
         HelperMethods.switchScene(event, "awaitConfirmation.fxml");
-    }
-
-    public void onArtistsButtonClicked(ActionEvent event) throws IOException, InterruptedException {
-
-        String retrievedString = spotifyAPI.printTracksButton();
-        System.out.println(retrievedString);
-
     }
 
     public void onGetBackButtonClicked(ActionEvent event) throws IOException {

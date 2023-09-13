@@ -14,6 +14,26 @@ public class AccessTokenResponse {
     @JsonProperty("expires_in")
     private int expiresIn;
 
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
+    }
+
+    public void setTokenType(String tokenType) {
+        this.tokenType = tokenType;
+    }
+
+    public void setExpiresIn(int expiresIn) {
+        this.expiresIn = expiresIn;
+    }
+
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
+
+    public void setScope(String scope) {
+        this.scope = scope;
+    }
+
     @JsonProperty("refresh_token")
     private String refreshToken;
 
@@ -41,23 +61,5 @@ public class AccessTokenResponse {
         return scope;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
-    }
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
-
-    public void setExpiresIn(int expiresIn) {
-        this.expiresIn = expiresIn;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    public void setScope(String scope) {
-        this.scope = scope;
-    }
 }

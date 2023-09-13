@@ -28,5 +28,9 @@
 
     <Label GridPane.rowIndex="1"  GridPane.halignment="CENTER" text="Awaiting confirmation..." minWidth="360" style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px" />
 
+    <Button GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+            text="Back"
+            onAction="#onBackToLoginClicked"/>
+
 
 </GridPane>

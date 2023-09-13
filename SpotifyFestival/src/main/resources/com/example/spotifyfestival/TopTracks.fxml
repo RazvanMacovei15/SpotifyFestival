@@ -41,7 +41,7 @@
         </fx:define>
 
         <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button text="4 weeks" alignment="CENTER" onAction="#onArtistsButtonClicked">
+            <Button text="4 weeks" alignment="CENTER" >
                 <minWidth>120</minWidth>
                 <prefWidth>120</prefWidth>
             </Button>

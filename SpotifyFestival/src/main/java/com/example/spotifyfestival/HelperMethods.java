@@ -11,7 +11,13 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+
+
 public class HelperMethods {
+
+
+
+    SpotifyAPPCredentials spotifyAPPCredentials = new SpotifyAPPCredentials();
     public static void switchScene(ActionEvent event, String sceneFXML) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(HelperMethods.class.getResource(sceneFXML));
@@ -27,53 +33,6 @@ public class HelperMethods {
         stage.show();
     }
 
-    public String getAlphaNumericString(int n)
-    {
-        // choose a Character random from this String
-        String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                + "0123456789"
-                + "abcdefghijklmnopqrstuvxyz";
-        // create StringBuffer size of AlphaNumericString
-        StringBuilder sb = new StringBuilder(n);
-        for (int i = 0; i < n; i++) {
-            // generate a random number between
-            // 0 to AlphaNumericString variable length
-            int index
-                    = (int)(AlphaNumericString.length()
-                    * Math.random());
-            // add Character one by one in end of sb
-            sb.append(AlphaNumericString
-                    .charAt(index));
-        }
-        return sb.toString();
-    }
-
-    public String generateLoginURL(String STATE) throws UnsupportedEncodingException {
-
-        String encodedScope = URLEncoder.encode(SpotifyAPPCredentials.getUserTopReadScope(), StandardCharsets.UTF_8.toString());
-        String encodedState = URLEncoder.encode(STATE, StandardCharsets.UTF_8.toString());
-
-        return "https://accounts.spotify.com/authorize?" +
-                "response_type=code" +
-                "&client_id=" + SpotifyAPPCredentials.getClientId() +
-                "&scope=" + encodedScope +
-                "&redirect_uri=" + URLEncoder.encode(SpotifyAPPCredentials.getRedirectUri(), StandardCharsets.UTF_8.toString()) +
-                "&state=" + encodedState;
-    }
-
-    public void openURL2(String url) {
-        if (java.awt.Desktop.isDesktopSupported()) {
-            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
-                try {
-                    java.net.URI uri = new java.net.URI(url);
-                    desktop.browse(uri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
     public void createLoginSimulation() throws Exception {
 
         Stage stage = App.getPrimaryStage();
@@ -96,7 +55,7 @@ public class HelperMethods {
             }
         } else {
             // Display an error message for invalid login
-//            System.out.println("Error code: " + spotifyAPI.getStatusCode1());
+//            System.out.println("Error code: " + spotifyAuthFlowService.getStatusCode1());
             showErrorDialog();
         }
     }

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class RefreshAccessTokenResponse {
 
+    @JsonProperty("scope")
+    private String refreshedScope;
 
     @JsonProperty("access_token")
     private String refreshedAccessToken;
@@ -13,25 +15,6 @@ public class RefreshAccessTokenResponse {
 
     @JsonProperty("expires_in")
     private int refreshedExpiresIn;
-
-    @JsonProperty("scope")
-    private String refreshedScope;
-
-    public String getRefreshedAccessToken() {
-        return refreshedAccessToken;
-    }
-
-    public String getRefreshedTokenType() {
-        return refreshedTokenType;
-    }
-
-    public int getRefreshedExpiresIn() {
-        return refreshedExpiresIn;
-    }
-
-    public String getRefreshedScope() {
-        return refreshedScope;
-    }
 
     public void setRefreshedAccessToken(String refreshedAccessToken) {
         this.refreshedAccessToken = refreshedAccessToken;
@@ -47,6 +30,22 @@ public class RefreshAccessTokenResponse {
 
     public void setRefreshedScope(String refreshedScope) {
         this.refreshedScope = refreshedScope;
+    }
+
+    public String getRefreshedAccessToken() {
+        return refreshedAccessToken;
+    }
+
+    public String getRefreshedTokenType() {
+        return refreshedTokenType;
+    }
+
+    public int getRefreshedExpiresIn() {
+        return refreshedExpiresIn;
+    }
+
+    public String getRefreshedScope() {
+        return refreshedScope;
     }
 
 }

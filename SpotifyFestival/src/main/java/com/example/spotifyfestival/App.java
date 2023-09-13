@@ -2,6 +2,7 @@ package com.example.spotifyfestival;
 import com.example.spotifyfestival.HelperMethods;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -17,9 +18,7 @@ public class App extends Application {
     public static Stage getPrimaryStage() {
         return primaryStage;
     }
-
     public static Stage primaryStage;
-
     @Override
     public void start(Stage primaryStage) throws IOException {
 
@@ -29,17 +28,7 @@ public class App extends Application {
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
     }
-
-
-
-
     public static void main(String[] args) throws Exception {
-
-
         launch();
-
-
-
-
     }
 }
