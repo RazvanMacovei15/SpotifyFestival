@@ -1,6 +1,7 @@
 package com.example.spotifyfestival.SpotifyAPI;
 
-import com.example.spotifyfestival.helperObsLis.API_URLS;
+import com.example.spotifyfestival.API_URLS.Artists_API_URLS;
+import com.example.spotifyfestival.API_URLS.Tracks_API_URLS;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,9 +29,9 @@ public class SpotifyService {
         return response;
     }
 
-    public HttpResponse getUserTopTracks(String accessToken) {
+    public HttpResponse getUserTopTracksAllTime(String accessToken) {
 
-        String API_URL = API_URLS.getUserTopTracksURI();
+        String API_URL = Tracks_API_URLS.getUserTopTracksAllTimeURI();
 
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -51,7 +52,7 @@ public class SpotifyService {
 
     public HttpResponse getUserTopArtists(String accessToken)  {
 
-        String API_URL = API_URLS.getUserTopArtistsURI();
+        String API_URL = Artists_API_URLS.getUserTopArtistsAllTimeURI();
 
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()

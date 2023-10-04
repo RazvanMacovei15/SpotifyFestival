@@ -21,4 +21,6 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.JSONObjects to javafx.fxml;
     exports com.example.spotifyfestival.SpotifyAPI;
     opens com.example.spotifyfestival.SpotifyAPI to javafx.fxml;
+    exports com.example.spotifyfestival.API_URLS;
+    opens com.example.spotifyfestival.API_URLS to javafx.fxml;
 }

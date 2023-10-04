@@ -22,7 +22,7 @@ public class TopTracksController {
         String token = spotifyAuthFlowService.getAccessToken();
 
         SpotifyService spotifyService = new SpotifyService();
-        HttpResponse response = spotifyService.getUserTopTracks(token);
+        HttpResponse response = spotifyService.getUserTopTracksAllTime(token);
         System.out.println(response.body());
     }
 
