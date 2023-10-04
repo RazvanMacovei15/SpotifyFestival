@@ -124,6 +124,8 @@ public class TopArtistsController {
         listView.setItems(artistNames);
     }
 
+
+
     public static void printNamesAndIDs(ObservableList<String> artistNames, ObservableList<String> artistID) {
         if (artistNames.size() != artistID.size()) {
             System.out.println("Error: The sizes of artistNames and artistID lists do not match.");
@@ -158,6 +160,8 @@ public class TopArtistsController {
         }
         return attributeValues;
     }
+
+
 
     public void getBackToTopLists(ActionEvent event){
         try {

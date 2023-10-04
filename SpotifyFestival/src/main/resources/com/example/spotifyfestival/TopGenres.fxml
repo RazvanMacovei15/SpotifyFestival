@@ -41,7 +41,7 @@
         </fx:define>
 
         <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button text="4 weeks" alignment="CENTER">
+            <Button text="4 weeks" alignment="CENTER" onAction="#on4WeeksButtonClicked">
                 <minWidth>120</minWidth>
                 <prefWidth>120</prefWidth>
             </Button>
@@ -62,7 +62,7 @@
         </HBox>
     </GridPane>
 
-    <ListView GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
+    <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
 
     </ListView>
 
