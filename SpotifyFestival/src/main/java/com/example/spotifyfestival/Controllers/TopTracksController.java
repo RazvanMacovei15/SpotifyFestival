@@ -34,8 +34,17 @@ public class TopTracksController {
 
     @FXML
     public void initialize() throws JsonProcessingException {
-        // Automatically trigger the "All Time" button when the scene is shown
+        // Automatically trigger the "4 weeks" button when the scene is shown
         on4WeeksButtonClicked();
+    }
+
+
+    public void getBackToTopLists(ActionEvent event){
+        try {
+            APPHelperMethods.switchScene(event, "topLists.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to move forward", e);
+        }
     }
 
     public static void printNamesAndIDs(ObservableList<String> artistNames, ObservableList<String> artistID) {
@@ -111,22 +120,20 @@ public class TopTracksController {
             JSONArray allTheTracks = jsonObject.getJSONArray("items");
 
             for(int i = 0; i < allTheTracks.length(); i++){
+
                 JSONObject objectTracks = allTheTracks.getJSONObject(i);
                 JSONArray trackObjects = objectTracks.getJSONArray("artists");
-                StringBuilder sb = new StringBuilder();
 
+                StringBuilder sb = new StringBuilder();
                 sb.append("performed by: ");
                 for(int j = 0; j < trackObjects.length(); j++){
                     JSONObject artistObject = trackObjects.getJSONObject(j);
                     String individualArtists = artistObject.getString("name");
                     sb.append(individualArtists);
-
                     // Check if it's not the last item in the loop before adding a comma
                     if (j < trackObjects.length()-1) {
-
                         sb.append(", "); // Add a comma and space as a separator
                     }
-
                 }
 
                 allArtistsOfASong = sb.toString();

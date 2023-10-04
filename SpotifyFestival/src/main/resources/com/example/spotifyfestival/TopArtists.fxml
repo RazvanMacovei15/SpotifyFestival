@@ -70,5 +70,5 @@
             GridPane.rowIndex="4"
             text="Get back to main screen"
             style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px"
-            onAction="#onGetBackButtonClicked"/>
+            onAction="#getBackToTopLists"/>
 </GridPane>

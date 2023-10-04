@@ -19,20 +19,6 @@ import java.net.http.HttpResponse;
 
 public class TopArtistsController {
 
-//    private static TopArtistsController instance;
-//
-//    private TopArtistsController(){
-//    }
-//
-//    public static TopArtistsController getInstance(){
-//        if (instance == null) {
-//            instance = new TopArtistsController();
-//        }
-//        return instance;
-//    }
-
-//    private ObservableList<String> artistsNamesFromArtistController;
-
     @FXML
     private ListView<String> listView;
 
@@ -47,7 +33,7 @@ public class TopArtistsController {
 
     @FXML
     public void initialize() throws JsonProcessingException {
-        // Automatically trigger the "All Time" button when the scene is shown
+        // Automatically trigger the "4 weeks" button when the scene is shown
         on4WeeksButtonClicked();
     }
 
@@ -170,10 +156,14 @@ public class TopArtistsController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return attributeValues;
     }
 
-
-
+    public void getBackToTopLists(ActionEvent event){
+        try {
+            APPHelperMethods.switchScene(event, "topLists.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to move forward", e);
+        }
+    }
 }
