@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.Iterator;
+import java.util.*;
 
 public class TopGenresController {
 
@@ -31,35 +31,48 @@ public class TopGenresController {
     }
 
     public void on4WeeksButtonClicked() throws JsonProcessingException {
+
+
         HttpResponse response = getUserTopGenresOver4Weeks();
-        String s = null;
+        String s2 = null;
         String jsonResponse = response.body().toString();
         // Call the extractAttribute method to get the artist attributes
         ObservableList<String> genreNamesFromArtists = printGenresFor4Weeks(jsonResponse);
-        ObservableList<String> sortedGenres = printGenresFor4Weeks(jsonResponse);
 
-//        printGenresFor4Weeks(jsonResponse);
-        listView.setItems(genreNamesFromArtists);
+        LinkedHashMap<String,Integer> newMap = computeSortedBag(genreNamesFromArtists);
 
-        SortedBag<String> sB = computeSortedBag(genreNamesFromArtists);
+        ObservableList<String> ol = FXCollections.observableArrayList();
 
-        // Create an ObservableList to store the genres
-        ObservableList<String> observableList = FXCollections.observableArrayList();
+        for (Map.Entry<String, Integer> entry : newMap.entrySet()) {
+            String key = entry.getKey();
+            int value = entry.getValue();
 
-        // Use an iterator to iterate through the sorted bag and add genres to the ObservableList
-        Iterator<String> iterator = sB.iterator();
-        while (iterator.hasNext()) {
-            String genre = iterator.next();
-            int count = sB.countOccurrences(genre);
-            for (int i = 0; i < count; i++) {
-                observableList.add(genre);
-            }
+            StringBuilder sb = new StringBuilder();
+            sb.append(key);
+            sb.append(", ");
+            sb.append(value);
+            sb.append(";");
+            String concatenatedString = sb.toString();
+
+            ol.add(concatenatedString);
         }
 
-        // Now, observableList contains the genres in order
-        System.out.println(observableList);
+        System.out.println(ol);
 
-        listView.setItems(observableList);
+
+
+
+//
+//        ObservableList<String> ol = FXCollections.observableArrayList();
+//
+//        ol = keysToObservableList(newMap);
+//
+//        for (String key : ol) {
+//            System.out.println(key);
+//        }
+
+        listView.setItems(ol);
+
 
 
 
@@ -80,6 +93,7 @@ public class TopGenresController {
     public ObservableList<String> printGenresFor4Weeks(String jsonResponse){
         ObservableList<String> ol = FXCollections.observableArrayList();
         String s = null;
+        SortedBag<String> sB = new SortedBag<>();
 
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
@@ -89,41 +103,73 @@ public class TopGenresController {
 
                 JSONObject objectTracks = allTheArtists.getJSONObject(i);
                 JSONArray artistGenres = objectTracks.getJSONArray("genres");
-//                StringBuilder sb = new StringBuilder();
-//                sb.append("[");
 
                 for(int j = 0; j < artistGenres.length(); j++){
-                     s = artistGenres.get(j).toString();
-                    System.out.println(s);
+                    s = artistGenres.get(j).toString();
+                    sB.add(s);
                     ol.add(s);
-//                    sb.append(s);
-//                    if (j < artistGenres.length()-1) {
-//                        sb.append(", "); // Add a comma and space as a separator
                     }
                 }
-//                sb.append("]");
-//                String s = sb.toString();
-
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+//        System.out.println(sB);
 //        System.out.println(ol);
-
         return ol;
     }
 
-    public SortedBag<String> computeSortedBag(ObservableList<String> ol){
-        ObservableList obL = FXCollections.observableArrayList();
-        SortedBag<String> sB = new SortedBag<>();
+    public LinkedHashMap<String, Integer> computeSortedBag(ObservableList<String> ol) {
+        List<String> genres = List.of("pop", "singer-songwriter pop", "uk pop", "flick hop", "underground rap", "alternative metal", "neo mellow", "pop rock", "post-grunge", "alternative metal", "nu metal", "detroit hip hop", "hip hop", "rap", "moldovan pop", "romanian pop", "israeli pop", "romanian rap", "romanian rock", "danish metal", "danish rock", "melodic power metal", "alternative metal", "groove metal", "nu metal", "dutch metal", "gothic metal", "gothic symphonic metal", "symphonic metal", "alternative pop rock", "modern alternative rock", "modern rock", "hip hop", "pop rap", "rap", "piano rock", "pop");
 
-        for(int i = 0; i < ol.size(); i++){
-            sB.add(ol.get(i));
+        Map<String, Integer> genreCountMap = new HashMap<>();
+
+        for (String genre : genres) {
+            genreCountMap.put(genre, genreCountMap.getOrDefault(genre, 0) + 1);
         }
-        System.out.println(sB);
-        return sB;
+
+        // Convert the map into a list of entries
+        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(genreCountMap.entrySet());
+
+        // Sort the list of entries first by key (descending order) and then alphabetically
+        entryList.sort((entry1, entry2) -> {
+            int cmp = entry2.getValue().compareTo(entry1.getValue()); // Sort by count (descending)
+            if (cmp == 0) {
+                // If counts are the same, sort alphabetically by genre
+                return entry1.getKey().compareTo(entry2.getKey());
+            }
+            return cmp;
+        });
+
+        LinkedHashMap<String,Integer>newMap = new LinkedHashMap<>();
+
+
+        // Print the sorted entries
+        for (Map.Entry<String, Integer> entry : entryList) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+            newMap.put(entry.getKey(), entry.getValue());
+        }
+        return newMap;
     }
+
+
+    public static ObservableList<String> keysToObservableList(Map<String, Integer> map) {
+        List<String> keyList = new ArrayList<>(map.keySet());
+        ObservableList<String> observableList = FXCollections.observableArrayList(keyList);
+        return observableList;
+    }
+
+    // Method to print keys of a LinkedHashMap in order
+    public static void printKeysInOrder(Map<String, Integer> map) {
+        Iterator<String> iterator = map.keySet().iterator();
+        Iterator<Integer> it = map.values().iterator();
+        while (iterator.hasNext()) {
+            String key = iterator.next();
+            int value = it.next();
+            System.out.println(key + " " + value);
+        }
+    }
+
+
 
 }
