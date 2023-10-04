@@ -1,7 +1,7 @@
 package com.example.spotifyfestival;
 
 
-import javafx.application.Platform;
+import com.example.spotifyfestival.helperObsLis.AuthFlowObserver;
 import spark.Spark;
 
 import java.io.IOException;
@@ -44,14 +44,14 @@ public class SpotifyAuthFlowService {
     private void notifyObservers(String accessToken) {
         for (AuthFlowObserver observer : observers) {
             observer.onAuthFlowCompleted(accessToken);
+            observer.getTopArtists(accessToken);
         }
     }
 
     private SpotifyAuthFlowService() {
 
-
-
         this.clientID = spotifyAPPCredentials.getClientId();
+
     }
 
     public static SpotifyAuthFlowService getInstance() {

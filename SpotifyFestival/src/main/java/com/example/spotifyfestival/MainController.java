@@ -1,47 +1,45 @@
 package com.example.spotifyfestival;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class MainController {
 
 
-
     public void loginWithSpotify(ActionEvent event) throws Exception {
-
-        SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
 
         onAwaitingConfirmationScene(event);
 
-        Thread workerThread = new Thread(() -> {
-            spotifyAuthFlowService.backendThatNeedsChange();
 
-            String accessToken = spotifyAuthFlowService.getAccessToken();
 
-            System.out.println(accessToken);
-
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    Parent root = null;
-                    try {
-                        root = FXMLLoader.load(getClass().getResource("afterLoginScreen.fxml"));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    Stage stage = App.getPrimaryStage();
-                    stage.setScene(new Scene(root));
-                    stage.show();
-                }
-            });
-        });
-        workerThread.start();
+//        SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
+//
+//        onAwaitingConfirmationScene(event);
+//
+//        Thread workerThread = new Thread(() -> {
+//            spotifyAuthFlowService.backendThatNeedsChange();
+//
+//            String accessToken = spotifyAuthFlowService.getAccessToken();
+//
+//            System.out.println(accessToken);
+//
+//            Platform.runLater(new Runnable() {
+//                @Override
+//                public void run() {
+//                    Parent root = null;
+//                    try {
+//                        root = FXMLLoader.load(getClass().getResource("afterLoginScreen.fxml"));
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
+//                    Stage stage = App.getPrimaryStage();
+//                    stage.setScene(new Scene(root));
+//                    stage.show();
+//                }
+//            });
+//        });
+//        workerThread.start();
 
 
 

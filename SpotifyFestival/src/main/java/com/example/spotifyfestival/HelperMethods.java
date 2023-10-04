@@ -7,10 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
 
 
 public class HelperMethods {
@@ -31,6 +27,20 @@ public class HelperMethods {
         stage.setScene(scene);
         stage.show();
     }
+
+//    public static void switchSceneToken(AccessTokenEvent event, String sceneFXML) throws IOException {
+//
+//        FXMLLoader loader = new FXMLLoader(HelperMethods.class.getResource(sceneFXML));
+//        Parent sceneRoot = loader.load();
+//
+//        double sceneWidth = 360; // Set your desired width
+//        double sceneHeight = 720; // Set your desired height
+//        Scene scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
+//        Stage stage = App.getPrimaryStage();
+//        // Get the Stage
+//        stage.setScene(scene);
+//        stage.show();
+//    }
 
     public void createLoginSimulation() throws Exception {
 

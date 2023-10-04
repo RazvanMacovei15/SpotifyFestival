@@ -1,6 +1,7 @@
 package com.example.spotifyfestival;
 import com.example.spotifyfestival.HelperMethods;
 
+import com.example.spotifyfestival.helperObsLis.AccessTokenObserver;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;

@@ -30,9 +30,9 @@ public class SpotifyService {
         return response;
     }
 
-    public HttpResponse getUserTopArtists(AccessTokenResponse accessTokenResponse) throws IOException, InterruptedException {
+    public HttpResponse getUserTopArtists(String accessToken)  {
 
-        String accessToken = accessTokenResponse.getAccessToken();
+//        String accessToken = accessTokenResponse.getAccessToken();
 
         String API_URL = API_URLS.getUserTopArtists();
 
@@ -42,7 +42,12 @@ public class SpotifyService {
                 .header("Authorization", "Bearer " + accessToken)
                 .GET()
                 .build();
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         return response;
     }
 }
