@@ -63,7 +63,6 @@ public class SpotifyAuthFlowService {
         return instance;
     }
 
-
     public String getAccessToken(){
         return accessToken;
     }

@@ -11,8 +11,6 @@ public class MainController {
 
         onAwaitingConfirmationScene(event);
 
-
-
 //        SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
 //
 //        onAwaitingConfirmationScene(event);
@@ -41,18 +39,12 @@ public class MainController {
 //        });
 //        workerThread.start();
 
-
-
-
-
 //        onAwaitingConfirmationScene(event);
-
 //        HelperMethods helperMethods = new HelperMethods();
 //
 //        helperMethods.createLoginSimulation();
 //
 //        helperMethods.simulateConfirmation();
-
 //        spotifyAuthFlowService.backendThatNeedsChange(new Runnable() {
 //            @Override
 //            public void run() {
