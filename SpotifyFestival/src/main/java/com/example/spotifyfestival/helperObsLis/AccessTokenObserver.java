@@ -1,37 +1,36 @@
 package com.example.spotifyfestival.helperObsLis;
 
 
-import com.example.spotifyfestival.MainController;
-import com.example.spotifyfestival.SpotifyService;
-import com.example.spotifyfestival.helperObsLis.AuthFlowObserver;
-import javafx.event.Event;
-import javafx.event.EventTarget;
+import com.example.spotifyfestival.APPHelperMethods;
+import javafx.event.ActionEvent;
 
-import java.net.http.HttpResponse;
+import java.io.IOException;
 
 public class AccessTokenObserver implements AuthFlowObserver {
+
+    public void onBackToLoginClicked(ActionEvent actionEvent) {
+        try {
+            APPHelperMethods.switchScene(actionEvent, "mainScreen.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to move forward", e);
+        }
+    }
+    public AccessTokenObserver(){
+    }
+
     @Override
     public void onAuthFlowCompleted(String accessToken) {
+
         System.out.println("Access Token Received: " + accessToken);
+
     }
 
     @Override
     public void getTopArtists(String accessToken){
-        SpotifyService spotifyService = new SpotifyService();
-        HttpResponse response = spotifyService.getUserTopArtists(accessToken);
-        System.out.println(response.body());
+
+//        SpotifyService spotifyService = new SpotifyService();
+//        HttpResponse response = spotifyService.getUserTopArtists(accessToken);
+//        System.out.println(response.body());
+
     }
-
-//    private MainController javaFXController;
-
-//    public AccessTokenObserver(MainController javaFXController) {
-//        this.javaFXController = javaFXController;
-//    }
-//
-//    @Override
-//    public void onAuthFlowCompleted(String accessToken) {
-//        // Notify JavaFX controller by firing the custom event
-//        AccessTokenEvent event = new AccessTokenEvent(accessToken);
-//        Event.fireEvent((EventTarget) javaFXController, event);
-//    }
 }

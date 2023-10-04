@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Rectangle?>
 
-<GridPane fx:controller="com.example.spotifyfestival.MainController"
+<GridPane fx:controller="com.example.spotifyfestival.helperObsLis.AccessTokenObserver"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="20" vgap="20"
           style="-fx-border-color: black; -fx-border-width: 2px;">
 
@@ -31,6 +31,5 @@
     <Button GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
             text="Back"
             onAction="#onBackToLoginClicked"/>
-
 
 </GridPane>

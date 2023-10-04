@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
-<GridPane fx:controller="com.example.spotifyfestival.MainController"
+<GridPane fx:controller="com.example.spotifyfestival.Controllers.TopTracksController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
 
     <padding>
@@ -55,7 +55,7 @@
         </HBox>
 
         <HBox GridPane.columnIndex="2" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button text="All Time" alignment="CENTER" >
+            <Button text="All Time" alignment="CENTER" onAction="#onAllTimeTopTracksButtonClicked">
                 <minWidth>120</minWidth>
                 <prefWidth>120</prefWidth>
             </Button>

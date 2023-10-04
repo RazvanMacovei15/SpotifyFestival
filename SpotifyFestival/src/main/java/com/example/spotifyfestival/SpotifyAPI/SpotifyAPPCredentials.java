@@ -1,4 +1,4 @@
-package com.example.spotifyfestival;
+package com.example.spotifyfestival.SpotifyAPI;
 
 public final class SpotifyAPPCredentials {
 

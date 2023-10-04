@@ -1,4 +1,4 @@
-package com.example.spotifyfestival;
+package com.example.spotifyfestival.JSONObjects;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,6 +13,13 @@ public class AccessTokenResponse {
 
     @JsonProperty("expires_in")
     private int expiresIn;
+
+
+    @JsonProperty("refresh_token")
+    private String refreshToken;
+
+    @JsonProperty("scope")
+    private String scope;
 
     public void setAccessToken(String accessToken) {
         this.accessToken = accessToken;
@@ -34,11 +41,6 @@ public class AccessTokenResponse {
         this.scope = scope;
     }
 
-    @JsonProperty("refresh_token")
-    private String refreshToken;
-
-    @JsonProperty("scope")
-    private String scope;
 
     public String getAccessToken() {
         return accessToken;

@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
-<GridPane fx:controller="com.example.spotifyfestival.MainController"
+<GridPane fx:controller="com.example.spotifyfestival.Controllers.TopArtistsController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
 
     <padding>
@@ -41,30 +41,29 @@
         </fx:define>
 
         <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button text="4 weeks" alignment="CENTER">
+            <Button text="4 weeks" alignment="CENTER" >
                 <minWidth>120</minWidth>
                 <prefWidth>120</prefWidth>
             </Button>
         </HBox>
 
         <HBox GridPane.columnIndex="1" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button text="6 months" alignment="CENTER">
+            <Button text="6 months" alignment="CENTER" >
                 <minWidth>120</minWidth>
                 <prefWidth>120</prefWidth>
             </Button>
         </HBox>
 
         <HBox GridPane.columnIndex="2" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button text="All Time" alignment="CENTER" >
+            <Button text="All Time" alignment="CENTER" onAction="#onAllTimeButtonClicked">
                 <minWidth>120</minWidth>
                 <prefWidth>120</prefWidth>
             </Button>
         </HBox>
     </GridPane>
 
-    <ListView GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
-
-    </ListView>
+    <ListView fx:id="listView"
+            GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER"/>
 
     <Button alignment="CENTER"
             GridPane.halignment="CENTER"

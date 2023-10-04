@@ -9,14 +9,14 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-public class HelperMethods {
+public class APPHelperMethods {
 
 
 
-    SpotifyAPPCredentials spotifyAPPCredentials = new SpotifyAPPCredentials();
-    public static void switchScene(ActionEvent event, String sceneFXML) throws IOException {
+    public static void switchScene(ActionEvent event, String path) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(HelperMethods.class.getResource(sceneFXML));
+        FXMLLoader loader = new FXMLLoader(APPHelperMethods.class.getResource(path));
+
         Parent sceneRoot = loader.load();
 
         double sceneWidth = 360; // Set your desired width
@@ -28,19 +28,19 @@ public class HelperMethods {
         stage.show();
     }
 
-//    public static void switchSceneToken(AccessTokenEvent event, String sceneFXML) throws IOException {
-//
-//        FXMLLoader loader = new FXMLLoader(HelperMethods.class.getResource(sceneFXML));
-//        Parent sceneRoot = loader.load();
-//
-//        double sceneWidth = 360; // Set your desired width
-//        double sceneHeight = 720; // Set your desired height
-//        Scene scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
-//        Stage stage = App.getPrimaryStage();
-//        // Get the Stage
-//        stage.setScene(scene);
-//        stage.show();
-//    }
+    public static void switchSceneTwo(String sceneFXML) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(APPHelperMethods.class.getResource(sceneFXML));
+        Parent sceneRoot = loader.load();
+
+        double sceneWidth = 360; // Set your desired width
+        double sceneHeight = 720; // Set your desired height
+        Scene scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
+        Stage stage = App.getPrimaryStage();
+        // Get the Stage
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public void createLoginSimulation() throws Exception {
 

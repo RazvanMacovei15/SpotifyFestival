@@ -1,4 +1,4 @@
-package com.example.spotifyfestival;
+package com.example.spotifyfestival.helperObsLis;
 
 public class HtmlCONSTANTS {
     public static final String HTML_PAGE =

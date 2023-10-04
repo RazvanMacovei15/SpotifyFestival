@@ -1,11 +1,16 @@
-package com.example.spotifyfestival;
+package com.example.spotifyfestival.SpotifyAPI;
 
 
+import com.example.spotifyfestival.JSONObjects.AccessTokenResponse;
+import com.example.spotifyfestival.JSONObjects.JsonUtils;
+import com.example.spotifyfestival.JSONObjects.RefreshAccessTokenResponse;
 import com.example.spotifyfestival.helperObsLis.AuthFlowObserver;
+
+import com.example.spotifyfestival.helperObsLis.HtmlCONSTANTS;
 import spark.Spark;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -18,7 +23,11 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
-public class SpotifyAuthFlowService {
+public class SpotifyAuthFlowService extends  Thread{
+    @Override
+    public void run(){
+        apiCall();
+    }
 
     SpotifyAPPCredentials spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
 
@@ -31,7 +40,7 @@ public class SpotifyAuthFlowService {
 
     private String STATE;
 
-    private List<AuthFlowObserver> observers = new ArrayList<>();
+    private final List<AuthFlowObserver> observers = new ArrayList<>();
 
     public void addObserver(AuthFlowObserver observer) {
         observers.add(observer);
@@ -46,14 +55,15 @@ public class SpotifyAuthFlowService {
 
             observer.onAuthFlowCompleted(accessToken);
 
-            observer.getTopArtists(accessToken);
+//            observer.changeFXScene();
+
+//            observer.getTopArtists(accessToken);
+
+//            observer.changeFXScene(e);
         }
     }
 
     private SpotifyAuthFlowService() {
-
-        this.clientID = spotifyAPPCredentials.getClientId();
-
     }
 
     public static SpotifyAuthFlowService getInstance() {
@@ -72,8 +82,6 @@ public class SpotifyAuthFlowService {
     public AccessTokenResponse accessTokenResponse;
 
     public RefreshAccessTokenResponse refreshAccessTokenResponse;
-
-
 
     String originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
 
@@ -135,28 +143,16 @@ public class SpotifyAuthFlowService {
     }
     public String generateLoginURL(String STATE)  {
         String encodedScope = null;
-        try {
-            encodedScope = URLEncoder.encode(spotifyAPPCredentials.getUserTopReadScope(), StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        encodedScope = URLEncoder.encode(spotifyAPPCredentials.getUserTopReadScope(), StandardCharsets.UTF_8);
         String encodedState = null;
-        try {
-            encodedState = URLEncoder.encode(STATE, StandardCharsets.UTF_8.toString());
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        encodedState = URLEncoder.encode(STATE, StandardCharsets.UTF_8);
 
-        try {
-            return "https://accounts.spotify.com/authorize?" +
-                    "response_type=code" +
-                    "&client_id=" + spotifyAPPCredentials.getClientId() +
-                    "&scope=" + encodedScope +
-                    "&redirect_uri=" + URLEncoder.encode(spotifyAPPCredentials.getRedirectUri(), StandardCharsets.UTF_8.toString()) +
-                    "&state=" + encodedState;
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        return "https://accounts.spotify.com/authorize?" +
+                "response_type=code" +
+                "&client_id=" + spotifyAPPCredentials.getClientId() +
+                "&scope=" + encodedScope +
+                "&redirect_uri=" + URLEncoder.encode(spotifyAPPCredentials.getRedirectUri(), StandardCharsets.UTF_8) +
+                "&state=" + encodedState;
     }
 
     public void openURL2(String url) {
@@ -176,7 +172,6 @@ public class SpotifyAuthFlowService {
     public CompletableFuture<Void> apiCall(){
 
         CompletableFuture<Void> authenticationCompleted = new CompletableFuture<>();
-
 
         startServerOnPort(8888);
 
@@ -240,6 +235,7 @@ public class SpotifyAuthFlowService {
                     // Return an error response
                 }
             }
+
             return HtmlCONSTANTS.HTML_PAGE;
         });
 
@@ -248,13 +244,6 @@ public class SpotifyAuthFlowService {
         System.out.println("auth 2.0 complete");
         return authenticationCompleted;
     }
-
-    public void backendThatNeedsChange() {
-
-        apiCall();
-
-    }
-
 
     public String refreshTheToken(AccessTokenResponse accessTokenResponse){
 

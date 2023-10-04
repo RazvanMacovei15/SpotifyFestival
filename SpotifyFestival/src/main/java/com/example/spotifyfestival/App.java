@@ -1,18 +1,12 @@
 package com.example.spotifyfestival;
-import com.example.spotifyfestival.HelperMethods;
 
-import com.example.spotifyfestival.helperObsLis.AccessTokenObserver;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 public class App extends Application {
 
@@ -26,7 +20,9 @@ public class App extends Application {
         this.primaryStage = primaryStage;
 
         Parent root = FXMLLoader.load(getClass().getResource("mainScreen.fxml"));
-        primaryStage.setScene(new Scene(root));
+        double sceneWidth = 360; // Set your desired width
+        double sceneHeight = 720; // Set your desired height
+        primaryStage.setScene(new Scene(root, sceneWidth,sceneHeight));
         primaryStage.show();
     }
     public static void main(String[] args) throws Exception {

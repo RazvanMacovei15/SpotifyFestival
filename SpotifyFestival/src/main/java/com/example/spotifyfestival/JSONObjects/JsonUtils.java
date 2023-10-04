@@ -1,4 +1,4 @@
-package com.example.spotifyfestival;
+package com.example.spotifyfestival.JSONObjects;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
