@@ -43,7 +43,9 @@ public class SpotifyAuthFlowService {
 
     private void notifyObservers(String accessToken) {
         for (AuthFlowObserver observer : observers) {
+
             observer.onAuthFlowCompleted(accessToken);
+
             observer.getTopArtists(accessToken);
         }
     }

@@ -14,7 +14,7 @@ public class SpotifyService {
 //        this.spotifyAuthFlowService = spotifyAuthFlowService;
 //    }
 
-    public HttpResponse getUserTopTracks(String accessToken) throws IOException, InterruptedException {
+    public HttpResponse getUserTopTracks(String accessToken) {
 
         String API_URL = API_URLS.getUserTopTracks();
 
@@ -25,14 +25,17 @@ public class SpotifyService {
                 .GET()
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         return response;
     }
 
     public HttpResponse getUserTopArtists(String accessToken)  {
-
-//        String accessToken = accessTokenResponse.getAccessToken();
 
         String API_URL = API_URLS.getUserTopArtists();
 

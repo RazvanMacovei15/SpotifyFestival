@@ -21,7 +21,7 @@
 
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
         <image>
-<!--            <Image url="D:\JV\GitRepos\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>-->
+<!--            <Image url="@SpotifyLogo.png"/>-->
         </image>
     </ImageView>
 

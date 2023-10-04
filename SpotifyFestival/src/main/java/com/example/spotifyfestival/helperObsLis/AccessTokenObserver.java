@@ -13,10 +13,6 @@ public class AccessTokenObserver implements AuthFlowObserver {
     @Override
     public void onAuthFlowCompleted(String accessToken) {
         System.out.println("Access Token Received: " + accessToken);
-
-        SpotifyService spotifyService = new SpotifyService();
-        HttpResponse response = spotifyService.getUserTopArtists(accessToken);
-        System.out.println(response.body());
     }
 
     @Override
