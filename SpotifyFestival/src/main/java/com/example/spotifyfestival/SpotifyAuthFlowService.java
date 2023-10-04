@@ -12,7 +12,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 
 public class SpotifyAuthFlowService {
@@ -28,7 +31,25 @@ public class SpotifyAuthFlowService {
 
     private String STATE;
 
+    private List<AuthFlowObserver> observers = new ArrayList<>();
+
+    public void addObserver(AuthFlowObserver observer) {
+        observers.add(observer);
+    }
+
+    public void removeObserver(AuthFlowObserver observer) {
+        observers.remove(observer);
+    }
+
+    private void notifyObservers(String accessToken) {
+        for (AuthFlowObserver observer : observers) {
+            observer.onAuthFlowCompleted(accessToken);
+        }
+    }
+
     private SpotifyAuthFlowService() {
+
+
 
         this.clientID = spotifyAPPCredentials.getClientId();
     }
@@ -41,7 +62,7 @@ public class SpotifyAuthFlowService {
     }
 
 
-    public String getAccessTokenFromAuth(){
+    public String getAccessToken(){
         return accessToken;
     }
 
@@ -151,7 +172,10 @@ public class SpotifyAuthFlowService {
         }
     }
 
-    public void apiCall(){
+    public CompletableFuture<Void> apiCall(){
+
+        CompletableFuture<Void> authenticationCompleted = new CompletableFuture<>();
+
 
         startServerOnPort(8888);
 
@@ -196,8 +220,9 @@ public class SpotifyAuthFlowService {
                     if (statusCode == 200) {
                         accessTokenResponse = deserializeAccessTokenResponse(responseBody);
                         if (accessTokenResponse != null) {
-                            handleAccessTokenResponse(accessTokenResponse);
+//                            handleAccessTokenResponse(accessTokenResponse);
                             accessToken=accessTokenResponse.getAccessToken();
+                            notifyObservers(accessToken); // Notify observers when API call is completed
                         } else {
                             System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
                         }
@@ -216,12 +241,16 @@ public class SpotifyAuthFlowService {
             }
             return HtmlCONSTANTS.HTML_PAGE;
         });
+
+
+
+        System.out.println("auth 2.0 complete");
+        return authenticationCompleted;
     }
 
     public void backendThatNeedsChange() {
 
         apiCall();
-
 
     }
 

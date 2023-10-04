@@ -22,7 +22,7 @@ public class MainController {
         Thread workerThread = new Thread(() -> {
             spotifyAuthFlowService.backendThatNeedsChange();
 
-            String accessToken = spotifyAuthFlowService.getAccessTokenFromAuth();
+            String accessToken = spotifyAuthFlowService.getAccessToken();
 
             System.out.println(accessToken);
 
