@@ -5,7 +5,7 @@ public class Tracks_API_URLS {
     public static String getUserTopTracksAllTimeURI() {
         return userTopTracksAllTimeURI;
     }
-    private static final String userTopTracksAllTimeURI = "https://api.spotify.com/v1/me/top/tracks?limit=15";
+    private static final String userTopTracksAllTimeURI = "https://api.spotify.com/v1/me/top/tracks?time_range=long_term&limit=15";
 
     public static String getUserTopTracks6MonthsURI() {
         return userTopTracks6MonthsURI;
@@ -15,5 +15,5 @@ public class Tracks_API_URLS {
     public static String getUserTopTracksOver4WeeksURI() {
         return userTopTracksOver4WeeksURI;
     }
-    private static final String userTopTracksOver4WeeksURI = "https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=15";
+    private static final String userTopTracksOver4WeeksURI = "https://api.spotify.com/v1/me/top/tracks?time_range=short_term&limit=15";
 }

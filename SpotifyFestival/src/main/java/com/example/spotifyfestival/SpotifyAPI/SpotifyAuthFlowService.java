@@ -33,7 +33,7 @@ public class SpotifyAuthFlowService extends  Thread{
 
     private String clientID;
 
-    private static SpotifyAuthFlowService instance;
+
     private String responseBody = null;
 
     private String accessToken;
@@ -62,6 +62,8 @@ public class SpotifyAuthFlowService extends  Thread{
 //            observer.changeFXScene(e);
         }
     }
+
+    private static SpotifyAuthFlowService instance;
 
     private SpotifyAuthFlowService() {
     }

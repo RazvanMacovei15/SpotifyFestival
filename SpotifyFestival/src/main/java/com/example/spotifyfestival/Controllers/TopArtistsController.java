@@ -19,6 +19,20 @@ import java.net.http.HttpResponse;
 
 public class TopArtistsController {
 
+//    private static TopArtistsController instance;
+//
+//    private TopArtistsController(){
+//    }
+//
+//    public static TopArtistsController getInstance(){
+//        if (instance == null) {
+//            instance = new TopArtistsController();
+//        }
+//        return instance;
+//    }
+
+//    private ObservableList<String> artistsNamesFromArtistController;
+
     @FXML
     private ListView<String> listView;
 
@@ -34,7 +48,7 @@ public class TopArtistsController {
     @FXML
     public void initialize() throws JsonProcessingException {
         // Automatically trigger the "All Time" button when the scene is shown
-        onAllTimeButtonClicked();
+        on4WeeksButtonClicked();
     }
 
     public void onGetBackButtonClicked(ActionEvent event){
@@ -81,40 +95,46 @@ public class TopArtistsController {
 
 
     public void onAllTimeButtonClicked() throws JsonProcessingException {
-        HttpResponse response = getUserTopArtists();
 
-        String jsonResponse = response.body().toString();
-        // Call the extractAttribute method to get the artist attributes
-        ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
-        ObservableList<String> artistID = extractAttribute(jsonResponse, "id");
+        onTimeRangeButtonClicked("all time");
 
-        printNamesAndIDs(artistNames, artistID);
-
-        listView.setItems(artistNames);
     }
 
     public void on6MonthsButtonClicked() throws JsonProcessingException {
-        HttpResponse response = getUserTopArtistsOver6Months();
 
-        String jsonResponse = response.body().toString();
-        // Call the extractAttribute method to get the artist attributes
-        ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
-        ObservableList<String> artistID = extractAttribute(jsonResponse, "id");
+        onTimeRangeButtonClicked("6 months");
 
-        printNamesAndIDs(artistNames, artistID);
-
-        listView.setItems(artistNames);
     }
     public void on4WeeksButtonClicked() throws JsonProcessingException {
-        HttpResponse response = getUserTopArtistsOver4Weeks();
+
+        onTimeRangeButtonClicked("4 weeks");
+
+    }
+
+    public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
+        HttpResponse response;
+
+        switch (timeRange) {
+            case "all time":
+                response = getUserTopArtists();
+                break;
+            case "6 months":
+                response = getUserTopArtistsOver6Months();
+                break;
+            case "4 weeks":
+                response = getUserTopArtistsOver4Weeks();
+                break;
+            default:
+                // Handle the case when an unsupported time range is provided
+                return;
+        }
 
         String jsonResponse = response.body().toString();
         // Call the extractAttribute method to get the artist attributes
         ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
         ObservableList<String> artistID = extractAttribute(jsonResponse, "id");
 
-        printNamesAndIDs(artistNames, artistID);
-
+        // Set the artist names in your ListView or perform other actions
         listView.setItems(artistNames);
     }
 
