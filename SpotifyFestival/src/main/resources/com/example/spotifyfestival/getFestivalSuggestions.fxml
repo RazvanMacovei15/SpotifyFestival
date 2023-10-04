@@ -9,7 +9,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:controller="com.example.spotifyfestival.mainController"
+<GridPane fx:controller="com.example.spotifyfestival.MainController"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20">
 
     <rowConstraints>

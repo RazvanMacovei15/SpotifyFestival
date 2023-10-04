@@ -8,7 +8,6 @@ import java.net.http.HttpResponse;
 
 public class SpotifyService {
 
-
 //    SpotifyAuthFlowService spotifyAuthFlowService = new SpotifyAuthFlowService() ;
 //
 //    public void setSpotifyAuthFlowService(SpotifyAuthFlowService spotifyAuthFlowService){
@@ -43,7 +42,6 @@ public class SpotifyService {
                 .header("Authorization", "Bearer " + accessToken)
                 .GET()
                 .build();
-
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response;
     }

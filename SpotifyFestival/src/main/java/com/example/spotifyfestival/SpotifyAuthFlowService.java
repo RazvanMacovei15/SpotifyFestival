@@ -16,28 +16,44 @@ import java.util.Base64;
 
 
 public class SpotifyAuthFlowService {
+
+    SpotifyAPPCredentials spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
+
+    private String clientID;
+
+    private static SpotifyAuthFlowService instance;
     private String responseBody = null;
 
     private String accessToken;
-    private String tokenType;
-    private int expiresIn;
+
+    private String STATE;
+
+    private SpotifyAuthFlowService() {
+
+        this.clientID = spotifyAPPCredentials.getClientId();
+    }
+
+    public static SpotifyAuthFlowService getInstance() {
+        if (instance == null) {
+            instance = new SpotifyAuthFlowService();
+        }
+        return instance;
+    }
+
+
+    public String getAccessTokenFromAuth(){
+        return accessToken;
+    }
+
     private String refreshToken;
-    private String scope;
-
-    private String refreshedToken;
-
-    private String refreshedTokenType;
-
-    private int refreshedTokenExpiresIn;
-
-    private String refreshedTokenScope;
-    SpotifyAPPCredentials spotifyAPPCredentials =new SpotifyAPPCredentials();
 
     public AccessTokenResponse accessTokenResponse;
 
     public RefreshAccessTokenResponse refreshAccessTokenResponse;
 
-    private String STATE;
+
+
+    String originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
 
     public void startServerOnPort(int n) {
         Spark.port(n);
@@ -48,10 +64,10 @@ public class SpotifyAuthFlowService {
     private void handleAccessTokenResponse(AccessTokenResponse accessTokenResponse) {
         //retrieve the data
         accessToken = accessTokenResponse.getAccessToken();
-        tokenType = accessTokenResponse.getTokenType();
-        expiresIn = accessTokenResponse.getExpiresIn();
+        String tokenType = accessTokenResponse.getTokenType();
+        int expiresIn = accessTokenResponse.getExpiresIn();
         refreshToken = accessTokenResponse.getRefreshToken();
-        scope = accessTokenResponse.getScope();
+        String scope = accessTokenResponse.getScope();
         // Access the data
         System.out.println();
         System.out.println("Access Token: " + accessToken);
@@ -65,10 +81,10 @@ public class SpotifyAuthFlowService {
     }
     private void handleRefreshAccessTokenResponse(RefreshAccessTokenResponse refreshAccessTokenResponse) {
         System.out.println();
-        refreshedToken = refreshAccessTokenResponse.getRefreshedAccessToken();
-        refreshedTokenType = refreshAccessTokenResponse.getRefreshedTokenType();
-        refreshedTokenExpiresIn = refreshAccessTokenResponse.getRefreshedExpiresIn();
-        refreshedTokenScope = refreshAccessTokenResponse.getRefreshedScope();
+        String refreshedToken = refreshAccessTokenResponse.getRefreshedAccessToken();
+        String refreshedTokenType = refreshAccessTokenResponse.getRefreshedTokenType();
+        int refreshedTokenExpiresIn = refreshAccessTokenResponse.getRefreshedExpiresIn();
+        String refreshedTokenScope = refreshAccessTokenResponse.getRefreshedScope();
         // Access the data
         System.out.println("refreshedToken: " + refreshedToken);
         System.out.println("refreshedTokenType: " + refreshedTokenType);
@@ -95,16 +111,30 @@ public class SpotifyAuthFlowService {
         }
         return sb.toString();
     }
-    public String generateLoginURL(String STATE) throws UnsupportedEncodingException {
-        String encodedScope = URLEncoder.encode(spotifyAPPCredentials.getUserTopReadScope(), StandardCharsets.UTF_8.toString());
-        String encodedState = URLEncoder.encode(STATE, StandardCharsets.UTF_8.toString());
+    public String generateLoginURL(String STATE)  {
+        String encodedScope = null;
+        try {
+            encodedScope = URLEncoder.encode(spotifyAPPCredentials.getUserTopReadScope(), StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+        String encodedState = null;
+        try {
+            encodedState = URLEncoder.encode(STATE, StandardCharsets.UTF_8.toString());
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
 
-        return "https://accounts.spotify.com/authorize?" +
-                "response_type=code" +
-                "&client_id=" + spotifyAPPCredentials.getClientId() +
-                "&scope=" + encodedScope +
-                "&redirect_uri=" + URLEncoder.encode(spotifyAPPCredentials.getRedirectUri(), StandardCharsets.UTF_8.toString()) +
-                "&state=" + encodedState;
+        try {
+            return "https://accounts.spotify.com/authorize?" +
+                    "response_type=code" +
+                    "&client_id=" + spotifyAPPCredentials.getClientId() +
+                    "&scope=" + encodedScope +
+                    "&redirect_uri=" + URLEncoder.encode(spotifyAPPCredentials.getRedirectUri(), StandardCharsets.UTF_8.toString()) +
+                    "&state=" + encodedState;
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void openURL2(String url) {
@@ -121,7 +151,7 @@ public class SpotifyAuthFlowService {
         }
     }
 
-    public void backendThatNeedsChange() throws UnsupportedEncodingException {
+    public void apiCall(){
 
         startServerOnPort(8888);
 
@@ -130,7 +160,7 @@ public class SpotifyAuthFlowService {
         String loginURL = generateLoginURL(STATE);
 
         openURL2(loginURL);
-//
+
         Spark.get("/login", (request, response) -> {
 
             response.redirect(loginURL);
@@ -141,7 +171,6 @@ public class SpotifyAuthFlowService {
 
         Spark.get("/callback", (request, response) -> {
 
-
             String code = request.queryParams("code");
             String state = request.queryParams("state");
 
@@ -150,10 +179,7 @@ public class SpotifyAuthFlowService {
                 //request parameters
                 String requestBody = "grant_type=authorization_code&code=" + code + "&redirect_uri=" + spotifyAPPCredentials.getRedirectUri();
 
-                String originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
-
                 try{
-
                     HttpClient client = HttpClient.newBuilder().build();
 
                     HttpRequest tokenRequest = HttpRequest.newBuilder()
@@ -175,37 +201,13 @@ public class SpotifyAuthFlowService {
                         } else {
                             System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
                         }
+
                     } else {
                         // handle error responses here
                         System.err.println("Error: " + statusCode);
 
                     }
 
-                    HttpRequest httpRequest = HttpRequest.newBuilder()
-                            .uri(URI.create("https://accounts.spotify.com/api/token"))
-                            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(originalInput.getBytes()))
-                            .header("Content-Type", "application/x-www-form-urlencoded")
-                            .POST(HttpRequest.BodyPublishers.ofString("grant_type=refresh_token&refresh_token=" + refreshToken))
-                            .build();
-
-                    HttpResponse<String> refreshResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-                    String refreshResponseBody = refreshResponse.body();
-                    int refreshStatusCode = refreshResponse.statusCode();
-
-                    if (refreshStatusCode == 200) {
-
-                        // handle a successful refresh response here
-                        refreshAccessTokenResponse = deserializeRefreshAccessTokenResponse(refreshResponseBody);
-                        if(refreshAccessTokenResponse !=  null){
-                            handleRefreshAccessTokenResponse(refreshAccessTokenResponse);
-                        }else {
-                            System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
-                        }
-                    } else {
-                        // Handle error responses here
-                        System.err.println("Error: " + refreshStatusCode);
-                        // Handle error response, log, or return an error message
-                    }
                 }catch (IOException | InterruptedException exception){
                     // Handle exceptions
                     exception.printStackTrace();
@@ -216,8 +218,62 @@ public class SpotifyAuthFlowService {
         });
     }
 
-    public String getAccessTokenFromAuth(){
+    public void backendThatNeedsChange() {
+
+        apiCall();
+
+
+    }
+
+
+    public String refreshTheToken(AccessTokenResponse accessTokenResponse){
+
+        refreshToken = accessTokenResponse.getRefreshToken();
+
+        HttpClient client = HttpClient.newBuilder().build();
+
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://accounts.spotify.com/api/token"))
+                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(originalInput.getBytes()))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("grant_type=refresh_token&refresh_token=" + refreshToken))
+                .build();
+
+        HttpResponse<String> refreshResponse = null;
+        try {
+            refreshResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        String refreshResponseBody = refreshResponse.body();
+        int refreshStatusCode = refreshResponse.statusCode();
+
+        if (refreshStatusCode == 200) {
+
+            // handle a successful refresh response here
+            refreshAccessTokenResponse = deserializeRefreshAccessTokenResponse(refreshResponseBody);
+            if(refreshAccessTokenResponse !=  null){
+                handleRefreshAccessTokenResponse(refreshAccessTokenResponse);
+            }else {
+                System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
+            }
+        } else {
+            // Handle error responses here
+            System.err.println("Error: " + refreshStatusCode);
+            // Handle error response, log, or return an error message
+        }
+        accessToken = refreshAccessTokenResponse.getRefreshedAccessToken();
         return accessToken;
     }
+
+    public String getClientID() {
+        return clientID;
+    }
+
+    public void setClientID(String clientID) {
+        this.clientID = clientID;
+    }
+
+
 }
 

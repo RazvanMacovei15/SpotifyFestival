@@ -26,9 +26,8 @@ public class HelperMethods {
         double sceneWidth = 360; // Set your desired width
         double sceneHeight = 720; // Set your desired height
         Scene scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
-
+        Stage stage = App.getPrimaryStage();
         // Get the Stage
-        Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }

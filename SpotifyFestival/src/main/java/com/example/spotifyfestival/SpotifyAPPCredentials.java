@@ -10,6 +10,8 @@ public final class SpotifyAPPCredentials {
     private final String userReadRecentlyPlayed;
     private final String stringToEncode;
 
+
+
     public SpotifyAPPCredentials() {
         this.clientId = "40f0faeac8b043ee99f7bd42e134f97c";
         this.clientSecret = "9713d372e12e4c699accf979bd406435";
@@ -18,6 +20,16 @@ public final class SpotifyAPPCredentials {
         this.userReadPlaybackPosition = "user-read-playback-position";
         this.userReadRecentlyPlayed = "user-read-recently-played";
         this.stringToEncode = clientId + ":" + clientSecret;
+    }
+
+    // Private inner static class to hold the instance of SpotifyAPPCredentials
+    private static class SingletonHelper {
+        private static final SpotifyAPPCredentials INSTANCE = new SpotifyAPPCredentials();
+    }
+
+    // Public method to access the single instance
+    public static SpotifyAPPCredentials getInstance() {
+        return SingletonHelper.INSTANCE;
     }
 
     public String getClientId() {

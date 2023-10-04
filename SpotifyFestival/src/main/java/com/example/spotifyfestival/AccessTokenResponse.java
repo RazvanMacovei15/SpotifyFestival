@@ -40,7 +40,6 @@ public class AccessTokenResponse {
     @JsonProperty("scope")
     private String scope;
 
-
     public String getAccessToken() {
         return accessToken;
     }
