@@ -3,45 +3,46 @@ package com.example.spotifyfestival.Controllers;
 import com.example.spotifyfestival.helperObsLis.AccessTokenObserver;
 import com.example.spotifyfestival.APPHelperMethods;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 
 import java.io.IOException;
 
 public class MainController {
+    @FXML
+    private Button button;
+    @FXML
+    private Label label;
 
     @FXML
     private void handleLoginButtonClick(ActionEvent event){
 
-        try {
-            APPHelperMethods.switchScene(event, "afterLoginScreen.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to go back", e);
-        }
+            SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
+            AccessTokenObserver accessTokenObserver = new AccessTokenObserver();
+            authFlowService.start();
+            authFlowService.addObserver(accessTokenObserver);
 
-        SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
-        AccessTokenObserver accessTokenObserver = new AccessTokenObserver();
-        authFlowService.addObserver(accessTokenObserver);
-        authFlowService.apiCall();
+            try {
+                authFlowService.join();
+
+                while(!authFlowService.bool){
+                    Thread.sleep(100);
+                }
+
+                try {
+                    APPHelperMethods.switchScene(event, "afterLoginScreen.fxml");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
     }
 
-    public void loginWithSpotify(ActionEvent event) throws Exception {
-
-        onAwaitingConfirmationScene(event);
-
-        SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
-        AccessTokenObserver accessTokenObserver = new AccessTokenObserver();
-        authFlowService.addObserver(accessTokenObserver);
-        authFlowService.apiCall();
-
-//        spotifyAuthFlowService.backendThatNeedsChange(new Runnable() {
-//            @Override
-//            public void run() {
-//               onGetBackButtonClicked(event);
-//            }
-//        }, () -> this.onBackToLoginClicked(event));
-
-    }
     public void onAwaitingConfirmationScene(ActionEvent event) throws Exception {
         APPHelperMethods.switchScene(event, "awaitConfirmation.fxml");
     }

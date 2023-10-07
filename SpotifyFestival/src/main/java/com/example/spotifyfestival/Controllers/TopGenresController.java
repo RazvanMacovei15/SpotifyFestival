@@ -59,22 +59,7 @@ public class TopGenresController {
 
         System.out.println(ol);
 
-
-
-
-//
-//        ObservableList<String> ol = FXCollections.observableArrayList();
-//
-//        ol = keysToObservableList(newMap);
-//
-//        for (String key : ol) {
-//            System.out.println(key);
-//        }
-
         listView.setItems(ol);
-
-
-
 
     }
 

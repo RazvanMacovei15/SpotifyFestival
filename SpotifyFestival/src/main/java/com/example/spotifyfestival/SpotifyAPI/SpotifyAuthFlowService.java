@@ -23,10 +23,16 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 
-public class SpotifyAuthFlowService extends  Thread{
+public class SpotifyAuthFlowService extends Thread implements Runnable{
     @Override
     public void run(){
+        startServerOnPort(8888);
+
         apiCall();
+
+        callback();
+
+
     }
 
     SpotifyAPPCredentials spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
@@ -55,11 +61,6 @@ public class SpotifyAuthFlowService extends  Thread{
 
             observer.onAuthFlowCompleted(accessToken);
 
-//            observer.changeFXScene();
-
-//            observer.getTopArtists(accessToken);
-
-//            observer.changeFXScene(e);
         }
     }
 
@@ -171,11 +172,7 @@ public class SpotifyAuthFlowService extends  Thread{
         }
     }
 
-    public CompletableFuture<Void> apiCall(){
-
-        CompletableFuture<Void> authenticationCompleted = new CompletableFuture<>();
-
-        startServerOnPort(8888);
+    public void apiCall() {
 
         STATE = getAlphaNumericString(16);
 
@@ -190,6 +187,16 @@ public class SpotifyAuthFlowService extends  Thread{
             return null;
 
         });
+
+        System.out.println("auth 2.0 complete");
+
+    }
+
+    public volatile boolean bool = false;
+
+    public void callback(){
+
+
 
         Spark.get("/callback", (request, response) -> {
 
@@ -237,14 +244,11 @@ public class SpotifyAuthFlowService extends  Thread{
                     // Return an error response
                 }
             }
-
+            bool = true;
             return HtmlCONSTANTS.HTML_PAGE;
         });
 
 
-
-        System.out.println("auth 2.0 complete");
-        return authenticationCompleted;
     }
 
     public String refreshTheToken(AccessTokenResponse accessTokenResponse){
