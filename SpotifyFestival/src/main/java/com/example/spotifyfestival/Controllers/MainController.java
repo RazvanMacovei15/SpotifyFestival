@@ -1,9 +1,8 @@
+
 package com.example.spotifyfestival.Controllers;
 
-import com.example.spotifyfestival.helperObsLis.AccessTokenObserver;
 import com.example.spotifyfestival.APPHelperMethods;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,28 +18,7 @@ public class MainController {
 
     @FXML
     private void handleLoginButtonClick(ActionEvent event){
-
-            SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
-            AccessTokenObserver accessTokenObserver = new AccessTokenObserver();
-            authFlowService.start();
-            authFlowService.addObserver(accessTokenObserver);
-
-            try {
-                authFlowService.join();
-
-                while(!authFlowService.bool){
-                    Thread.sleep(100);
-                }
-
-                try {
-                    APPHelperMethods.switchScene(event, "afterLoginScreen.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-            catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
+        SpotifyAuthFlowService.getInstance().openLogin();
     }
 
     public void onAwaitingConfirmationScene(ActionEvent event) throws Exception {
@@ -75,7 +53,7 @@ public class MainController {
     public void onGenerateSuggestionList(ActionEvent actionEvent) throws IOException {
         APPHelperMethods.switchScene(actionEvent, "placeholderForFuture.fxml");
     }
-     public void onLogOffButtonClicked(ActionEvent actionEvent) throws IOException {
+    public void onLogOffButtonClicked(ActionEvent actionEvent) throws IOException {
         APPHelperMethods.switchScene(actionEvent, "NotLoggedIn.fxml");
     }
     public void onBackToLoginClicked(ActionEvent actionEvent) {
@@ -88,3 +66,4 @@ public class MainController {
 
 
 }
+

@@ -1,16 +1,17 @@
+
 package com.example.spotifyfestival.SpotifyAPI;
 
 
+import com.example.spotifyfestival.APPHelperMethods;
 import com.example.spotifyfestival.JSONObjects.AccessTokenResponse;
 import com.example.spotifyfestival.JSONObjects.JsonUtils;
 import com.example.spotifyfestival.JSONObjects.RefreshAccessTokenResponse;
 import com.example.spotifyfestival.helperObsLis.AuthFlowObserver;
-
 import com.example.spotifyfestival.helperObsLis.HtmlCONSTANTS;
+import javafx.application.Platform;
 import spark.Spark;
 
 import java.io.IOException;
-
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -20,19 +21,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 
-public class SpotifyAuthFlowService extends Thread implements Runnable{
-    @Override
-    public void run(){
-        startServerOnPort(8888);
+public class SpotifyAuthFlowService {
 
-        apiCall();
-
-        callback();
-
-
+    public void run() {
+        Spark.port(8888);
+        defineCallbackPath();
     }
 
     SpotifyAPPCredentials spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
@@ -76,7 +71,7 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
         return instance;
     }
 
-    public String getAccessToken(){
+    public String getAccessToken() {
         return accessToken;
     }
 
@@ -88,12 +83,10 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
 
     String originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
 
-    public void startServerOnPort(int n) {
-        Spark.port(n);
-    }
     private AccessTokenResponse deserializeAccessTokenResponse(String json) {
         return JsonUtils.deserializeJson(json, AccessTokenResponse.class);
     }
+
     private void handleAccessTokenResponse(AccessTokenResponse accessTokenResponse) {
         //retrieve the data
         accessToken = accessTokenResponse.getAccessToken();
@@ -109,9 +102,11 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
         System.out.println("Refresh Token: " + refreshToken);
         System.out.println("Scope: " + scope);
     }
+
     private RefreshAccessTokenResponse deserializeRefreshAccessTokenResponse(String json) {
         return JsonUtils.deserializeJson(json, RefreshAccessTokenResponse.class);
     }
+
     private void handleRefreshAccessTokenResponse(RefreshAccessTokenResponse refreshAccessTokenResponse) {
         System.out.println();
         String refreshedToken = refreshAccessTokenResponse.getRefreshedAccessToken();
@@ -124,8 +119,8 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
         System.out.println("refreshedTokenExpiresIn: " + refreshedTokenExpiresIn);
         System.out.println("refreshedTokenScope: " + refreshedTokenScope);
     }
-    public String getAlphaNumericString(int n)
-    {
+
+    public String getAlphaNumericString(int n) {
         // choose a Character random from this String
         String AlphaNumericString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 + "0123456789"
@@ -136,7 +131,7 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
             // generate a random number between
             // 0 to AlphaNumericString variable length
             int index
-                    = (int)(AlphaNumericString.length()
+                    = (int) (AlphaNumericString.length()
                     * Math.random());
             // add Character one by one in end of sb
             sb.append(AlphaNumericString
@@ -144,7 +139,8 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
         }
         return sb.toString();
     }
-    public String generateLoginURL(String STATE)  {
+
+    public String generateLoginURL(String STATE) {
         String encodedScope = null;
         encodedScope = URLEncoder.encode(spotifyAPPCredentials.getUserTopReadScope(), StandardCharsets.UTF_8);
         String encodedState = null;
@@ -170,33 +166,25 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
                 }
             }
         }
+
+//        Runtime runtime = Runtime.getRuntime();
+//        String[] args = {"osascript", "-e", "open location \"" + url + "\""};
+//        try {
+//            Process process = runtime.exec(args);
+//        } catch (IOException e) {
+//            // do what you want with this
+//        }
     }
 
-    public void apiCall() {
-
+    public void openLogin() {
         STATE = getAlphaNumericString(16);
-
         String loginURL = generateLoginURL(STATE);
-
         openURL2(loginURL);
-
-        Spark.get("/login", (request, response) -> {
-
-            response.redirect(loginURL);
-
-            return null;
-
-        });
-
-        System.out.println("auth 2.0 complete");
-
     }
 
     public volatile boolean bool = false;
 
-    public void callback(){
-
-
+    public void defineCallbackPath() {
 
         Spark.get("/callback", (request, response) -> {
 
@@ -204,16 +192,18 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
             String state = request.queryParams("state");
 
             //if statement here to check if state is the same
-            if (STATE.equals(state)){
+            if (STATE.equals(state)) {
                 //request parameters
-                String requestBody = "grant_type=authorization_code&code=" + code + "&redirect_uri=" + spotifyAPPCredentials.getRedirectUri();
+                String requestBody = "grant_type=authorization_code&code=" + code + "&redirect_uri="
+                        + spotifyAPPCredentials.getRedirectUri();
 
-                try{
+                try {
                     HttpClient client = HttpClient.newBuilder().build();
 
                     HttpRequest tokenRequest = HttpRequest.newBuilder()
                             .uri(URI.create("https://accounts.spotify.com/api/token"))
-                            .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(originalInput.getBytes()))
+                            .header("Authorization",
+                                    "Basic " + Base64.getEncoder().encodeToString(originalInput.getBytes()))
                             .header("Content-Type", "application/x-www-form-urlencoded")
                             .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                             .build();
@@ -226,7 +216,7 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
                         accessTokenResponse = deserializeAccessTokenResponse(responseBody);
                         if (accessTokenResponse != null) {
 //                            handleAccessTokenResponse(accessTokenResponse);
-                            accessToken=accessTokenResponse.getAccessToken();
+                            accessToken = accessTokenResponse.getAccessToken();
                             notifyObservers(accessToken); // Notify observers when API call is completed
                         } else {
                             System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
@@ -238,12 +228,32 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
 
                     }
 
-                }catch (IOException | InterruptedException exception){
+                } catch (IOException | InterruptedException exception) {
                     // Handle exceptions
                     exception.printStackTrace();
                     // Return an error response
                 }
             }
+            // JAVA fx thread
+            // start() {
+            //    while (true) {
+            //    }
+            //
+            // }
+            // while (true) {
+            // from time to time check if i have something to do
+            // oooh i have a runLate stuff, call it
+            // callback();
+            // }
+
+            System.out.println("bool is true");
+            Platform.runLater(() -> {
+                try {
+                    APPHelperMethods.switchSceneTwo("afterLoginScreen.fxml");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             bool = true;
             return HtmlCONSTANTS.HTML_PAGE;
         });
@@ -251,7 +261,7 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
 
     }
 
-    public String refreshTheToken(AccessTokenResponse accessTokenResponse){
+    public String refreshTheToken(AccessTokenResponse accessTokenResponse) {
 
         refreshToken = accessTokenResponse.getRefreshToken();
 
@@ -277,9 +287,9 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
 
             // handle a successful refresh response here
             refreshAccessTokenResponse = deserializeRefreshAccessTokenResponse(refreshResponseBody);
-            if(refreshAccessTokenResponse !=  null){
+            if (refreshAccessTokenResponse != null) {
                 handleRefreshAccessTokenResponse(refreshAccessTokenResponse);
-            }else {
+            } else {
                 System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
             }
         } else {
@@ -301,4 +311,5 @@ public class SpotifyAuthFlowService extends Thread implements Runnable{
 
 
 }
+
 
