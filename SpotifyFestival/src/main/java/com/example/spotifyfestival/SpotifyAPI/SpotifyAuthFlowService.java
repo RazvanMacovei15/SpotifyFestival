@@ -87,37 +87,8 @@ public class SpotifyAuthFlowService {
         return JsonUtils.deserializeJson(json, AccessTokenResponse.class);
     }
 
-    private void handleAccessTokenResponse(AccessTokenResponse accessTokenResponse) {
-        //retrieve the data
-        accessToken = accessTokenResponse.getAccessToken();
-        String tokenType = accessTokenResponse.getTokenType();
-        int expiresIn = accessTokenResponse.getExpiresIn();
-        refreshToken = accessTokenResponse.getRefreshToken();
-        String scope = accessTokenResponse.getScope();
-        // Access the data
-        System.out.println();
-        System.out.println("Access Token: " + accessToken);
-        System.out.println("Token Type: " + tokenType);
-        System.out.println("Expires In: " + expiresIn);
-        System.out.println("Refresh Token: " + refreshToken);
-        System.out.println("Scope: " + scope);
-    }
-
     private RefreshAccessTokenResponse deserializeRefreshAccessTokenResponse(String json) {
         return JsonUtils.deserializeJson(json, RefreshAccessTokenResponse.class);
-    }
-
-    private void handleRefreshAccessTokenResponse(RefreshAccessTokenResponse refreshAccessTokenResponse) {
-        System.out.println();
-        String refreshedToken = refreshAccessTokenResponse.getRefreshedAccessToken();
-        String refreshedTokenType = refreshAccessTokenResponse.getRefreshedTokenType();
-        int refreshedTokenExpiresIn = refreshAccessTokenResponse.getRefreshedExpiresIn();
-        String refreshedTokenScope = refreshAccessTokenResponse.getRefreshedScope();
-        // Access the data
-        System.out.println("refreshedToken: " + refreshedToken);
-        System.out.println("refreshedTokenType: " + refreshedTokenType);
-        System.out.println("refreshedTokenExpiresIn: " + refreshedTokenExpiresIn);
-        System.out.println("refreshedTokenScope: " + refreshedTokenScope);
     }
 
     public String getAlphaNumericString(int n) {
@@ -215,7 +186,6 @@ public class SpotifyAuthFlowService {
                     if (statusCode == 200) {
                         accessTokenResponse = deserializeAccessTokenResponse(responseBody);
                         if (accessTokenResponse != null) {
-//                            handleAccessTokenResponse(accessTokenResponse);
                             accessToken = accessTokenResponse.getAccessToken();
                             notifyObservers(accessToken); // Notify observers when API call is completed
                         } else {
@@ -234,17 +204,6 @@ public class SpotifyAuthFlowService {
                     // Return an error response
                 }
             }
-            // JAVA fx thread
-            // start() {
-            //    while (true) {
-            //    }
-            //
-            // }
-            // while (true) {
-            // from time to time check if i have something to do
-            // oooh i have a runLate stuff, call it
-            // callback();
-            // }
 
             System.out.println("bool is true");
             Platform.runLater(() -> {
@@ -257,10 +216,7 @@ public class SpotifyAuthFlowService {
             bool = true;
             return HtmlCONSTANTS.HTML_PAGE;
         });
-
-
     }
-
     public String refreshTheToken(AccessTokenResponse accessTokenResponse) {
 
         refreshToken = accessTokenResponse.getRefreshToken();
@@ -288,7 +244,8 @@ public class SpotifyAuthFlowService {
             // handle a successful refresh response here
             refreshAccessTokenResponse = deserializeRefreshAccessTokenResponse(refreshResponseBody);
             if (refreshAccessTokenResponse != null) {
-                handleRefreshAccessTokenResponse(refreshAccessTokenResponse);
+                refreshToken = refreshAccessTokenResponse.getRefreshedAccessToken();
+                notifyObservers(refreshToken);
             } else {
                 System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
             }
@@ -300,16 +257,6 @@ public class SpotifyAuthFlowService {
         accessToken = refreshAccessTokenResponse.getRefreshedAccessToken();
         return accessToken;
     }
-
-    public String getClientID() {
-        return clientID;
-    }
-
-    public void setClientID(String clientID) {
-        this.clientID = clientID;
-    }
-
-
 }
 
 
