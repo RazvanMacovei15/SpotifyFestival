@@ -32,8 +32,6 @@ public class SpotifyAuthFlowService {
 
     SpotifyAPPCredentials spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
 
-    private String clientID;
-
 
     private String responseBody = null;
 
