@@ -4,14 +4,11 @@ import com.example.spotifyfestival.API_URLS.Artists_API_URLS;
 import com.example.spotifyfestival.APPHelperMethods;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
@@ -30,38 +27,38 @@ public class TopGenresController {
         }
     }
 
-    public void on4WeeksButtonClicked() throws JsonProcessingException {
-
-
-        HttpResponse response = getUserTopGenresOver4Weeks();
-        String s2 = null;
-        String jsonResponse = response.body().toString();
-        // Call the extractAttribute method to get the artist attributes
-        ObservableList<String> genreNamesFromArtists = printGenresFor4Weeks(jsonResponse);
-
-        LinkedHashMap<String,Integer> newMap = computeSortedBag(genreNamesFromArtists);
-
-        ObservableList<String> ol = FXCollections.observableArrayList();
-
-        for (Map.Entry<String, Integer> entry : newMap.entrySet()) {
-            String key = entry.getKey();
-            int value = entry.getValue();
-
-            StringBuilder sb = new StringBuilder();
-            sb.append(key);
-            sb.append(", ");
-            sb.append(value);
-            sb.append(";");
-            String concatenatedString = sb.toString();
-
-            ol.add(concatenatedString);
-        }
-
-        System.out.println(ol);
-
-        listView.setItems(ol);
-
-    }
+//    public void on4WeeksButtonClicked() throws JsonProcessingException {
+//
+//
+//        HttpResponse response = getUserTopGenresOver4Weeks();
+//        String s2 = null;
+//        String jsonResponse = response.body().toString();
+//        // Call the extractAttribute method to get the artist attributes
+//        ObservableList<String> genreNamesFromArtists = printGenresFor4Weeks(jsonResponse);
+//
+//        LinkedHashMap<String,Integer> newMap = computeSortedBag(genreNamesFromArtists);
+//
+//        ObservableList<String> ol = FXCollections.observableArrayList();
+//
+//        for (Map.Entry<String, Integer> entry : newMap.entrySet()) {
+//            String key = entry.getKey();
+//            int value = entry.getValue();
+//
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(key);
+//            sb.append(", ");
+//            sb.append(value);
+//            sb.append(";");
+//            String concatenatedString = sb.toString();
+//
+//            ol.add(concatenatedString);
+//        }
+//
+//        System.out.println(ol);
+//
+//        listView.setItems(ol);
+//
+//    }
 
     public static HttpResponse getUserTopGenresOver4Weeks() {
         try {
@@ -75,34 +72,34 @@ public class TopGenresController {
         }
     }
 
-    public ObservableList<String> printGenresFor4Weeks(String jsonResponse){
-        ObservableList<String> ol = FXCollections.observableArrayList();
-        String s = null;
-        SortedBag<String> sB = new SortedBag<>();
-
-        try {
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray allTheArtists = jsonObject.getJSONArray("items");
-
-            for(int i = 0; i < allTheArtists.length(); i++){
-
-                JSONObject objectTracks = allTheArtists.getJSONObject(i);
-                JSONArray artistGenres = objectTracks.getJSONArray("genres");
-
-                for(int j = 0; j < artistGenres.length(); j++){
-                    s = artistGenres.get(j).toString();
-                    sB.add(s);
-                    ol.add(s);
-                    }
-                }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        System.out.println(sB);
-//        System.out.println(ol);
-        return ol;
-    }
+//    public ObservableList<String> printGenresFor4Weeks(String jsonResponse){
+//        ObservableList<String> ol = FXCollections.observableArrayList();
+//        String s = null;
+//        SortedBag<String> sB = new SortedBag<>();
+//
+//        try {
+//            JSONObject jsonObject = new JSONObject(jsonResponse);
+//            JSONArray allTheArtists = jsonObject.getJSONArray("items");
+//
+//            for(int i = 0; i < allTheArtists.length(); i++){
+//
+//                JSONObject objectTracks = allTheArtists.getJSONObject(i);
+//                JSONArray artistGenres = objectTracks.getJSONArray("genres");
+//
+//                for(int j = 0; j < artistGenres.length(); j++){
+//                    s = artistGenres.get(j).toString();
+//                    sB.add(s);
+//                    ol.add(s);
+//                    }
+//                }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+////        System.out.println(sB);
+////        System.out.println(ol);
+//        return ol;
+//    }
 
     public LinkedHashMap<String, Integer> computeSortedBag(ObservableList<String> ol) {
         List<String> genres = List.of("pop", "singer-songwriter pop", "uk pop", "flick hop", "underground rap", "alternative metal", "neo mellow", "pop rock", "post-grunge", "alternative metal", "nu metal", "detroit hip hop", "hip hop", "rap", "moldovan pop", "romanian pop", "israeli pop", "romanian rap", "romanian rock", "danish metal", "danish rock", "melodic power metal", "alternative metal", "groove metal", "nu metal", "dutch metal", "gothic metal", "gothic symphonic metal", "symphonic metal", "alternative pop rock", "modern alternative rock", "modern rock", "hip hop", "pop rap", "rap", "piano rock", "pop");

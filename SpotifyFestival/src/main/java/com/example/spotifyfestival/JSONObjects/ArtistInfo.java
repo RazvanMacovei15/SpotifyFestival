@@ -6,10 +6,6 @@ public class ArtistInfo {
 
     private static ArtistInfo instance;
 
-//    private ArtistInfo(String name) {
-//        this.name = name;
-//    }
-
     public static ArtistInfo getInstance(){
         return instance;
     }

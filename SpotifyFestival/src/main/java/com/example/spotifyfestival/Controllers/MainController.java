@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import java.io.IOException;
 
 public class MainController {
+
+
     @FXML
     private Button button;
     @FXML
@@ -50,9 +52,7 @@ public class MainController {
         APPHelperMethods.switchScene(actionEvent, "getFestivalSuggestions.fxml");
     }
 
-    public void onGenerateSuggestionList(ActionEvent actionEvent) throws IOException {
-        APPHelperMethods.switchScene(actionEvent, "placeholderForFuture.fxml");
-    }
+
     public void onLogOffButtonClicked(ActionEvent actionEvent) throws IOException {
         APPHelperMethods.switchScene(actionEvent, "NotLoggedIn.fxml");
     }
@@ -63,6 +63,15 @@ public class MainController {
             throw new RuntimeException("Unable to move forward", e);
         }
     }
+
+    public void onSearchButtonClicked(ActionEvent event){
+        try {
+            APPHelperMethods.switchScene(event, "chooseTheSearchParameters.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to move forward", e);
+        }
+    }
+
 
 
 }

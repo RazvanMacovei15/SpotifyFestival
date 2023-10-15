@@ -11,7 +11,7 @@ import java.net.http.HttpResponse;
 
 public class SpotifyService {
 
-    public HttpResponse getHttpResponse(String accessToken, String apiUrl) {
+    public HttpResponse<String> getHttpResponse(String accessToken, String apiUrl) {
 
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -23,6 +23,7 @@ public class SpotifyService {
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            System.out.println(response.body());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

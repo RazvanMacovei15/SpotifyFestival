@@ -9,8 +9,18 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:controller="com.example.spotifyfestival.Controllers.MainController"
-          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20">
+<GridPane fx:controller="com.example.spotifyfestival.Controllers.ShowFestivalsController"
+          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20"
+          fx:id="mainGridPane">
+    <MenuBar GridPane.rowIndex="3">
+        <Menu text="File">
+            <items>
+                <MenuItem text="New..." />
+                <SeparatorMenuItem/>
+                <MenuItem text="Exit"/>
+            </items>
+        </Menu>
+    </MenuBar>
 
     <rowConstraints>
         <RowConstraints percentHeight="20"/>
@@ -45,6 +55,8 @@
                 text="Generate suggestions"
                 style="-fx-text-fill: black; -fx-font-size: 12px"
                 onAction="#onGenerateSuggestionList"/>
+
+        <Button text="move to search(provizoriu)" onAction="#showAPIParametersDialog"/>
 
 
     </VBox>

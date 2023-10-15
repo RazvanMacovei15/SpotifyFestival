@@ -18,7 +18,7 @@
 
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
         <image>
-<!--            <Image url="src/main/resources/SpotifyLogo.png"/>-->
+<!--            <Image url="@SpotifyLogo.png"/>-->
         </image>
     </ImageView>
 
@@ -28,7 +28,7 @@
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onTopListsButtonClicked"/>
         <Button GridPane.halignment="CENTER"
-                text="Get Festival Suggestions"
+                text="Get Events Suggestions"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onGetFestivalSuggestionButtonClicked"/>
     </VBox>
