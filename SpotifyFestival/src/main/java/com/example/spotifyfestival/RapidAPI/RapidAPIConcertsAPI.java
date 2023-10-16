@@ -304,5 +304,8 @@ public class RapidAPIConcertsAPI {
         rapidAPIConcertsAPI.getPublicIPAddress();
         System.out.println(rapidAPIConcertsAPI.handleIPAPIHttpResponse(rapidAPIConcertsAPI.getPublicIPAddress()).body());
         System.out.println(rapidAPIConcertsAPI.getAttribute(getInstance().handleIPAPIHttpResponse(rapidAPIConcertsAPI.getPublicIPAddress()), "city"));
+
+
+
     }
 }
