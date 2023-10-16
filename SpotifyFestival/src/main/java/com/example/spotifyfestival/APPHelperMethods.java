@@ -24,6 +24,21 @@ public class APPHelperMethods {
         stage.setScene(scene);
         stage.show();
     }
+    public static void switchSceneForCanvas(ActionEvent event, String path) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(APPHelperMethods.class.getResource(path));
+
+        Parent sceneRoot = loader.load();
+
+        double sceneWidth = 800; // Set your desired width
+        double sceneHeight = 800; // Set your desired height
+        Scene scene = new Scene(sceneRoot, sceneWidth,sceneHeight);
+        Stage stage = App.getPrimaryStage();
+        // Get the Stage
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public static void switchSceneTwo(String sceneFXML) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(APPHelperMethods.class.getResource(sceneFXML));

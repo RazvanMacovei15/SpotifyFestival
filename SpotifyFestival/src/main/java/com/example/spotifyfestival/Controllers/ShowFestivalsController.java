@@ -20,7 +20,7 @@ public class ShowFestivalsController {
     public GridPane mainGridPane;
 
     public void onGenerateSuggestionList(ActionEvent actionEvent) throws IOException {
-        APPHelperMethods.switchScene(actionEvent, "placeholderForFuture.fxml");
+        APPHelperMethods.switchSceneForCanvas(actionEvent, "ConcertCanvas.fxml");
     }
 
     public void onGetBackButtonClicked(ActionEvent event){
