@@ -9,11 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ConcertJSONUtils {
-
     private static final String jsonResponse = JSONConstant.getConstant();
-
     private static final ObservableList<String> locations = FXCollections.observableArrayList();
-
     public static ObservableList<String> extractAttribute(String jsonResponse, String attributeName) {
         // Create an empty ObservableList to store the attribute values
         ObservableList<String> attributeValues = FXCollections.observableArrayList();
