@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.graphForConcertsAndFestivals;
+package com.example.spotifyfestival.ConcertsAndFestivals;
 
 import java.util.LinkedList;
 import java.util.List;

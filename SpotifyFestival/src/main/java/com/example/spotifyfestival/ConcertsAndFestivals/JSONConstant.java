@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.graphForConcertsAndFestivals;
+package com.example.spotifyfestival.ConcertsAndFestivals;
 
 public class JSONConstant {
     public static String getConstant() {
