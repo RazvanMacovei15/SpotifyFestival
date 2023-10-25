@@ -1,16 +1,15 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Concert {
     private String description;
     private List<Artist> listOfArtists;
     private Venue venue;
-    private LocalDateTime startOfTheConcert;
+    private String startOfTheConcert;
     private String time;
 
-    public Concert(String description, List<Artist> listOfArtists, Venue venue, LocalDateTime startOfTheConcert, String time) {
+    public Concert(String description, List<Artist> listOfArtists, Venue venue, String startOfTheConcert, String time) {
         this.description = description;
         this.listOfArtists = listOfArtists;
         this.venue = venue;
@@ -47,11 +46,11 @@ public class Concert {
         this.venue = venue;
     }
 
-    public LocalDateTime getStartOfTheConcert() {
+    public String getStartOfTheConcert() {
         return startOfTheConcert;
     }
 
-    public void setStartOfTheConcert(LocalDateTime startOfTheConcert) {
+    public void setStartOfTheConcert(String startOfTheConcert) {
         this.startOfTheConcert = startOfTheConcert;
     }
 

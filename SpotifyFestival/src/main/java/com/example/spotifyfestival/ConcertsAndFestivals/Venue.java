@@ -1,11 +1,14 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
+import java.util.List;
+
 public class Venue {
     private String city;
     private String venueName;
     private String streetAddress;
     private String locationLatitude;
     private String locationLongitude;
+    private List<Concert> listOfAllConcertsAtThatVenue;
 
 
     public Venue(String city, String venueName, String streetAddress, String locationLatitude, String locationLongitude) {
@@ -54,5 +57,13 @@ public class Venue {
 
     public void setLocationLongitude(String locationLongitude) {
         this.locationLongitude = locationLongitude;
+    }
+
+    public List<Concert> getListOfAllConcertsAtThatVenue() {
+        return listOfAllConcertsAtThatVenue;
+    }
+
+    public void setListOfAllConcertsAtThatVenue(List<Concert> listOfAllConcertsAtThatVenue) {
+        this.listOfAllConcertsAtThatVenue = listOfAllConcertsAtThatVenue;
     }
 }
