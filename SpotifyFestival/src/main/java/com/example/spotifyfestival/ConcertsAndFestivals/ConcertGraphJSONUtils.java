@@ -14,75 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 public class ConcertGraphJSONUtils {
-    private static final String jsonResponse = JSONConstant.getConstant();
-    private static final ObservableList<String> locations = FXCollections.observableArrayList();
-
-    public static ObservableList<List<String>> extractPerformers(String jsonResponse, String attributeName) {
-        // Create an empty ObservableList to store the attribute values
-        ObservableList<List<String>> attributeValues = FXCollections.observableArrayList();
-
-        try {
-            // Parse the JSON response
-            JSONObject responseJson = new JSONObject(jsonResponse);
-            JSONArray itemsArray = responseJson.getJSONArray("data");
-
-
-            // Iterate through the items and extract the specified attribute
-            for (int i = 0; i < itemsArray.length(); i++) {
-                JSONObject itemObject = itemsArray.getJSONObject(i);
-
-                List<String> list = new ArrayList<>();
-
-                JSONArray performerObjects = itemObject.getJSONArray("performer");
-
-                for (int j = 0; j < performerObjects.length(); j++) {
-                    JSONObject performerObject = performerObjects.getJSONObject(j);
-                    String attributeValue = performerObject.getString(attributeName);
-                    list.add(attributeValue);
-                }
-                attributeValues.add(list);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return attributeValues;
-    }
-
-    public static ObservableList<String> extractAttribute(String jsonResponse, String attributeName) {
-        // Create an empty ObservableList to store the attribute values
-        ObservableList<String> attributeValues = FXCollections.observableArrayList();
-
-        try {
-            // Parse the JSON response
-            JSONObject responseJson = new JSONObject(jsonResponse);
-
-            JSONArray itemsArray = responseJson.getJSONArray("data");
-
-            // Iterate through the items and extract the specified attribute
-            for (int i = 0; i < itemsArray.length(); i++) {
-
-                JSONObject itemObject = itemsArray.getJSONObject(i);
-
-                JSONObject location = itemObject.getJSONObject("location");
-
-                if (!location.has("geo")) {
-                    String geoLatitude = "lat not known!";
-                    locations.add(geoLatitude);
-                } else {
-                    JSONObject locationGEO = location.getJSONObject("geo");
-
-                    double geoLatitude = locationGEO.getDouble("latitude");
-
-                    locations.add(String.valueOf(geoLatitude));
-                }
-                String attributeValue = itemObject.getString(attributeName);
-                attributeValues.add(attributeValue);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return attributeValues;
-    }
 
     public static String detectDateTimeFormat(String dateTimeStr) {
         String[] dateFormats = {
@@ -179,7 +110,7 @@ public class ConcertGraphJSONUtils {
 
                 String dateAndTime = jsonConcert.getString("startDate");
 
-                if(detectDateTimeFormat(dateAndTime).equals("yyyy-MM-dd'T'HH:mm:ssZ")){
+                if (detectDateTimeFormat(dateAndTime).equals("yyyy-MM-dd'T'HH:mm:ssZ")) {
 //
                     Date parsedDate = parseDateTime(dateAndTime);
 
@@ -198,7 +129,7 @@ public class ConcertGraphJSONUtils {
                     } else {
                         System.out.println("Failed to parse the date and time.");
                     }
-                }else{
+                } else {
 
                     time = "Exact time of event UNKNOWN!";
                     startDate = dateAndTime;
@@ -220,25 +151,19 @@ public class ConcertGraphJSONUtils {
         ConcertGraphJSONUtils concertGraphJSONUtils = new ConcertGraphJSONUtils();
         List<Venue> listOfALLVenues = new ArrayList<>();
         ObservableList<Concert> concerts = concertGraphJSONUtils.extractConcerts(JSONConstant.getConstant());
-        for(int i = 0; i <  concerts.size(); i++){
-
-
-            listOfALLVenues.add(concerts.get(i).getVenue());
-
-
+        for (int i = 0; i < concerts.size(); i++) {
             System.out.println();
-
-
+            listOfALLVenues.add(concerts.get(i).getVenue());
+            System.out.println(concerts.get(i).getVenue().getLocationLatitude());
 
             List<Artist> list = concerts.get(i).getListOfArtists();
-            for(Artist artist: list){
+            for (Artist artist : list) {
                 System.out.println(artist.getName());
             }
             System.out.println("@");
             System.out.println(concerts.get(i).getVenue().getVenueName());
         }
-
-        System.out.println("nr of venues: " + listOfALLVenues.get(0).getCity());
-
+        System.out.println();
+        System.out.println("nr of venues: " + listOfALLVenues.size());
     }
 }

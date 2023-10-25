@@ -17,7 +17,7 @@ public class Concert {
         this.time = time;
     }
 
-    public Concert(){
+    public Concert() {
     }
 
 
