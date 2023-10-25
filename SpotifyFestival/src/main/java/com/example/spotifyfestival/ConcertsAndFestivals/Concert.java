@@ -1,27 +1,33 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Concert {
     private String description;
-    private String city;
-    private String venue;
-    private double locationLatitude;
-    private double locationLongitude;
-    private Date startOfTheConcert;
-    private Date endOfTheConcert;
     private List<Artist> listOfArtists;
+    private Venue venue;
+    private LocalDateTime startOfTheConcert;
+    private String time;
 
-    public Concert(String description, String city, String venue, double locationLatitude, double locationLongitude, Date startOfTheConcert, Date endOfTheConcert, List<Artist> listOfArtists) {
+    public Concert(String description, List<Artist> listOfArtists, Venue venue, LocalDateTime startOfTheConcert, String time) {
         this.description = description;
-        this.city = city;
-        this.venue = venue;
-        this.locationLatitude = locationLatitude;
-        this.locationLongitude = locationLongitude;
-        this.startOfTheConcert = startOfTheConcert;
-        this.endOfTheConcert = endOfTheConcert;
         this.listOfArtists = listOfArtists;
+        this.venue = venue;
+        this.startOfTheConcert = startOfTheConcert;
+        this.time = time;
+    }
+
+    public Concert(){
+    }
+
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getDescription() {
@@ -32,55 +38,21 @@ public class Concert {
         this.description = description;
     }
 
-    public Concert(){
-    }
 
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getVenue() {
+    public Venue getVenue() {
         return venue;
     }
 
-    public void setVenue(String venue) {
+    public void setVenue(Venue venue) {
         this.venue = venue;
     }
 
-    public double getLocationLatitude() {
-        return locationLatitude;
-    }
-
-    public void setLocationLatitude(double locationLatitude) {
-        this.locationLatitude = locationLatitude;
-    }
-
-    public double getLocationLongitude() {
-        return locationLongitude;
-    }
-
-    public void setLocationLongitude(double locationLongitude) {
-        this.locationLongitude = locationLongitude;
-    }
-
-    public Date getStartOfTheConcert() {
+    public LocalDateTime getStartOfTheConcert() {
         return startOfTheConcert;
     }
 
-    public void setStartOfTheConcert(Date startOfTheConcert) {
+    public void setStartOfTheConcert(LocalDateTime startOfTheConcert) {
         this.startOfTheConcert = startOfTheConcert;
-    }
-
-    public Date getEndOfTheConcert() {
-        return endOfTheConcert;
-    }
-
-    public void setEndOfTheConcert(Date endOfTheConcert) {
-        this.endOfTheConcert = endOfTheConcert;
     }
 
     public List<Artist> getListOfArtists() {
