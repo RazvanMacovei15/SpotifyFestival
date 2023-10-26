@@ -2,14 +2,15 @@ package com.example.spotifyfestival.ConcertsAndFestivals;
 
 import java.util.List;
 
-public class Concert {
+public class Concert extends VenueConcertTreeNode {
     private String description;
     private List<Artist> listOfArtists;
     private Venue venue;
     private String startOfTheConcert;
     private String time;
 
-    public Concert(String description, List<Artist> listOfArtists, Venue venue, String startOfTheConcert, String time) {
+    public Concert(int id, String description, List<Artist> listOfArtists, Venue venue, String startOfTheConcert, String time) {
+        super(id);
         this.description = description;
         this.listOfArtists = listOfArtists;
         this.venue = venue;
@@ -17,7 +18,8 @@ public class Concert {
         this.time = time;
     }
 
-    public Concert() {
+    public Concert(int id) {
+        super(id);
     }
 
 
@@ -60,5 +62,17 @@ public class Concert {
 
     public void setListOfArtists(List<Artist> listOfArtists) {
         this.listOfArtists = listOfArtists;
+    }
+
+    @Override
+    public String toString() {
+        return "Concert{" +
+                "description='" + description + '\'' +
+                ", listOfArtists=" + listOfArtists +
+                ", venue=" + venue +
+                ", startOfTheConcert='" + startOfTheConcert + '\'' +
+                ", time='" + time + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

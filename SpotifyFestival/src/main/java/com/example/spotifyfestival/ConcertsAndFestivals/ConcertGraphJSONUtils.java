@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
+import com.example.spotifyfestival.Tree.Tree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
@@ -9,11 +10,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class ConcertGraphJSONUtils {
+
+    private final Map<Venue, List<Concert>> canvasRepo = new HashMap<>();
 
     public static String detectDateTimeFormat(String dateTimeStr) {
         String[] dateFormats = {
@@ -55,12 +56,21 @@ public class ConcertGraphJSONUtils {
 
         ObservableList<Concert> concertList = FXCollections.observableArrayList();
 
+        int concertId= 0;
+        int venueId= 0;
+
+
+        List<Venue> listOfVenues = new ArrayList<>();
+        Set<String> venueNamesSet = new HashSet<>();
 
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONArray data = jsonObject.getJSONArray("data");
 
             for (int i = 0; i < data.length(); i++) {
+
+                concertId = i;
+
                 JSONObject jsonConcert = data.getJSONObject(i);
                 List<Artist> artistList = new ArrayList<>();
 
@@ -75,35 +85,6 @@ public class ConcertGraphJSONUtils {
                     Artist artist = new Artist(artistName);
                     artistList.add(artist);
                 }
-                JSONObject location = jsonConcert.getJSONObject("location");
-
-                JSONObject address = location.getJSONObject("address");
-
-                String city = address.getString("addressLocality");
-
-                String streetAddress = null;
-
-                if (!address.has("streetAddress")) {
-                    streetAddress = "Exact street address unknown!";
-                } else {
-                    streetAddress = address.getString("streetAddress");
-                }
-
-                String venueName = location.getString("name");
-                String venueLatitude = null;
-                String venueLongitude = null;
-
-                if (!location.has("geo")) {
-                    venueLatitude = "Exact location unknown!";
-                    venueLongitude = "Exact location unknown!";
-                } else {
-                    JSONObject locationGEO = location.getJSONObject("geo");
-
-                    venueLatitude = String.valueOf(locationGEO.getDouble("latitude"));
-                    venueLongitude = String.valueOf(locationGEO.getDouble("longitude"));
-
-                }
-                Venue venue = new Venue(city, venueName, streetAddress, venueLatitude, venueLongitude);
 
                 String time = null;
                 String startDate = null;
@@ -123,23 +104,70 @@ public class ConcertGraphJSONUtils {
 
                         time = formatTime(parsedDate);
 
-                        System.out.println(startDate);
-
-                        System.out.println(time);
                     } else {
                         System.out.println("Failed to parse the date and time.");
                     }
                 } else {
-
                     time = "Exact time of event UNKNOWN!";
                     startDate = dateAndTime;
-
-                    System.out.println(startDate);
-                    System.out.println(time);
                 }
 
-                Concert concert = new Concert(concertDescription, artistList, venue, startDate, time);
-                concertList.add(concert);
+                JSONObject location = jsonConcert.getJSONObject("location");
+
+                JSONObject address = location.getJSONObject("address");
+
+                String city = address.getString("addressLocality");
+
+                String streetAddress = null;
+
+                if (!address.has("streetAddress")) {
+                    streetAddress = "Exact street address unknown!";
+                } else {
+                    streetAddress = address.getString("streetAddress");
+                }
+
+                venueId = i;
+
+                String venueName = location.getString("name");
+                String venueLatitude = null;
+                String venueLongitude = null;
+
+                if (!location.has("geo")) {
+                    venueLatitude = "Exact location unknown!";
+                    venueLongitude = "Exact location unknown!";
+                } else {
+                    JSONObject locationGEO = location.getJSONObject("geo");
+
+                    venueLatitude = String.valueOf(locationGEO.getDouble("latitude"));
+                    venueLongitude = String.valueOf(locationGEO.getDouble("longitude"));
+
+                }
+
+                Venue venue = null;
+                Venue existingVenue = null;
+
+                for (Venue venueToCheck : listOfVenues) {
+                    venueNamesSet.add(venueToCheck.getVenueName());
+                }
+
+                if (venueNamesSet.contains(venueName)) {
+                    for (Venue venueToCheck : listOfVenues) {
+                        if (venueToCheck.getVenueName().equals(venueName)) {
+                            // You found a venue with the matching name
+                            existingVenue = venueToCheck;
+                            Concert concert = new Concert(concertId, concertDescription, artistList, existingVenue, startDate, time);
+                            concertList.add(concert);
+                            // You can now work with the existingVenue as needed
+                            break;
+                        }
+                    }
+                } else {
+                    // Create a new Venue and add it to the list
+                    venue = new Venue(venueId, city, venueName, streetAddress, venueLatitude, venueLongitude);
+                    listOfVenues.add(venue);
+                    Concert concert = new Concert(concertId, concertDescription, artistList, venue, startDate, time);
+                    concertList.add(concert);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -147,23 +175,73 @@ public class ConcertGraphJSONUtils {
         return concertList;
     }
 
-    public static void main(String[] args) {
-        ConcertGraphJSONUtils concertGraphJSONUtils = new ConcertGraphJSONUtils();
-        List<Venue> listOfALLVenues = new ArrayList<>();
-        ObservableList<Concert> concerts = concertGraphJSONUtils.extractConcerts(JSONConstant.getConstant());
-        for (int i = 0; i < concerts.size(); i++) {
-            System.out.println();
-            listOfALLVenues.add(concerts.get(i).getVenue());
-            System.out.println(concerts.get(i).getVenue().getLocationLatitude());
+    private Map<Venue, List<Concert>> createCanvasRepo(String jsonResponse){
+        ObservableList<Concert> allConcerts = FXCollections.observableArrayList();
+        allConcerts = extractConcerts(jsonResponse);
 
-            List<Artist> list = concerts.get(i).getListOfArtists();
-            for (Artist artist : list) {
-                System.out.println(artist.getName());
-            }
-            System.out.println("@");
-            System.out.println(concerts.get(i).getVenue().getVenueName());
+        Map<Venue, List<Concert>> mapToReturn = new HashMap<>();
+
+        for(Concert concert : allConcerts){
+            String venueName = concert.getVenue().getVenueName();
+
         }
-        System.out.println();
-        System.out.println("nr of venues: " + listOfALLVenues.size());
+
+        return null;
+    }
+
+    private void createListOfConcertsForEveryVenue(Venue venue){
+        ObservableList<Concert> allConcerts = FXCollections.observableArrayList();
+        allConcerts = extractConcerts(JSONConstant.getConstant());
+        List<Concert> venueConcerts = new ArrayList<>();
+
+        for(Concert concert : allConcerts){
+            if(venue.getVenueName().equals(concert.getVenue().getVenueName())){
+                venueConcerts.add(concert);
+            }
+        }
+        venue.setListOfAllConcertsAtThatVenue(venueConcerts);
+    }
+
+    private List<Venue> createListOfALlVenues(ObservableList<Concert> list){
+        List<Venue> listOfVenues = new ArrayList<>();
+        int venueId = 0;
+        String city = null;
+        String streetAddress = null;
+        String venueLatitude = null;
+        String venueLongitude = null;
+        for(int i = 0; i< list.size(); i++){
+            venueId = i;
+            city = list.get(i).getVenue().getCity();
+            String venueName = list.get(i).getVenue().getVenueName();
+            streetAddress = list.get(i).getVenue().getStreetAddress();
+            venueLatitude = list.get(i).getVenue().getLocationLatitude();
+            venueLongitude = list.get(i).getVenue().getLocationLongitude();
+
+            Set<String> venueNamesSet = new HashSet<>();
+
+            Venue venue = null;
+            Venue existingVenue = null;
+
+            for (Venue venueToCheck : listOfVenues) {
+                venueNamesSet.add(venueToCheck.getVenueName());
+            }
+
+            if (!venueNamesSet.contains(venueName)) {
+                venue = new Venue(venueId, city, venueName, streetAddress, venueLatitude, venueLongitude);
+                listOfVenues.add(venue);
+            }
+        }
+        return listOfVenues;
+    }
+
+    public Tree<VenueConcertTreeNode> createCanvasTree(List<VenueConcertTreeNode> venues, List<VenueConcertTreeNode> concerts, VenueConcertTreeNode userLocation){
+        Tree<VenueConcertTreeNode> canvasTree = new Tree<>(userLocation);
+
+
+        return null;
+    }
+
+    public static void main(String[] args) {
+
     }
 }
