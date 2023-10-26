@@ -1,6 +1,7 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
 import com.example.spotifyfestival.Tree.Tree;
+import com.example.spotifyfestival.Tree.TreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
@@ -189,21 +190,22 @@ public class ConcertGraphJSONUtils {
         return null;
     }
 
-    private void createListOfConcertsForEveryVenue(Venue venue){
+    private List<Concert> createListOfConcertsForEveryVenue(Concert venue){
         ObservableList<Concert> allConcerts = FXCollections.observableArrayList();
         allConcerts = extractConcerts(JSONConstant.getConstant());
         List<Concert> venueConcerts = new ArrayList<>();
 
         for(Concert concert : allConcerts){
-            if(venue.getVenueName().equals(concert.getVenue().getVenueName())){
+            if(venue.getVenue().getVenueName().equals(concert.getVenue().getVenueName())){
                 venueConcerts.add(concert);
             }
         }
-        venue.setListOfAllConcertsAtThatVenue(venueConcerts);
+        venue.getVenue().setListOfAllConcertsAtThatVenue(venueConcerts);
+        return venueConcerts;
     }
 
-    private List<Venue> createListOfALlVenues(ObservableList<Concert> list){
-        List<Venue> listOfVenues = new ArrayList<>();
+    private ObservableList<Concert> createListOfALlVenues(ObservableList<Concert> list){
+        ObservableList<Concert> listOfVenues =FXCollections.observableArrayList();
         int venueId = 0;
         String city = null;
         String streetAddress = null;
@@ -222,26 +224,70 @@ public class ConcertGraphJSONUtils {
             Venue venue = null;
             Venue existingVenue = null;
 
-            for (Venue venueToCheck : listOfVenues) {
-                venueNamesSet.add(venueToCheck.getVenueName());
+            for (Concert venueToCheck : listOfVenues) {
+                venueNamesSet.add(venueToCheck.getVenue().getVenueName());
             }
 
             if (!venueNamesSet.contains(venueName)) {
                 venue = new Venue(venueId, city, venueName, streetAddress, venueLatitude, venueLongitude);
-                listOfVenues.add(venue);
+                listOfVenues.add(new Concert(venueId, venue));
             }
         }
         return listOfVenues;
     }
 
-    public Tree<VenueConcertTreeNode> createCanvasTree(List<VenueConcertTreeNode> venues, List<VenueConcertTreeNode> concerts, VenueConcertTreeNode userLocation){
-        Tree<VenueConcertTreeNode> canvasTree = new Tree<>(userLocation);
+    public Tree<Concert> createCanvasTree(ObservableList<Concert> venues, Concert userLocation){
+        Tree<Concert> canvasTree = new Tree<>(userLocation);
 
+        for(int i = 0; i < venues.size(); i++)
+        {
+            TreeNode<Concert> rootChild = new TreeNode<>(venues.get(i));
 
-        return null;
+            canvasTree.getRoot().addChild(rootChild);
+
+            List<Concert> concertsPerVenue = createListOfConcertsForEveryVenue(rootChild.getData());
+
+            for(int j = 0; j < concertsPerVenue.size(); j++)
+            {
+                TreeNode<Concert> venueChild = new TreeNode<>(rootChild.getData());
+
+                rootChild.addChild(venueChild);
+            }
+        }
+        return canvasTree;
+    }
+
+    public void printTree(Tree<Concert> tree) {
+        printTreeRecursive(tree.getRoot(), 0);
+    }
+
+    private void printTreeRecursive(TreeNode<Concert> node, int depth) {
+        if (node == null) {
+            return;
+        }
+
+        // Print the node's data with an indent based on the depth
+        StringBuilder indent = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            indent.append("  "); // Two spaces per depth level
+        }
+
+        Concert concert = node.getData(); // Get the Concert object
+        System.out.println(indent.toString() + concert.toString());
+
+        // Recursively print the children
+        for (TreeNode<Concert> child : node.getChildren()) {
+            printTreeRecursive(child, depth + 1);
+        }
     }
 
     public static void main(String[] args) {
+        ConcertGraphJSONUtils concertGraphJSONUtils = new ConcertGraphJSONUtils();
+        ObservableList<Concert> concerts = concertGraphJSONUtils.extractConcerts(JSONConstant.getConstant());
 
+        ObservableList<Concert> venues = concertGraphJSONUtils.createListOfALlVenues(concerts);
+        Tree<Concert> tree = concertGraphJSONUtils.createCanvasTree(venues, new Concert(100, new Venue(100, "ClujNapoca", "a", "a", "a", "a")));
+        concertGraphJSONUtils.printTree(tree);
+        System.out.println(tree.getRoot().getChildren().get(1).getData().toString());
     }
 }

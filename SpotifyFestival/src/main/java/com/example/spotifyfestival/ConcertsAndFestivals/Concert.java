@@ -18,6 +18,11 @@ public class Concert extends VenueConcertTreeNode {
         this.time = time;
     }
 
+    public Concert(int id, Venue venue){
+        super(id);
+        this.venue = venue;
+    }
+
     public Concert(int id) {
         super(id);
     }
@@ -67,12 +72,7 @@ public class Concert extends VenueConcertTreeNode {
     @Override
     public String toString() {
         return "Concert{" +
-                "description='" + description + '\'' +
-                ", listOfArtists=" + listOfArtists +
-                ", venue=" + venue +
-                ", startOfTheConcert='" + startOfTheConcert + '\'' +
-                ", time='" + time + '\'' +
-                ", id=" + id +
+                "id=" + id + "," + getVenue().getVenueName() +
                 '}';
     }
 }

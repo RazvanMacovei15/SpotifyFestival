@@ -3,7 +3,7 @@ package com.example.spotifyfestival.Tree;
 import java.util.ArrayList;
 import java.util.List;
 
-class TreeNode<T> {
+public class TreeNode<T> {
     private T data;
     private List<TreeNode<T>> children;
 
