@@ -3,7 +3,7 @@ package com.example.spotifyfestival.Tree;
 import com.example.spotifyfestival.ConcertsAndFestivals.Identifiable;
 import javafx.collections.ObservableList;
 
-public class MyTree<T extends Identifiable> extends Tree {
+public class MyTree<T extends Identifiable> extends Tree<T> {
     public MyTree(T data) {
         super(data);
     }

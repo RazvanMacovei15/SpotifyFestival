@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.helperObsLis;
+package com.example.spotifyfestival.UnusedStuffForNow.helperObsLis;
 
 public interface AuthFlowObserver {
     void onAuthFlowCompleted(String accessToken);

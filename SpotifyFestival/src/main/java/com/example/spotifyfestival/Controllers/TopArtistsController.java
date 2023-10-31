@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.Controllers;
 
 import com.example.spotifyfestival.API_URLS.Artists_API_URLS;
-import com.example.spotifyfestival.APPHelperMethods;
+import com.example.spotifyfestival.AppSwitchScenesMethods;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -39,7 +39,7 @@ public class TopArtistsController {
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            APPHelperMethods.switchScene(event, "afterLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "afterLoginScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }
@@ -165,7 +165,7 @@ public class TopArtistsController {
 
     public void getBackToTopLists(ActionEvent event){
         try {
-            APPHelperMethods.switchScene(event, "topLists.fxml");
+            AppSwitchScenesMethods.switchScene(event, "topLists.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }

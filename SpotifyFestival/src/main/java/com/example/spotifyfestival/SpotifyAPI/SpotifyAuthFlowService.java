@@ -2,13 +2,13 @@
 package com.example.spotifyfestival.SpotifyAPI;
 
 
-import com.example.spotifyfestival.APPHelperMethods;
+import com.example.spotifyfestival.AppSwitchScenesMethods;
 import com.example.spotifyfestival.JSONObjects.AccessTokenResponse;
 import com.example.spotifyfestival.JSONObjects.JsonUtils;
 import com.example.spotifyfestival.JSONObjects.RefreshAccessTokenResponse;
-import com.example.spotifyfestival.helperObsLis.AuthFlowObserver;
-import com.example.spotifyfestival.helperObsLis.HtmlCONSTANTS;
+import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AuthFlowObserver;
 import javafx.application.Platform;
+import org.json.JSONObject;
 import spark.Spark;
 
 import java.io.IOException;
@@ -180,6 +180,8 @@ public class SpotifyAuthFlowService {
                     HttpResponse<String> httpResponse = client.send(tokenRequest, HttpResponse.BodyHandlers.ofString());
                     int statusCode = httpResponse.statusCode();
                     responseBody = httpResponse.body();
+                    System.out.println(responseBody);
+                    System.out.println("The access token is this: "+getAccessToken(responseBody));
 
                     if (statusCode == 200) {
                         accessTokenResponse = deserializeAccessTokenResponse(responseBody);
@@ -206,7 +208,7 @@ public class SpotifyAuthFlowService {
             System.out.println("bool is true");
             Platform.runLater(() -> {
                 try {
-                    APPHelperMethods.switchSceneTwo("afterLoginScreen.fxml");
+                    AppSwitchScenesMethods.switchSceneTwo("afterLoginScreen.fxml");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -255,6 +257,14 @@ public class SpotifyAuthFlowService {
         accessToken = refreshAccessTokenResponse.getRefreshedAccessToken();
         return accessToken;
     }
+
+    public String getAccessToken(String jsonResponse)
+    {
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        String accessToken = jsonObject.getString("access_token");
+        return accessToken;
+    }
+
 }
 
 

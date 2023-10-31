@@ -1,7 +1,7 @@
-package com.example.spotifyfestival.helperObsLis;
+package com.example.spotifyfestival.UnusedStuffForNow.helperObsLis;
 
 
-import com.example.spotifyfestival.APPHelperMethods;
+import com.example.spotifyfestival.AppSwitchScenesMethods;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
@@ -10,7 +10,7 @@ public class AccessTokenObserver implements AuthFlowObserver {
 
     public void onBackToLoginClicked(ActionEvent actionEvent) {
         try {
-            APPHelperMethods.switchScene(actionEvent, "mainScreen.fxml");
+            AppSwitchScenesMethods.switchScene(actionEvent, "mainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }

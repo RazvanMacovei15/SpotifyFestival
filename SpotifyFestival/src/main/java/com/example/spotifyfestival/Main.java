@@ -10,7 +10,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         Entity userLocation = new Entity();
-        ConcertGraphJSONUtils utils = new ConcertGraphJSONUtils(userLocation);
+        ConcertJSONUtils utils = new ConcertJSONUtils(userLocation);
         ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getConstant());
         List<Venue> listOfAllVenues = utils.createListOfALlVenues(concerts);
         ObservableList<Entity> entityConcerts = FXCollections.observableArrayList();

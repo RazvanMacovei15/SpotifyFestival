@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.Controllers;
 
-import com.example.spotifyfestival.APPHelperMethods;
+import com.example.spotifyfestival.AppSwitchScenesMethods;
 import com.example.spotifyfestival.App;
 import com.example.spotifyfestival.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.RapidAPI.RapidAPIDialogController;
@@ -20,12 +20,12 @@ public class ShowFestivalsController {
     public GridPane mainGridPane;
 
     public void onGenerateSuggestionList(ActionEvent actionEvent) throws IOException {
-        APPHelperMethods.switchSceneForCanvas(actionEvent, "ConcertCanvas.fxml");
+        AppSwitchScenesMethods.switchSceneForCanvas(actionEvent, "ConcertCanvas.fxml");
     }
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            APPHelperMethods.switchScene(event, "afterLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "afterLoginScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

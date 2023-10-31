@@ -190,7 +190,7 @@ public class RapidAPIConcertsAPI {
         countNumberAttempts = 0;
         lastUpdatedDate = date;
     }
-    public void httpRequest(){
+    public String httpRequest(){
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URIBuilder()))
                 .header("X-RapidAPI-Key", getXRapidAPIKey())
@@ -204,6 +204,7 @@ public class RapidAPIConcertsAPI {
             throw new RuntimeException(e);
         }
         System.out.println(response.body());
+        return response.body();
     }
     private ObservableList<RapidAPIParameters> list = FXCollections.observableArrayList();
     public void addParameters(RapidAPIParameters rapidAPIParameters) {

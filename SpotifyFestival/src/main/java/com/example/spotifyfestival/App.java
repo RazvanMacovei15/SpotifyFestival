@@ -2,7 +2,7 @@
 package com.example.spotifyfestival;
 
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
-import com.example.spotifyfestival.helperObsLis.AccessTokenObserver;
+import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AccessTokenObserver;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

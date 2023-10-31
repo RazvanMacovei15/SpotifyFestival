@@ -3,6 +3,9 @@ package com.example.spotifyfestival.Controllers;
 import com.example.spotifyfestival.ConcertsAndFestivals.*;
 import com.example.spotifyfestival.Tree.Tree;
 import com.example.spotifyfestival.Tree.TreeNode;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 
 import java.util.List;
 
@@ -28,13 +32,23 @@ public class ConcertCanvasController {
     public Button drawTree;
 
     public void initialize() {
-
     }
-
     public void drawCanvas() {
+
+//        RapidAPIConcertsAPI rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
+//        LocalDate future = LocalDate.now().plusDays(20);
+//        RapidAPIParameters parameters = new RapidAPIParameters(LocalDate.now(),future,"Cluj-Napoca");
+//        rapidAPIConcertsAPI.addParameters(parameters);
+//        rapidAPIConcertsAPI.getConcertsInYourArea();
+//        String json = rapidAPIConcertsAPI.httpRequest();
+//        Entity userLoc = new Entity();
+//        ConcertJSONUtils concertJSONUtils = new ConcertJSONUtils(userLoc);
+//        ObservableList<Concert> concertsE = concertJSONUtils.extractConcerts(json);
+//        System.out.println(concertsE.size());
+
         Entity userLocation = new Entity();
         userLocation.setId("10");
-        ConcertGraphJSONUtils utils = new ConcertGraphJSONUtils(userLocation);
+        ConcertJSONUtils utils = new ConcertJSONUtils(userLocation);
         ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getConstant());
         List<Venue> listOfAllVenues = utils.createListOfALlVenues(concerts);
         ObservableList<Entity> entityConcerts = FXCollections.observableArrayList();
@@ -49,109 +63,17 @@ public class ConcertCanvasController {
         utils.printTree(tree);
         drawTreeOnCanvas(tree);
     }
-
     public void drawTreeOnCanvas(Tree<Entity> tree) {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         // Clear the canvas
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
         // Iterate through the tree and draw nodes and edges
-        newDrawTreeNodes(tree.getRoot(), gc);
+        drawTreeNodes(tree.getRoot(), gc);
     }
-
-    private void drawTreeNodes(TreeNode<Entity> root, GraphicsContext gc) {
-
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        canvas.setStyle("-fx-border-color: black; -fx-border-width: 2px;");
-        double canvasWidth = 600;
-        double canvasHeight = 600;
-        double radius2 = 20;
-        canvas.setHeight(canvasHeight);
-        canvas.setWidth(canvasWidth);
-
-        // Calculate the coordinates for the center of the canvas
-        double x = canvas.getWidth() / 2;
-        double y = canvas.getHeight() / 2;
-
-        Circle newCircle = new Circle(x,y,radius2, Color.GREEN);
-
-        newCircle.setOnMouseClicked(event -> {
-            System.out.println("it works");
-        });
-
-        canvasBorderPane.getChildren().add(newCircle);
-
-        // Create a blue circle
-        double radius = 20;
-        Circle userLocationCircle = new Circle();
-        userLocationCircle.setCenterX(x);
-        userLocationCircle.setCenterY(y);
-        userLocationCircle.setRadius(radius);
-        userLocationCircle.setFill(Color.BLUE);
-
-        // Clear the canvas
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-
-        // Add the userLocationCircle to the mainGridPane
-        canvasBorderPane.getChildren().add(userLocationCircle);
-
-
-        gc.setStroke(Color.BLACK);
-        gc.setLineWidth(2);
-
-        double radiusFromCenter1 = 100;
-        double radiusFromCenter2 = 200;
-        gc.strokeOval(x - radiusFromCenter1, y - radiusFromCenter1, 2 * radiusFromCenter1, 2 * radiusFromCenter1);
-
-        // Draw edges if necessary
-        for (TreeNode<Entity> rootChild : root.getChildren()) {
-            List<TreeNode<Entity>> venueChildren = rootChild.getChildren();
-
-            gc.setStroke(Color.BLACK);  // Set the line color
-            gc.setLineWidth(2.0);       // Set the line width
-
-            double angleStep = 360.0/venueChildren.size();
-            // Add your code to draw edges here if needed
-            for(int i = 0; i < venueChildren.size(); i++){
-
-                double angle = i * angleStep;
-                double x2 = x + radiusFromCenter1 * Math.cos(Math.toRadians(angle));
-                double y2 = y + radiusFromCenter1 * Math.sin(Math.toRadians(angle));
-                int circleRadius  = 20;
-                //select venue
-                TreeNode<Entity> venueNode = venueChildren.get(i);
-                // Draw a line between two points
-                gc.strokeLine(x, y, x2, y2);
-
-                gc.setFill(Color.GREEN);
-                gc.fillOval(x2 - circleRadius, y2 - circleRadius, circleRadius * 2, circleRadius * 2);
-
-                //get venue children
-                List<TreeNode<Entity>> list = venueNode.getChildren();
-//                parse through children and get each concert one at a time
-                for(int j = 0; j< list.size(); j++){
-                    double angle2 = i * angleStep;
-                    double x3 = x + radiusFromCenter2 * Math.cos(Math.toRadians(angle2));
-                    double y3 = y + radiusFromCenter2 * Math.sin(Math.toRadians(angle2));
-                    int circleRadius2  = 20;
-
-                    TreeNode<Entity> concertEntity = list.get(j);
-
-                    Entity concert = concertEntity.getData();
-
-                    // Draw a line between two points
-                    gc.strokeLine(x2, y2, x3, y3);
-
-                    gc.setFill(Color.BLACK);
-                    gc.fillOval(x3 - circleRadius2, y3 - circleRadius2, circleRadius2 * 2, circleRadius2 * 2);
-
-                }
-            }
-        }
-    }
-
-    private void newDrawTreeNodes(TreeNode<Entity> root, GraphicsContext gc)
+    private void drawTreeNodes(TreeNode<Entity> root, GraphicsContext gc)
     {
+        long secondsToSleep = 1;
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         double canvasWidth = 600;
         double canvasHeight = 600;
@@ -182,41 +104,54 @@ public class ConcertCanvasController {
 
         canvasBorderPane.getChildren().add(userLocationCircle);
 
-        //create the circle where the venues will sit on
-        gc.setStroke(Color.GREY);
-        gc.setLineWidth(1);
-        double venuesRadiusX = 100;
-        double venuesRadiusY = 100;
-        gc.strokeOval(x, y, venuesRadiusX, venuesRadiusY);
-
         List<TreeNode<Entity>> venuesListE = root.getChildren();
         int numberOfCircles = venuesListE.size();
+
+
+
         for(int i = 0; i < numberOfCircles; i++)
         {
-            //create the circle where the concerts will sit on
-
             //create the circle representing the venue and add data to it
             Circle venueDataCircle = drawCircleAtPoint(i, numberOfCircles, x, y, radiusFromRoot, venueLocationRadius);
             venueDataCircle.setFill(Color.GREEN);
-            canvasBorderPane.getChildren().add(venueDataCircle);
+
+            //create line between venue and root
+            drawEdgeBetweenTwoPoints(x, y, venueDataCircle.getCenterX(), venueDataCircle.getCenterY(), gc);
 
             TreeNode<Entity> venueNode = venuesListE.get(i);
             Entity venueE = venueNode.getData();
             if(venueE instanceof Venue venue){
                 venueDataCircle.setUserData(venue);
             }
+
+            venueDataCircle.setOnMouseClicked(event -> {
+                Venue venue = (Venue) venueDataCircle.getUserData();
+                System.out.println(venue.getVenueName());
+            });
+
             List<TreeNode<Entity>> concertsAtVenueE = venueNode.getChildren();
 
             int noOfConcertsAtVenue = concertsAtVenueE.size();
+
             //concert circle attributes
             int noOfConcertCircles = noOfConcertsAtVenue;
             double concertX = venueDataCircle.getCenterX();
             double concertY = venueDataCircle.getCenterY();
+            // Create a timeline with a 1-second delay for each circle
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(2), event -> {
+                        canvasBorderPane.getChildren().add(venueDataCircle);
+                    })
+            );
+            timeline.play();
+
             for(int j = 0; j < noOfConcertsAtVenue; j++)
             {
                 Circle concertDataCircle = drawCircleAtPoint(j, noOfConcertCircles, concertX, concertY, radiusFromVenue, concertLocationRadius);
                 concertDataCircle.setFill(Color.RED);
-                canvasBorderPane.getChildren().add(concertDataCircle);
+
+                //create line between venue and root
+                drawEdgeBetweenTwoPoints(venueDataCircle.getCenterX(), venueDataCircle.getCenterY(), concertDataCircle.getCenterX(), concertDataCircle.getCenterY(),gc);
 
                 TreeNode<Entity> concertNode = concertsAtVenueE.get(j);
                 Entity concertE = concertNode.getData();
@@ -224,6 +159,20 @@ public class ConcertCanvasController {
                 {
                     concertDataCircle.setUserData(concert);
                 }
+
+                concertDataCircle.setOnMouseClicked(event -> {
+                    Concert concert = (Concert) concertDataCircle.getUserData();
+                    System.out.println(concert.getDescription());
+                });
+
+                // Create a timeline with a 1-second delay for each concert circle
+                Timeline concertTimeline = new Timeline(
+                        new KeyFrame(Duration.seconds(5), event -> {
+                            canvasBorderPane.getChildren().add(concertDataCircle);
+                        })
+                );
+                concertTimeline.play();
+
             }
         }
     }
@@ -238,12 +187,21 @@ public class ConcertCanvasController {
 
         return circleToAdd;
     }
-
     public void drawEdgeBetweenTwoPoints(double Ax, double Ay, double Bx, double By, GraphicsContext gc)
     {
         gc.setStroke(Color.GREY);
         gc.setLineWidth(1);
 
         gc.strokeLine(Ax, Ay, Bx, By);
+    }
+
+    public void waitOneSecond(){
+        // Create a pause transition for 1 second (1000 milliseconds)
+        PauseTransition pause = new PauseTransition(Duration.millis(1000));
+        pause.setOnFinished(event -> {
+            System.out.println("1 second Paused");
+        });
+
+        pause.play();
     }
 }

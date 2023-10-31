@@ -1,5 +1,7 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
+import com.example.spotifyfestival.RapidAPI.RapidAPIConcertsAPI;
+import com.example.spotifyfestival.RapidAPI.RapidAPIParameters;
 import com.example.spotifyfestival.Tree.Tree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -12,9 +14,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class ConcertGraphJSONUtils extends Tree<Entity> {
+public class ConcertJSONUtils extends Tree<Entity> {
 
-    public ConcertGraphJSONUtils(Entity data) {
+    public ConcertJSONUtils(Entity data) {
         super(data);
     }
 
@@ -66,10 +68,6 @@ public class ConcertGraphJSONUtils extends Tree<Entity> {
 
         ObservableList<Concert> concertList = FXCollections.observableArrayList();
 
-        int concertId= 0;
-        int venueId= 0;
-
-
         List<Venue> listOfVenues = new ArrayList<>();
         Set<String> venueNamesSet = new HashSet<>();
 
@@ -78,8 +76,6 @@ public class ConcertGraphJSONUtils extends Tree<Entity> {
             JSONArray data = jsonObject.getJSONArray("data");
 
             for (int i = 0; i < data.length(); i++) {
-
-                concertId = i;
 
                 JSONObject jsonConcert = data.getJSONObject(i);
                 List<Artist> artistList = new ArrayList<>();
@@ -133,10 +129,12 @@ public class ConcertGraphJSONUtils extends Tree<Entity> {
                 if (!address.has("streetAddress")) {
                     streetAddress = "Exact street address unknown!";
                 } else {
-                    streetAddress = address.getString("streetAddress");
+                    if(address.get("streetAddress").equals(null)){
+                        streetAddress = "Exact street address unknown!";
+                    }else{
+                        streetAddress = address.getString("streetAddress");
+                    }
                 }
-
-                venueId = i;
 
                 String venueName = location.getString("name");
                 String venueLatitude = null;
@@ -233,13 +231,12 @@ public class ConcertGraphJSONUtils extends Tree<Entity> {
     }
     public ObservableList<Venue> createListOfALlVenues(ObservableList<Concert> list){
         ObservableList<Venue> listOfVenues =FXCollections.observableArrayList();
-        int venueId = 0;
         String city = null;
         String streetAddress = null;
         String venueLatitude = null;
         String venueLongitude = null;
         for(int i = 0; i< list.size(); i++){
-            venueId = i;
+
             city = list.get(i).getVenue().getCity();
             String venueName = list.get(i).getVenue().getVenueName();
             streetAddress = list.get(i).getVenue().getStreetAddress();
@@ -249,7 +246,6 @@ public class ConcertGraphJSONUtils extends Tree<Entity> {
             Set<String> venueNamesSet = new HashSet<>();
 
             Venue venue = null;
-            Venue existingVenue = null;
 
             for (Venue venueToCheck : listOfVenues) {
                 venueNamesSet.add(venueToCheck.getVenueName());
@@ -261,5 +257,18 @@ public class ConcertGraphJSONUtils extends Tree<Entity> {
             }
         }
         return listOfVenues;
+    }
+
+    public static void main(String[] args) {
+        RapidAPIConcertsAPI rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
+        LocalDate future = LocalDate.now().plusDays(20);
+        RapidAPIParameters parameters = new RapidAPIParameters(LocalDate.now(),future,"Cluj-Napoca");
+        rapidAPIConcertsAPI.addParameters(parameters);
+        rapidAPIConcertsAPI.getConcertsInYourArea();
+        String json = rapidAPIConcertsAPI.httpRequest();
+        Entity userLoc = new Entity();
+        ConcertJSONUtils concertJSONUtils = new ConcertJSONUtils(userLoc);
+        ObservableList<Concert> concertsE = concertJSONUtils.extractConcerts(json);
+        System.out.println(concertsE.size());
     }
 }
