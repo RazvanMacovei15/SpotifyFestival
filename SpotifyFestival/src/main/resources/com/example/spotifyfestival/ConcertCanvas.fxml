@@ -7,16 +7,23 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.canvas.Canvas?>
-<HBox xmlns="http://javafx.com/javafx"
+<GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.spotifyfestival.Controllers.ConcertCanvasController">
+            fx:controller="com.example.spotifyfestival.Controllers.ConcertCanvasController"
+            fx:id="mainGridPane">
+    <columnConstraints>
+        <ColumnConstraints percentWidth="33.33"/>
+        <ColumnConstraints percentWidth="33.33"/>
+        <ColumnConstraints percentWidth="33.33"/>
 
-    <Canvas fx:id="canvas">
+    </columnConstraints>
+    <BorderPane fx:id="canvasBorderPane" GridPane.columnSpan="2" GridPane.rowIndex="0" GridPane.columnIndex="0">
+        <Canvas fx:id="canvas" >
 
-    </Canvas>
-
-    <GridPane>
-        <HBox GridPane.rowIndex="0" GridPane.columnSpan="2">
+        </Canvas>
+    </BorderPane>
+    <GridPane GridPane.rowIndex="0" GridPane.columnIndex="2">
+        <HBox GridPane.rowIndex="0" >
             <DatePicker>
 
             </DatePicker>
@@ -35,5 +42,6 @@
 
             </Label>
         </HBox>
+        <Button fx:id="drawTree" GridPane.rowIndex="2" text="drawCanvas" onAction="#drawCanvas"/>
     </GridPane>
-</HBox>
+</GridPane>

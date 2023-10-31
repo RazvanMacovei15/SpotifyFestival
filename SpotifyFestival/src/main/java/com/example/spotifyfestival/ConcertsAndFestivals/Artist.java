@@ -31,6 +31,4 @@ public class Artist {
     public void setSpotifyID(String spotifyID) {
         this.spotifyID = spotifyID;
     }
-
-
 }

@@ -1,33 +1,60 @@
 package com.example.spotifyfestival.Tree;
 
-import java.util.List;
+import com.example.spotifyfestival.ConcertsAndFestivals.Identifiable;
+import javafx.collections.ObservableList;
 
-public class Tree<T> {
-    private TreeNode<T> root;
+public abstract class Tree<T extends Identifiable>{
+    private final TreeNode<T> root;
+//    private final NodeCreationListener<T> nodeCreationListener;
 
     public Tree(T data) {
         this.root = new TreeNode<>(data);
+//        this.nodeCreationListener = nodeCreationListener;
     }
-
     public TreeNode<T> getRoot() {
         return root;
     }
 
-    // Generic method to create a tree with any type
-    public static <T> Tree<T> createTree(T rootData) {
-        return new Tree<>(rootData);
+    public void printTree(Tree<T> tree) {
+        printTreeRecursive(tree.getRoot(), 0);
     }
+    private void printTreeRecursive(TreeNode<T> node, int depth) {
+        if (node == null) {
+            return;
+        }
 
-    public void createTree(List<T> venueList, List<T> concertList, T userLocation){
-        Tree<T> canvasTree = createTree(userLocation);
+        // Print the node's data with an indent based on the depth
+        StringBuilder indent = new StringBuilder();
+        for (int i = 0; i < depth; i++) {
+            indent.append("  "); // Two spaces per depth level
+        }
 
-        for(int i = 0; i < venueList.size(); i++){
-            TreeNode<T> rootChild = new TreeNode<>(venueList.get(i));
-            canvasTree.getRoot().addChild(rootChild);
-            for(int j = 0; j < concertList.size(); j++){
-                TreeNode<T> concertChild = new TreeNode<>(concertList.get(j));
-                rootChild.addChild(concertChild);
+        T concert = node.getData(); // Get the Concert object
+        System.out.println(indent.toString() + concert.toString());
+
+        // Recursively print the children
+        for (TreeNode<T> child : node.getChildren()) {
+            printTreeRecursive(child, depth + 1);
+        }
+    }
+    public abstract ObservableList<T> getConcertsAtVenue(T venue);
+    public abstract void drawLocationPin(T item);
+    public abstract void drawVenuePin(T item);
+    public abstract void drawConcertPin(T item);
+    public MyTree<T> createTree(ObservableList<T> venueList, T userLocation){
+        MyTree<T> canvasTree = new MyTree<>(userLocation);
+        drawLocationPin(userLocation);
+        for (T venue : venueList) {
+            drawVenuePin(venue);
+            TreeNode<T> venueNode = new TreeNode<>(venue);
+            canvasTree.getRoot().addChild(venueNode);
+            ObservableList<T> concertsAtVenue = getConcertsAtVenue(venue);
+            for (T concert : concertsAtVenue) {
+                drawConcertPin(concert);
+                TreeNode<T> concertNode = new TreeNode<>(concert);
+                venueNode.addChild(concertNode);
             }
         }
+        return canvasTree;
     }
 }

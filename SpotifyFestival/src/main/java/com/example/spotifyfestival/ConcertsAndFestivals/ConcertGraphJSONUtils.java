@@ -1,7 +1,6 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
 import com.example.spotifyfestival.Tree.Tree;
-import com.example.spotifyfestival.Tree.TreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
@@ -13,10 +12,24 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class ConcertGraphJSONUtils {
+public class ConcertGraphJSONUtils extends Tree<Entity> {
 
-    private final Map<Venue, List<Concert>> canvasRepo = new HashMap<>();
+    public ConcertGraphJSONUtils(Entity data) {
+        super(data);
+    }
 
+    @Override
+    public void drawLocationPin(Entity userLocation) {
+
+    }
+    @Override
+    public void drawVenuePin(Entity venue) {
+
+    }
+    @Override
+    public void drawConcertPin(Entity concert) {
+
+    }
     public static String detectDateTimeFormat(String dateTimeStr) {
         String[] dateFormats = {
                 "yyyy-MM-dd'T'HH:mm:ssZ",
@@ -37,22 +50,18 @@ public class ConcertGraphJSONUtils {
 
         return "Unknown format";
     }
-
     public static Date parseDateTime(String dateTimeStr) throws ParseException {
         SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         return iso8601Format.parse(dateTimeStr);
     }
-
     public static String formatDate(Date date) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormatter.format(date);
     }
-
     public static String formatTime(Date date) {
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
         return timeFormatter.format(date);
     }
-
     public ObservableList<Concert> extractConcerts(String jsonResponse) {
 
         ObservableList<Concert> concertList = FXCollections.observableArrayList();
@@ -156,7 +165,7 @@ public class ConcertGraphJSONUtils {
                         if (venueToCheck.getVenueName().equals(venueName)) {
                             // You found a venue with the matching name
                             existingVenue = venueToCheck;
-                            Concert concert = new Concert(concertId, concertDescription, artistList, existingVenue, startDate, time);
+                            Concert concert = new Concert(concertDescription, artistList, existingVenue, startDate, time);
                             concertList.add(concert);
                             // You can now work with the existingVenue as needed
                             break;
@@ -164,9 +173,9 @@ public class ConcertGraphJSONUtils {
                     }
                 } else {
                     // Create a new Venue and add it to the list
-                    venue = new Venue(venueId, city, venueName, streetAddress, venueLatitude, venueLongitude);
+                    venue = new Venue(city, venueName, streetAddress, venueLatitude, venueLongitude);
                     listOfVenues.add(venue);
-                    Concert concert = new Concert(concertId, concertDescription, artistList, venue, startDate, time);
+                    Concert concert = new Concert(concertDescription, artistList, venue, startDate, time);
                     concertList.add(concert);
                 }
             }
@@ -175,37 +184,55 @@ public class ConcertGraphJSONUtils {
         }
         return concertList;
     }
+    @Override
+    public ObservableList<Entity> getConcertsAtVenue(Entity venue) {
+        //retrieve data from JSON
+        ObservableList<Concert> allConcerts = extractConcerts(JSONConstant.getConstant());
+        //list to store concerts as entities;
+        ObservableList<Entity> allEntityConcerts = FXCollections.observableArrayList();
+        //list that will store the venue concerts
+        ObservableList<Entity> allVenueConcerts = FXCollections.observableArrayList();
 
-    private Map<Venue, List<Concert>> createCanvasRepo(String jsonResponse){
-        ObservableList<Concert> allConcerts = FXCollections.observableArrayList();
-        allConcerts = extractConcerts(jsonResponse);
+        allEntityConcerts.addAll(allConcerts);
 
-        Map<Venue, List<Concert>> mapToReturn = new HashMap<>();
+        if(venue instanceof Venue venueToCheck){
 
-        for(Concert concert : allConcerts){
-            String venueName = concert.getVenue().getVenueName();
+            for(Entity concertEntity : allEntityConcerts){
 
+                if(concertEntity instanceof Concert concertToCheck){
+
+                    if(venueToCheck.getVenueName().equals(concertToCheck.getVenue().getVenueName())){
+                        allVenueConcerts.add(concertEntity);
+                    }
+                }
+            }
+            List<Concert> concertsAtVenueToCheck = new ArrayList<>();
+            for(Entity entity : allVenueConcerts){
+                if(entity instanceof Concert){
+                    Concert concert = (Concert) entity;
+                    concertsAtVenueToCheck.add(concert);
+                }
+            }
+
+            venueToCheck.setListOfAllConcertsAtThatVenue(concertsAtVenueToCheck);
         }
-
-        return null;
+        return allVenueConcerts;
     }
-
-    private List<Concert> createListOfConcertsForEveryVenue(Concert venue){
+    public ObservableList<Concert> createListOfConcertsForEveryVenue(Venue venue){
         ObservableList<Concert> allConcerts = FXCollections.observableArrayList();
         allConcerts = extractConcerts(JSONConstant.getConstant());
-        List<Concert> venueConcerts = new ArrayList<>();
+        ObservableList<Concert> venueConcerts = FXCollections.observableArrayList();
 
         for(Concert concert : allConcerts){
-            if(venue.getVenue().getVenueName().equals(concert.getVenue().getVenueName())){
+            if(venue.getVenueName().equals(concert.getVenue().getVenueName())){
                 venueConcerts.add(concert);
             }
         }
-        venue.getVenue().setListOfAllConcertsAtThatVenue(venueConcerts);
+        venue.setListOfAllConcertsAtThatVenue(venueConcerts);
         return venueConcerts;
     }
-
-    private ObservableList<Concert> createListOfALlVenues(ObservableList<Concert> list){
-        ObservableList<Concert> listOfVenues =FXCollections.observableArrayList();
+    public ObservableList<Venue> createListOfALlVenues(ObservableList<Concert> list){
+        ObservableList<Venue> listOfVenues =FXCollections.observableArrayList();
         int venueId = 0;
         String city = null;
         String streetAddress = null;
@@ -224,70 +251,15 @@ public class ConcertGraphJSONUtils {
             Venue venue = null;
             Venue existingVenue = null;
 
-            for (Concert venueToCheck : listOfVenues) {
-                venueNamesSet.add(venueToCheck.getVenue().getVenueName());
+            for (Venue venueToCheck : listOfVenues) {
+                venueNamesSet.add(venueToCheck.getVenueName());
             }
 
             if (!venueNamesSet.contains(venueName)) {
-                venue = new Venue(venueId, city, venueName, streetAddress, venueLatitude, venueLongitude);
-                listOfVenues.add(new Concert(venueId, venue));
+                venue = new Venue(city, venueName, streetAddress, venueLatitude, venueLongitude);
+                listOfVenues.add(venue);
             }
         }
         return listOfVenues;
-    }
-
-    public Tree<Concert> createCanvasTree(ObservableList<Concert> venues, Concert userLocation){
-        Tree<Concert> canvasTree = new Tree<>(userLocation);
-
-        for(int i = 0; i < venues.size(); i++)
-        {
-            TreeNode<Concert> rootChild = new TreeNode<>(venues.get(i));
-
-            canvasTree.getRoot().addChild(rootChild);
-
-            List<Concert> concertsPerVenue = createListOfConcertsForEveryVenue(rootChild.getData());
-
-            for(int j = 0; j < concertsPerVenue.size(); j++)
-            {
-                TreeNode<Concert> venueChild = new TreeNode<>(rootChild.getData());
-
-                rootChild.addChild(venueChild);
-            }
-        }
-        return canvasTree;
-    }
-
-    public void printTree(Tree<Concert> tree) {
-        printTreeRecursive(tree.getRoot(), 0);
-    }
-
-    private void printTreeRecursive(TreeNode<Concert> node, int depth) {
-        if (node == null) {
-            return;
-        }
-
-        // Print the node's data with an indent based on the depth
-        StringBuilder indent = new StringBuilder();
-        for (int i = 0; i < depth; i++) {
-            indent.append("  "); // Two spaces per depth level
-        }
-
-        Concert concert = node.getData(); // Get the Concert object
-        System.out.println(indent.toString() + concert.toString());
-
-        // Recursively print the children
-        for (TreeNode<Concert> child : node.getChildren()) {
-            printTreeRecursive(child, depth + 1);
-        }
-    }
-
-    public static void main(String[] args) {
-        ConcertGraphJSONUtils concertGraphJSONUtils = new ConcertGraphJSONUtils();
-        ObservableList<Concert> concerts = concertGraphJSONUtils.extractConcerts(JSONConstant.getConstant());
-
-        ObservableList<Concert> venues = concertGraphJSONUtils.createListOfALlVenues(concerts);
-        Tree<Concert> tree = concertGraphJSONUtils.createCanvasTree(venues, new Concert(100, new Venue(100, "ClujNapoca", "a", "a", "a", "a")));
-        concertGraphJSONUtils.printTree(tree);
-        System.out.println(tree.getRoot().getChildren().get(1).getData().toString());
     }
 }

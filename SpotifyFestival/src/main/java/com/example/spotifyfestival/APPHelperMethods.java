@@ -30,8 +30,8 @@ public class APPHelperMethods {
 
         Parent sceneRoot = loader.load();
 
-        double sceneWidth = 800; // Set your desired width
-        double sceneHeight = 800; // Set your desired height
+        double sceneWidth = 900; // Set your desired width
+        double sceneHeight = 600; // Set your desired height
         Scene scene = new Scene(sceneRoot, sceneWidth,sceneHeight);
         Stage stage = App.getPrimaryStage();
         // Get the Stage

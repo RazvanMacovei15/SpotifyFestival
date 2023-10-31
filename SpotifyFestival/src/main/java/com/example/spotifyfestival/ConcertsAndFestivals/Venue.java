@@ -2,7 +2,7 @@ package com.example.spotifyfestival.ConcertsAndFestivals;
 
 import java.util.List;
 
-public class Venue extends VenueConcertTreeNode {
+public class Venue extends Entity {
     private String city;
     private String venueName;
     private String streetAddress;
@@ -11,8 +11,7 @@ public class Venue extends VenueConcertTreeNode {
     private List<Concert> listOfAllConcertsAtThatVenue;
 
 
-    public Venue(int id, String city, String venueName, String streetAddress, String locationLatitude, String locationLongitude) {
-        super(id);
+    public Venue(String city, String venueName, String streetAddress, String locationLatitude, String locationLongitude) {
         this.city = city;
         this.venueName = venueName;
         this.streetAddress = streetAddress;
