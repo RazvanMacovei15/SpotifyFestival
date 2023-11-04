@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
-public interface Identifiable {
-    String getId();
-    void setId(String id);
+public interface Identifiable<K> {
+    K getId();
+    void setId(K id);
 
 }

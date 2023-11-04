@@ -1,8 +1,10 @@
 package com.example.spotifyfestival.ConcertsAndFestivals;
 
+import com.example.spotifyfestival.UserData.Domain.Artist;
+
 import java.util.List;
 
-public class Concert extends Entity {
+public class Concert extends Entity implements Identifiable<String> {
     private String description;
     private List<Artist> listOfArtists;
     private Venue venue;

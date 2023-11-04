@@ -3,6 +3,7 @@ package com.example.spotifyfestival.ConcertsAndFestivals;
 import com.example.spotifyfestival.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.RapidAPI.RapidAPIParameters;
 import com.example.spotifyfestival.Tree.Tree;
+import com.example.spotifyfestival.UserData.Domain.Artist;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
