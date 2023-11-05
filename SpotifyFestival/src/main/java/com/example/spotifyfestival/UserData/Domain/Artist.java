@@ -1,6 +1,7 @@
 package com.example.spotifyfestival.UserData.Domain;
 
 import com.example.spotifyfestival.ConcertsAndFestivals.Entity;
+import javafx.collections.ObservableList;
 
 import java.util.List;
 
@@ -8,13 +9,15 @@ public class Artist extends Entity{
 
     private String name;
 
-    protected List<String> genres;
+    protected ObservableList<String> genres;
 
-    public Artist(String name, String spotifyID) {
+
+
+    public Artist(String name){
         this.name = name;
-    }
 
-    public Artist(String name, List<String> genres, String spotifyID) {
+    }
+    public Artist(String name, ObservableList<String> genres) {
         this.name = name;
         this.genres = genres;
     }
@@ -23,13 +26,10 @@ public class Artist extends Entity{
         return genres;
     }
 
-    public void setGenres(List<String> genres) {
+    public void setGenres(ObservableList<String> genres) {
         this.genres = genres;
     }
 
-    public Artist(String name){
-        this.name = name;
-    }
 
 
     public String getName() {

@@ -161,8 +161,6 @@ public class TopArtistsController {
         return attributeValues;
     }
 
-
-
     public void getBackToTopLists(ActionEvent event){
         try {
             AppSwitchScenesMethods.switchScene(event, "topLists.fxml");

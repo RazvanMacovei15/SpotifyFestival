@@ -4,7 +4,6 @@ import com.example.spotifyfestival.ConcertsAndFestivals.*;
 import com.example.spotifyfestival.Tree.Tree;
 import com.example.spotifyfestival.Tree.TreeNode;
 import javafx.animation.KeyFrame;
-import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,8 +106,6 @@ public class ConcertCanvasController {
         List<TreeNode<Entity>> venuesListE = root.getChildren();
         int numberOfCircles = venuesListE.size();
 
-
-
         for(int i = 0; i < numberOfCircles; i++)
         {
             //create the circle representing the venue and add data to it
@@ -193,15 +190,5 @@ public class ConcertCanvasController {
         gc.setLineWidth(1);
 
         gc.strokeLine(Ax, Ay, Bx, By);
-    }
-
-    public void waitOneSecond(){
-        // Create a pause transition for 1 second (1000 milliseconds)
-        PauseTransition pause = new PauseTransition(Duration.millis(1000));
-        pause.setOnFinished(event -> {
-            System.out.println("1 second Paused");
-        });
-
-        pause.play();
     }
 }
