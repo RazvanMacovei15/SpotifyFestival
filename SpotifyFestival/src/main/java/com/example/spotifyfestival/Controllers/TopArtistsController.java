@@ -37,14 +37,6 @@ public class TopArtistsController {
         on4WeeksButtonClicked();
     }
 
-    public void onGetBackButtonClicked(ActionEvent event){
-        try {
-            AppSwitchScenesMethods.switchScene(event, "afterLoginScreen.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to go back", e);
-        }
-    }
-
     public static HttpResponse getUserTopArtists() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
@@ -124,22 +116,6 @@ public class TopArtistsController {
         listView.setItems(artistNames);
     }
 
-
-
-    public static void printNamesAndIDs(ObservableList<String> artistNames, ObservableList<String> artistID) {
-        if (artistNames.size() != artistID.size()) {
-            System.out.println("Error: The sizes of artistNames and artistID lists do not match.");
-            return;
-        }
-
-        for (int i = 0; i < artistNames.size(); i++) {
-            String name = artistNames.get(i);
-            String id = artistID.get(i);
-            System.out.println("Name: " + name);
-            System.out.println("ID: " + id);
-        }
-    }
-
     public static ObservableList<String> extractAttribute(String jsonResponse, String attributeName) {
         // Create an empty ObservableList to store the attribute values
         ObservableList<String> attributeValues = FXCollections.observableArrayList();
@@ -168,4 +144,31 @@ public class TopArtistsController {
             throw new RuntimeException("Unable to move forward", e);
         }
     }
+
+
+    //never used methods
+
+    public static void printNamesAndIDs(ObservableList<String> artistNames, ObservableList<String> artistID) {
+        if (artistNames.size() != artistID.size()) {
+            System.out.println("Error: The sizes of artistNames and artistID lists do not match.");
+            return;
+        }
+
+        for (int i = 0; i < artistNames.size(); i++) {
+            String name = artistNames.get(i);
+            String id = artistID.get(i);
+            System.out.println("Name: " + name);
+            System.out.println("ID: " + id);
+        }
+    }
+
+
+    public void onGetBackButtonClicked(ActionEvent event){
+        try {
+            AppSwitchScenesMethods.switchScene(event, "afterLoginScreen.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to go back", e);
+        }
+    }
+
 }

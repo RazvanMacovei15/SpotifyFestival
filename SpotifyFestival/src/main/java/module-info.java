@@ -17,8 +17,7 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.UnusedStuffForNow.helperObsLis to javafx.fxml;
     exports com.example.spotifyfestival.Controllers;
     opens com.example.spotifyfestival.Controllers to javafx.fxml;
-    exports com.example.spotifyfestival.JSONObjects;
-    opens com.example.spotifyfestival.JSONObjects to javafx.fxml;
+
     exports com.example.spotifyfestival.SpotifyAPI;
     opens com.example.spotifyfestival.SpotifyAPI to javafx.fxml;
     exports com.example.spotifyfestival.API_URLS;

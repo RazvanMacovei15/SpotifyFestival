@@ -4,20 +4,45 @@ import com.example.spotifyfestival.API_URLS.Artists_API_URLS;
 import com.example.spotifyfestival.AppSwitchScenesMethods;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyService;
+import com.example.spotifyfestival.UserData.Domain.Artist;
+import com.example.spotifyfestival.UserData.Generics.MapValueSorter;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TopGenresController {
 
     @FXML
     private ListView<String> listView;
+
+    @FXML
+    private ListView<String> countListView;
+
+    @FXML
+    private Button allTimeButton;
+
+    @FXML
+    private Button sixMonthsButton;
+
+    @FXML
+    private Button fourWeeksButton;
+
+    @FXML
+    public void initialize() throws JsonProcessingException {
+        // Automatically trigger the "4 weeks" button when the scene is shown
+        on4WeeksButtonClicked();
+    }
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
@@ -27,7 +52,7 @@ public class TopGenresController {
         }
     }
 
-    public static HttpResponse getUserTopGenresOver4Weeks() {
+    public static HttpResponse getUserTopArtists() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
@@ -38,53 +63,153 @@ public class TopGenresController {
             return null;
         }
     }
+    public static HttpResponse getUserTopArtistsOver6Months() {
+        try {
+            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
+            String token = spotifyAuthFlowService.getAccessToken();
+            SpotifyService spotifyService = new SpotifyService();
+            return spotifyService.getHttpResponse(token, Artists_API_URLS.getUserTopArtists6MonthsURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public static HttpResponse getUserTopArtistsOver4Weeks() {
+        try {
+            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
+            String token = spotifyAuthFlowService.getAccessToken();
+            SpotifyService spotifyService = new SpotifyService();
+            return spotifyService.getHttpResponse(token, Artists_API_URLS.getUserTopArtistsOver4WeeksURI());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
-    public LinkedHashMap<String, Integer> computeSortedBag(ObservableList<String> ol) {
-        List<String> genres = List.of("pop", "singer-songwriter pop", "uk pop", "flick hop", "underground rap", "alternative metal", "neo mellow", "pop rock", "post-grunge", "alternative metal", "nu metal", "detroit hip hop", "hip hop", "rap", "moldovan pop", "romanian pop", "israeli pop", "romanian rap", "romanian rock", "danish metal", "danish rock", "melodic power metal", "alternative metal", "groove metal", "nu metal", "dutch metal", "gothic metal", "gothic symphonic metal", "symphonic metal", "alternative pop rock", "modern alternative rock", "modern rock", "hip hop", "pop rap", "rap", "piano rock", "pop");
+    public void onAllTimeButtonClicked() throws JsonProcessingException {
 
-        Map<String, Integer> genreCountMap = new HashMap<>();
+        onTimeRangeButtonClicked("all time");
 
-        for (String genre : genres) {
-            genreCountMap.put(genre, genreCountMap.getOrDefault(genre, 0) + 1);
+    }
+
+    public void on6MonthsButtonClicked() throws JsonProcessingException {
+
+        onTimeRangeButtonClicked("6 months");
+
+    }
+    public void on4WeeksButtonClicked() throws JsonProcessingException {
+
+        onTimeRangeButtonClicked("4 weeks");
+
+    }
+
+    public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
+        HttpResponse response;
+
+        switch (timeRange) {
+            case "all time":
+                response = getUserTopArtists();
+                break;
+            case "6 months":
+                response = getUserTopArtistsOver6Months();
+                break;
+            case "4 weeks":
+                response = getUserTopArtistsOver4Weeks();
+                break;
+            default:
+                // Handle the case when an unsupported time range is provided
+                return;
         }
 
-        // Convert the map into a list of entries
-        List<Map.Entry<String, Integer>> entryList = new ArrayList<>(genreCountMap.entrySet());
+        String jsonResponse = response.body().toString();
+        // Call the extractAttribute method to get the artist attributes
+//        ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
+        ObservableList<Artist> allArtists = extractArtists(jsonResponse);
+        Map<String, Integer> genreCount = getGenreCountFromResponse(allArtists);
 
-        // Sort the list of entries first by key (descending order) and then alphabetically
-        entryList.sort((entry1, entry2) -> {
-            int cmp = entry2.getValue().compareTo(entry1.getValue()); // Sort by count (descending)
-            if (cmp == 0) {
-                // If counts are the same, sort alphabetically by genre
-                return entry1.getKey().compareTo(entry2.getKey());
+        ObservableList<String> genres = FXCollections.observableArrayList();
+        ObservableList<String> genresCount = FXCollections.observableArrayList();
+
+        for(Map.Entry<String, Integer> entry : genreCount.entrySet()){
+            genres.add(entry.getKey());
+        }
+        for(Map.Entry<String, Integer> entry : genreCount.entrySet()){
+            genresCount.add(String.valueOf(entry.getValue()));
+        }
+
+        // Set the artist names in your ListView or perform other actions
+        listView.setItems(genres);
+        countListView.setItems(genresCount);
+    }
+
+    public static ObservableList<String> extractAttribute(String jsonResponse, String attributeName) {
+        // Create an empty ObservableList to store the attribute values
+        ObservableList<String> attributeValues = FXCollections.observableArrayList();
+
+        try {
+            // Parse the JSON response
+            JSONObject responseJson = new JSONObject(jsonResponse);
+            JSONArray itemsArray = responseJson.getJSONArray("items");
+
+            // Iterate through the items and extract the specified attribute
+            for (int i = 0; i < itemsArray.length(); i++) {
+                JSONObject itemObject = itemsArray.getJSONObject(i);
+                String attributeValue = itemObject.getString(attributeName);
+                attributeValues.add(attributeValue);
             }
-            return cmp;
-        });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return attributeValues;
+    }
 
-        LinkedHashMap<String,Integer>newMap = new LinkedHashMap<>();
+    public ObservableList<Artist> extractArtists(String jsonResponse){
 
-        // Print the sorted entries
-        for (Map.Entry<String, Integer> entry : entryList) {
+        ObservableList<ObservableList<String>> allGenresExtracted = FXCollections.observableArrayList();
+        ObservableList<Artist> listOfArtistsInResponse = FXCollections.observableArrayList();
+        try{
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONArray itemsArray = jsonObject.getJSONArray("items");
+            for(int i=0; i<itemsArray.length(); i++){
+                ObservableList<String> artistGenres = FXCollections.observableArrayList();
+                JSONObject artistObject = itemsArray.getJSONObject(i);
+                JSONArray array = artistObject.getJSONArray("genres");
+                for(int j=0; j<array.length(); j++ ){
+                    String genre = array.getString(j);
+                    artistGenres.add(genre);
+                }
+                String name = artistObject.getString("name");
+                String id = artistObject.getString("id");
+                Artist artist = new Artist(name, artistGenres);
+                artist.setId(id);
+
+                listOfArtistsInResponse.add(artist);
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return listOfArtistsInResponse;
+    }
+
+    public Map<String, Integer> getGenreCountFromResponse(ObservableList<Artist> artists){
+
+        HashMap<String, Integer> genreCount = new HashMap<>();
+        for(Artist artist : artists){
+            ObservableList<String> genres = (ObservableList<String>) artist.getGenres();
+            for(int i = 0; i < genres.size(); i++){
+                String genre = genres.get(i);
+                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
+            }
+        }
+
+        System.out.println(genreCount);
+
+        Map<String, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
+        for (Map.Entry<String, Integer> entry : sortedGenreMap.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
-            newMap.put(entry.getKey(), entry.getValue());
         }
-        return newMap;
+        return sortedGenreMap;
     }
 
-    public static ObservableList<String> keysToObservableList(Map<String, Integer> map) {
-        List<String> keyList = new ArrayList<>(map.keySet());
-        ObservableList<String> observableList = FXCollections.observableArrayList(keyList);
-        return observableList;
-    }
-
-    // Method to print keys of a LinkedHashMap in order
-    public static void printKeysInOrder(Map<String, Integer> map) {
-        Iterator<String> iterator = map.keySet().iterator();
-        Iterator<Integer> it = map.values().iterator();
-        while (iterator.hasNext()) {
-            String key = iterator.next();
-            int value = it.next();
-            System.out.println(key + " " + value);
-        }
-    }
 }

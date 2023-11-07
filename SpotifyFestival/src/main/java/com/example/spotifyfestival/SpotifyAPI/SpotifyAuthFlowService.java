@@ -3,9 +3,6 @@ package com.example.spotifyfestival.SpotifyAPI;
 
 
 import com.example.spotifyfestival.AppSwitchScenesMethods;
-import com.example.spotifyfestival.JSONObjects.AccessTokenResponse;
-import com.example.spotifyfestival.JSONObjects.JsonUtils;
-import com.example.spotifyfestival.JSONObjects.RefreshAccessTokenResponse;
 import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AuthFlowObserver;
 import javafx.application.Platform;
 import org.json.JSONObject;
@@ -75,19 +72,7 @@ public class SpotifyAuthFlowService {
 
     private String refreshToken;
 
-    public AccessTokenResponse accessTokenResponse;
-
-    public RefreshAccessTokenResponse refreshAccessTokenResponse;
-
     String originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
-
-    private AccessTokenResponse deserializeAccessTokenResponse(String json) {
-        return JsonUtils.deserializeJson(json, AccessTokenResponse.class);
-    }
-
-    private RefreshAccessTokenResponse deserializeRefreshAccessTokenResponse(String json) {
-        return JsonUtils.deserializeJson(json, RefreshAccessTokenResponse.class);
-    }
 
     public String getAlphaNumericString(int n) {
         // choose a Character random from this String
@@ -181,31 +166,21 @@ public class SpotifyAuthFlowService {
                     int statusCode = httpResponse.statusCode();
                     responseBody = httpResponse.body();
                     System.out.println(responseBody);
-                    System.out.println("The access token is this: "+getAccessToken(responseBody));
+                    System.out.println("The access token is this: " + getAccessToken(responseBody));
 
                     if (statusCode == 200) {
-                        accessTokenResponse = deserializeAccessTokenResponse(responseBody);
-                        if (accessTokenResponse != null) {
-                            accessToken = accessTokenResponse.getAccessToken();
-                            notifyObservers(accessToken); // Notify observers when API call is completed
-                        } else {
-                            System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
-                        }
-
+                        accessToken = getAccessToken(responseBody);
+                        notifyObservers(accessToken); // Notify observers when API call is completed
                     } else {
                         // handle error responses here
                         System.err.println("Error: " + statusCode);
-
                     }
-
                 } catch (IOException | InterruptedException exception) {
                     // Handle exceptions
                     exception.printStackTrace();
                     // Return an error response
                 }
             }
-
-            System.out.println("bool is true");
             Platform.runLater(() -> {
                 try {
                     AppSwitchScenesMethods.switchSceneTwo("afterLoginScreen.fxml");
@@ -214,12 +189,14 @@ public class SpotifyAuthFlowService {
                 }
             });
             bool = true;
+            System.out.println("bool is true");
             return HtmlCONSTANTS.HTML_PAGE;
         });
     }
-    public String refreshTheToken(AccessTokenResponse accessTokenResponse) {
 
-        refreshToken = accessTokenResponse.getRefreshToken();
+    public String refreshTheToken(String jsonResponse) {
+
+        refreshToken = getRefreshToken(jsonResponse);
 
         HttpClient client = HttpClient.newBuilder().build();
 
@@ -241,30 +218,26 @@ public class SpotifyAuthFlowService {
 
         if (refreshStatusCode == 200) {
 
-            // handle a successful refresh response here
-            refreshAccessTokenResponse = deserializeRefreshAccessTokenResponse(refreshResponseBody);
-            if (refreshAccessTokenResponse != null) {
-                refreshToken = refreshAccessTokenResponse.getRefreshedAccessToken();
-                notifyObservers(refreshToken);
-            } else {
-                System.out.println("Something went wrong with ACCESS TOKEN RESPONSE!");
-            }
+            accessToken = getAccessToken(refreshResponseBody);
+            notifyObservers(refreshToken);
+
         } else {
             // Handle error responses here
             System.err.println("Error: " + refreshStatusCode);
             // Handle error response, log, or return an error message
         }
-        accessToken = refreshAccessTokenResponse.getRefreshedAccessToken();
         return accessToken;
     }
 
-    public String getAccessToken(String jsonResponse)
-    {
+    public String getAccessToken(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         String accessToken = jsonObject.getString("access_token");
         return accessToken;
     }
 
+    public String getRefreshToken(String jsonResponse) {
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        String accessToken = jsonObject.getString("refresh_token");
+        return accessToken;
+    }
 }
-
-

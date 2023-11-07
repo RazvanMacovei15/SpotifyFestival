@@ -35,7 +35,6 @@ public class Utils {
         try{
             JSONObject jsonObject = new JSONObject(jsonResponse);
             JSONArray artistsArray = jsonObject.getJSONArray("artists");
-//            JSONArray itemsArray = artistsObject.getJSONArray("items");
             for(int i=0; i<artistsArray.length(); i++){
                 JSONObject artistObject = artistsArray.getJSONObject(i);
                 id = artistObject.getString("id");
