@@ -32,6 +32,7 @@ public class DB {
     private static Connection connect(String location) {
         String dbPrefix = "jdbc:sqlite:";
         Connection connection;
+
         try {
             connection = DriverManager.getConnection(dbPrefix + location);
         } catch (SQLException exception) {
