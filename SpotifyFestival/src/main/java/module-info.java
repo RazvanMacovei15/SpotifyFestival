@@ -10,6 +10,8 @@ module com.example.spotifyfestival {
     requires com.fasterxml.jackson.databind;
     requires java.desktop;
     requires json;
+    requires java.sql;
+    requires org.xerial.sqlitejdbc;
 
     opens com.example.spotifyfestival to javafx.fxml;
     exports com.example.spotifyfestival;
