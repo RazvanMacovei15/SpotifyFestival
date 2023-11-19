@@ -5,6 +5,7 @@ import com.example.spotifyfestival.ConcertsAndFestivals.Identifiable;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MemoryRepository<K, V extends Identifiable<K>> implements CRUDRepoInterface<K,V> {
@@ -48,18 +49,18 @@ public class MemoryRepository<K, V extends Identifiable<K>> implements CRUDRepoI
         return dataStore.size();
     }
 
-    public K getKey(){
-        if (!dataStore.isEmpty()) {
-            return dataStore.keySet().iterator().next();
-        }
-        // Return null or throw an exception if the map is empty
-        return null;
-    }
-
     @Override
     public void list() {
         for (Map.Entry<K, V> entry : dataStore.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+    }
+
+    public void iterateThroughMap() {
+        for (Map.Entry<K, V> entry : dataStore.entrySet()) {
+            K key = entry.getKey();
+            V value = entry.getValue();
+            // Do something with key and value
         }
     }
 }

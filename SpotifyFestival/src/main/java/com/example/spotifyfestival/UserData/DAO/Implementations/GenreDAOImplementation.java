@@ -1,8 +1,23 @@
 package com.example.spotifyfestival.UserData.DAO.Implementations;
 
+import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
 import com.example.spotifyfestival.UserData.DAO.Interfaces.GenresDAOInterface;
+import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.Domain.Genre;
+import com.example.spotifyfestival.UserData.DuplicateEntityException;
+import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
+import com.example.spotifyfestival.UserData.Repos.ArtistRepo;
 import com.example.spotifyfestival.UserData.Repos.GenreRepo;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class GenreDAOImplementation implements GenresDAOInterface {
     @Override
@@ -17,7 +32,39 @@ public class GenreDAOImplementation implements GenresDAOInterface {
 
     @Override
     public GenreRepo getAllGenres() {
-        return null;
+        GenreRepo genreRepo = new GenreRepo();
+
+        String tableName = "Genres";
+
+        ObservableList<Genre> genres = FXCollections.observableArrayList();
+
+        String query = "SELECT * FROM " + tableName;
+        try (Connection connection = DB.connect("festivalDB")) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+            genres.clear();
+            while (rs.next()) {
+                int genre_id = rs.getInt("genre_id");
+                String name = rs.getString("name");
+
+                Genre genre = new Genre(name);
+
+                try {
+                    genreRepo.add(String.valueOf(genre_id), genre);
+                } catch (DuplicateEntityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            for(int i =0; i< genres.size(); i++){
+                System.out.println(genres.get(i).getName());
+            }
+        } catch (SQLException e) {
+            Logger.getAnonymousLogger().log(
+                    Level.SEVERE,
+                    LocalDateTime.now() + ": Could not load Persons from database ");
+            genres.clear();
+        }
+        return genreRepo;
     }
 
     @Override
@@ -28,5 +75,11 @@ public class GenreDAOImplementation implements GenresDAOInterface {
     @Override
     public void delete(int id) {
 
+    }
+
+    public static void main(String[] args) {
+        GenreDAOImplementation genreDAOImplementation = new GenreDAOImplementation();
+        GenreRepo genreRepo = genreDAOImplementation.getAllGenres();
+        System.out.println(genreRepo.getItem("5").getName());
     }
 }

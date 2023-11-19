@@ -30,7 +30,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
     @Override
     public VenueRepo getAllVenues() {
 
-        VenueRepo venueRepo = new VenueRepo();
+        VenueRepo venueRepo = VenueRepo.getInstance();
 
         String tableName = "venues";
 

@@ -17,6 +17,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -51,11 +52,20 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
 
                 VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
 
-                VenueRepo venueRepo = venueDAOImplementation.getAllVenues();
+                VenueRepo venueRepo = VenueRepo.getInstance();
                 Venue venue = null;
-                for(int i=1;i<=venueRepo.getSize();i++){
-                    if(String.valueOf(venue_id).equals(venueRepo.getKey())){
-                        venue = venueRepo.getItem(String.valueOf(i));
+
+                // Iterate through the map and check if the key is equal to keyToCheck
+                for (Map.Entry<String, Venue> entry : venueRepo.getAll().entrySet()) {
+                    String key = entry.getKey();
+                    Venue value = entry.getValue();
+
+                    if (key.equals(String.valueOf(venue_id))) {
+                        // Key found, do something with the corresponding value (Venue)
+                        System.out.println("Key found: " + key + ", Value: " + value);
+                        venue = value;
+                        System.out.println(venue.getVenueName());
+                        break;  // Assuming you want to stop searching after finding the key
                     }
                 }
 
@@ -92,8 +102,6 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
     public static void main(String[] args) {
         FestivalDAOImplementation festivalDAOImplementation = new FestivalDAOImplementation();
         FestivalRepo festivalRepo = festivalDAOImplementation.getAllFestivals();
-        for(int i=1; i < festivalRepo.getSize(); i++){
-            System.out.println(festivalRepo.getItem(String.valueOf(i)).getVenue().getStreetAddress());
-        }
+        festivalRepo.getItem("1");
     }
 }

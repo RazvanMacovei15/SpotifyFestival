@@ -1,8 +1,9 @@
 package com.example.spotifyfestival.UserData.Domain;
 
+import com.example.spotifyfestival.ConcertsAndFestivals.Entity;
 import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
 
-public class FestivalStage {
+public class FestivalStage extends Entity {
 
     protected String name;
 
