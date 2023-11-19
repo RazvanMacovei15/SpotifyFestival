@@ -28,9 +28,5 @@ public class VenueRepo extends DBGenericRepository<String, Venue> {
         }
         return instance;
     }
-    @Override
-    public void getAllFromDB() {
-
-        }
-    }
+}
 

@@ -59,5 +59,4 @@ public abstract class DBGenericRepository< K, V extends Identifiable<K>> extends
         return connection;
     }
 
-    public abstract void getAllFromDB();
 }

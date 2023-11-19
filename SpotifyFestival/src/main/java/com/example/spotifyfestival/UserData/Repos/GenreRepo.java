@@ -7,8 +7,4 @@ import com.example.spotifyfestival.UserData.Generics.MemoryRepository;
 
 public class GenreRepo extends DBGenericRepository<String, Genre> {
 
-    @Override
-    public void getAllFromDB() {
-
-    }
 }

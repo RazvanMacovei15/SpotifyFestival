@@ -19,8 +19,4 @@ public class FestivalStageRepo extends DBGenericRepository<String, FestivalStage
         return instance;
     }
 
-    @Override
-    public void getAllFromDB() {
-
-    }
 }
