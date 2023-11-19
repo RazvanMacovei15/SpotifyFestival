@@ -16,17 +16,5 @@ import java.util.logging.Logger;
 
 public class VenueRepo extends DBGenericRepository<String, Venue> {
 
-    private static VenueRepo instance;
-
-    private VenueRepo() {
-        // Private constructor to prevent instantiation outside of this class
-    }
-
-    public static VenueRepo getInstance() {
-        if (instance == null) {
-            instance = new VenueRepo();
-        }
-        return instance;
-    }
 }
 

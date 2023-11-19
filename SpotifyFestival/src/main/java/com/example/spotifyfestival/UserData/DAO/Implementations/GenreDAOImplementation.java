@@ -48,7 +48,7 @@ public class GenreDAOImplementation implements GenresDAOInterface {
                 String name = rs.getString("name");
 
                 Genre genre = new Genre(name);
-
+                genres.add(genre);
                 try {
                     genreRepo.add(String.valueOf(genre_id), genre);
                 } catch (DuplicateEntityException e) {

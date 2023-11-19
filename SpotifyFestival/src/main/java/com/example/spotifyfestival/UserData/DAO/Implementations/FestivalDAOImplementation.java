@@ -38,10 +38,10 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
 
         String tableName = "Festivals";
 
-        ObservableList<Venue> festivals = FXCollections.observableArrayList();
+        ObservableList<Festival> festivals = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DB.connect("festivalDB")) {
+        try (Connection connection = DB.connect("FestivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             festivals.clear();
@@ -52,7 +52,7 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
 
                 VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
 
-                VenueRepo venueRepo = VenueRepo.getInstance();
+                VenueRepo venueRepo = venueDAOImplementation.getAllVenues();
                 Venue venue = null;
 
                 // Iterate through the map and check if the key is equal to keyToCheck
@@ -64,12 +64,13 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
                         // Key found, do something with the corresponding value (Venue)
                         System.out.println("Key found: " + key + ", Value: " + value);
                         venue = value;
-                        System.out.println(venue.getVenueName());
+//                        System.out.println(venue.getVenueName());
                         break;  // Assuming you want to stop searching after finding the key
                     }
                 }
 
                 Festival festival = new Festival(name, venue);
+                festivals.add(festival);
 
                 try {
                     festivalRepo.add(String.valueOf(festival_id), festival);
@@ -78,7 +79,7 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
                 }
             }
             for(int i =0; i< festivals.size(); i++){
-                System.out.println(festivals.get(i).getVenueName());
+                System.out.println(festivals.get(i).toString());
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
@@ -102,6 +103,6 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
     public static void main(String[] args) {
         FestivalDAOImplementation festivalDAOImplementation = new FestivalDAOImplementation();
         FestivalRepo festivalRepo = festivalDAOImplementation.getAllFestivals();
-        festivalRepo.getItem("1");
+
     }
 }

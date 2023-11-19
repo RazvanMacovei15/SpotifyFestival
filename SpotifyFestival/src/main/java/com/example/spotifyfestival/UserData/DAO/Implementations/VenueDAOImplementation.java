@@ -30,7 +30,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
     @Override
     public VenueRepo getAllVenues() {
 
-        VenueRepo venueRepo = VenueRepo.getInstance();
+        VenueRepo venueRepo = new VenueRepo();
 
         String tableName = "venues";
 
@@ -49,9 +49,8 @@ public class VenueDAOImplementation implements VenueDAOInterface {
                 double latitude = rs.getDouble("latitude");
                 double longitude = rs.getDouble("longitude");
 
-//                venues.add(new Venue(city,name,address, String.valueOf(latitude), String.valueOf(longitude)));
                 Venue venue = new Venue(city,name,address, String.valueOf(latitude), String.valueOf(longitude));
-
+                venues.add(venue);
 
                 try {
                     venueRepo.add(String.valueOf(venue_id), venue);
@@ -79,5 +78,11 @@ public class VenueDAOImplementation implements VenueDAOInterface {
     @Override
     public void delete(int id) {
 
+    }
+
+    public static void main(String[] args) {
+        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+        VenueRepo venueRepo = venueDAOImplementation.getAllVenues();
+        System.out.println(venueRepo.getSize());
     }
 }
