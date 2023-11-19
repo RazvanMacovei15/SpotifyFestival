@@ -48,6 +48,14 @@ public class MemoryRepository<K, V extends Identifiable<K>> implements CRUDRepoI
         return dataStore.size();
     }
 
+    public K getKey(){
+        if (!dataStore.isEmpty()) {
+            return dataStore.keySet().iterator().next();
+        }
+        // Return null or throw an exception if the map is empty
+        return null;
+    }
+
     @Override
     public void list() {
         for (Map.Entry<K, V> entry : dataStore.entrySet()) {

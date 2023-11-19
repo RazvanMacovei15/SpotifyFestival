@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.DB;
+package com.example.spotifyfestival.UserData.FestivalDatabase.DB;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,13 +10,8 @@ import java.util.logging.Logger;
 public class DB {
     public static void main(String[] args) {
         checkDrivers();
-        try {
-            Connection connection = DriverManager.getConnection("jdbc:sqlite:festivalDB");
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
-        Connection connection = connect("festivalDB");
+        Connection connection = connect("FestivalDB");
     }
 
     private static boolean checkDrivers(){
@@ -29,7 +24,10 @@ public class DB {
             return false;
         }
     }
-    private static Connection connect(String location) {
+    public static Connection connect(String location) {
+
+        checkDrivers();
+
         String dbPrefix = "jdbc:sqlite:";
         Connection connection;
 

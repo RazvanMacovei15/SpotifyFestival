@@ -96,23 +96,23 @@ public class Utils {
     }
 
     public static void main(String[] args) {
-        Utils utils = new Utils();
-
-        ObservableList<Artist> artists = utils.extractArtists(JSONConstant.getConstant2());
-
-        GenreRepo genreRepo = new GenreRepo();
-
-        for(Artist artist : artists){
-            System.out.println(artist.getName() + " + id: " + artist.getId() + " genres: " + artist.getGenres());
-            try {
-                genreRepo.add(artist.getId(), artist);
-            } catch (DuplicateEntityException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        genreRepo.list();
-
-        utils.getGenreCountFromResponse(artists);
+//        Utils utils = new Utils();
+//
+//        ObservableList<Artist> artists = utils.extractArtists(JSONConstant.getConstant2());
+//
+//        GenreRepo genreRepo = new GenreRepo();
+//
+//        for(Artist artist : artists){
+//            System.out.println(artist.getName() + " + id: " + artist.getId() + " genres: " + artist.getGenres());
+//            try {
+//                genreRepo.add(artist.getId(), artist);
+//            } catch (DuplicateEntityException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//
+//        genreRepo.list();
+//
+//        utils.getGenreCountFromResponse(artists);
     }
 }

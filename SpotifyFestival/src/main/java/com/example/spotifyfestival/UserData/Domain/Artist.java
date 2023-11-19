@@ -11,10 +11,15 @@ public class Artist extends Entity{
 
     protected ObservableList<String> genres;
 
+    protected String spotify_id;
 
-
-    public Artist(String name){
+    public Artist(String name) {
         this.name = name;
+    }
+
+    public Artist(String name, String spotify_id){
+        this.name = name;
+        this.spotify_id = spotify_id;
 
     }
     public Artist(String name, ObservableList<String> genres) {
