@@ -30,7 +30,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
     @Override
     public VenueRepo getAllVenues() {
 
-        VenueRepo venueRepo = new VenueRepo();
+        VenueRepo venueRepo = VenueRepo.getInstance();
 
         String tableName = "venues";
 
@@ -81,8 +81,9 @@ public class VenueDAOImplementation implements VenueDAOInterface {
     }
 
     public static void main(String[] args) {
-        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
-        VenueRepo venueRepo = venueDAOImplementation.getAllVenues();
+//        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+        VenueRepo venueRepo = VenueRepo.getInstance();
+
         System.out.println(venueRepo.getSize());
     }
 }
