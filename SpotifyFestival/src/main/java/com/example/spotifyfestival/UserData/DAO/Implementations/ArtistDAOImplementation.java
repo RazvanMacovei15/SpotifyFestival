@@ -78,12 +78,41 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
 
     }
 
-    public static void main(String[] args) {
-        ArtistDAOImplementation artistDAOImplementation = new ArtistDAOImplementation();
-        ArtistRepo artistRepo = artistDAOImplementation.getAllArtists();
+    public void readAllArtists(String tableName, ArtistRepo artistRepo){
 
-        for(int i=1; i<artistRepo.getSize(); i++){
-            System.out.println(artistRepo.getItem(String.valueOf(i)).getName());
+        String query = "SELECT * FROM " + tableName;
+
+        try (Connection connection = DB.connect("festivalDB")) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                int artist_id = rs.getInt("artist_id");
+                String name = rs.getString("name");
+                String spotify_id = rs.getString("spotify_id");
+
+                Artist artist = new Artist(name, spotify_id);
+
+                try {
+                    artistRepo.add(String.valueOf(artist_id), artist);
+                } catch (DuplicateEntityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        } catch (SQLException e) {
+            Logger.getAnonymousLogger().log(
+                    Level.SEVERE,
+                    LocalDateTime.now() + ": Could not load Persons from database ");
         }
+    }
+
+    public static void main(String[] args) {
+        ArtistRepo artistRepo = new ArtistRepo();
+        String tableName = "Artists";
+
+        ArtistDAOImplementation artistDAOImplementation = new ArtistDAOImplementation();
+        artistDAOImplementation.readAllArtists(tableName, artistRepo);
+
+        artistRepo.list();
     }
 }
