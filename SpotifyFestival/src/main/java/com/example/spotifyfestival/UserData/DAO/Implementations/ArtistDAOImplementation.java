@@ -5,6 +5,7 @@ import com.example.spotifyfestival.UserData.DAO.Interfaces.ArtistDAOInterface;
 import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.Domain.Genre;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
+import com.example.spotifyfestival.UserData.FestivalDatabase.DB.CRUDHelper;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
 import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistGenreRepo;
 import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistRepo;
@@ -13,19 +14,28 @@ import com.example.spotifyfestival.UserData.Repos.DBRepos.VenueRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ArtistDAOImplementation implements ArtistDAOInterface {
+    String tableName = "Artists";
+
     @Override
     public Artist create(Artist artist) {
         return null;
+    }
+
+    @Override
+    public void createArtist(int artist_id, String name, String spotify_id) {
+        ObservableList<Genre> genres = null;
+        int id = (int) CRUDHelper.create(
+                tableName,
+                new String[]{"artist_id", "name", "spotify_id"},
+                new Object[]{artist_id, name, spotify_id},
+                new int[]{Types.INTEGER, Types.VARCHAR, Types.VARCHAR}
+        );
     }
 
     @Override
@@ -72,8 +82,21 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     }
 
     @Override
-    public Artist update(Artist artist) {
-        return null;
+    public void update(Artist newArtist) {
+
+        String artist_id = "7";
+        //udpate database
+        int rows = (int) CRUDHelper.update(
+                tableName,
+                new String[]{"artist_id", "name", "spotify_id"},
+                new Object[]{7, newArtist.getName(), newArtist.getSpotify_id()},
+                new int[]{Types.INTEGER, Types.VARCHAR, Types.INTEGER},
+                artist_id,
+                Types.INTEGER,
+                newArtist.getId()
+        );
+        if (rows == 0)
+            throw new IllegalStateException("Person to be updated with id " + newArtist.getId() + " didn't exist in database");
     }
 
     @Override
@@ -138,7 +161,13 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
 
         artistGenreDAOImplementation.populateArtistsWithGenres(artistRepo, genreRepo, artistGenreRepo);
 
+        String name = "lala";
+        String spotify_id = "blala";
+        ObservableList<Genre> genres = null;
 
+        artistDAOImplementation.createArtist(22, name, spotify_id);
+        Artist newArtist = new Artist("blalala", genres, "tralalala");
+        artistDAOImplementation.update(newArtist);
 
 
     }

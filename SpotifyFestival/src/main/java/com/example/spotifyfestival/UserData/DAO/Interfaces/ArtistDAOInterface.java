@@ -6,8 +6,10 @@ import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistRepo;
 public interface ArtistDAOInterface {
 
     Artist create(Artist artist);
+    void createArtist(int artist_id, String name, String spotify_id);
+
     Artist getById(int id);
     ArtistRepo getAllArtists();
-    Artist update(Artist artist);
+    void update(Artist artist);
     void delete(int id);
 }

@@ -52,4 +52,12 @@ public class Artist extends Entity{
     public void setName(String name) {
         this.name = name;
     }
+
+    public String getSpotify_id() {
+        return spotify_id;
+    }
+
+    public void setSpotify_id(String spotify_id) {
+        this.spotify_id = spotify_id;
+    }
 }

@@ -4,5 +4,15 @@ import com.example.spotifyfestival.ConcertsAndFestivals.Concert;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DBGenericRepository;
 
 public class ConcertRepo extends DBGenericRepository<String, Concert> {
+    private static ConcertRepo instance;
 
+    private ConcertRepo(){}
+
+    public static ConcertRepo getInstance(){
+        if(instance == null){
+            instance = new ConcertRepo();
+
+        }
+        return instance;
+    }
 }

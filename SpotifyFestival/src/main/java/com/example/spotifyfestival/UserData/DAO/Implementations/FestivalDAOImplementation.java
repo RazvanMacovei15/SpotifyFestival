@@ -31,7 +31,7 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
 
     @Override
     public FestivalRepo getAllFestivals() {
-        FestivalRepo festivalRepo = new FestivalRepo();
+        FestivalRepo festivalRepo = FestivalRepo.getInstance();
 
         String tableName = "Festivals";
 
@@ -94,12 +94,6 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
 
     @Override
     public void delete(int id) {
-
-    }
-
-    public static void main(String[] args) {
-        FestivalDAOImplementation festivalDAOImplementation = new FestivalDAOImplementation();
-        FestivalRepo festivalRepo = festivalDAOImplementation.getAllFestivals();
 
     }
 }
