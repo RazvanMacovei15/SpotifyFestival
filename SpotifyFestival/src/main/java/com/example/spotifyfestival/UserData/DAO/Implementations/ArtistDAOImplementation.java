@@ -100,8 +100,19 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     }
 
     @Override
-    public void delete(int id) {
-
+    public int delete(int id) {
+        String sql = "DELETE FROM " + tableName + " WHERE id = ?";
+        try (Connection conn = DB.connect("festivalDB")) {
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, id);
+            return pstmt.executeUpdate();
+        } catch (SQLException e) {
+            Logger.getAnonymousLogger().log(
+                    Level.SEVERE,
+                    LocalDateTime.now() + ": Could not delete from " + tableName + " by id " + id +
+                            " because " + e.getCause());
+            return -1;
+        }
     }
 
     public void readAllArtists(String tableName, ArtistRepo artistRepo){
@@ -164,11 +175,11 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
         String name = "lala";
         String spotify_id = "blala";
         ObservableList<Genre> genres = null;
+        artistDAOImplementation.delete(7);
 
-        artistDAOImplementation.createArtist(22, name, spotify_id);
+        artistDAOImplementation.createArtist(23, name, spotify_id);
         Artist newArtist = new Artist("blalala", genres, "tralalala");
-        artistDAOImplementation.update(newArtist);
-
+//        artistDAOImplementation.update(newArtist);
 
     }
 }

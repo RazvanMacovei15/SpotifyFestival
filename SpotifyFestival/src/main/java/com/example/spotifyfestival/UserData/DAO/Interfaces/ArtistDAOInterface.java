@@ -11,5 +11,5 @@ public interface ArtistDAOInterface {
     Artist getById(int id);
     ArtistRepo getAllArtists();
     void update(Artist artist);
-    void delete(int id);
+    int delete(int id);
 }
