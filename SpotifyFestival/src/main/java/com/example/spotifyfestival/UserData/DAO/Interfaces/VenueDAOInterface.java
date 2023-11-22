@@ -1,9 +1,7 @@
 package com.example.spotifyfestival.UserData.DAO.Interfaces;
 
 import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
-import com.example.spotifyfestival.UserData.Repos.VenueRepo;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.VenueRepo;
 
 public interface VenueDAOInterface {
     Venue create(Venue venue);

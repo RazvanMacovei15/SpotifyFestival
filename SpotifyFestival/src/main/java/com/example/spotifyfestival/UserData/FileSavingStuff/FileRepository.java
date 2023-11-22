@@ -1,9 +1,8 @@
-package com.example.spotifyfestival.UserData.Generics;
+package com.example.spotifyfestival.UserData.FileSavingStuff;
 
 import com.example.spotifyfestival.ConcertsAndFestivals.Identifiable;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
-
-import java.util.Map;
+import com.example.spotifyfestival.UserData.Generics.MemoryRepository;
 
 public abstract class FileRepository<K, V extends Identifiable<K>> extends MemoryRepository<K, V> {
     protected String filename;
@@ -15,7 +14,6 @@ public abstract class FileRepository<K, V extends Identifiable<K>> extends Memor
 
     protected abstract void readFromFle();
     protected abstract void writeToFile();
-    protected abstract void readLine();
     @Override
     public void add(K id, V value) throws DuplicateEntityException{
         super.add(id, value);
@@ -29,7 +27,7 @@ public abstract class FileRepository<K, V extends Identifiable<K>> extends Memor
     }
 
     @Override
-    public Map<K, V> getAll() {
+    public Iterable<V> getAll() {
         return super.getAll();
     }
 

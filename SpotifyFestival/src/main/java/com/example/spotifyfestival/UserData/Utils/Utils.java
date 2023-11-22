@@ -1,13 +1,10 @@
 package com.example.spotifyfestival.UserData.Utils;
 
 import com.example.spotifyfestival.API_URLS.SearchAPI;
-import com.example.spotifyfestival.ConcertsAndFestivals.JSONConstant;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyService;
 import com.example.spotifyfestival.UserData.Domain.Artist;
-import com.example.spotifyfestival.UserData.DuplicateEntityException;
 import com.example.spotifyfestival.UserData.Generics.MapValueSorter;
-import com.example.spotifyfestival.UserData.Repos.GenreRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;

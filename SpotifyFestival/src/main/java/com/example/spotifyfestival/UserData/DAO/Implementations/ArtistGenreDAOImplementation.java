@@ -2,7 +2,7 @@ package com.example.spotifyfestival.UserData.DAO.Implementations;
 
 import com.example.spotifyfestival.UserData.DAO.Interfaces.ArtistGenreDAOInterface;
 import com.example.spotifyfestival.UserData.Domain.ArtistGenre;
-import com.example.spotifyfestival.UserData.Repos.ArtistGenreRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistGenreRepo;
 
 public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
     @Override

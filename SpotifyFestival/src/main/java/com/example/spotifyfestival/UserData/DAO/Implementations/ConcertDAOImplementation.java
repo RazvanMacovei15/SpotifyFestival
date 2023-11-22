@@ -2,7 +2,7 @@ package com.example.spotifyfestival.UserData.DAO.Implementations;
 
 import com.example.spotifyfestival.ConcertsAndFestivals.Concert;
 import com.example.spotifyfestival.UserData.DAO.Interfaces.ConcertDAOInterface;
-import com.example.spotifyfestival.UserData.Repos.ConcertRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.ConcertRepo;
 
 public class ConcertDAOImplementation implements ConcertDAOInterface {
     @Override

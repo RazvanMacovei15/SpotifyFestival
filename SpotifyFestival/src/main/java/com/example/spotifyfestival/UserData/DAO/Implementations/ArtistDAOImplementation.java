@@ -1,14 +1,13 @@
 package com.example.spotifyfestival.UserData.DAO.Implementations;
 
-import com.example.spotifyfestival.ConcertsAndFestivals.Entity;
 import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
 import com.example.spotifyfestival.UserData.DAO.Interfaces.ArtistDAOInterface;
 import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
-import com.example.spotifyfestival.UserData.Repos.ArtistRepo;
-import com.example.spotifyfestival.UserData.Repos.GenreRepo;
-import com.example.spotifyfestival.UserData.Repos.VenueRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.GenreRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.VenueRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

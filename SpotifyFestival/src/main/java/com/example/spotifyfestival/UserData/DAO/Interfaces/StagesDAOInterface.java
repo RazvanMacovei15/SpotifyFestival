@@ -1,9 +1,7 @@
 package com.example.spotifyfestival.UserData.DAO.Interfaces;
 
-import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.Domain.FestivalStage;
-import com.example.spotifyfestival.UserData.Repos.ArtistRepo;
-import com.example.spotifyfestival.UserData.Repos.FestivalStageRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.FestivalStageRepo;
 
 
 public interface StagesDAOInterface {

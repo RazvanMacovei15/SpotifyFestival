@@ -2,13 +2,11 @@ package com.example.spotifyfestival.UserData.DAO.Implementations;
 
 import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
 import com.example.spotifyfestival.UserData.DAO.Interfaces.FestivalDAOInterface;
-import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.Domain.Festival;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
-import com.example.spotifyfestival.UserData.Repos.ArtistRepo;
-import com.example.spotifyfestival.UserData.Repos.FestivalRepo;
-import com.example.spotifyfestival.UserData.Repos.VenueRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.FestivalRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.VenueRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -17,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -55,19 +52,19 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
                 VenueRepo venueRepo = venueDAOImplementation.getAllVenues();
                 Venue venue = null;
 
-                // Iterate through the map and check if the key is equal to keyToCheck
-                for (Map.Entry<String, Venue> entry : venueRepo.getAll().entrySet()) {
-                    String key = entry.getKey();
-                    Venue value = entry.getValue();
-
-                    if (key.equals(String.valueOf(venue_id))) {
-                        // Key found, do something with the corresponding value (Venue)
-                        System.out.println("Key found: " + key + ", Value: " + value);
-                        venue = value;
-//                        System.out.println(venue.getVenueName());
-                        break;  // Assuming you want to stop searching after finding the key
-                    }
-                }
+//                // Iterate through the map and check if the key is equal to keyToCheck
+//                for (Map.Entry<String, Venue> entry : venueRepo.getAll().entrySet()) {
+//                    String key = entry.getKey();
+//                    Venue value = entry.getValue();
+//
+//                    if (key.equals(String.valueOf(venue_id))) {
+//                        // Key found, do something with the corresponding value (Venue)
+//                        System.out.println("Key found: " + key + ", Value: " + value);
+//                        venue = value;
+////                        System.out.println(venue.getVenueName());
+//                        break;  // Assuming you want to stop searching after finding the key
+//                    }
+//                }
 
                 Festival festival = new Festival(name, venue);
                 festivals.add(festival);

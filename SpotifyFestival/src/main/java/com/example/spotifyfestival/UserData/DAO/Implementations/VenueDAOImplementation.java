@@ -4,7 +4,7 @@ import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
 import com.example.spotifyfestival.UserData.DAO.Interfaces.VenueDAOInterface;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
-import com.example.spotifyfestival.UserData.Repos.VenueRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.VenueRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

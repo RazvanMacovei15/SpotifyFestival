@@ -1,9 +1,7 @@
 package com.example.spotifyfestival.UserData.DAO.Interfaces;
 
-import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.Domain.Genre;
-import com.example.spotifyfestival.UserData.Repos.ArtistRepo;
-import com.example.spotifyfestival.UserData.Repos.GenreRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.GenreRepo;
 
 public interface GenresDAOInterface {
     Genre create(Genre genre);

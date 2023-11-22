@@ -1,8 +1,7 @@
 package com.example.spotifyfestival.UserData.DAO.Interfaces;
 
-import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.Domain.Festival;
-import com.example.spotifyfestival.UserData.Repos.FestivalRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.FestivalRepo;
 
 public interface FestivalDAOInterface {
     Festival create(Festival festival);
