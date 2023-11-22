@@ -11,11 +11,12 @@ module com.example.spotifyfestival {
     requires java.desktop;
     requires junit;
 
+
     opens com.example.spotifyfestival to javafx.fxml;
     exports com.example.spotifyfestival;
     exports com.example.spotifyfestival.UnusedStuffForNow.helperObsLis;
     opens com.example.spotifyfestival.UnusedStuffForNow.helperObsLis to javafx.fxml;
-    exports com.example.spotifyfestival.Controllers;
+//    exports com.example.spotifyfestival.Controllers;
     opens com.example.spotifyfestival.Controllers to javafx.fxml;
 
     exports com.example.spotifyfestival.SpotifyAPI;

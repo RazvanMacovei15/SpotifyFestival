@@ -3,8 +3,10 @@ package com.example.spotifyfestival.UserData.DAO.Implementations;
 import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
 import com.example.spotifyfestival.UserData.DAO.Interfaces.ArtistDAOInterface;
 import com.example.spotifyfestival.UserData.Domain.Artist;
+import com.example.spotifyfestival.UserData.Domain.Genre;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistGenreRepo;
 import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistRepo;
 import com.example.spotifyfestival.UserData.Repos.DBRepos.GenreRepo;
 import com.example.spotifyfestival.UserData.Repos.DBRepos.VenueRepo;
@@ -16,6 +18,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,7 +35,7 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
 
     @Override
     public ArtistRepo getAllArtists() {
-        ArtistRepo artistRepo = new ArtistRepo();
+        ArtistRepo artistRepo = ArtistRepo.getInstance();
 
         String tableName = "Artists";
 
@@ -89,8 +92,9 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
                 int artist_id = rs.getInt("artist_id");
                 String name = rs.getString("name");
                 String spotify_id = rs.getString("spotify_id");
+                ObservableList<Genre> gList = FXCollections.observableArrayList();
 
-                Artist artist = new Artist(name, spotify_id);
+                Artist artist = new Artist(name, gList, spotify_id);
 
                 try {
                     artistRepo.add(String.valueOf(artist_id), artist);
@@ -111,16 +115,31 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
         venueDAOImplementation.generateVenueRepo();
         VenueRepo venueRepo = VenueRepo.getInstance();
         venueRepo.list();
+
         System.out.println();
+
         GenreDAOImplementation genreDAOImplementation = new GenreDAOImplementation();
         genreDAOImplementation.generateGenreRepo();
         GenreRepo genreRepo = GenreRepo.getInstance();
         genreRepo.list();
+
         System.out.println();
-        ArtistRepo artistRepo = new ArtistRepo();
+
+        ArtistRepo artistRepo = ArtistRepo.getInstance();
         String tableName = "Artists";
         ArtistDAOImplementation artistDAOImplementation = new ArtistDAOImplementation();
         artistDAOImplementation.readAllArtists(tableName, artistRepo);
         artistRepo.list();
+
+        System.out.println();
+
+        ArtistGenreRepo artistGenreRepo = ArtistGenreRepo.getInstance();
+        ArtistGenreDAOImplementation artistGenreDAOImplementation = new ArtistGenreDAOImplementation();
+
+        artistGenreDAOImplementation.populateArtistsWithGenres(artistRepo, genreRepo, artistGenreRepo);
+
+
+
+
     }
 }

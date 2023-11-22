@@ -4,6 +4,7 @@ import com.example.spotifyfestival.API_URLS.SearchAPI;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.SpotifyAPI.SpotifyService;
 import com.example.spotifyfestival.UserData.Domain.Artist;
+import com.example.spotifyfestival.UserData.Domain.Genre;
 import com.example.spotifyfestival.UserData.Generics.MapValueSorter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -43,54 +44,54 @@ public class Utils {
         return id;
     }
 
-    public ObservableList<Artist> extractArtists(String jsonResponse){
+//    public ObservableList<Artist> extractArtists(String jsonResponse){
+//
+//        ObservableList<ObservableList<String>> allGenresExtracted = FXCollections.observableArrayList();
+//        ObservableList<Artist> listOfArtistsInResponse = FXCollections.observableArrayList();
+//        try{
+//            JSONObject jsonObject = new JSONObject(jsonResponse);
+//            JSONArray itemsArray = jsonObject.getJSONArray("artists");
+//            for(int i=0; i<itemsArray.length(); i++){
+//                ObservableList<String> artistGenres = FXCollections.observableArrayList();
+//                JSONObject artistObject = itemsArray.getJSONObject(i);
+//                JSONArray array = artistObject.getJSONArray("genres");
+//                for(int j=0; j<array.length(); j++ ){
+//                    String genre = array.getString(j);
+//                    artistGenres.add(genre);
+//                }
+//                String name = artistObject.getString("name");
+//                String id = artistObject.getString("id");
+//                Artist artist = new Artist(name, artistGenres);
+//                artist.setId(id);
+//
+//                listOfArtistsInResponse.add(artist);
+//
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return listOfArtistsInResponse;
+//    }
 
-        ObservableList<ObservableList<String>> allGenresExtracted = FXCollections.observableArrayList();
-        ObservableList<Artist> listOfArtistsInResponse = FXCollections.observableArrayList();
-        try{
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray itemsArray = jsonObject.getJSONArray("artists");
-            for(int i=0; i<itemsArray.length(); i++){
-                ObservableList<String> artistGenres = FXCollections.observableArrayList();
-                JSONObject artistObject = itemsArray.getJSONObject(i);
-                JSONArray array = artistObject.getJSONArray("genres");
-                for(int j=0; j<array.length(); j++ ){
-                    String genre = array.getString(j);
-                    artistGenres.add(genre);
-                }
-                String name = artistObject.getString("name");
-                String id = artistObject.getString("id");
-                Artist artist = new Artist(name, artistGenres);
-                artist.setId(id);
-
-                listOfArtistsInResponse.add(artist);
-
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return listOfArtistsInResponse;
-    }
-
-    public Map<String, Integer> getGenreCountFromResponse(ObservableList<Artist> artists){
-
-        HashMap<String, Integer> genreCount = new HashMap<>();
-        for(Artist artist : artists){
-            ObservableList<String> genres = (ObservableList<String>) artist.getGenres();
-            for(int i = 0; i < genres.size(); i++){
-                String genre = genres.get(i);
-                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
-            }
-        }
-
-        System.out.println(genreCount);
-
-        Map<String, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
-        for (Map.Entry<String, Integer> entry : sortedGenreMap.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
-        }
-        return sortedGenreMap;
-    }
+//    public Map<String, Integer> getGenreCountFromResponse(ObservableList<Artist> artists){
+//
+//        HashMap<String, Integer> genreCount = new HashMap<>();
+//        for(Artist artist : artists){
+//            ObservableList<Genre> genres = (ObservableList<Genre>) artist.getGenres();
+//            for(int i = 0; i < genres.size(); i++){
+//                String genre = genres.get(i);
+//                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
+//            }
+//        }
+//
+//        System.out.println(genreCount);
+//
+//        Map<String, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
+//        for (Map.Entry<String, Integer> entry : sortedGenreMap.entrySet()) {
+//            System.out.println(entry.getKey() + ": " + entry.getValue());
+//        }
+//        return sortedGenreMap;
+//    }
 
     public static void main(String[] args) {
 //        Utils utils = new Utils();

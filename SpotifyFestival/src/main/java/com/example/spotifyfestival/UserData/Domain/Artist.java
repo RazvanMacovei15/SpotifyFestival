@@ -9,7 +9,7 @@ public class Artist extends Entity{
 
     private String name;
 
-    protected ObservableList<String> genres;
+    protected ObservableList<Genre> genres;
 
     protected String spotify_id;
 
@@ -17,25 +17,33 @@ public class Artist extends Entity{
         this.name = name;
     }
 
+    public Artist(String name, ObservableList<Genre> genres, String spotify_id) {
+        this.name = name;
+        this.genres = genres;
+        this.spotify_id = spotify_id;
+    }
+
     public Artist(String name, String spotify_id){
         this.name = name;
         this.spotify_id = spotify_id;
 
     }
-    public Artist(String name, ObservableList<String> genres) {
+    public Artist(String name, ObservableList<Genre> genres) {
         this.name = name;
         this.genres = genres;
     }
 
-    public List<String> getGenres() {
+    public ObservableList<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(ObservableList<String> genres) {
+    public void setGenres(ObservableList<Genre> genres) {
         this.genres = genres;
     }
 
-
+    public void addGenre(Genre genre){
+        genres.add(genre);
+    }
 
     public String getName() {
         return name;

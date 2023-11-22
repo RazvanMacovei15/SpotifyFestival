@@ -20,7 +20,7 @@ public class Main {
 
     public static CRUDRepoInterface createDefaultRepo()
     {
-        CRUDRepoInterface repo = new ArtistRepo();
+        CRUDRepoInterface repo = ArtistRepo.getInstance();
 
         Artist a1 = new Artist("1", "John");
         Artist a2 = new Artist("2", "Ana");
