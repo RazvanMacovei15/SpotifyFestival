@@ -80,10 +80,55 @@ public class VenueDAOImplementation implements VenueDAOInterface {
 
     }
 
-    public static void main(String[] args) {
-//        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
-        VenueRepo venueRepo = VenueRepo.getInstance();
+    public void populateVenueRepo(String tableName,VenueRepo venueRepo){
 
-        System.out.println(venueRepo.getSize());
+        String query = "SELECT * FROM " + tableName;
+        try (Connection connection = DB.connect("festivalDB")) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next()) {
+                int venue_id = rs.getInt("venue_id");
+                String city = rs.getString("city");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                double latitude = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+
+                Venue venue = new Venue(city,name,address, String.valueOf(latitude), String.valueOf(longitude));
+
+
+                try {
+                    venueRepo.add(String.valueOf(venue_id), venue);
+                } catch (DuplicateEntityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        } catch (SQLException e) {
+            Logger.getAnonymousLogger().log(
+                    Level.SEVERE,
+                    LocalDateTime.now() + ": Could not load Persons from database ");
+
+        }
+
+    }
+
+    public void generateVenueRepo(){
+        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+        VenueRepo venueRepo = VenueRepo.getInstance();
+        String tableName = "Venues";
+
+        venueDAOImplementation.populateVenueRepo(tableName, venueRepo);
+    }
+
+
+    public static void main(String[] args) {
+        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+        VenueRepo venueRepo = VenueRepo.getInstance();
+        String tableName = "Venues";
+
+        venueDAOImplementation.populateVenueRepo(tableName, venueRepo);
+        venueRepo.list();
     }
 }

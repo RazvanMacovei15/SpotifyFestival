@@ -7,6 +7,7 @@ import com.example.spotifyfestival.UserData.Domain.Artist;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
 import com.example.spotifyfestival.UserData.Repos.ArtistRepo;
+import com.example.spotifyfestival.UserData.Repos.GenreRepo;
 import com.example.spotifyfestival.UserData.Repos.VenueRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -107,12 +108,20 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     }
 
     public static void main(String[] args) {
+        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+        venueDAOImplementation.generateVenueRepo();
+        VenueRepo venueRepo = VenueRepo.getInstance();
+        venueRepo.list();
+        System.out.println();
+        GenreDAOImplementation genreDAOImplementation = new GenreDAOImplementation();
+        genreDAOImplementation.generateGenreRepo();
+        GenreRepo genreRepo = GenreRepo.getInstance();
+        genreRepo.list();
+        System.out.println();
         ArtistRepo artistRepo = new ArtistRepo();
         String tableName = "Artists";
-
         ArtistDAOImplementation artistDAOImplementation = new ArtistDAOImplementation();
         artistDAOImplementation.readAllArtists(tableName, artistRepo);
-
         artistRepo.list();
     }
 }

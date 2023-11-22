@@ -6,5 +6,15 @@ import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DBGenericReposit
 import com.example.spotifyfestival.UserData.Generics.MemoryRepository;
 
 public class GenreRepo extends DBGenericRepository<String, Genre> {
+    private static GenreRepo instance;
 
+    private GenreRepo(){}
+
+    public static GenreRepo getInstance(){
+        if(instance == null){
+            instance = new GenreRepo();
+
+        }
+        return instance;
+    }
 }
