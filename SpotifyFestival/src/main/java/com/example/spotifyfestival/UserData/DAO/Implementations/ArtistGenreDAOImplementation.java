@@ -80,37 +80,6 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
     public void delete(int id) {
 
     }
-
-    public void initializeArtistGenreDB() {
-        String query = "SELECT * FROM " + tableName;
-
-        try (Connection connection = DB.connect("festivalDB")) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
-            artistGenres.clear();
-            while (rs.next()) {
-                int artist_genre_id = rs.getInt("artist_genre_id");
-                int artist_id = rs.getInt("artist_id");
-                int genre_id = rs.getInt("genre_id");
-
-                ArtistGenre artistGenre = new ArtistGenre(artist_genre_id, artist_id, genre_id);
-
-                try {
-                    artistGenreRepo.add(artist_genre_id, artistGenre);
-                    artistGenres.add(artistGenre);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-        } catch (SQLException e) {
-            Logger.getAnonymousLogger().log(
-                    Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Artists Genres from database ");
-            artistGenres.clear();
-        }
-    }
-
     public void populateArtistsWithGenres(ArtistRepo artistRepo, GenreRepo genreRepo, ArtistGenreRepo artistGenreRepo) {
         artistRepo = ArtistRepo.getInstance();
         genreRepo = GenreRepo.getInstance();
@@ -131,7 +100,6 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
             }
         }
     }
-
     public void populateArtistAtIDWithGenres(int id, ArtistRepo artistRepo, GenreRepo genreRepo) {
 
         Artist artist = artistRepo.getItem(id);
@@ -147,9 +115,5 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
                 }
             }
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }

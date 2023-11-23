@@ -20,10 +20,8 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     String tableName = "Artists";
     String[] columns = {"artist_id", "name", "spotify_id"};
     String[] updateColumns = {"name", "spotify_id"};
-
     String readQuery = "SELECT * FROM " + tableName;
-
-    String deleteQuery = "DELETE FROM " + tableName + " WHERE ID = ?";
+    String deleteQuery = "DELETE FROM " + tableName + " WHERE artist_id = ?";
     int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR};
     ObservableList<Artist> artistsList = FXCollections.observableArrayList();
     ArtistRepo artistRepo = ArtistRepo.getInstance();
@@ -31,12 +29,6 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     public ArtistDAOImplementation() {
         this.artistRepo = getAllArtists();
     }
-
-    @Override
-    public Artist create(Artist artist) {
-        return null;
-    }
-
     @Override
     public void insertArtistInDB(int artist_id, String name, ObservableList<Genre> genres, String spotify_id) {
         //update DB
@@ -56,8 +48,8 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
 
     @Override
     public Optional<Artist> getById(int id) {
-        for(Artist artist : artistsList){
-            if(artist.getId().equals(id))
+        for (Artist artist : artistsList) {
+            if (artist.getId().equals(id))
                 return Optional.of(artist);
         }
         return Optional.empty();
@@ -95,18 +87,25 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     }
 
     @Override
+    public Object readArtistAttribute(String attributeField, String indexID, int index) {
+
+        Object thing = (Object) CRUDHelper.read(tableName, attributeField, Types.VARCHAR, indexID, Types.INTEGER, index);
+        return thing;
+    }
+
+    @Override
     public void update(Artist newArtist) {
         //update DB
         long rows = CRUDHelper.update(
                 tableName,
                 updateColumns,
-                new Object[]{newArtist.getName(),newArtist.getSpotify_id()},
+                new Object[]{newArtist.getName(), newArtist.getSpotify_id()},
                 new int[]{Types.VARCHAR, Types.VARCHAR},
                 "artist_id",
                 Types.INTEGER,
                 newArtist.getId()
         );
-        if(rows == 0)
+        if (rows == 0)
             throw new IllegalStateException("Artist to update with id " + newArtist.getId() + "doesn't exist in the database!");
         //update cache
         Optional<Artist> optionalArtist = getById(newArtist.getId());
@@ -128,11 +127,9 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
             return -1; // or throw an exception, depending on your error handling strategy
         }
         // Build the SQL delete query
-        String sql = "DELETE FROM " + tableName + " WHERE artist_id = ?";
-
         try (Connection conn = DB.connect("festivalDB")) {
             // Prepare and execute the delete query
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = conn.prepareStatement(deleteQuery);
             pstmt.setInt(1, id);
             return pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -187,7 +184,7 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
 
         System.out.println();
 
-        for(int i = 1; i < festivalStageRepo.getSize()+1; i++){
+        for (int i = 1; i < festivalStageRepo.getSize() + 1; i++) {
             System.out.println(festivalStageRepo.getItem(i).getVenue());
         }
 
@@ -198,9 +195,6 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
         concertRepo.list();
         System.out.println(concertRepo.getItem(5).getDescription());
 
-//        Artist toGenerate = artistRepo.getItem(21);
-//        artistGenreDAOImplementation.populateArtistAtIDWithGenres(toGenerate.getId(), artistRepo, genreRepo);
-//        System.out.println(toGenerate.getGenres());
         int id = 21;
         String name = "Eminem";
         ObservableList<Genre> genres = null;
@@ -211,15 +205,10 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
 
 //        artistDAOImplementation.update(newArtist);
 //        artistDAOImplementation.delete(21);
-        int idToDelete = 21; // Replace this with the actual ID you want to delete
-        int rowsAffected = artistDAOImplementation.delete(idToDelete);
+        int idToDelete = 20; // Replace this with the actual ID you want to delete
+//        int rowsAffected = artistDAOImplementation.delete(idToDelete);
 
-        if (rowsAffected > 0) {
-            System.out.println("Successfully deleted " + rowsAffected + " row(s).");
-        } else {
-            System.out.println("No rows deleted. Check the logs for details.");
-        }
-
-
+        Object freshArtist = artistDAOImplementation.readArtistAttribute( "name", "artist_id", idToDelete);
+        System.out.println(freshArtist);
     }
 }
