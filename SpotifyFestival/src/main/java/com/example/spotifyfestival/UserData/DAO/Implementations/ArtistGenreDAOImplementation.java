@@ -17,16 +17,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
     String tableName = "ArtistsGenres";
     ArtistGenreRepo artistGenreRepo = ArtistGenreRepo.getInstance();
+    ObservableList<ArtistGenre> artistGenres = FXCollections.observableArrayList();
 
     public ArtistGenreDAOImplementation() {
-        readAll();
+        artistGenreRepo = getAllArtistGenres();
     }
 
     @Override
@@ -41,7 +41,34 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
 
     @Override
     public ArtistGenreRepo getAllArtistGenres() {
-        return null;
+        String query = "SELECT * FROM " + tableName;
+
+        try (Connection connection = DB.connect("festivalDB")) {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet rs = statement.executeQuery();
+            artistGenres.clear();
+            while (rs.next()) {
+                int artist_genre_id = rs.getInt("artist_genre_id");
+                int artist_id = rs.getInt("artist_id");
+                int genre_id = rs.getInt("genre_id");
+
+                ArtistGenre artistGenre = new ArtistGenre(artist_genre_id, artist_id, genre_id);
+
+                try {
+                    artistGenreRepo.add(artist_genre_id, artistGenre);
+                    artistGenres.add(artistGenre);
+                } catch (DuplicateEntityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        } catch (SQLException e) {
+            Logger.getAnonymousLogger().log(
+                    Level.SEVERE,
+                    LocalDateTime.now() + ": Could not load Artists Genres from database ");
+            artistGenres.clear();
+        }
+        return artistGenreRepo;
     }
 
     @Override
@@ -54,12 +81,13 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
 
     }
 
-    public void readAll() {
+    public void initializeArtistGenreDB() {
         String query = "SELECT * FROM " + tableName;
 
         try (Connection connection = DB.connect("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
+            artistGenres.clear();
             while (rs.next()) {
                 int artist_genre_id = rs.getInt("artist_genre_id");
                 int artist_id = rs.getInt("artist_id");
@@ -69,6 +97,7 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
 
                 try {
                     artistGenreRepo.add(artist_genre_id, artistGenre);
+                    artistGenres.add(artistGenre);
                 } catch (DuplicateEntityException e) {
                     throw new RuntimeException(e);
                 }
@@ -77,10 +106,10 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Persons from database ");
+                    LocalDateTime.now() + ": Could not load Artists Genres from database ");
+            artistGenres.clear();
         }
     }
-
 
     public void populateArtistsWithGenres(ArtistRepo artistRepo, GenreRepo genreRepo, ArtistGenreRepo artistGenreRepo) {
         artistRepo = ArtistRepo.getInstance();
@@ -103,13 +132,13 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
         }
     }
 
-    public void populateArtistWithGenres(int id, ArtistRepo artistRepo, GenreRepo genreRepo) {
+    public void populateArtistAtIDWithGenres(int id, ArtistRepo artistRepo, GenreRepo genreRepo) {
 
-        readAll();
         Artist artist = artistRepo.getItem(id);
-        for (int i = 0; i < artistGenreRepo.getSize(); i++) {
-            if (artistGenreRepo.getItem(i).getArtist_id() == id) {
-                int genre_id = artistGenreRepo.getItem(i).getGenre_id();
+
+        for (int i = 1; i < artistGenres.size() + 1; i++) {
+            if (artistGenres.get(i).getArtist_id() == id) {
+                int genre_id = artistGenres.get(i).getGenre_id();
                 Genre genre = genreRepo.getItem(genre_id);
                 try {
                     artist.addGenre(genre);
@@ -118,7 +147,6 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
                 }
             }
         }
-
     }
 
     public static void main(String[] args) {
