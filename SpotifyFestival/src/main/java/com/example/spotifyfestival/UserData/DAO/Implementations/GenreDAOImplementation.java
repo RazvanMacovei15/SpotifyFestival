@@ -44,16 +44,14 @@ public class GenreDAOImplementation implements GenresDAOInterface {
                 int genre_id = rs.getInt("genre_id");
                 String name = rs.getString("name");
 
-                Genre genre = new Genre(name);
-                genres.add(genre);
+                Genre genre = new Genre(genre_id, name);
+
                 try {
-                    genreRepo.add(String.valueOf(genre_id), genre);
+                    genreRepo.add(genre_id, genre);
+                    genres.add(genre);
                 } catch (DuplicateEntityException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            for(int i =0; i< genres.size(); i++){
-                System.out.println(genres.get(i).getName());
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
@@ -73,39 +71,10 @@ public class GenreDAOImplementation implements GenresDAOInterface {
     public void delete(int id) {
 
     }
-
-    public void readAllGenres(String tableName, GenreRepo genreRepo){
-
-        String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DB.connect("festivalDB")) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                int genre_id = rs.getInt("genre_id");
-                String name = rs.getString("name");
-
-                Genre genre = new Genre(name);
-                try {
-                    genreRepo.add(String.valueOf(genre_id), genre);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-        } catch (SQLException e) {
-            Logger.getAnonymousLogger().log(
-                    Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Persons from database ");
-
-        }
-
-    }
-
     public void generateGenreRepo(){
         GenreDAOImplementation genreDAOImplementation = new GenreDAOImplementation();
         GenreRepo genreRepo = GenreRepo.getInstance();
         String tableName = "Genres";
 
-        genreDAOImplementation.readAllGenres(tableName, genreRepo);
     }
 }

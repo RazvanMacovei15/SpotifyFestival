@@ -29,13 +29,7 @@ public class UI {
         System.out.print("Input name: ");
         String name=sc.next();
 
-        try {
-            service.addArtist(id, name);
-        }
-        catch (DuplicateEntityException re)
-        {
-            System.out.println(re.getMessage());
-        }
+        //            service.addArtist(id, name);
     }
     public void printall(){
 

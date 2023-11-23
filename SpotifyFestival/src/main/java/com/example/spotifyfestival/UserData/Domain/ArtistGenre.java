@@ -6,7 +6,8 @@ public class ArtistGenre extends Entity {
     protected int artist_id;
     protected int genre_id;
 
-    public ArtistGenre(int artist_id, int genre_id) {
+    public ArtistGenre(int id, int artist_id, int genre_id) {
+        super(id);
         this.artist_id = artist_id;
         this.genre_id = genre_id;
     }

@@ -49,11 +49,11 @@ public class VenueDAOImplementation implements VenueDAOInterface {
                 double latitude = rs.getDouble("latitude");
                 double longitude = rs.getDouble("longitude");
 
-                Venue venue = new Venue(city,name,address, String.valueOf(latitude), String.valueOf(longitude));
+                Venue venue = new Venue(venue_id, city,name,address, String.valueOf(latitude), String.valueOf(longitude));
                 venues.add(venue);
 
                 try {
-                    venueRepo.add(String.valueOf(venue_id), venue);
+                    venueRepo.add(venue_id, venue);
                 } catch (DuplicateEntityException e) {
                     throw new RuntimeException(e);
                 }
@@ -95,11 +95,11 @@ public class VenueDAOImplementation implements VenueDAOInterface {
                 double latitude = rs.getDouble("latitude");
                 double longitude = rs.getDouble("longitude");
 
-                Venue venue = new Venue(city,name,address, String.valueOf(latitude), String.valueOf(longitude));
+                Venue venue = new Venue(venue_id, city,name,address, String.valueOf(latitude), String.valueOf(longitude));
 
 
                 try {
-                    venueRepo.add(String.valueOf(venue_id), venue);
+                    venueRepo.add(venue_id, venue);
                 } catch (DuplicateEntityException e) {
                     throw new RuntimeException(e);
                 }

@@ -8,9 +8,10 @@ public class User extends Entity {
     protected String email;
     protected String username;
     protected String password;
-    protected Map<String,Integer> genreList;
+    protected Map<Integer, Genre> genreList;
 
-    public User(String email, String username, String password, Map<String, Integer> genreList) {
+    public User(int id, String email, String username, String password, Map<Integer, Genre> genreList) {
+        super(id);
         this.email = email;
         this.username = username;
         this.password = password;
@@ -41,11 +42,11 @@ public class User extends Entity {
         this.password = password;
     }
 
-    public Map<String, Integer> getGenreList() {
+    public Map<Integer, Genre> getGenreList() {
         return genreList;
     }
 
-    public void setGenreList(Map<String, Integer> genreList) {
+    public void setGenreList(Map<Integer, Genre> genreList) {
         this.genreList = genreList;
     }
 }

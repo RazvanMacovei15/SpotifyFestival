@@ -7,7 +7,8 @@ public class Festival extends Entity {
     protected String name;
     protected Venue venue;
 
-    public Festival(String name, Venue venue) {
+    public Festival(int id, String name, Venue venue) {
+        super(id);
         this.name = name;
         this.venue=venue;
     }

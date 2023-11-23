@@ -5,7 +5,8 @@ import com.example.spotifyfestival.ConcertsAndFestivals.Entity;
 public class Genre extends Entity {
     protected String name;
 
-    public Genre(String name) {
+    public Genre(int id, String name) {
+        super(id);
         this.name = name;
     }
 

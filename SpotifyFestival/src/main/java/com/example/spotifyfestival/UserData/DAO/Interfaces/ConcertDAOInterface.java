@@ -6,7 +6,7 @@ import com.example.spotifyfestival.UserData.Repos.DBRepos.ConcertRepo;
 public interface ConcertDAOInterface {
     Concert create(Concert concert);
     Concert getById(int id);
-    ConcertRepo getAllVenues();
+    ConcertRepo getAllConcerts();
     Concert update(Concert concert);
     void delete(int id);
 }

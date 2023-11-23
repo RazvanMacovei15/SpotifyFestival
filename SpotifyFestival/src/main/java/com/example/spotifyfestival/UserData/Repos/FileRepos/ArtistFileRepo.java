@@ -6,7 +6,7 @@ import com.example.spotifyfestival.UserData.FileSavingStuff.FileRepository;
 
 import java.io.*;
 
-public class ArtistFileRepo extends FileRepository<String, Artist> {
+public class ArtistFileRepo extends FileRepository<Integer, Artist> {
     public ArtistFileRepo(String filename) {
         super(filename);
     }
@@ -18,14 +18,15 @@ public class ArtistFileRepo extends FileRepository<String, Artist> {
             String line = null;
             while ( (line = reader.readLine()) != null){
                 String[] tokens = line.split("[,]");
-                if ( tokens.length != 2 )
+                if ( tokens.length != 3 )
                     continue;
                 else{
-                    String ID = tokens[0].trim();
+                    int ID = Integer.parseInt(tokens[0].trim());
                     String name = tokens[1].trim();
+                    String spotify_id = tokens[2].trim();
 
-                    Artist a = new Artist(ID, name);
-                    super.add(ID, a);
+//                    Artist a = new Artist(ID, name, spotify_id);
+//                    super.add(ID, a);
                 }
             }
             reader.close();
@@ -33,8 +34,6 @@ public class ArtistFileRepo extends FileRepository<String, Artist> {
         catch (FileNotFoundException f){
             throw new RuntimeException("File not found");
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);
         }
     }

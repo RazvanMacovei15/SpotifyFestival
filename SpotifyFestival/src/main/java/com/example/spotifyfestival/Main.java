@@ -22,18 +22,13 @@ public class Main {
     {
         CRUDRepoInterface repo = ArtistRepo.getInstance();
 
-        Artist a1 = new Artist("1", "John");
-        Artist a2 = new Artist("2", "Ana");
-        Artist a3 = new Artist( "3", "Alex");
+//        Artist a1 = new Artist("1", "John");
+//        Artist a2 = new Artist("2", "Ana");
+//        Artist a3 = new Artist( "3", "Alex");
 
-        try{
-            repo.add(a1.getId(),a1);
-            repo.add(a2.getId(),a2);
-            repo.add(a3.getId(),a3);
-        }catch (DuplicateEntityException re)
-        {
-            System.out.println(re.getMessage());
-        }
+        //            repo.add(a1.getId(),a1);
+//            repo.add(a2.getId(),a2);
+//            repo.add(a3.getId(),a3);
 
         return repo;
     }

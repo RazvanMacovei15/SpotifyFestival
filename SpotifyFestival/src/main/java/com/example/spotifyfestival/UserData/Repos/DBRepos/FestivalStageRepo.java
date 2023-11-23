@@ -3,7 +3,7 @@ package com.example.spotifyfestival.UserData.Repos.DBRepos;
 import com.example.spotifyfestival.UserData.Domain.FestivalStage;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DBGenericRepository;
 
-public class FestivalStageRepo extends DBGenericRepository<String, FestivalStage> {
+public class FestivalStageRepo extends DBGenericRepository<Integer, FestivalStage> {
 
     private static FestivalStageRepo instance;
 

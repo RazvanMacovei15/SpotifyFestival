@@ -12,9 +12,9 @@ public class Service {
         this.repo = repo;
     }
 
-    public void addArtist(String id,String name) throws DuplicateEntityException {
-        Artist a = new Artist(id,name);
-        this.repo.add(id,a);
+    public void addArtist(Integer id,String name) throws DuplicateEntityException {
+//        Artist a = new Artist(id,name);
+//        this.repo.add(id,a);
     }
 
     public Iterable<Artist> getALL()

@@ -2,15 +2,15 @@ package com.example.spotifyfestival.UserData.DAO.Implementations;
 
 import com.example.spotifyfestival.ConcertsAndFestivals.Venue;
 import com.example.spotifyfestival.UserData.DAO.Interfaces.ArtistDAOInterface;
+import com.example.spotifyfestival.UserData.DAO.Interfaces.ArtistGenreDAOInterface;
+import com.example.spotifyfestival.UserData.DAO.Interfaces.FestivalDAOInterface;
 import com.example.spotifyfestival.UserData.Domain.Artist;
+import com.example.spotifyfestival.UserData.Domain.FestivalStage;
 import com.example.spotifyfestival.UserData.Domain.Genre;
 import com.example.spotifyfestival.UserData.DuplicateEntityException;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.CRUDHelper;
 import com.example.spotifyfestival.UserData.FestivalDatabase.DB.DB;
-import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistGenreRepo;
-import com.example.spotifyfestival.UserData.Repos.DBRepos.ArtistRepo;
-import com.example.spotifyfestival.UserData.Repos.DBRepos.GenreRepo;
-import com.example.spotifyfestival.UserData.Repos.DBRepos.VenueRepo;
+import com.example.spotifyfestival.UserData.Repos.DBRepos.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -21,6 +21,9 @@ import java.util.logging.Logger;
 
 public class ArtistDAOImplementation implements ArtistDAOInterface {
     String tableName = "Artists";
+    String[] columns = {"artist_id", "name", "spotify_id"};
+    ObservableList<Artist> artistsList = FXCollections.observableArrayList();
+
 
     @Override
     public Artist create(Artist artist) {
@@ -55,22 +58,21 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
         try (Connection connection = DB.connect("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
-            artists.clear();
+            artistsList.clear();
             while (rs.next()) {
                 int artist_id = rs.getInt("artist_id");
                 String name = rs.getString("name");
                 String spotify_id = rs.getString("spotify_id");
+                ObservableList<Genre> genres = null;
 
-                Artist artist = new Artist(name, spotify_id);
+                Artist artist = new Artist(artist_id, name, genres ,spotify_id);
 
                 try {
-                    artistRepo.add(String.valueOf(artist_id), artist);
+                    artistRepo.add(artist_id, artist);
+                    artistsList.add(artist);
                 } catch (DuplicateEntityException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            for(int i =0; i< artists.size(); i++){
-                System.out.println(artists.get(i).getVenueName());
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
@@ -88,7 +90,7 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
         //udpate database
         int rows = (int) CRUDHelper.update(
                 tableName,
-                new String[]{"artist_id", "name", "spotify_id"},
+                columns,
                 new Object[]{7, newArtist.getName(), newArtist.getSpotify_id()},
                 new int[]{Types.INTEGER, Types.VARCHAR, Types.INTEGER},
                 artist_id,
@@ -114,36 +116,6 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
             return -1;
         }
     }
-
-    public void readAllArtists(String tableName, ArtistRepo artistRepo){
-
-        String query = "SELECT * FROM " + tableName;
-
-        try (Connection connection = DB.connect("festivalDB")) {
-            PreparedStatement statement = connection.prepareStatement(query);
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                int artist_id = rs.getInt("artist_id");
-                String name = rs.getString("name");
-                String spotify_id = rs.getString("spotify_id");
-                ObservableList<Genre> gList = FXCollections.observableArrayList();
-
-                Artist artist = new Artist(name, gList, spotify_id);
-
-                try {
-                    artistRepo.add(String.valueOf(artist_id), artist);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-        } catch (SQLException e) {
-            Logger.getAnonymousLogger().log(
-                    Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Persons from database ");
-        }
-    }
-
     public static void main(String[] args) {
         VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
         venueDAOImplementation.generateVenueRepo();
@@ -153,33 +125,46 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
         System.out.println();
 
         GenreDAOImplementation genreDAOImplementation = new GenreDAOImplementation();
-        genreDAOImplementation.generateGenreRepo();
-        GenreRepo genreRepo = GenreRepo.getInstance();
+
+        GenreRepo genreRepo;
+        genreRepo = genreDAOImplementation.getAllGenres();
         genreRepo.list();
 
         System.out.println();
 
-        ArtistRepo artistRepo = ArtistRepo.getInstance();
-        String tableName = "Artists";
+        ArtistRepo artistRepo;
         ArtistDAOImplementation artistDAOImplementation = new ArtistDAOImplementation();
-        artistDAOImplementation.readAllArtists(tableName, artistRepo);
+        artistRepo = artistDAOImplementation.getAllArtists();
         artistRepo.list();
 
         System.out.println();
 
         ArtistGenreRepo artistGenreRepo = ArtistGenreRepo.getInstance();
         ArtistGenreDAOImplementation artistGenreDAOImplementation = new ArtistGenreDAOImplementation();
-
         artistGenreDAOImplementation.populateArtistsWithGenres(artistRepo, genreRepo, artistGenreRepo);
 
-        String name = "lala";
-        String spotify_id = "blala";
-        ObservableList<Genre> genres = null;
-        artistDAOImplementation.delete(7);
+        FestivalDAOImplementation festivalDAOImplementation = new FestivalDAOImplementation();
+        FestivalRepo festivalRepo = festivalDAOImplementation.getAllFestivals();
+        festivalRepo.list();
 
-        artistDAOImplementation.createArtist(23, name, spotify_id);
-        Artist newArtist = new Artist("blalala", genres, "tralalala");
-//        artistDAOImplementation.update(newArtist);
+        System.out.println();
+
+        FestivalStageDAOImplementation festivalStageDAOImplementation = new FestivalStageDAOImplementation();
+        FestivalStageRepo festivalStageRepo = festivalStageDAOImplementation.getAllStages();
+        festivalStageRepo.list();
+
+        System.out.println();
+
+        for(int i = 1; i < festivalStageRepo.getSize()+1; i++){
+            System.out.println(festivalStageRepo.getItem(i).getVenue());
+        }
+
+        System.out.println();
+
+        ConcertDAOImplementation concertDAOImplementation = new ConcertDAOImplementation();
+        ConcertRepo concertRepo = concertDAOImplementation.getAllConcerts();
+        concertRepo.list();
+        System.out.println(concertRepo.getItem(5).getDescription());
 
     }
 }

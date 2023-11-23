@@ -48,36 +48,16 @@ public class FestivalStageDAOImplementation implements StagesDAOInterface {
                 String name = rs.getString("name");
                 int venue_id = rs.getInt("venue_id");
 
-                VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+                VenueRepo venueRepo = VenueRepo.getInstance();
+                Venue venue = venueRepo.getItem(venue_id);
 
-                VenueRepo venueRepo = venueDAOImplementation.getAllVenues();
-
-                Venue venue = null;
-
-//                // Iterate through the map and check if the key is equal to keyToCheck
-//                for (Map.Entry<String, Venue> entry : venueRepo.getAll().entrySet()) {
-//                    String key = entry.getKey();
-//                    Venue value = entry.getValue();
-//
-//                    if (key.equals(String.valueOf(venue_id))) {
-//                        // Key found, do something with the corresponding value (Venue)
-//                        System.out.println("Key found: " + key + ", Value: " + value);
-//                        venue = value;
-//                        System.out.println(venue.getVenueName());
-//                        break;  // Assuming you want to stop searching after finding the key
-//                    }
-//                }
-
-                FestivalStage festivalStage = new FestivalStage(name, venue);
+                FestivalStage festivalStage = new FestivalStage(stage_id, name, venue);
 
                 try {
-                    stageRepo.add(String.valueOf(stage_id), festivalStage);
+                    stageRepo.add(stage_id, festivalStage);
                 } catch (DuplicateEntityException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            for(int i =0; i< festivalStages.size(); i++){
-                System.out.println(festivalStages.get(i).getVenue().getVenueName());
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(

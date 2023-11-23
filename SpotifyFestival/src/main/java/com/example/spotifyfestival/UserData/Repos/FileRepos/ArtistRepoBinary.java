@@ -6,7 +6,7 @@ import com.example.spotifyfestival.UserData.FileSavingStuff.FileRepository;
 import java.io.*;
 import java.util.Map;
 
-public class ArtistRepoBinary extends FileRepository<String, Artist> {
+public class ArtistRepoBinary extends FileRepository<Integer, Artist> {
     public ArtistRepoBinary(String filename) {
         super(filename);
     }
@@ -15,7 +15,7 @@ public class ArtistRepoBinary extends FileRepository<String, Artist> {
         // try-with-resources
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename)))
         {
-            dataStore = (Map<String, Artist>) ois.readObject();
+            dataStore = (Map<Integer, Artist>) ois.readObject();
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

@@ -22,6 +22,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
+    String tableName = "ArtistsGenres";
+    ArtistGenreRepo artistGenreRepo = ArtistGenreRepo.getInstance();
+
+    public ArtistGenreDAOImplementation() {
+        readAll();
+    }
+
     @Override
     public ArtistGenre create(ArtistGenre artistGenre) {
         return null;
@@ -47,7 +54,7 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
 
     }
 
-    public void readAll(String tableName, ArtistGenreRepo artistGenreRepo){
+    public void readAll() {
         String query = "SELECT * FROM " + tableName;
 
         try (Connection connection = DB.connect("festivalDB")) {
@@ -58,10 +65,10 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
                 int artist_id = rs.getInt("artist_id");
                 int genre_id = rs.getInt("genre_id");
 
-                ArtistGenre artistGenre = new ArtistGenre(artist_id, genre_id);
+                ArtistGenre artistGenre = new ArtistGenre(artist_genre_id, artist_id, genre_id);
 
                 try {
-                    artistGenreRepo.add(String.valueOf(artist_genre_id), artistGenre);
+                    artistGenreRepo.add(artist_genre_id, artistGenre);
                 } catch (DuplicateEntityException e) {
                     throw new RuntimeException(e);
                 }
@@ -75,24 +82,41 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
     }
 
 
-    public void populateArtistsWithGenres(ArtistRepo artistRepo, GenreRepo genreRepo, ArtistGenreRepo artistGenreRepo){
+    public void populateArtistsWithGenres(ArtistRepo artistRepo, GenreRepo genreRepo, ArtistGenreRepo artistGenreRepo) {
         artistRepo = ArtistRepo.getInstance();
         genreRepo = GenreRepo.getInstance();
         artistGenreRepo = ArtistGenreRepo.getInstance();
-        ArtistGenreDAOImplementation artistGenreDAOImplementation = new ArtistGenreDAOImplementation();
-        String tableName = "ArtistsGenres";
-        artistGenreDAOImplementation.readAll(tableName, artistGenreRepo);
-        ObservableList<Genre> gList = FXCollections.observableArrayList();
-        for(int i = 1; i< artistGenreRepo.getSize()+1; i++){
-            ArtistGenre artistGenre = artistGenreRepo.getItem(String.valueOf(i));
+
+        for (int i = 1; i < artistGenreRepo.getSize() + 1; i++)
+        {
+            ArtistGenre artistGenre = artistGenreRepo.getItem(i);
             int artist_id = artistGenre.getArtist_id();
             int genre_id = artistGenre.getGenre_id();
-            Artist artist = artistRepo.getItem(String.valueOf(artist_id));
-            Genre genre = genreRepo.getItem(String.valueOf(genre_id));
+            Artist artist = artistRepo.getItem(artist_id);
+            Genre genre = genreRepo.getItem(genre_id);
 
-            gList.add(genre);
-            artist.addGenre(genre);
+            try {
+                artist.addGenre(genre);
+            } catch (DuplicateEntityException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 
+    public void populateArtistWithGenres(int id, ArtistRepo artistRepo, GenreRepo genreRepo) {
+
+        readAll();
+        Artist artist = artistRepo.getItem(id);
+        for (int i = 0; i < artistGenreRepo.getSize(); i++) {
+            if (artistGenreRepo.getItem(i).getArtist_id() == id) {
+                int genre_id = artistGenreRepo.getItem(i).getGenre_id();
+                Genre genre = genreRepo.getItem(genre_id);
+                try {
+                    artist.addGenre(genre);
+                } catch (DuplicateEntityException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
     }

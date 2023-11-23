@@ -11,13 +11,16 @@ public class Venue extends Entity {
     private List<Concert> listOfAllConcertsAtThatVenue;
 
 
-    public Venue(String city, String venueName, String streetAddress, String locationLatitude, String locationLongitude) {
+    public Venue(Integer id, String city, String venueName, String streetAddress, String locationLatitude, String locationLongitude) {
+        super(id);
         this.city = city;
         this.venueName = venueName;
         this.streetAddress = streetAddress;
         this.locationLatitude = locationLatitude;
         this.locationLongitude = locationLongitude;
     }
+
+
 
     public String getStreetAddress() {
         return streetAddress;
