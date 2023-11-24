@@ -25,23 +25,18 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR};
     protected static ObservableList<Artist> artistsList = FXCollections.observableArrayList();
     protected static ArtistRepo artistRepo = ArtistRepo.getInstance();
-
     public static ObservableList<Artist> getArtistsList() {
         return artistsList;
     }
-
     public static void setArtistsList(ObservableList<Artist> artistsList) {
         ArtistDAOImplementation.artistsList = artistsList;
     }
-
     public static ArtistRepo getArtistRepo() {
         return artistRepo;
     }
-
     public static void setArtistRepo(ArtistRepo artistRepo) {
         ArtistDAOImplementation.artistRepo = artistRepo;
     }
-
     public ArtistDAOImplementation() {
         artistRepo = getAllArtists();
     }
@@ -96,7 +91,7 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Persons from database ");
+                    LocalDateTime.now() + ": Could not load Artists from database ");
             artistsList.clear();
         }
         return artistRepo;
