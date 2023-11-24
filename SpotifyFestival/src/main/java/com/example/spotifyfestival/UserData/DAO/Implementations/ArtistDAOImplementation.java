@@ -23,11 +23,27 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     String readQuery = "SELECT * FROM " + tableName;
     String deleteQuery = "DELETE FROM " + tableName + " WHERE artist_id = ?";
     int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR};
-    ObservableList<Artist> artistsList = FXCollections.observableArrayList();
-    ArtistRepo artistRepo = ArtistRepo.getInstance();
+    protected static ObservableList<Artist> artistsList = FXCollections.observableArrayList();
+    protected static ArtistRepo artistRepo = ArtistRepo.getInstance();
+
+    public static ObservableList<Artist> getArtistsList() {
+        return artistsList;
+    }
+
+    public static void setArtistsList(ObservableList<Artist> artistsList) {
+        ArtistDAOImplementation.artistsList = artistsList;
+    }
+
+    public static ArtistRepo getArtistRepo() {
+        return artistRepo;
+    }
+
+    public static void setArtistRepo(ArtistRepo artistRepo) {
+        ArtistDAOImplementation.artistRepo = artistRepo;
+    }
 
     public ArtistDAOImplementation() {
-        this.artistRepo = getAllArtists();
+        artistRepo = getAllArtists();
     }
     @Override
     public void insertArtistInDB(int artist_id, String name, ObservableList<Genre> genres, String spotify_id) {
@@ -89,7 +105,7 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     @Override
     public Object readArtistAttribute(String attributeField, String indexID, int index) {
 
-        Object thing = (Object) CRUDHelper.read(tableName, attributeField, Types.VARCHAR, indexID, Types.INTEGER, index);
+        Object thing = CRUDHelper.read(tableName, attributeField, Types.VARCHAR, indexID, Types.INTEGER, index);
         return thing;
     }
 
