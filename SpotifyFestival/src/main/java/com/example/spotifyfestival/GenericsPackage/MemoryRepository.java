@@ -50,7 +50,7 @@ public class MemoryRepository<K, V extends Identifiable<K>> implements CRUDRepoI
     @Override
     public void list() {
         for (Map.Entry<K, V> entry : dataStore.entrySet()) {
-            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue().toString());
         }
     }
 }

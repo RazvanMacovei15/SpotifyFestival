@@ -67,4 +67,17 @@ public class Concert extends Entity {
     public void setListOfArtists(List<Artist> listOfArtists) {
         this.listOfArtists = listOfArtists;
     }
+
+    @Override
+    public String toString() {
+        return "Concert{" +
+                "description='" + description + '\'' +
+                ", listOfArtists=" + listOfArtists +
+                ", artist=" + artist +
+                ", venue=" + venue +
+                ", startOfTheConcert='" + startOfTheConcert + '\'' +
+                ", time='" + time + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }

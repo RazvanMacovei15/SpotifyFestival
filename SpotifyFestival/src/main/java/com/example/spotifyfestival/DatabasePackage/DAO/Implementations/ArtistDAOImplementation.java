@@ -31,6 +31,10 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     public static void setArtistsList(ObservableList<Artist> artistsList) {
         ArtistDAOImplementation.artistsList = artistsList;
     }
+    private final Connection connection = artistRepo.getConnection();
+    public Connection getConnection() {
+        return connection;
+    }
     public static ArtistRepo getArtistRepo() {
         return artistRepo;
     }
@@ -69,7 +73,10 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
     @Override
     public ArtistRepo getAllArtists() {
 
-        try (Connection connection = DB.connect("festivalDB")) {
+        artistRepo = ArtistRepo.getInstance();
+
+
+        try{
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
             artistsList.clear();
@@ -93,6 +100,8 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Artists from database ");
             artistsList.clear();
+        } finally {
+            artistRepo.closeConnection();
         }
         return artistRepo;
     }
@@ -130,6 +139,7 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
 
     @Override
     public int delete(Integer id) {
+
         if (id == null) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
@@ -138,9 +148,9 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
             return -1; // or throw an exception, depending on your error handling strategy
         }
         // Build the SQL delete query
-        try (Connection conn = DB.connect("festivalDB")) {
+        try{
             // Prepare and execute the delete query
-            PreparedStatement pstmt = conn.prepareStatement(deleteQuery);
+            PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
             pstmt.setInt(1, id);
             return pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -150,6 +160,8 @@ public class ArtistDAOImplementation implements ArtistDAOInterface {
                     LocalDateTime.now() + ": Could not delete from " + tableName +
                             " by id " + id + " because " + e.getCause());
             return -1;
+        } finally {
+            artistRepo.closeConnection();
         }
     }
 

@@ -4,6 +4,8 @@ import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.Objects;
+
 public class Artist extends Entity{
 
     protected String name;
@@ -52,5 +54,24 @@ public class Artist extends Entity{
 
     public void setSpotify_id(String spotify_id) {
         this.spotify_id = spotify_id;
+    }
+
+    @Override
+    public String toString() {
+        return "Artist{" +
+                "name='" + name + '\'' +
+                ", genres=" + genres +
+                ", spotify_id='" + spotify_id + '\'' +
+                ", id=" + id +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Artist artist = (Artist) obj;
+        return Objects.equals(getId(), artist.getId());
     }
 }

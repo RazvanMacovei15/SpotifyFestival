@@ -12,6 +12,7 @@ public class CRUDHelper {
 
     private static String location = "FestivalDB";
 
+
     /**
      * Reads data from the database.
      *

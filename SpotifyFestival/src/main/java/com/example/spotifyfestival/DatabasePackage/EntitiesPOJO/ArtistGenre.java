@@ -25,4 +25,13 @@ public class ArtistGenre extends Entity {
     public void setGenre_id(int genre_id) {
         this.genre_id = genre_id;
     }
+
+    @Override
+    public String toString() {
+        return "ArtistGenre{" +
+                "artist_id=" + artist_id +
+                ", genre_id=" + genre_id +
+                ", id=" + id +
+                '}';
+    }
 }

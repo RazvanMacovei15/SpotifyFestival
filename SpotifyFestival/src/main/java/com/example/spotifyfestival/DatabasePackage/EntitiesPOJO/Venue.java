@@ -69,4 +69,17 @@ public class Venue extends Entity {
     public void setListOfAllConcertsAtThatVenue(List<Concert> listOfAllConcertsAtThatVenue) {
         this.listOfAllConcertsAtThatVenue = listOfAllConcertsAtThatVenue;
     }
+
+    @Override
+    public String toString() {
+        return "Venue{" +
+                "city='" + city + '\'' +
+                ", venueName='" + venueName + '\'' +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", locationLatitude='" + locationLatitude + '\'' +
+                ", locationLongitude='" + locationLongitude + '\'' +
+                ", listOfAllConcertsAtThatVenue=" + listOfAllConcertsAtThatVenue +
+                ", id=" + id +
+                '}';
+    }
 }

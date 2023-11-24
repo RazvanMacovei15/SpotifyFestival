@@ -10,27 +10,30 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class DBGenericRepository< K, V extends Identifiable<K>> extends MemoryRepository<K,V> {
-    protected String URL = "festivalDB";
+public abstract class DBGenericRepository< K, V extends Identifiable<K>> extends MemoryRepository<K,V> implements AutoCloseable{
+    private Connection connection;
 
-    public String getURL() {
-        return URL;
+    public Connection getConnection() {
+        return connection;
     }
 
-    public void closeConnection(Connection connection) {
-        try {
-            if (connection != null) {
-                connection.close();
+    public DBGenericRepository(){
+        openConnection();
+    }
+    private void openConnection() {
+        if (checkDrivers()) {
+            String dbLocation = "festivalDB"; // Replace with the actual location
+            String dbPrefix = "jdbc:sqlite:";
+
+            try {
+                connection = DriverManager.getConnection(dbPrefix + dbLocation);
+                System.out.println("Database connection established!");
+            } catch (SQLException exception) {
+                Logger.getAnonymousLogger().log(Level.SEVERE,
+                        LocalDateTime.now() + ": Could not connect to SQLite DB at " + dbLocation);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
-
-    public void openConnection() {
-        Connection connection = connect(URL);
-    }
-
     public static boolean checkDrivers() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -41,22 +44,19 @@ public abstract class DBGenericRepository< K, V extends Identifiable<K>> extends
             return false;
         }
     }
-
-    public static Connection connect(String location) {
-        checkDrivers();
-        String dbPrefix = "jdbc:sqlite:";
-        Connection connection;
-
+    public void closeConnection() {
         try {
-            connection = DriverManager.getConnection(dbPrefix + location);
-            System.out.println("it works!");
-        } catch (SQLException exception) {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Database connection closed!");
+            }
+        } catch (SQLException e) {
             Logger.getAnonymousLogger().log(Level.SEVERE,
-                    LocalDateTime.now() + ": Could not connect to SQLite DB at " +
-                            location);
-            return null;
+                    LocalDateTime.now() + ": Could not close SQLite DB connection");
         }
-        return connection;
     }
-
+    @Override
+    public void close()  {
+        closeConnection();
+    }
 }

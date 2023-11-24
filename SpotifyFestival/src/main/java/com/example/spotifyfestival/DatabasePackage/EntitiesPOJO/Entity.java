@@ -13,4 +13,11 @@ public class Entity implements Identifiable<Integer> {
     public void setId(Integer id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Entity{" +
+                "id=" + id +
+                '}';
+    }
 }

@@ -67,6 +67,8 @@ public class ArtistGenreDAOImplementation implements ArtistGenreDAOInterface {
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Artists Genres from database ");
             artistGenres.clear();
+        } finally {
+            artistGenreRepo.closeConnection();
         }
         return artistGenreRepo;
     }

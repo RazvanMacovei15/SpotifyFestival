@@ -27,4 +27,13 @@ public class FestivalStage extends Entity {
     public void setVenue(Venue venue) {
         this.venue = venue;
     }
+
+    @Override
+    public String toString() {
+        return "FestivalStage{" +
+                "name='" + name + '\'' +
+                ", venue=" + venue +
+                ", id=" + id +
+                '}';
+    }
 }
