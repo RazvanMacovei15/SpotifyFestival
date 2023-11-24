@@ -7,7 +7,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:controller="com.example.spotifyfestival.Controllers.MainController"
+<GridPane fx:controller="com.example.spotifyfestival.UI_Package.MainController"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20"
           style="-fx-border-color: black; -fx-border-width: 2px;">
 

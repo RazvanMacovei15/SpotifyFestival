@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.Tree;
 
-import com.example.spotifyfestival.ConcertsAndFestivals.Identifiable;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Identifiable;
 import javafx.collections.ObservableList;
 
 public abstract class Tree<T extends Identifiable>{

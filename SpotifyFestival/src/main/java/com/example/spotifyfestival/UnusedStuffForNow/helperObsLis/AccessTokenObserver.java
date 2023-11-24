@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.UnusedStuffForNow.helperObsLis;
 
 
-import com.example.spotifyfestival.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
