@@ -180,5 +180,6 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
         artistRepo.updateObjectInDB(artist);
         System.out.println(artistRepo.getItem(5).getSpotify_id());
         System.out.println(artistRepo.readItemAttributeFromDB("spotify_id", Types.VARCHAR, 8));
+        artistRepo.deleteObjectByIDInDB(5);
     }
 }
