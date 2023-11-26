@@ -110,7 +110,7 @@ public class ArtistDAO implements GenericDAO<Artist> {
 //        }
 //        return Optional.empty();
 //    }
-    public void update(Artist newArtist)
+    public void updateObjectInDB(Artist newArtist)
     {
         //update DB
         long rows = CRUDHelper.update(
@@ -134,7 +134,7 @@ public class ArtistDAO implements GenericDAO<Artist> {
 //        });
     }
     @Override
-    public int deleteByID(Integer id) {
+    public int deleteObjectByIDInDB(Integer id) {
         if (id == null) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
@@ -165,7 +165,7 @@ public class ArtistDAO implements GenericDAO<Artist> {
     }
 
     @Override
-    public Object readItemAttribute(String tableName, String fieldName, int fieldDataType, String indexFieldName, int indexDataType, Object index) {
+    public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
         return null;
     }
     public static void main(String[] args) throws SQLException {

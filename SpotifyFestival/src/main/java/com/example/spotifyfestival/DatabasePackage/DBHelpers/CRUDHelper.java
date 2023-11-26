@@ -167,9 +167,9 @@ public class CRUDHelper {
      * @param id        ID of the record to delete.
      * @return          The number of affected rows.
      */
-    public static int delete(String tableName, int id) {
+    public static int delete(String tableName, int id, String idField) {
         // Build the SQL delete query
-        String sql = "DELETE FROM " + tableName + " WHERE id = ?";
+        String sql = "DELETE FROM " + tableName + " WHERE idField = ?";
 
         try (Connection conn = DBUtils.connect(location)) {
             // Prepare and execute the delete query

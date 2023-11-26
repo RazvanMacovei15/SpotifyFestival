@@ -1,4 +1,5 @@
 package com.example.spotifyfestival.RepositoryPackage.DBRepos;
+
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
@@ -21,9 +22,11 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
     String[] columns = {"artist_id", "name", "spotify_id"};
     String[] updateColumns = {"name", "spotify_id"};
     private final String readQuery = "SELECT * FROM " + tableName;
+
     public String getReadQuery() {
         return readQuery;
     }
+
     private final String deleteQuery = "DELETE FROM " + tableName + " WHERE artist_id = ?";
     int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR};
     int[] updateTypes = {Types.VARCHAR, Types.VARCHAR};
@@ -31,10 +34,11 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
     //Singleton Creation
     private static ArtistDAORepo instance;
 
-    private ArtistDAORepo(){
+    private ArtistDAORepo() {
     }
-    public static ArtistDAORepo getInstance(){
-        if(instance == null){
+
+    public static ArtistDAORepo getInstance() {
+        if (instance == null) {
             instance = new ArtistDAORepo();
         }
         return instance;
@@ -42,6 +46,7 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
 
     //TableView JavaFX stuff
     ObservableList<Artist> artistList = FXCollections.observableArrayList();
+
     public ObservableList<Artist> getArtistList() {
         return artistList;
     }
@@ -61,7 +66,7 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
                         genres,
                         rs.getString("spotify_id"));
                 artistList.add(artist);
-                instance.add(rs.getInt("artist_id"),artist);
+                instance.add(rs.getInt("artist_id"), artist);
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
@@ -72,6 +77,7 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
             throw new RuntimeException(e);
         }
     }
+
     @Override
     public void insertObjectInDB(Artist artist) {
         //update DB
@@ -103,7 +109,7 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
     }
 
     @Override
-    public void update(Artist newArtist) {
+    public void updateObjectInDB(Artist newArtist) {
         //update DB
         long rows = CRUDHelper.update(
                 tableName,
@@ -128,7 +134,7 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
     }
 
     @Override
-    public int deleteByID(Integer id) {
+    public int deleteObjectByIDInDB(Integer id) {
 
         if (id == null) {
             Logger.getAnonymousLogger().log(
@@ -139,7 +145,7 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
         }
         // Build the SQL delete query
 
-        try(Connection connection = DBUtils.connect("festivalDB")){
+        try (Connection connection = DBUtils.connect("festivalDB")) {
             // Prepare and execute the delete query
             PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
             pstmt.setInt(1, id);
@@ -154,22 +160,25 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
             return -1;
         }
     }
-
-
     @Override
-    public Object readItemAttribute(String tableName, String fieldName, int fieldDataType, String indexFieldName, int indexDataType, Object index) {
-        return null;
+    public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
+        return CRUDHelper.read(tableName,
+                fieldName,
+                fieldDataType,
+                columns[0],
+                types[0],
+                index);
     }
-
     public static void main(String[] args) {
         ArtistDAORepo artistRepo = ArtistDAORepo.getInstance();
         artistRepo.readAllObjectsFromTable();
+        ObservableList<Genre> genres = null;
+        Artist artist = new Artist(5, "Metallica", genres, "some_another");
+        artistRepo.insertObjectInDB(artist);
         artistRepo.list();
         System.out.println(artistRepo.getItem(5).getName());
-        ObservableList<Genre> genres = null;
-        Artist artist = new Artist(5, "Metallica", genres, "some_another_id");
-        artistRepo.update(artist);
+        artistRepo.updateObjectInDB(artist);
         System.out.println(artistRepo.getItem(5).getSpotify_id());
-
+        System.out.println(artistRepo.readItemAttributeFromDB("spotify_id", Types.VARCHAR, 8));
     }
 }
