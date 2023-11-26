@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.DatabasePackage.DAO.Implementations;
 
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.GenresDAOInterface;
-import com.example.spotifyfestival.DatabasePackage.DBHelpers.DB;
+import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreRepo;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class GenreDAOImplementation implements GenresDAOInterface {
+public class GenreDAO implements GenresDAOInterface {
     @Override
     public Genre create(Genre genre) {
         return null;
@@ -36,7 +36,7 @@ public class GenreDAOImplementation implements GenresDAOInterface {
         ObservableList<Genre> genres = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DB.connect("festivalDB")) {
+        try (Connection connection = DBUtils.connect("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             genres.clear();
@@ -46,18 +46,16 @@ public class GenreDAOImplementation implements GenresDAOInterface {
 
                 Genre genre = new Genre(genre_id, name);
 
-                try {
-                    genreRepo.add(genre_id, genre);
-                    genres.add(genre);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
+                genreRepo.add(genre_id, genre);
+                genres.add(genre);
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Persons from database ");
             genres.clear();
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
         }
         return genreRepo;
     }
@@ -72,7 +70,7 @@ public class GenreDAOImplementation implements GenresDAOInterface {
 
     }
     public void generateGenreRepo(){
-        GenreDAOImplementation genreDAOImplementation = new GenreDAOImplementation();
+        GenreDAO genreDAOImplementation = new GenreDAO();
         GenreRepo genreRepo = GenreRepo.getInstance();
         String tableName = "Genres";
 

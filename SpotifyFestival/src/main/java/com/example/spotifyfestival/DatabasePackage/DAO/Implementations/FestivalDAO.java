@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.DAO.Implementations;
 
-import com.example.spotifyfestival.DatabasePackage.DBHelpers.DB;
+import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.FestivalDAOInterface;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Festival;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FestivalDAOImplementation implements FestivalDAOInterface {
+public class FestivalDAO implements FestivalDAOInterface {
     @Override
     public Festival create(Festival festival) {
         return null;
@@ -38,7 +38,7 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
         ObservableList<Festival> festivals = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DB.connect("FestivalDB")) {
+        try (Connection connection = DBUtils.connect("FestivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             festivals.clear();
@@ -52,18 +52,16 @@ public class FestivalDAOImplementation implements FestivalDAOInterface {
 
                 Festival festival = new Festival(festival_id, name, venue);
 
-                try {
-                    festivalRepo.add(festival_id, festival);
-                    festivals.add(festival);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
+                festivalRepo.add(festival_id, festival);
+                festivals.add(festival);
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Persons from database ");
             festivals.clear();
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
         }
         return festivalRepo;
     }

@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DB {
+public class DBUtils {
     private static boolean checkDrivers(){
         try{
             Class.forName("org.sqlite.JDBC");
@@ -34,6 +34,17 @@ public class DB {
             return null;
         }
         return connection;
+    }
+    public static void closeConnection(Connection connection) {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+                System.out.println("Database connection closed!");
+            }
+        } catch (SQLException e) {
+            Logger.getAnonymousLogger().log(Level.SEVERE,
+                    LocalDateTime.now() + ": Could not close SQLite DB connection");
+        }
     }
 }
 

@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.DAO.Implementations;
 
-import com.example.spotifyfestival.DatabasePackage.DBHelpers.DB;
+import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.VenueDAOInterface;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class VenueDAOImplementation implements VenueDAOInterface {
+public class VenueDAO implements VenueDAOInterface {
     @Override
     public Venue create(Venue venue) {
         return null;
@@ -37,7 +37,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
         ObservableList<Venue> venues = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DB.connect("festivalDB")) {
+        try (Connection connection = DBUtils.connect("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             venues.clear();
@@ -52,11 +52,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
                 Venue venue = new Venue(venue_id, city,name,address, String.valueOf(latitude), String.valueOf(longitude));
                 venues.add(venue);
 
-                try {
-                    venueRepo.add(venue_id, venue);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
+                venueRepo.add(venue_id, venue);
             }
             for(int i =0; i< venues.size(); i++){
                 System.out.println(venues.get(i).getVenueName());
@@ -66,6 +62,8 @@ public class VenueDAOImplementation implements VenueDAOInterface {
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Persons from database ");
             venues.clear();
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
         }
         return venueRepo;
     }
@@ -83,7 +81,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
     public void populateVenueRepo(String tableName,VenueRepo venueRepo){
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DB.connect("festivalDB")) {
+        try (Connection connection = DBUtils.connect("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
 
@@ -97,12 +95,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
 
                 Venue venue = new Venue(venue_id, city,name,address, String.valueOf(latitude), String.valueOf(longitude));
 
-
-                try {
-                    venueRepo.add(venue_id, venue);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
+                venueRepo.add(venue_id, venue);
             }
 
         } catch (SQLException e) {
@@ -110,12 +103,14 @@ public class VenueDAOImplementation implements VenueDAOInterface {
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Persons from database ");
 
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
         }
 
     }
 
     public void generateVenueRepo(){
-        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+        VenueDAO venueDAOImplementation = new VenueDAO();
         VenueRepo venueRepo = VenueRepo.getInstance();
         String tableName = "Venues";
 
@@ -124,7 +119,7 @@ public class VenueDAOImplementation implements VenueDAOInterface {
 
 
     public static void main(String[] args) {
-        VenueDAOImplementation venueDAOImplementation = new VenueDAOImplementation();
+        VenueDAO venueDAOImplementation = new VenueDAO();
         VenueRepo venueRepo = VenueRepo.getInstance();
         String tableName = "Venues";
 

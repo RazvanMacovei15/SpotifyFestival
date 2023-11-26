@@ -11,4 +11,5 @@ module com.example.spotifyfestival {
     requires java.desktop;
     requires junit;
 
+
 }

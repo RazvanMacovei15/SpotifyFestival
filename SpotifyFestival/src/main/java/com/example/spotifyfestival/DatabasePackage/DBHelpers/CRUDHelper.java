@@ -9,9 +9,7 @@ import java.util.logging.Logger;
  * Helper class for performing CRUD (Create, Read, Update, Delete) operations on a database.
  */
 public class CRUDHelper {
-
-    private static String location = "FestivalDB";
-
+    private static final String location = "festivalDB";
 
     /**
      * Reads data from the database.
@@ -36,7 +34,7 @@ public class CRUDHelper {
         queryBuilder.append(" = ");
         queryBuilder.append(convertObjectToSQLField(index, indexDataType));
 
-        try (Connection connection = DB.connect(location)) {
+        try (Connection connection = DBUtils.connect(location)) {
             // Prepare and execute the query
             PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
             try (ResultSet rs = statement.executeQuery()) {
@@ -92,7 +90,7 @@ public class CRUDHelper {
         queryBuilder.append(" = ");
         queryBuilder.append(convertObjectToSQLField(index, indexDataType));
 
-        try (Connection conn = DB.connect(location)) {
+        try (Connection conn = DBUtils.connect(location)) {
             // Prepare and execute the update query
             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString());
             return pstmt.executeUpdate(); // Number of affected rows
@@ -104,7 +102,6 @@ public class CRUDHelper {
             return -1;
         }
     }
-
     /**
      * Creates a new record in the database.
      *
@@ -115,6 +112,7 @@ public class CRUDHelper {
      * @return          The ID of the newly created record.
      */
     public static long create(String tableName, String[] columns, Object[] values, int[] types) {
+
         // Determine the number of columns to insert
         int number = Math.min(Math.min(columns.length, values.length), types.length);
 
@@ -140,7 +138,7 @@ public class CRUDHelper {
         }
         queryBuilder.append(");");
 
-        try (Connection conn = DB.connect(location)) {
+        try (Connection conn = DBUtils.connect(location)) {
             // Prepare and execute the insert query
             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
             int affectedRows = pstmt.executeUpdate();
@@ -162,7 +160,6 @@ public class CRUDHelper {
         }
         return -1;
     }
-
     /**
      * Deletes a record from the database by ID.
      *
@@ -174,7 +171,7 @@ public class CRUDHelper {
         // Build the SQL delete query
         String sql = "DELETE FROM " + tableName + " WHERE id = ?";
 
-        try (Connection conn = DB.connect(location)) {
+        try (Connection conn = DBUtils.connect(location)) {
             // Prepare and execute the delete query
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, id);
@@ -188,7 +185,6 @@ public class CRUDHelper {
             return -1;
         }
     }
-
     /**
      * Converts an object to its corresponding SQL field representation.
      *
@@ -213,5 +209,29 @@ public class CRUDHelper {
                         " from sql.Types is not yet supported.");
         }
         return queryBuilder.toString();
+    }
+
+    private static boolean isIdDuplicate(int id, String tableName, String idField) {
+        // Implement a method to check if the ID already exists in the database
+        // This could be a SQL query or any mechanism specific to your database
+        // Return true if the ID is found, indicating a duplicate
+        // Return false if the ID is not found, indicating it's unique
+
+        // Example SQL query (assuming 'id' is the primary key):
+        String checkQuery = "SELECT COUNT(*) FROM " + tableName + " WHERE idField = ?";
+        try (Connection connection = DBUtils.connect("festivalDB");
+             PreparedStatement pstmt = connection.prepareStatement(checkQuery)) {
+            pstmt.setInt(1, id);
+            try (ResultSet resultSet = pstmt.executeQuery()) {
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0; // If count > 0, ID is a duplicate
+                }
+            }
+        } catch (SQLException e) {
+            // Handle exceptions
+            return false; // Consider it as not a duplicate to avoid insertion errors
+        }
+        return false;
     }
 }

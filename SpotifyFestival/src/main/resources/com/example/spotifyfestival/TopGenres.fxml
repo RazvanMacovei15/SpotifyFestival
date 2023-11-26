@@ -40,26 +40,26 @@
             <ToggleGroup fx:id="ToggleGroup2"/>
         </fx:define>
 
-        <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button fx:id="fourWeeksButton" text="4 weeks" alignment="CENTER" onAction="#on4WeeksButtonClicked">
-                <minWidth>120</minWidth>
-                <prefWidth>120</prefWidth>
-            </Button>
-        </HBox>
+<!--        <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">-->
+<!--            <Button fx:id="fourWeeksButton" text="4 weeks" alignment="CENTER" onAction="#on4WeeksButtonClicked">-->
+<!--                <minWidth>120</minWidth>-->
+<!--                <prefWidth>120</prefWidth>-->
+<!--            </Button>-->
+<!--        </HBox>-->
 
-        <HBox GridPane.columnIndex="1" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button fx:id="sixMonthsButton" text="6 months" alignment="CENTER" onAction="#on6MonthsButtonClicked">
-                <minWidth>120</minWidth>
-                <prefWidth>120</prefWidth>
-            </Button>
-        </HBox>
+<!--        <HBox GridPane.columnIndex="1" GridPane.halignment="CENTER" alignment="CENTER">-->
+<!--            <Button fx:id="sixMonthsButton" text="6 months" alignment="CENTER" onAction="#on6MonthsButtonClicked">-->
+<!--                <minWidth>120</minWidth>-->
+<!--                <prefWidth>120</prefWidth>-->
+<!--            </Button>-->
+<!--        </HBox>-->
 
-        <HBox GridPane.columnIndex="2" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button fx:id="allTimeButton" text="All Time" alignment="CENTER" onAction="#onAllTimeButtonClicked">
-                <minWidth>120</minWidth>
-                <prefWidth>120</prefWidth>
-            </Button>
-        </HBox>
+<!--        <HBox GridPane.columnIndex="2" GridPane.halignment="CENTER" alignment="CENTER">-->
+<!--            <Button fx:id="allTimeButton" text="All Time" alignment="CENTER" onAction="#onAllTimeButtonClicked">-->
+<!--                <minWidth>120</minWidth>-->
+<!--                <prefWidth>120</prefWidth>-->
+<!--            </Button>-->
+<!--        </HBox>-->
     </GridPane>
 
     <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">

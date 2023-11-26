@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.DAO.Implementations;
 
-import com.example.spotifyfestival.DatabasePackage.DBHelpers.DB;
+import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.StagesDAOInterface;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.FestivalStage;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FestivalStageDAOImplementation implements StagesDAOInterface {
+public class FestivalStageDAO implements StagesDAOInterface {
     @Override
     public FestivalStage create(FestivalStage stage) {
         return null;
@@ -38,7 +38,7 @@ public class FestivalStageDAOImplementation implements StagesDAOInterface {
         ObservableList<FestivalStage> festivalStages = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DB.connect("festivalDB")) {
+        try (Connection connection = DBUtils.connect("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             festivalStages.clear();
@@ -52,17 +52,15 @@ public class FestivalStageDAOImplementation implements StagesDAOInterface {
 
                 FestivalStage festivalStage = new FestivalStage(stage_id, name, venue);
 
-                try {
-                    stageRepo.add(stage_id, festivalStage);
-                } catch (DuplicateEntityException e) {
-                    throw new RuntimeException(e);
-                }
+                stageRepo.add(stage_id, festivalStage);
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Persons from database ");
             festivalStages.clear();
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
         }
         return stageRepo;
     }
@@ -78,7 +76,7 @@ public class FestivalStageDAOImplementation implements StagesDAOInterface {
     }
 
     public static void main(String[] args) {
-        FestivalStageDAOImplementation festivalStageDAOImplementation = new FestivalStageDAOImplementation();
+        FestivalStageDAO festivalStageDAOImplementation = new FestivalStageDAO();
         FestivalStageRepo festivalStageRepo = festivalStageDAOImplementation.getAllStages();
 
     }
