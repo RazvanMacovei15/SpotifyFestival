@@ -6,9 +6,8 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistGenreRepo;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAORepo;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreRepo;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -22,7 +21,7 @@ import java.util.logging.Logger;
 
 public class ArtistGenreDAO implements ArtistGenreDAOInterface {
     String tableName = "ArtistsGenres";
-    ArtistGenreRepo artistGenreRepo = ArtistGenreRepo.getInstance();
+    com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistGenreDAO artistGenreRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistGenreDAO.getInstance();
     ObservableList<ArtistGenre> artistGenres = FXCollections.observableArrayList();
 
     public ArtistGenreDAO() {
@@ -40,7 +39,7 @@ public class ArtistGenreDAO implements ArtistGenreDAOInterface {
     }
 
     @Override
-    public ArtistGenreRepo getAllArtistGenres() {
+    public com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistGenreDAO getAllArtistGenres() {
         String query = "SELECT * FROM " + tableName;
 
         try (Connection connection = DBUtils.connect("festivalDB")) {
@@ -78,10 +77,10 @@ public class ArtistGenreDAO implements ArtistGenreDAOInterface {
     public void delete(int id) {
 
     }
-    public void populateArtistsWithGenres(ArtistDAORepo artistRepo, GenreRepo genreRepo, ArtistGenreRepo artistGenreRepo) {
-        artistRepo = ArtistDAORepo.getInstance();
-        genreRepo = GenreRepo.getInstance();
-        artistGenreRepo = ArtistGenreRepo.getInstance();
+    public void populateArtistsWithGenres(ArtistDAO artistRepo, GenreDAO genreRepo, com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistGenreDAO artistGenreRepo) {
+        artistRepo = ArtistDAO.getInstance();
+        genreRepo = GenreDAO.getInstance();
+        artistGenreRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistGenreDAO.getInstance();
 
         for (int i = 1; i < artistGenreRepo.getSize() + 1; i++)
         {
@@ -98,7 +97,7 @@ public class ArtistGenreDAO implements ArtistGenreDAOInterface {
             }
         }
     }
-    public void populateArtistAtIDWithGenres(int id, ArtistDAORepo artistRepo, GenreRepo genreRepo) {
+    public void populateArtistAtIDWithGenres(int id, ArtistDAO artistRepo, GenreDAO genreRepo) {
 
         Artist artist = artistRepo.getItem(id);
 

@@ -1,5 +1,9 @@
 package com.example.spotifyfestival.DatabasePackage.DBHelpers;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import javafx.collections.ObservableList;
+
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -20,7 +24,7 @@ public class CRUDHelper {
      * @param indexFieldName Name of the field to use as an index.
      * @param indexDataType  Data type of the index field.
      * @param index          Value of the index field.
-     * @return               The retrieved data.
+     * @return The retrieved data.
      */
     public static Object read(String tableName, String fieldName, int fieldDataType,
                               String indexFieldName, int indexDataType, Object index) {
@@ -34,7 +38,7 @@ public class CRUDHelper {
         queryBuilder.append(" = ");
         queryBuilder.append(convertObjectToSQLField(index, indexDataType));
 
-        try (Connection connection = DBUtils.connect(location)) {
+        try (Connection connection = DBUtils.getConnection(location)) {
             // Prepare and execute the query
             PreparedStatement statement = connection.prepareStatement(queryBuilder.toString());
             try (ResultSet rs = statement.executeQuery()) {
@@ -70,7 +74,7 @@ public class CRUDHelper {
      * @param indexFieldName Name of the field to use as an index.
      * @param indexDataType  Data type of the index field.
      * @param index          Value of the index field.
-     * @return               The number of affected rows.
+     * @return The number of affected rows.
      */
     public static long update(String tableName, String[] columns, Object[] values, int[] types,
                               String indexFieldName, int indexDataType, Object index) {
@@ -90,7 +94,7 @@ public class CRUDHelper {
         queryBuilder.append(" = ");
         queryBuilder.append(convertObjectToSQLField(index, indexDataType));
 
-        try (Connection conn = DBUtils.connect(location)) {
+        try (Connection conn = DBUtils.getConnection(location)) {
             // Prepare and execute the update query
             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString());
             return pstmt.executeUpdate(); // Number of affected rows
@@ -102,6 +106,7 @@ public class CRUDHelper {
             return -1;
         }
     }
+
     /**
      * Creates a new record in the database.
      *
@@ -109,7 +114,7 @@ public class CRUDHelper {
      * @param columns   Array of column names to insert into.
      * @param values    Array of values to insert for the columns.
      * @param types     Array of data types for the values.
-     * @return          The ID of the newly created record.
+     * @return The ID of the newly created record.
      */
     public static long create(String tableName, String[] columns, Object[] values, int[] types) {
 
@@ -138,7 +143,7 @@ public class CRUDHelper {
         }
         queryBuilder.append(");");
 
-        try (Connection conn = DBUtils.connect(location)) {
+        try (Connection conn = DBUtils.getConnection(location)) {
             // Prepare and execute the insert query
             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
             int affectedRows = pstmt.executeUpdate();
@@ -160,21 +165,45 @@ public class CRUDHelper {
         }
         return -1;
     }
+
     /**
      * Deletes a record from the database by ID.
      *
      * @param tableName Name of the table to delete from.
      * @param id        ID of the record to delete.
-     * @return          The number of affected rows.
+     * @return The number of affected rows.
      */
-    public static int delete(String tableName, int id, String idField) {
+    public static int delete(String tableName, Integer id, String deleteQuery) {
         // Build the SQL delete query
-        String sql = "DELETE FROM " + tableName + " WHERE idField = ?";
+//        String sql = "DELETE FROM " + tableName + " WHERE idField = ?";
+//
+//        try (Connection conn = DBUtils.connect(location)) {
+//            // Prepare and execute the delete query
+//            PreparedStatement pstmt = conn.prepareStatement(sql);
+//            pstmt.setInt(1, id);
+//            return pstmt.executeUpdate();
+//        } catch (SQLException e) {
+//            // Log an error if the operation fails
+//            Logger.getAnonymousLogger().log(
+//                    Level.SEVERE,
+//                    LocalDateTime.now() + ": Could not delete from " + tableName +
+//                            " by id " + id + " because " + e.getCause());
+//            return -1;
+//        }
+        if (id == null) {
+            Logger.getAnonymousLogger().log(
+                    Level.SEVERE,
+                    LocalDateTime.now() + ": Could not delete from " + tableName +
+                            " because the provided id is null.");
+            return -1; // or throw an exception, depending on your error handling strategy
+        }
+        // Build the SQL delete query
 
-        try (Connection conn = DBUtils.connect(location)) {
+        try (Connection connection = DBUtils.getConnection("festivalDB")) {
             // Prepare and execute the delete query
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
             pstmt.setInt(1, id);
+
             return pstmt.executeUpdate();
         } catch (SQLException e) {
             // Log an error if the operation fails
@@ -185,12 +214,13 @@ public class CRUDHelper {
             return -1;
         }
     }
+
     /**
      * Converts an object to its corresponding SQL field representation.
      *
      * @param value The value to convert.
      * @param type  The SQL data type of the value.
-     * @return      The SQL field representation of the value.
+     * @return The SQL field representation of the value.
      */
     private static String convertObjectToSQLField(Object value, int type) {
         StringBuilder queryBuilder = new StringBuilder();
@@ -219,7 +249,7 @@ public class CRUDHelper {
 
         // Example SQL query (assuming 'id' is the primary key):
         String checkQuery = "SELECT COUNT(*) FROM " + tableName + " WHERE idField = ?";
-        try (Connection connection = DBUtils.connect("festivalDB");
+        try (Connection connection = DBUtils.getConnection("festivalDB");
              PreparedStatement pstmt = connection.prepareStatement(checkQuery)) {
             pstmt.setInt(1, id);
             try (ResultSet resultSet = pstmt.executeQuery()) {

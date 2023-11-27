@@ -4,7 +4,6 @@ import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.VenueDAOInterface;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,9 +27,9 @@ public class VenueDAO implements VenueDAOInterface {
     }
 
     @Override
-    public VenueRepo getAllVenues() {
+    public com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO getAllVenues() {
 
-        VenueRepo venueRepo = VenueRepo.getInstance();
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO venueRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO.getInstance();
 
         String tableName = "venues";
 
@@ -78,7 +77,7 @@ public class VenueDAO implements VenueDAOInterface {
 
     }
 
-    public void populateVenueRepo(String tableName,VenueRepo venueRepo){
+    public void populateVenueRepo(String tableName, com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO venueRepo){
 
         String query = "SELECT * FROM " + tableName;
         try (Connection connection = DBUtils.connect("festivalDB")) {
@@ -111,7 +110,7 @@ public class VenueDAO implements VenueDAOInterface {
 
     public void generateVenueRepo(){
         VenueDAO venueDAOImplementation = new VenueDAO();
-        VenueRepo venueRepo = VenueRepo.getInstance();
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO venueRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO.getInstance();
         String tableName = "Venues";
 
         venueDAOImplementation.populateVenueRepo(tableName, venueRepo);
@@ -120,7 +119,7 @@ public class VenueDAO implements VenueDAOInterface {
 
     public static void main(String[] args) {
         VenueDAO venueDAOImplementation = new VenueDAO();
-        VenueRepo venueRepo = VenueRepo.getInstance();
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO venueRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO.getInstance();
         String tableName = "Venues";
 
         venueDAOImplementation.populateVenueRepo(tableName, venueRepo);

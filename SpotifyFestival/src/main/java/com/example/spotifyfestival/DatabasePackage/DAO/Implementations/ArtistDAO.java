@@ -4,7 +4,6 @@ import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -34,20 +33,20 @@ public class ArtistDAO implements GenericDAO<Artist> {
         return artistsList;
     }
     public static void setArtistsList(ObservableList<Artist> artistsList) {
-        ArtistDAO.artistsList = artistsList;
+        com.example.spotifyfestival.DatabasePackage.DAO.Implementations.ArtistDAO.artistsList = artistsList;
     }
 
     //ArtistRepo
-    private ArtistDAORepo artistRepo;
+    private com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO artistRepo;
 
     public ArtistDAO(){
-        artistRepo = ArtistDAORepo.getInstance();
+        artistRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO.getInstance();
         artistsList = FXCollections.observableArrayList();
     }
 
     private void refreshObservableList(){
         artistsList.clear();
-        artistRepo = ArtistDAORepo.getInstance();
+        artistRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO.getInstance();
         Iterable<Artist> iterable = artistRepo.getAll();
         for(Artist artist : iterable){
             artistsList.add(artist);
@@ -144,7 +143,7 @@ public class ArtistDAO implements GenericDAO<Artist> {
         }
         // Build the SQL delete query
 
-        try(Connection connection = DBUtils.connect("festivalDB")){
+        try(Connection connection = DBUtils.getConnection("festivalDB")){
             // Prepare and execute the delete query
             PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
             pstmt.setInt(1, id);
@@ -184,7 +183,7 @@ public class ArtistDAO implements GenericDAO<Artist> {
 //
 //        System.out.println();
 //
-        ArtistDAORepo artistRepo = ArtistDAORepo.getInstance();
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO artistRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO.getInstance();
         ArtistDAO artistDAOImplementation = new ArtistDAO();
         System.out.println(artistDAOImplementation.getItemByID(19));
         artistRepo.list();

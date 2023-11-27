@@ -16,30 +16,34 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist> {
-    //DB specific attributes
-    String tableName = "Artists";
-    String[] columns = {"artist_id", "name", "spotify_id"};
-    String[] updateColumns = {"name", "spotify_id"};
-    private final String readQuery = "SELECT * FROM " + tableName;
+public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist> {
 
-    public String getReadQuery() {
+    //DB specific attributes
+    private final String tableName = "Artists";
+    private final String[] columns = {"artist_id", "name", "spotify_id"};
+    private final String[] updateColumns = {"name", "spotify_id"};
+    private final String readQuery = "SELECT * FROM " + tableName;
+    private final String deleteQuery = "DELETE FROM " + tableName + " WHERE artist_id = ?";
+
+    private final int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR};
+    private final int[] updateTypes = {Types.VARCHAR, Types.VARCHAR};
+    public String getReadQuery()
+    {
         return readQuery;
     }
-
-    private final String deleteQuery = "DELETE FROM " + tableName + " WHERE artist_id = ?";
-    int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR};
-    int[] updateTypes = {Types.VARCHAR, Types.VARCHAR};
-
+    public String getDeleteQuery()
+    {
+        return deleteQuery;
+    }
     //Singleton Creation
-    private static ArtistDAORepo instance;
+    private static ArtistDAO instance;
 
-    private ArtistDAORepo() {
+    private ArtistDAO() {
     }
 
-    public static ArtistDAORepo getInstance() {
+    public static ArtistDAO getInstance() {
         if (instance == null) {
-            instance = new ArtistDAORepo();
+            instance = new ArtistDAO();
         }
         return instance;
     }
@@ -54,7 +58,7 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
     //DB related methods
     public void readAllObjectsFromTable() {
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DBUtils.connect("festivalDB")) {
+        try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             artistList.clear();
@@ -135,30 +139,10 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-
-        if (id == null) {
-            Logger.getAnonymousLogger().log(
-                    Level.SEVERE,
-                    LocalDateTime.now() + ": Could not delete from " + tableName +
-                            " because the provided id is null.");
-            return -1; // or throw an exception, depending on your error handling strategy
-        }
-        // Build the SQL delete query
-
-        try (Connection connection = DBUtils.connect("festivalDB")) {
-            // Prepare and execute the delete query
-            PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
-            pstmt.setInt(1, id);
-            super.delete(id);
-            return pstmt.executeUpdate();
-        } catch (SQLException e) {
-            // Log an error if the operation fails
-            Logger.getAnonymousLogger().log(
-                    Level.SEVERE,
-                    LocalDateTime.now() + ": Could not delete from " + tableName +
-                            " by id " + id + " because " + e.getCause());
-            return -1;
-        }
+        return CRUDHelper.delete(
+                tableName,
+                id,
+                deleteQuery);
     }
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
@@ -170,16 +154,23 @@ public class ArtistDAORepo extends DBGenericRepository<Integer, Artist> implemen
                 index);
     }
     public static void main(String[] args) {
-        ArtistDAORepo artistRepo = ArtistDAORepo.getInstance();
-        artistRepo.readAllObjectsFromTable();
-        ObservableList<Genre> genres = null;
-        Artist artist = new Artist(5, "Metallica", genres, "some_another");
-        artistRepo.insertObjectInDB(artist);
-        artistRepo.list();
-        System.out.println(artistRepo.getItem(5).getName());
-        artistRepo.updateObjectInDB(artist);
-        System.out.println(artistRepo.getItem(5).getSpotify_id());
-        System.out.println(artistRepo.readItemAttributeFromDB("spotify_id", Types.VARCHAR, 8));
-        artistRepo.deleteObjectByIDInDB(5);
+//        ArtistDAO artistRepo = ArtistDAO.getInstance();
+//        artistRepo.readAllObjectsFromTable();
+//        ObservableList<Genre> genres = null;
+//        Artist artist = new Artist(5, "Metallica", genres, "some_another");
+//        artistRepo.insertObjectInDB(artist);
+//        artistRepo.list();
+//        System.out.println(artistRepo.getItem(5).getName());
+//        artistRepo.updateObjectInDB(artist);
+//        System.out.println(artistRepo.getItem(5).getSpotify_id());
+//        System.out.println(artistRepo.readItemAttributeFromDB("spotify_id", Types.VARCHAR, 8));
+//        artistRepo.deleteObjectByIDInDB(5);
+        VenueDAO venueDAO = VenueDAO.getInstance();
+        venueDAO.readAllObjectsFromTable();
+        venueDAO.list();
+
+        FestivalDAO festivalDAO = FestivalDAO.getInstance();
+        festivalDAO.readAllObjectsFromTable();
+        festivalDAO.list();
     }
 }

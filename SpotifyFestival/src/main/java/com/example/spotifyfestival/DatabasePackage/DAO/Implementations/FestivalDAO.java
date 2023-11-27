@@ -5,8 +5,7 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.FestivalDAOInterface;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Festival;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalRepo;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueRepo;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -30,8 +29,8 @@ public class FestivalDAO implements FestivalDAOInterface {
     }
 
     @Override
-    public FestivalRepo getAllFestivals() {
-        FestivalRepo festivalRepo = FestivalRepo.getInstance();
+    public com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalDAO getAllFestivals() {
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalDAO festivalRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalDAO.getInstance();
 
         String tableName = "Festivals";
 
@@ -47,7 +46,7 @@ public class FestivalDAO implements FestivalDAOInterface {
                 String name = rs.getString("name");
                 int venue_id = rs.getInt("venue_id");
 
-                VenueRepo venueRepo = VenueRepo.getInstance();
+                VenueDAO venueRepo = VenueDAO.getInstance();
                 Venue venue = venueRepo.getItem(venue_id);
 
                 Festival festival = new Festival(festival_id, name, venue);

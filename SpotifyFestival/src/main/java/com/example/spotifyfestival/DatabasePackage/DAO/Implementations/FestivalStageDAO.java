@@ -5,8 +5,7 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.StagesDAOInterface;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.FestivalStage;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalStageRepo;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueRepo;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -30,15 +29,15 @@ public class FestivalStageDAO implements StagesDAOInterface {
     }
 
     @Override
-    public FestivalStageRepo getAllStages() {
-        FestivalStageRepo stageRepo =FestivalStageRepo.getInstance();
+    public com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalStageDAO getAllStages() {
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalStageDAO stageRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalStageDAO.getInstance();
 
         String tableName = "Stages";
 
         ObservableList<FestivalStage> festivalStages = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DBUtils.connect("festivalDB")) {
+        try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             festivalStages.clear();
@@ -47,7 +46,7 @@ public class FestivalStageDAO implements StagesDAOInterface {
                 String name = rs.getString("name");
                 int venue_id = rs.getInt("venue_id");
 
-                VenueRepo venueRepo = VenueRepo.getInstance();
+                VenueDAO venueRepo = VenueDAO.getInstance();
                 Venue venue = venueRepo.getItem(venue_id);
 
                 FestivalStage festivalStage = new FestivalStage(stage_id, name, venue);
@@ -77,7 +76,7 @@ public class FestivalStageDAO implements StagesDAOInterface {
 
     public static void main(String[] args) {
         FestivalStageDAO festivalStageDAOImplementation = new FestivalStageDAO();
-        FestivalStageRepo festivalStageRepo = festivalStageDAOImplementation.getAllStages();
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalStageDAO festivalStageRepo = festivalStageDAOImplementation.getAllStages();
 
     }
 }

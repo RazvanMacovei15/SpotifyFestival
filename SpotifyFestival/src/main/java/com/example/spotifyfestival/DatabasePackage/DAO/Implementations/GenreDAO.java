@@ -4,7 +4,6 @@ import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.GenresDAOInter
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreRepo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -28,8 +27,8 @@ public class GenreDAO implements GenresDAOInterface {
     }
 
     @Override
-    public GenreRepo getAllGenres() {
-        GenreRepo genreRepo = GenreRepo.getInstance();
+    public com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreDAO getAllGenres() {
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreDAO genreRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreDAO.getInstance();
 
         String tableName = "Genres";
 
@@ -71,7 +70,7 @@ public class GenreDAO implements GenresDAOInterface {
     }
     public void generateGenreRepo(){
         GenreDAO genreDAOImplementation = new GenreDAO();
-        GenreRepo genreRepo = GenreRepo.getInstance();
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreDAO genreRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreDAO.getInstance();
         String tableName = "Genres";
 
     }

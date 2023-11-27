@@ -12,9 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class DBGenericRepository< K, V extends Identifiable<K>> extends MemoryRepository<K,V>{
-
     public DBGenericRepository(){
-
     }
-
 }

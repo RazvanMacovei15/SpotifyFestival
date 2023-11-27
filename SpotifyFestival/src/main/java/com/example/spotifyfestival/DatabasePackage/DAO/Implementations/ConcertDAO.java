@@ -7,10 +7,9 @@ import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.ConcertDAOInte
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.FestivalStage;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAORepo;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.ConcertRepo;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalStageRepo;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueRepo;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.FestivalStageDAO;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -34,15 +33,15 @@ public class ConcertDAO implements ConcertDAOInterface {
     }
 
     @Override
-    public ConcertRepo getAllConcerts() {
-        ConcertRepo concertRepo = ConcertRepo.getInstance();
+    public com.example.spotifyfestival.RepositoryPackage.DBRepos.ConcertDAO getAllConcerts() {
+        com.example.spotifyfestival.RepositoryPackage.DBRepos.ConcertDAO concertRepo = com.example.spotifyfestival.RepositoryPackage.DBRepos.ConcertDAO.getInstance();
 
         String tableName = "Concerts";
 
         ObservableList<Concert> concerts = FXCollections.observableArrayList();
 
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DBUtils.connect("festivalDB")) {
+        try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             concerts.clear();
@@ -55,13 +54,13 @@ public class ConcertDAO implements ConcertDAOInterface {
                 int artist_id = rs.getInt("artist_id");
                 int stage_id = rs.getInt("stage_id");
 
-                VenueRepo venueRepo = VenueRepo.getInstance();
+                VenueDAO venueRepo = VenueDAO.getInstance();
                 Venue venue = venueRepo.getItem(venue_id);
 
-                ArtistDAORepo artistRepo = ArtistDAORepo.getInstance();
+                ArtistDAO artistRepo = ArtistDAO.getInstance();
                 Artist artist = artistRepo.getItem(artist_id);
 
-                FestivalStageRepo festivalStageRepo = FestivalStageRepo.getInstance();
+                FestivalStageDAO festivalStageRepo = FestivalStageDAO.getInstance();
                 FestivalStage festivalStage = festivalStageRepo.getItem(stage_id);
 
                 Concert concert = new Concert(concert_id, description, artist, venue, start_date, start_time);

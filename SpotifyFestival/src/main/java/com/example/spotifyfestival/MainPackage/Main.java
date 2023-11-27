@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.MainPackage;
 
 import com.example.spotifyfestival.GenericsPackage.CRUDRepoInterface;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAORepo;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
 import com.example.spotifyfestival.RepositoryPackage.FileRepos.ArtistFileRepo;
 import com.example.spotifyfestival.Lab_facultate.Service.Service;
 import com.example.spotifyfestival.Lab_facultate.UI.UI;
@@ -12,7 +12,7 @@ public class Main {
 
     public static CRUDRepoInterface createDefaultRepo()
     {
-        CRUDRepoInterface repo = ArtistDAORepo.getInstance();
+        CRUDRepoInterface repo = ArtistDAO.getInstance();
 
 //        Artist a1 = new Artist("1", "John");
 //        Artist a2 = new Artist("2", "Ana");

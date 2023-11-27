@@ -1,8 +1,8 @@
 package com.example.spotifyfestival.Services;
 
-import com.example.spotifyfestival.DatabasePackage.DAO.Implementations.ArtistDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
