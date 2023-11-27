@@ -3,6 +3,7 @@
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/SpotifyFestival/src/main/java/com/example/spotifyfestival/DatabasePackage/DAO/Implementations" />
+      <excludeFolder url="file://$MODULE_DIR$/SpotifyFestival/src/main/java/com/example/spotifyfestival/DatabasePackage/DAO/Interfaces" />
     </content>
   </component>
 </module>

@@ -1,9 +1,8 @@
 package com.example.spotifyfestival.RepositoryPackage.DBRepos;
 
-import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.GenericDAO;
+import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBGenericRepository;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;

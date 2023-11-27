@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.DatabasePackage.DAO.Interfaces;
+package com.example.spotifyfestival.GenericsPackage;
 
 import java.util.Optional;
 
