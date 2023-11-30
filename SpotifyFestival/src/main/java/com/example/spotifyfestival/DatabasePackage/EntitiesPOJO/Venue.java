@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Venue extends Entity {
@@ -70,15 +71,20 @@ public class Venue extends Entity {
         this.listOfAllConcertsAtThatVenue = listOfAllConcertsAtThatVenue;
     }
 
+    public void addConcertToList(Concert concert){
+        if((listOfAllConcertsAtThatVenue != null)){
+            listOfAllConcertsAtThatVenue.add(concert);
+        }else{
+            this.listOfAllConcertsAtThatVenue = new ArrayList<>();
+            listOfAllConcertsAtThatVenue.add(concert);
+        }
+
+    }
+
     @Override
     public String toString() {
         return "Venue{" +
-                "city='" + city + '\'' +
-                ", venueName='" + venueName + '\'' +
-                ", streetAddress='" + streetAddress + '\'' +
-                ", locationLatitude='" + locationLatitude + '\'' +
-                ", locationLongitude='" + locationLongitude + '\'' +
-                ", listOfAllConcertsAtThatVenue=" + listOfAllConcertsAtThatVenue +
+                "venueName='" + venueName + '\'' +
                 ", id=" + id +
                 '}';
     }

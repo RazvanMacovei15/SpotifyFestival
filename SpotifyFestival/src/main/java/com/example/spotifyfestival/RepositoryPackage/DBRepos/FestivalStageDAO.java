@@ -38,6 +38,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
     private static FestivalStageDAO instance;
 
     private FestivalStageDAO() {
+        venueDAO = VenueDAO.getInstance();
         // Private constructor to prevent instantiation outside of this class
     }
     public static FestivalStageDAO getInstance() {
@@ -52,7 +53,8 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
         return festivalStages;
     }
 
-
+    //
+    private final VenueDAO venueDAO;
     @Override
     public void insertObjectInDB(FestivalStage item) {
         //update DB
@@ -123,20 +125,22 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
             festivalStages.clear();
             while (rs.next()) {
 
-                Venue venue = null;
+                int venue_id = rs.getInt("venue_id");
+                Venue venue = venueDAO.getItem(venue_id);
 
                 FestivalStage festivalStage = new FestivalStage(
-                        rs.getInt("festival_id"),
+                        rs.getInt("stage_id"),
                         rs.getString("name"),
                         venue);
 
                 festivalStages.add(festivalStage);
-                instance.add(rs.getInt("festival_id"), festivalStage);
+                instance.add(rs.getInt("stage_id"), festivalStage);
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Stages from database ");
+            e.printStackTrace();
             festivalStages.clear();
         } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);

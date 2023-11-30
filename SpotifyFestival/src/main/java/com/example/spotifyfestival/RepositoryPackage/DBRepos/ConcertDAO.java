@@ -142,6 +142,9 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                         rs.getString("start_date"),
                         rs.getString("start_time"),
                         stage);
+                concert.setArtist(artist);
+
+                venue.addConcertToList(concert);
 
                 concertList.add(concert);
                 instance.add(rs.getInt("concert_id"), concert);

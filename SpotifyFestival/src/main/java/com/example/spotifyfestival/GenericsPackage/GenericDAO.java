@@ -1,5 +1,7 @@
 package com.example.spotifyfestival.GenericsPackage;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+
 import java.util.Optional;
 
 public interface GenericDAO<V> {

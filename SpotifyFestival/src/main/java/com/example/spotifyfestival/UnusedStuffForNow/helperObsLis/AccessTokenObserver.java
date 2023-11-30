@@ -10,7 +10,7 @@ public class AccessTokenObserver implements AuthFlowObserver {
 
     public void onBackToLoginClicked(ActionEvent actionEvent) {
         try {
-            AppSwitchScenesMethods.switchScene(actionEvent, "mainScreen.fxml");
+            AppSwitchScenesMethods.switchScene(actionEvent, "MainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }

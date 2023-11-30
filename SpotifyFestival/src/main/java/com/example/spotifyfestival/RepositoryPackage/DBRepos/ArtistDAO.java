@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.RepositoryPackage.DBRepos;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
 import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
@@ -17,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist> {
-
     //DB specific attributes
     private final String tableName = "Artists";
     private final String[] columns = {"artist_id", "name", "spotify_id"};
@@ -39,6 +39,8 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
     private static ArtistDAO instance;
 
     private ArtistDAO() {
+        genreDAO = GenreDAO.getInstance();
+        artistGenreDAO = ArtistGenreDAO.getInstance();
     }
 
     public static ArtistDAO getInstance() {
@@ -55,15 +57,22 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         return artistList;
     }
 
+    //Repo Attributes To fill GenresList from Artist objects
+
+    private GenreDAO genreDAO;
+    private ArtistGenreDAO artistGenreDAO;
+
     //DB related methods
     public void readAllObjectsFromTable() {
+        initializeHelperRepos(artistGenreDAO, genreDAO);
         String query = "SELECT * FROM " + tableName;
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
             ResultSet rs = statement.executeQuery();
             artistList.clear();
             while (rs.next()) {
-                ObservableList<Genre> genres = null;
+                int artist_id = rs.getInt("artist_id");
+                ObservableList<Genre> genres = generateListOfGenresForArtist(artistGenreDAO, genreDAO, artist_id);
                 Artist artist = new Artist(
                         rs.getInt("artist_id"),
                         rs.getString("name"),
@@ -153,24 +162,52 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
                 types[0],
                 index);
     }
+
+    public void initializeHelperRepos(ArtistGenreDAO artistGenreDAO, GenreDAO genreDAO){
+        artistGenreDAO = ArtistGenreDAO.getInstance();
+        genreDAO = GenreDAO.getInstance();
+        artistGenreDAO.readAllObjectsFromTable();
+        genreDAO.readAllObjectsFromTable();
+    }
+
+    public ObservableList<Genre> generateListOfGenresForArtist(ArtistGenreDAO artistGenreDAO, GenreDAO genreDAO, int id){
+        ObservableList<Genre> artistGenreList = FXCollections.observableArrayList();
+        Iterable<ArtistGenre> artistGenreDAOS = artistGenreDAO.getAll();
+        for(ArtistGenre artistGenre : artistGenreDAOS){
+            if(artistGenre.getArtist_id() == id){
+                int genre_id = artistGenre.getGenre_id();
+                Genre genre = genreDAO.getItem(genre_id);
+                artistGenreList.add(genre);
+            }
+        }
+        return artistGenreList;
+    }
+
+    public void initializeArtistRepoFromDB(){
+        instance.readAllObjectsFromTable();
+    }
+
     public static void main(String[] args) {
-//        ArtistDAO artistRepo = ArtistDAO.getInstance();
-//        artistRepo.readAllObjectsFromTable();
-//        ObservableList<Genre> genres = null;
-//        Artist artist = new Artist(5, "Metallica", genres, "some_another");
-//        artistRepo.insertObjectInDB(artist);
-//        artistRepo.list();
-//        System.out.println(artistRepo.getItem(5).getName());
-//        artistRepo.updateObjectInDB(artist);
-//        System.out.println(artistRepo.getItem(5).getSpotify_id());
-//        System.out.println(artistRepo.readItemAttributeFromDB("spotify_id", Types.VARCHAR, 8));
-//        artistRepo.deleteObjectByIDInDB(5);
+        ArtistDAO artistDAO = ArtistDAO.getInstance();
+        artistDAO.initializeArtistRepoFromDB();
         VenueDAO venueDAO = VenueDAO.getInstance();
         venueDAO.readAllObjectsFromTable();
         venueDAO.list();
+        System.out.println();
+
+        FestivalStageDAO stageDAO = FestivalStageDAO.getInstance();
+        stageDAO.readAllObjectsFromTable();
+        stageDAO.list();
+        System.out.println();
 
         FestivalDAO festivalDAO = FestivalDAO.getInstance();
         festivalDAO.readAllObjectsFromTable();
         festivalDAO.list();
+        System.out.println();
+
+        ConcertDAO concertDAO = ConcertDAO.getInstance();
+        concertDAO.readAllObjectsFromTable();
+        concertDAO.list();
+        System.out.println();
     }
 }

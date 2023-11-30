@@ -1,8 +1,5 @@
 package com.example.spotifyfestival.DatabasePackage.DBHelpers;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
-import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -80,7 +77,6 @@ public class CRUDHelper {
                               String indexFieldName, int indexDataType, Object index) {
         // Determine the number of columns to update
         int number = Math.min(Math.min(columns.length, values.length), types.length);
-
         // Build the SQL update query
         StringBuilder queryBuilder = new StringBuilder("UPDATE " + tableName + " SET ");
         for (int i = 0; i < number; i++) {
@@ -93,7 +89,6 @@ public class CRUDHelper {
         queryBuilder.append(indexFieldName);
         queryBuilder.append(" = ");
         queryBuilder.append(convertObjectToSQLField(index, indexDataType));
-
         try (Connection conn = DBUtils.getConnection(location)) {
             // Prepare and execute the update query
             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString());
@@ -117,10 +112,8 @@ public class CRUDHelper {
      * @return The ID of the newly created record.
      */
     public static long create(String tableName, String[] columns, Object[] values, int[] types) {
-
         // Determine the number of columns to insert
         int number = Math.min(Math.min(columns.length, values.length), types.length);
-
         // Build the SQL insert query
         StringBuilder queryBuilder = new StringBuilder("INSERT INTO " + tableName + " (");
         for (int i = 0; i < number; i++) {
@@ -142,12 +135,10 @@ public class CRUDHelper {
             if (i < number - 1) queryBuilder.append(", ");
         }
         queryBuilder.append(");");
-
         try (Connection conn = DBUtils.getConnection(location)) {
             // Prepare and execute the insert query
             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
             int affectedRows = pstmt.executeUpdate();
-
             // Check the affected rows and return the generated ID
             if (affectedRows > 0) {
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -174,9 +165,8 @@ public class CRUDHelper {
      * @return The number of affected rows.
      */
     public static int delete(String tableName, Integer id, String deleteQuery) {
-        // Build the SQL delete query
+        //Build the SQL delete query
 //        String sql = "DELETE FROM " + tableName + " WHERE idField = ?";
-//
 //        try (Connection conn = DBUtils.connect(location)) {
 //            // Prepare and execute the delete query
 //            PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -198,12 +188,10 @@ public class CRUDHelper {
             return -1; // or throw an exception, depending on your error handling strategy
         }
         // Build the SQL delete query
-
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             // Prepare and execute the delete query
             PreparedStatement pstmt = connection.prepareStatement(deleteQuery);
             pstmt.setInt(1, id);
-
             return pstmt.executeUpdate();
         } catch (SQLException e) {
             // Log an error if the operation fails
@@ -248,7 +236,7 @@ public class CRUDHelper {
         // Return false if the ID is not found, indicating it's unique
 
         // Example SQL query (assuming 'id' is the primary key):
-        String checkQuery = "SELECT COUNT(*) FROM " + tableName + " WHERE idField = ?";
+        String checkQuery = "SELECT COUNT(*) FROM " + tableName + " WHERE " + idField + " = ?";
         try (Connection connection = DBUtils.getConnection("festivalDB");
              PreparedStatement pstmt = connection.prepareStatement(checkQuery)) {
             pstmt.setInt(1, id);

@@ -82,11 +82,6 @@ public class Concert extends Entity {
     public String toString() {
         return "Concert{" +
                 "description='" + description + '\'' +
-                ", listOfArtists=" + listOfArtists +
-                ", artist=" + artist +
-                ", venue=" + venue +
-                ", startOfTheConcert='" + startOfTheConcert + '\'' +
-                ", time='" + time + '\'' +
                 ", id=" + id +
                 '}';
     }
