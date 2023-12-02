@@ -51,6 +51,4 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.UtilsPackage to javafx.fxml;
     opens com.example.spotifyfestival.UI_Package;
     exports com.example.spotifyfestival.UI_Package;
-//    opens com.edencoding.models to javafx.base;
-
 }

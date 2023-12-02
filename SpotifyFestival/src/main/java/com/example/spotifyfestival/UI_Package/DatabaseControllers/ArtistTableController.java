@@ -1,6 +1,7 @@
 package com.example.spotifyfestival.UI_Package.DatabaseControllers;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
 import com.example.spotifyfestival.Services.FestivalDBService;
 import javafx.beans.binding.Bindings;
@@ -14,10 +15,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
-public class ArtistTableController {
+public class ArtistTableController extends GenericObservableList<Artist> {
     private FestivalDBService festivalDBService;
     @FXML
     protected TableView<Artist> artistsTable;
@@ -39,6 +41,7 @@ public class ArtistTableController {
 
         artistsTable.setItems(artistList);
     }
+
     private Dialog<Artist> createArtistDialog(Artist artist) {
         //create the dialog itself
         Dialog<Artist> dialog = new Dialog<>();
@@ -113,7 +116,7 @@ public class ArtistTableController {
     public void addArtist(ActionEvent event) {
         Dialog<Artist> addArtistDialog = createArtistDialog(null);
         Optional<Artist> result = addArtistDialog.showAndWait();
-        ArtistDAO artistDAO = ArtistDAO.getInstance();
+
         result.ifPresent(artist ->
                 festivalDBService.getDbRepo().getArtistDAO().insertObjectInDB(new Artist(artist.getId(),
                         artist.getName(),
@@ -131,17 +134,27 @@ public class ArtistTableController {
             alert.setContentText("One artist must be selected when editing");
         } else {
             Dialog<Artist> dialog = createArtistDialog((Artist) artistsTable.getSelectionModel().getSelectedItem());
-            Optional<Artist> optionalPerson = dialog.showAndWait();
+            Optional<Artist> optionalArtist = dialog.showAndWait();
             ArtistDAO artistDAO = festivalDBService.getDbRepo().getArtistDAO();
-            optionalPerson.ifPresent(artistDAO::updateObjectInDB);
+            optionalArtist.ifPresent(updatedArtist -> {
+                artistDAO.updateObjectInDB(updatedArtist);
+
+                // Update the artistList to reflect the changes in the TableView
+                int index = artistList.indexOf(updatedArtist);
+                if (index != -1) {
+                    artistList.set(index, updatedArtist);
+                } else {
+                    // Handle the case where the artist is not found in the list
+                    System.out.println("Error: Artist not found in the list.");
+                }
+            });
         }
         event.consume();
     }
     public void deleteArtist(ActionEvent event){
         for (Artist artist : artistsTable.getSelectionModel().getSelectedItems()) {
             festivalDBService.getDbRepo().getArtistDAO().deleteObjectByIDInDB(artist.getId());
-//            PersonDAO.delete(person.getId());
-            artistList = festivalDBService.getDbRepo().getArtistDAO().getArtistList();
+            artistList.remove(artist);
         }
         event.consume();
     }

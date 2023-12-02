@@ -15,9 +15,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 
 public class SpotifyAuthFlowService {
@@ -170,7 +168,7 @@ public class SpotifyAuthFlowService {
 
                     if (statusCode == 200) {
                         accessToken = getAccessToken(responseBody);
-                        notifyObservers(accessToken); // Notify observers when API call is completed
+//                        notifyObservers(accessToken); // Notify observers when API call is completed
                     } else {
                         // handle error responses here
                         System.err.println("Error: " + statusCode);
@@ -181,9 +179,11 @@ public class SpotifyAuthFlowService {
                     // Return an error response
                 }
             }
+
             Platform.runLater(() -> {
                 try {
-                    AppSwitchScenesMethods.switchSceneTwo("afterLoginScreen.fxml");
+
+                    AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -192,6 +192,30 @@ public class SpotifyAuthFlowService {
             System.out.println("bool is true");
             return HtmlCONSTANTS.HTML_PAGE;
         });
+    }
+    public void getEmail() throws IOException, InterruptedException {
+        String apiUrl = "https://api.spotify.com/v1/me";
+
+        // Set up headers
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + accessToken);
+
+        // Create HttpRequest
+        HttpRequest emailRequest = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(apiUrl))
+                .headers(headers.entrySet().stream()
+                        .map(e -> e.getKey() + ": " + e.getValue())
+                        .toArray(String[]::new))
+                .build();
+
+        // Send the request and get the response
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
+
+        // Print the response status code and body
+        System.out.println("Status Code: " + emailResponse.statusCode());
+        System.out.println("Response Body: " + emailResponse.body());
     }
 
     public String refreshTheToken(String jsonResponse) {
