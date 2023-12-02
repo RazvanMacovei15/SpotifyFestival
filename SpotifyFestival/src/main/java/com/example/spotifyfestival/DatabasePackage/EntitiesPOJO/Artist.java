@@ -19,6 +19,12 @@ public class Artist extends Entity{
         this.spotify_id = spotify_id;
     }
 
+    public Artist(int id, String name, String spotify_id) {
+        super(id);
+        this.name = name;
+        this.spotify_id = spotify_id;
+    }
+
     public ObservableList<Genre> getGenres() {
         return genres;
     }

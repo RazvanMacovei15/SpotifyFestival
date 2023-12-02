@@ -17,10 +17,15 @@ public class MainController {
     private Button button;
     @FXML
     private Label label;
+    @FXML
+    private Button DBButton;
 
     @FXML
     private void handleLoginButtonClick(ActionEvent event){
         SpotifyAuthFlowService.getInstance().openLogin();
+    }
+    public void handleDBButton(ActionEvent event) throws IOException {
+        AppSwitchScenesMethods.switchSceneForDatabase(event, "/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
     public void onAwaitingConfirmationScene(ActionEvent event) throws Exception {

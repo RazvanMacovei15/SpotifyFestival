@@ -6,14 +6,24 @@ public class User extends Entity {
     protected String email;
     protected String username;
     protected String password;
+    protected String role;
     protected Map<Integer, Genre> genreList;
 
-    public User(int id, String email, String username, String password, Map<Integer, Genre> genreList) {
+    public User(int id, String email, String username, String password, String role, Map<Integer, Genre> genreList) {
         super(id);
         this.email = email;
         this.username = username;
         this.password = password;
+        this.role = role;
         this.genreList = genreList;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {

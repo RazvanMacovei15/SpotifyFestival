@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist> {
     //DB specific attributes
+    private final String location = "festivalDB";
     private final String tableName = "Artists";
     private final String[] columns = {"artist_id", "name", "spotify_id"};
     private final String[] updateColumns = {"name", "spotify_id"};
@@ -35,10 +36,12 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
     {
         return deleteQuery;
     }
+    private CRUDHelper crudHelper;
     //Singleton Creation
     private static ArtistDAO instance;
 
     private ArtistDAO() {
+        crudHelper = new CRUDHelper(location);
         genreDAO = GenreDAO.getInstance();
         artistGenreDAO = ArtistGenreDAO.getInstance();
     }
@@ -59,8 +62,8 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
 
     //Repo Attributes To fill GenresList from Artist objects
 
-    private GenreDAO genreDAO;
-    private ArtistGenreDAO artistGenreDAO;
+    protected GenreDAO genreDAO;
+    protected ArtistGenreDAO artistGenreDAO;
 
     //DB related methods
     public void readAllObjectsFromTable() {
@@ -93,8 +96,14 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
 
     @Override
     public void insertObjectInDB(Artist artist) {
+        //update MemoryRepo
+        try {
+            super.add(artist.getId(), artist);
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
+        }
         //update DB
-        int id = (int) CRUDHelper.create(
+        int id = (int) crudHelper.create(
                 tableName,
                 columns,
                 new Object[]{artist.getId(), artist.getName(), artist.getSpotify_id()},
@@ -103,12 +112,7 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         //update cache
         artistList.add(artist);
 
-        //update MemoryRepo
-        try {
-            super.add(artist.getId(), artist);
-        } catch (DuplicateEntityException e) {
-            throw new RuntimeException(e);
-        }
+
     }
 
     @Override
@@ -124,7 +128,7 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
     @Override
     public void updateObjectInDB(Artist newArtist) {
         //update DB
-        long rows = CRUDHelper.update(
+        long rows = crudHelper.update(
                 tableName,
                 updateColumns,
                 new Object[]{newArtist.getName(), newArtist.getSpotify_id()},
@@ -148,14 +152,14 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-        return CRUDHelper.delete(
+        return crudHelper.delete(
                 tableName,
                 id,
                 deleteQuery);
     }
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
-        return CRUDHelper.read(tableName,
+        return crudHelper.read(tableName,
                 fieldName,
                 fieldDataType,
                 columns[0],
@@ -181,33 +185,5 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
             }
         }
         return artistGenreList;
-    }
-
-    public void initializeArtistRepoFromDB(){
-        instance.readAllObjectsFromTable();
-    }
-
-    public static void main(String[] args) {
-        ArtistDAO artistDAO = ArtistDAO.getInstance();
-        artistDAO.initializeArtistRepoFromDB();
-        VenueDAO venueDAO = VenueDAO.getInstance();
-        venueDAO.readAllObjectsFromTable();
-        venueDAO.list();
-        System.out.println();
-
-        FestivalStageDAO stageDAO = FestivalStageDAO.getInstance();
-        stageDAO.readAllObjectsFromTable();
-        stageDAO.list();
-        System.out.println();
-
-        FestivalDAO festivalDAO = FestivalDAO.getInstance();
-        festivalDAO.readAllObjectsFromTable();
-        festivalDAO.list();
-        System.out.println();
-
-        ConcertDAO concertDAO = ConcertDAO.getInstance();
-        concertDAO.readAllObjectsFromTable();
-        concertDAO.list();
-        System.out.println();
     }
 }

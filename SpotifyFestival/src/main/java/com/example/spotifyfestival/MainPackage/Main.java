@@ -2,7 +2,6 @@ package com.example.spotifyfestival.MainPackage;
 
 import com.example.spotifyfestival.GenericsPackage.CRUDRepoInterface;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
-import com.example.spotifyfestival.RepositoryPackage.FileRepos.ArtistFileRepo;
 import com.example.spotifyfestival.Lab_facultate.Service.Service;
 import com.example.spotifyfestival.Lab_facultate.UI.UI;
 
@@ -26,17 +25,17 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
-        CRUDRepoInterface artistRepo = new ArtistFileRepo("Artists.txt");
+//        CRUDRepoInterface artistRepo = new ArtistFileRepo("Artists.txt");
 //        try {
 //            docRepo.add(1, new Doctor(1, "John", "Cardiology", 9.5));
 //            docRepo.add(2, new Doctor(2, "Ana", "neurology", 9.0));
 //        } catch (DuplicateEntityException e) {
 //            throw new RuntimeException(e);
 //        }
-
-        Service service = new Service(artistRepo);
-        UI ui=new UI(service);
-        ui.main();
+//
+//        Service service = new Service(artistRepo);
+//        UI ui=new UI(service);
+//        ui.main();
     }
 //    public static void main(String[] args) {
 //        Entity userLocation = new Entity();

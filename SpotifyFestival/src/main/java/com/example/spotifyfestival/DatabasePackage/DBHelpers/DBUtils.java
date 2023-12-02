@@ -44,18 +44,6 @@ public class DBUtils {
         }
         return conn;
     }
-
-    public static void closeConnection() {
-        try {
-            if (connection != null && !connection.isClosed()) {
-                connection.close();
-                System.out.println("Database connection closed!");
-            }
-        } catch (SQLException e) {
-            Logger.getAnonymousLogger().log(Level.SEVERE,
-                    LocalDateTime.now() + ": Could not close SQLite DB connection");
-        }
-    }
 }
 
 

@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 public class VenueDAO extends DBGenericRepository<Integer, Venue> implements GenericDAO<Venue> {
     //DB specific attributes
+    private final String location = "festivalDB";
     private final String tableName = "Venues";
     private final String[] columns = {"venue_id", "name", "city", "address", "latitude", "longitude"};
     private final String[] updateColumns = {"name", "city", "address", "latitude", "longitude"};
@@ -33,11 +34,12 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
     public String getDeleteQuery() {
         return deleteQuery;
     }
-
+    private CRUDHelper crudHelper;
     //Singleton Creation
     private static VenueDAO instance;
 
     private VenueDAO() {
+        crudHelper = new CRUDHelper(location);
     }
 
     public static VenueDAO getInstance() {
@@ -57,7 +59,7 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
     @Override
     public void insertObjectInDB(Venue venue) {
         //update DB
-        int id = (int) CRUDHelper.create(
+        int id = (int) crudHelper.create(
                 tableName,
                 columns,
                 new Object[]{venue.getId(), venue.getVenueName(), venue.getCity(), venue.getStreetAddress(), venue.getLocationLatitude(), venue.getLocationLongitude()},
@@ -86,7 +88,7 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
     @Override
     public void updateObjectInDB(Venue item) {
 //update DB
-        long rows = CRUDHelper.update(
+        long rows = crudHelper.update(
                 tableName,
                 updateColumns,
                 new Object[]{item.getVenueName(), item.getCity(), item.getStreetAddress(), item.getLocationLatitude(), item.getLocationLongitude()},
@@ -110,7 +112,7 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-        return CRUDHelper.delete(
+        return crudHelper.delete(
                 tableName,
                 id,
                 deleteQuery);
@@ -146,7 +148,7 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
 
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
-        return CRUDHelper.read(tableName,
+        return crudHelper.read(tableName,
                 fieldName,
                 fieldDataType,
                 columns[0],

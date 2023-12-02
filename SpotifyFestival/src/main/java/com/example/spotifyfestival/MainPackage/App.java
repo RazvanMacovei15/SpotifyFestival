@@ -23,7 +23,7 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         App.primaryStage = primaryStage;
-        URL fxmlLocation = getClass().getResource("/com/example/spotifyfestival/FXML_Files/MainScreen.fxml");
+        URL fxmlLocation = getClass().getResource("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/MainScreen.fxml");
         assert fxmlLocation != null;
         Parent root = FXMLLoader.load(fxmlLocation);
         double sceneWidth = 360; // Set your desired width

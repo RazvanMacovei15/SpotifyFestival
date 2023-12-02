@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage> implements GenericDAO<FestivalStage> {
     //DB specific attributes
+    private final String location = "festivalDB";
     private final String tableName = "Stages";
     private final String[] columns = {"stage_id", "name", "venue_id"};
     private final String[] updateColumns = {"name", "venue_id"};
@@ -33,11 +34,12 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
     {
         return deleteQuery;
     }
-
+    private CRUDHelper crudHelper;
     //Singleton Creation
     private static FestivalStageDAO instance;
 
     private FestivalStageDAO() {
+        crudHelper = new CRUDHelper(location);
         venueDAO = VenueDAO.getInstance();
         // Private constructor to prevent instantiation outside of this class
     }
@@ -58,7 +60,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
     @Override
     public void insertObjectInDB(FestivalStage item) {
         //update DB
-        int id = (int) CRUDHelper.create(
+        int id = (int) crudHelper.create(
                 tableName,
                 columns,
                 new Object[]{item.getId(), item.getName(), item.getVenue().getId()},
@@ -87,7 +89,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
     @Override
     public void updateObjectInDB(FestivalStage item) {
         //update DB
-        long rows = CRUDHelper.update(
+        long rows = crudHelper.update(
                 tableName,
                 updateColumns,
                 new Object[]{item.getName(), item.getVenue().getId()},
@@ -111,7 +113,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-        return CRUDHelper.delete(
+        return crudHelper.delete(
                 tableName,
                 id,
                 deleteQuery);
@@ -140,7 +142,6 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not load Stages from database ");
-            e.printStackTrace();
             festivalStages.clear();
         } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);
@@ -149,7 +150,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
 
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
-        return CRUDHelper.read(tableName,
+        return crudHelper.read(tableName,
                 fieldName,
                 fieldDataType,
                 columns[0],

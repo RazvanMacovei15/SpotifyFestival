@@ -10,7 +10,12 @@ import java.util.logging.Logger;
  * Helper class for performing CRUD (Create, Read, Update, Delete) operations on a database.
  */
 public class CRUDHelper {
-    private static final String location = "festivalDB";
+
+    protected String location;
+
+    public CRUDHelper(String location) {
+        this.location = location;
+    }
 
     /**
      * Reads data from the database.
@@ -23,7 +28,7 @@ public class CRUDHelper {
      * @param index          Value of the index field.
      * @return The retrieved data.
      */
-    public static Object read(String tableName, String fieldName, int fieldDataType,
+    public Object read(String tableName, String fieldName, int fieldDataType,
                               String indexFieldName, int indexDataType, Object index) {
         // Build the SQL query
         StringBuilder queryBuilder = new StringBuilder("SELECT ");
@@ -73,7 +78,7 @@ public class CRUDHelper {
      * @param index          Value of the index field.
      * @return The number of affected rows.
      */
-    public static long update(String tableName, String[] columns, Object[] values, int[] types,
+    public long update(String tableName, String[] columns, Object[] values, int[] types,
                               String indexFieldName, int indexDataType, Object index) {
         // Determine the number of columns to update
         int number = Math.min(Math.min(columns.length, values.length), types.length);
@@ -111,7 +116,7 @@ public class CRUDHelper {
      * @param types     Array of data types for the values.
      * @return The ID of the newly created record.
      */
-    public static long create(String tableName, String[] columns, Object[] values, int[] types) {
+    public long create(String tableName, String[] columns, Object[] values, int[] types) {
         // Determine the number of columns to insert
         int number = Math.min(Math.min(columns.length, values.length), types.length);
         // Build the SQL insert query
@@ -164,7 +169,7 @@ public class CRUDHelper {
      * @param id        ID of the record to delete.
      * @return The number of affected rows.
      */
-    public static int delete(String tableName, Integer id, String deleteQuery) {
+    public int delete(String tableName, Integer id, String deleteQuery) {
         //Build the SQL delete query
 //        String sql = "DELETE FROM " + tableName + " WHERE idField = ?";
 //        try (Connection conn = DBUtils.connect(location)) {
@@ -210,7 +215,7 @@ public class CRUDHelper {
      * @param type  The SQL data type of the value.
      * @return The SQL field representation of the value.
      */
-    private static String convertObjectToSQLField(Object value, int type) {
+    private String convertObjectToSQLField(Object value, int type) {
         StringBuilder queryBuilder = new StringBuilder();
         // Convert values based on their data types
         switch (type) {
@@ -229,7 +234,7 @@ public class CRUDHelper {
         return queryBuilder.toString();
     }
 
-    private static boolean isIdDuplicate(int id, String tableName, String idField) {
+    private boolean isIdDuplicate(int id, String tableName, String idField) {
         // Implement a method to check if the ID already exists in the database
         // This could be a SQL query or any mechanism specific to your database
         // Return true if the ID is found, indicating a duplicate

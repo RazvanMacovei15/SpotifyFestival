@@ -39,6 +39,34 @@ public class AppSwitchScenesMethods {
         stage.setScene(scene);
         stage.show();
     }
+    public static void switchSceneForDatabase(ActionEvent event, String path) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(AppSwitchScenesMethods.class.getResource(path));
+
+        Parent sceneRoot = loader.load();
+
+        double sceneWidth = 900; // Set your desired width
+        double sceneHeight = 600; // Set your desired height
+        Scene scene = new Scene(sceneRoot, sceneWidth,sceneHeight);
+        Stage stage = App.getPrimaryStage();
+        // Get the Stage
+        stage.setScene(scene);
+        stage.show();
+    }
+    public static void switchSceneTwoForDatabase(String path) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(AppSwitchScenesMethods.class.getResource(path));
+
+        Parent sceneRoot = loader.load();
+
+        double sceneWidth = 900; // Set your desired width
+        double sceneHeight = 600; // Set your desired height
+        Scene scene = new Scene(sceneRoot, sceneWidth,sceneHeight);
+        Stage stage = App.getPrimaryStage();
+        // Get the Stage
+        stage.setScene(scene);
+        stage.show();
+    }
 
     public static void switchSceneTwo(String sceneFXML) throws IOException {
 

@@ -19,6 +19,7 @@ import java.util.logging.Logger;
 
 public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements GenericDAO<Concert> {
     //DB specific attributes
+    private final String location = "festivalDB";
     private final String tableName = "Concerts";
     private final String[] columns = {"concert_id", "description", "start_date", "start_time", "venue_id", "artist_id", "stage_id"};
     private final String[] updateColumns = {"description", "start_date", "start_time", "venue_id", "artist_id", "stage_id"};
@@ -37,9 +38,11 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
     private final VenueDAO venueDAO;
     private final ArtistDAO artistDAO;
     private final FestivalStageDAO festivalStageDAO;
+    private final CRUDHelper crudHelper;
     //Singleton creation
     private static ConcertDAO instance;
     private ConcertDAO(){
+        crudHelper = new CRUDHelper(location);
         venueDAO = VenueDAO.getInstance();
         artistDAO = ArtistDAO.getInstance();
         festivalStageDAO = FestivalStageDAO.getInstance();
@@ -60,7 +63,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
     @Override
     public void insertObjectInDB(Concert item) {
         //update DB
-        int id = (int) CRUDHelper.create(
+        int id = (int) crudHelper.create(
                 tableName,
                 columns,
                 new Object[]{item.getId(), item.getDescription(), item.getStartOfTheConcert(), item.getTime(), item.getVenue().getId(), item.getArtist().getId(), item.getFestivalStage().getId()},
@@ -88,8 +91,8 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
     @Override
     public void updateObjectInDB(Concert item) {
-//update DB
-        long rows = CRUDHelper.update(
+        //update DB
+        long rows = crudHelper.update(
                 tableName,
                 updateColumns,
                 new Object[]{item.getDescription(), item.getStartOfTheConcert(), item.getTime(), item.getVenue().getId(), item.getArtist().getId(), item.getFestivalStage().getId()},
@@ -113,7 +116,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-        return CRUDHelper.delete(
+        return crudHelper.delete(
                 tableName,
                 id,
                 deleteQuery);
@@ -161,7 +164,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
-        return CRUDHelper.read(tableName,
+        return crudHelper.read(tableName,
                 fieldName,
                 fieldDataType,
                 columns[0],

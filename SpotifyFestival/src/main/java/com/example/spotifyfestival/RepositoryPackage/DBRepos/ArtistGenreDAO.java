@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> implements GenericDAO<ArtistGenre> {
     //DB specific attributes
+    private final String location = "festivalDB";
     private final String tableName = "ArtistsGenres";
     private final String[] columns = {"artist_genre_id", "artist_id", "genre_id"};
     private final String[] updateColumns = {"artist_id", "genre_id"};
@@ -33,10 +34,12 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
     {
         return deleteQuery;
     }
-
+    protected CRUDHelper crudHelper;
     //Singleton Creation
     private static ArtistGenreDAO instance;
-    private ArtistGenreDAO(){}
+    private ArtistGenreDAO(){
+        crudHelper = new CRUDHelper(location);
+    }
     public static ArtistGenreDAO getInstance(){
         if(instance == null){
             instance = new ArtistGenreDAO();
@@ -52,7 +55,7 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
     @Override
     public void insertObjectInDB(ArtistGenre artistGenre) {
         //update DB
-        int id = (int) CRUDHelper.create(
+        int id = (int) crudHelper.create(
                 tableName,
                 columns,
                 new Object[]{artistGenre.getArtist_id(), artistGenre.getGenre_id()},
@@ -81,7 +84,7 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
     @Override
     public void updateObjectInDB(ArtistGenre newArtistGenre) {
         //update DB
-        long rows = CRUDHelper.update(
+        long rows = crudHelper.update(
                 tableName,
                 updateColumns,
                 new Object[]{newArtistGenre.getArtist_id(), newArtistGenre.getGenre_id()},
@@ -105,7 +108,7 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-        return CRUDHelper.delete(
+        return crudHelper.delete(
                 tableName,
                 id,
                 deleteQuery);
@@ -138,7 +141,7 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
 
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
-        return CRUDHelper.read(tableName,
+        return crudHelper.read(tableName,
                 fieldName,
                 fieldDataType,
                 columns[0],

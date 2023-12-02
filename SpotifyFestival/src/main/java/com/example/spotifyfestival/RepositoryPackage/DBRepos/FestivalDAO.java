@@ -18,6 +18,7 @@ import java.util.logging.Logger;
 
 public class FestivalDAO extends DBGenericRepository<Integer, Festival> implements GenericDAO<Festival> {
     //DB specific attributes
+    private final String location = "festivalDB";
     private final String tableName = "Festivals";
     private final String[] columns = {"festival_id", "name", "venue_id"};
     private final String[] updateColumns = {"name", "venue_id"};
@@ -33,12 +34,13 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
     {
         return deleteQuery;
     }
-
     private final VenueDAO venueDAO;
+    private final CRUDHelper crudHelper;
 
     //Singleton Creation
     private static FestivalDAO instance;
     private FestivalDAO(){
+        crudHelper = new CRUDHelper(location);
         this.venueDAO = VenueDAO.getInstance();
     }
     public static FestivalDAO getInstance(){
@@ -56,7 +58,7 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
     @Override
     public void insertObjectInDB(Festival item) {
         //update DB
-        int id = (int) CRUDHelper.create(
+        int id = (int) crudHelper.create(
                 tableName,
                 columns,
                 new Object[]{item.getId(), item.getName(), item.getVenue().getId()},
@@ -85,7 +87,7 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
     @Override
     public void updateObjectInDB(Festival item) {
         //update DB
-        long rows = CRUDHelper.update(
+        long rows = crudHelper.update(
                 tableName,
                 updateColumns,
                 new Object[]{item.getName(), item.getVenue().getId()},
@@ -109,7 +111,7 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-        return CRUDHelper.delete(
+        return crudHelper.delete(
                 tableName,
                 id,
                 deleteQuery);
@@ -145,7 +147,7 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
 
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
-        return CRUDHelper.read(tableName,
+        return crudHelper.read(tableName,
                 fieldName,
                 fieldDataType,
                 columns[0],

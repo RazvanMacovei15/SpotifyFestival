@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.spotifyfestival.UI_Package.DatabaseControllers.DatabaseController">
+
+
+    <RadioButton text="Artists Table" fx:id="artistsButton">
+
+    </RadioButton>
+    <RadioButton text="Venues Table" fx:id="venuesButton">
+
+    </RadioButton>
+    <RadioButton text="Concert Table" fx:id="concertButton">
+
+    </RadioButton>
+    <Button text="LOAD" fx:id="loadButton" onAction="#loadPage">
+
+    </Button>
+</VBox>

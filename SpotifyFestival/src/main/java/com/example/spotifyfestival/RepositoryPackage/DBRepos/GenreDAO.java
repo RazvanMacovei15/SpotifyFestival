@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 
 public class GenreDAO extends DBGenericRepository<Integer, Genre> implements GenericDAO<Genre> {
     //DB specific attributes
+    private final String location = "festivalDB";
     private final String tableName = "Genres";
     private final String[] columns = {"genre_id", "name"};
     private final String[] updateColumns = {"name"};
@@ -33,9 +34,12 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
     {
         return deleteQuery;
     }
+    public CRUDHelper crudHelper;
     //Singleton creation
     private static GenreDAO instance;
-    private GenreDAO(){}
+    private GenreDAO(){
+        crudHelper = new CRUDHelper(location);
+    }
     public static GenreDAO getInstance(){
         if(instance == null){
             instance = new GenreDAO();
@@ -54,7 +58,7 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
     @Override
     public void insertObjectInDB(Genre genre) {
         //update DB
-        int id = (int) CRUDHelper.create(
+        int id = (int) crudHelper.create(
                 tableName,
                 columns,
                 new Object[]{genre.getId(), genre.getName()},
@@ -83,7 +87,7 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
     @Override
     public void updateObjectInDB(Genre newGenre) {
         //update DB
-        long rows = CRUDHelper.update(
+        long rows = crudHelper.update(
                 tableName,
                 updateColumns,
                 new Object[]{newGenre.getName()},
@@ -107,7 +111,7 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
-        return CRUDHelper.delete(
+        return crudHelper.delete(
                 tableName,
                 id,
                 deleteQuery);
@@ -139,7 +143,7 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
 
     @Override
     public Object readItemAttributeFromDB(String fieldName, int fieldDataType, Object index) {
-        return CRUDHelper.read(tableName,
+        return crudHelper.read(tableName,
                 fieldName,
                 fieldDataType,
                 columns[0],
