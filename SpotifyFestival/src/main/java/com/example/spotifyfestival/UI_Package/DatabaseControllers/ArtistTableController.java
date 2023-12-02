@@ -4,6 +4,8 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
 import com.example.spotifyfestival.Services.FestivalDBService;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -18,21 +20,24 @@ import java.util.function.UnaryOperator;
 public class ArtistTableController {
     private FestivalDBService festivalDBService;
     @FXML
-    protected TableView artistsTable;
+    protected TableView<Artist> artistsTable;
     @FXML
     protected TableColumn idColumn;
     @FXML
     protected TableColumn nameColumn;
     @FXML
     protected TableColumn spotify_ID_column;
+    ObservableList<Artist> artistList;
     public void initialize(){
         festivalDBService = new FestivalDBService();
+        artistList = FXCollections.observableArrayList();
+        artistList = festivalDBService.getDbRepo().getArtistDAO().getArtistList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         spotify_ID_column.setCellValueFactory(new PropertyValueFactory<>("spotify_id"));
 
-        artistsTable.setItems(festivalDBService.getDbRepo().getArtistDAO().getArtistList());
+        artistsTable.setItems(artistList);
     }
     private Dialog<Artist> createArtistDialog(Artist artist) {
         //create the dialog itself
@@ -129,6 +134,14 @@ public class ArtistTableController {
             Optional<Artist> optionalPerson = dialog.showAndWait();
             ArtistDAO artistDAO = festivalDBService.getDbRepo().getArtistDAO();
             optionalPerson.ifPresent(artistDAO::updateObjectInDB);
+        }
+        event.consume();
+    }
+    public void deleteArtist(ActionEvent event){
+        for (Artist artist : artistsTable.getSelectionModel().getSelectedItems()) {
+            festivalDBService.getDbRepo().getArtistDAO().deleteObjectByIDInDB(artist.getId());
+//            PersonDAO.delete(person.getId());
+            artistList = festivalDBService.getDbRepo().getArtistDAO().getArtistList();
         }
         event.consume();
     }

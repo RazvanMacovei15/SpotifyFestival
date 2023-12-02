@@ -74,5 +74,6 @@ public class EntireDB_Repo{
         repo.initialize();
         ArtistDAO artistRepo = repo.getArtistDAO();
         artistRepo.list();
+//        repo.getArtistDAO().de
     }
 }

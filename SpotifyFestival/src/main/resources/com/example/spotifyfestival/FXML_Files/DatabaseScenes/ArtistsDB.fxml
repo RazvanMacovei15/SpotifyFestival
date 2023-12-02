@@ -37,6 +37,6 @@
 <!--        <Button text="LOAD" GridPane.rowIndex="0" GridPane.columnIndex="0"/>-->
         <Button text="ADD" GridPane.rowIndex="0" GridPane.columnIndex="0" onAction="#addArtist"/>
         <Button text="UPDATE" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#updateArtist"/>
-        <Button text="DELETE" GridPane.rowIndex="0" GridPane.columnIndex="4"/>
+        <Button text="DELETE" GridPane.rowIndex="0" GridPane.columnIndex="4" onAction="#deleteArtist"/>
     </GridPane>
 </GridPane>
