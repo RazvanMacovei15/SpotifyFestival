@@ -41,7 +41,7 @@ public class TopTracksController {
 
     public void getBackToTopLists(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "topLists.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopLists.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }
@@ -151,7 +151,7 @@ public class TopTracksController {
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "afterLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

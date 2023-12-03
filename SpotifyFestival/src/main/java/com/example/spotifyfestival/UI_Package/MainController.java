@@ -26,29 +26,25 @@ public class MainController {
         AppSwitchScenesMethods.switchSceneForDatabase(event, "/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
-    public void onAwaitingConfirmationScene(ActionEvent event) throws Exception {
-        AppSwitchScenesMethods.switchScene(event, "awaitConfirmation.fxml");
-    }
-
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "afterLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }
     }
 
     public void onTopListsButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "topLists.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopLists.fxml");
     }
     public void onTopArtistsButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "TopArtists.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopArtists.fxml");
     }
     public void onTopTracksButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "TopTracks.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopTracks.fxml");
     }
     public void onTopGenresButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "TopGenres.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopGenres.fxml");
     }
 
     public void onGetFestivalSuggestionButtonClicked(ActionEvent actionEvent) throws IOException {
@@ -65,7 +61,7 @@ public class MainController {
     }
     public void onBackToLoginClicked(ActionEvent actionEvent) {
         try {
-            AppSwitchScenesMethods.switchScene(actionEvent, "MainScreen.fxml");
+            AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/MainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }
