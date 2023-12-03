@@ -148,4 +148,7 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
                 types[0],
                 index);
     }
+    public void initialize(){
+        instance.readAllObjectsFromTable();
+    }
 }

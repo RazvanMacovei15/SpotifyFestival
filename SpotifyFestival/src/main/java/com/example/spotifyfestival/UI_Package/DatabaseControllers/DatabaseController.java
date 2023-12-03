@@ -23,6 +23,8 @@ public class DatabaseController {
     @FXML
     protected RadioButton concertButton;
     @FXML
+    protected RadioButton artistGenreButton;
+    @FXML
     protected Button loadButton;
     @FXML
     private ToggleGroup tableGroup;
@@ -31,10 +33,12 @@ public class DatabaseController {
         festivalDBService = new FestivalDBService();
         festivalDBService.getDbRepo();
     }
+
     @FXML
-    public void initialize(){
+    public void initialize() {
         // Create a ToggleGroup and add the RadioButtons to it
         tableGroup = new ToggleGroup();
+        artistGenreButton.setToggleGroup(tableGroup);
         artistsButton.setToggleGroup(tableGroup);
         venuesButton.setToggleGroup(tableGroup);
         concertButton.setToggleGroup(tableGroup);
@@ -63,11 +67,17 @@ public class DatabaseController {
                 e.printStackTrace(); // Add better logging or handling based on your needs
             }
             // Add code to navigate to Page 1
-        } else if ("Page 2".equals(selectedButtonText)) {
+        } else if ("ArtistGenre Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 2...");
+            try {
+                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsGenresDB.fxml");
+            } catch (IOException e) {
+                e.printStackTrace(); // Add better logging or handling based on your needs
+            }
             // Add code to navigate to Page 2
         }
     }
+
     public void whenLoadButtonPressed() throws IOException {
         RadioButton selectedRadioButton = (RadioButton) tableGroup.getSelectedToggle();
 
@@ -83,6 +93,9 @@ public class DatabaseController {
                     break;
                 case "Concerts":
                     loadConcertsScene();
+                    break;
+                case "ArtistGenres":
+                    loadArtistGenresScene();
                     break;
                 default:
                     // Handle default case or do nothing
@@ -101,14 +114,21 @@ public class DatabaseController {
         }
     }
 
-    public void loadVenuesScene(){
+    public void loadVenuesScene() {
 
     }
 
-    public void loadConcertsScene(){
+    public void loadConcertsScene() {
 
     }
 
+    public void loadArtistGenresScene(){
+        try {
+            AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsGenresDB.fxml");
+        } catch (IOException e) {
+            e.printStackTrace(); // Add better logging or handling based on your needs
+        }
+    }
 
 
 }

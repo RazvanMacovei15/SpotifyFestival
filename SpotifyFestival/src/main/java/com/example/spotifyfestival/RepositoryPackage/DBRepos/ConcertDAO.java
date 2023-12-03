@@ -54,6 +54,10 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         }
         return instance;
     }
+
+    public void initialize(){
+        instance.readAllObjectsFromTable();
+    }
     //TableView JavaFX stuff
     ObservableList<Concert> concertList = FXCollections.observableArrayList();
     public ObservableList<Concert> getConcertList() {

@@ -2,7 +2,9 @@ package com.example.spotifyfestival.UI_Package.DatabaseControllers;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
+import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
+import com.example.spotifyfestival.Services.ArtistDAOService;
 import com.example.spotifyfestival.Services.FestivalDBService;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -20,7 +22,7 @@ import java.util.Optional;
 import java.util.function.UnaryOperator;
 
 public class ArtistTableController extends GenericObservableList<Artist> {
-    private FestivalDBService festivalDBService;
+    private ArtistDAOService artistDAOService;
     @FXML
     protected TableView<Artist> artistsTable;
     @FXML
@@ -31,9 +33,9 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     protected TableColumn spotify_ID_column;
     ObservableList<Artist> artistList;
     public void initialize(){
-        festivalDBService = new FestivalDBService();
+        artistDAOService = new ArtistDAOService();
         artistList = FXCollections.observableArrayList();
-        artistList = festivalDBService.getDbRepo().getArtistDAO().getArtistList();
+        artistList = artistDAOService.getArtistDAO().getArtistList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -118,10 +120,18 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         Optional<Artist> result = addArtistDialog.showAndWait();
 
         result.ifPresent(artist ->
-                festivalDBService.getDbRepo().getArtistDAO().insertObjectInDB(new Artist(artist.getId(),
+        {
+            try {
+                Artist artistToADD = new Artist(artist.getId(),
                         artist.getName(),
                         artist.getSpotify_id()
-                )));
+                );
+                artistDAOService.add(artistToADD);
+                artistList.add(artistToADD);
+            } catch (DuplicateEntityException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         event.consume();
     }
@@ -135,7 +145,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         } else {
             Dialog<Artist> dialog = createArtistDialog((Artist) artistsTable.getSelectionModel().getSelectedItem());
             Optional<Artist> optionalArtist = dialog.showAndWait();
-            ArtistDAO artistDAO = festivalDBService.getDbRepo().getArtistDAO();
+            ArtistDAO artistDAO = artistDAOService.getArtistDAO();
             optionalArtist.ifPresent(updatedArtist -> {
                 artistDAO.updateObjectInDB(updatedArtist);
 
@@ -153,9 +163,13 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     }
     public void deleteArtist(ActionEvent event){
         for (Artist artist : artistsTable.getSelectionModel().getSelectedItems()) {
-            festivalDBService.getDbRepo().getArtistDAO().deleteObjectByIDInDB(artist.getId());
+            artistDAOService.delete(artist.getId());
             artistList.remove(artist);
         }
         event.consume();
+    }
+
+    public void list(){
+        artistDAOService.list();
     }
 }

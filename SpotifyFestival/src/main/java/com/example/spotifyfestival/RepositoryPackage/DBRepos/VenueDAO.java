@@ -49,10 +49,15 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
         return instance;
     }
 
+    public void initialize(){
+        instance.readAllObjectsFromTable();
+    }
+
+
     //TableView JavaFX stuff
     ObservableList<Venue> venueList = FXCollections.observableArrayList();
 
-    public ObservableList<Venue> getArtistGenreList() {
+    public ObservableList<Venue> getVenuesList() {
         return venueList;
     }
 

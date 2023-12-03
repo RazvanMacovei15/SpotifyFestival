@@ -13,9 +13,4 @@ public class FestivalDBService {
     public EntireDB_Repo getDbRepo() {
         return dbRepo;
     }
-
-    public void setDbRepo(EntireDB_Repo dbRepo) {
-        this.dbRepo = dbRepo;
-    }
-
 }

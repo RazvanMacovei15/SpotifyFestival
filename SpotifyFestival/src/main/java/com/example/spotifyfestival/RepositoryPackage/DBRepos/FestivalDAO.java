@@ -51,7 +51,7 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
     }
     //TableView JavaFX stuff
     ObservableList<Festival> festivalObservableList = FXCollections.observableArrayList();
-    public ObservableList<Festival> getArtistGenreList() {
+    public ObservableList<Festival> getFestivalList() {
         return festivalObservableList;
     }
 
@@ -153,5 +153,9 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
                 columns[0],
                 types[0],
                 index);
+    }
+
+    public void initialize() {
+        instance.readAllObjectsFromTable();
     }
 }

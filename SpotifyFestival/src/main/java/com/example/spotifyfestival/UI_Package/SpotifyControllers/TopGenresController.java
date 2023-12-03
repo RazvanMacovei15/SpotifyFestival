@@ -1,6 +1,8 @@
 package com.example.spotifyfestival.UI_Package.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.API_URLS.Artists_API_URLS;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
@@ -16,6 +18,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TopGenresController {
 

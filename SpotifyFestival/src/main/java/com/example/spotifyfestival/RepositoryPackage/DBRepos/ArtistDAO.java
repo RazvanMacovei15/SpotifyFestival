@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 
 public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist> {
     //DB specific attributes
-    private final String location = "festivalDB";
-    private final String tableName = "Artists";
+    private static final String LOCATION = "festivalDB";
+    private static final String tableName = "Artists";
     private final String[] columns = {"artist_id", "name", "spotify_id"};
     private final String[] updateColumns = {"name", "spotify_id"};
     private final String readQuery = "SELECT * FROM " + tableName;
@@ -40,8 +40,8 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
     //Singleton Creation
     private static ArtistDAO instance;
 
-    private ArtistDAO() {
-        crudHelper = new CRUDHelper(location);
+    protected ArtistDAO() {
+        crudHelper = new CRUDHelper(LOCATION);
         genreDAO = GenreDAO.getInstance();
         artistGenreDAO = ArtistGenreDAO.getInstance();
     }
@@ -109,10 +109,6 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
                 new Object[]{artist.getId(), artist.getName(), artist.getSpotify_id()},
                 types
         );
-        //update cache
-        artistList.add(artist);
-
-
     }
 
     @Override
@@ -185,5 +181,9 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
             }
         }
         return artistGenreList;
+    }
+
+    public void initialize(){
+        instance.readAllObjectsFromTable();
     }
 }

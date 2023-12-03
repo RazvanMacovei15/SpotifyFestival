@@ -20,6 +20,9 @@
     <RadioButton text="Concert Table" fx:id="concertButton">
 
     </RadioButton>
+    <RadioButton text="ArtistGenre Table" fx:id="artistGenreButton">
+
+    </RadioButton>
     <Button text="LOAD" fx:id="loadButton" onAction="#loadPage">
 
     </Button>

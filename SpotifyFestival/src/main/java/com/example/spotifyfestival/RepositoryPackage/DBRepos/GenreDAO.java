@@ -47,10 +47,14 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
         return instance;
     }
 
+    public void initialize(){
+        instance.readAllObjectsFromTable();
+    }
+
     //TableView JavaFX stuff
     ObservableList<Genre> genreList = FXCollections.observableArrayList();
 
-    public ObservableList<Genre> getArtistList() {
+    public ObservableList<Genre> getGenresList() {
         return genreList;
     }
 

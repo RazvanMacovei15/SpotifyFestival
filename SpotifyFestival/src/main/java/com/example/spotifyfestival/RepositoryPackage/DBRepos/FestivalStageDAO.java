@@ -49,6 +49,10 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
         }
         return instance;
     }
+
+    public void initialize(){
+        instance.readAllObjectsFromTable();
+    }
     //TableView JavaFX stuff
     ObservableList<FestivalStage> festivalStages = FXCollections.observableArrayList();
     public ObservableList<FestivalStage> getFestivalStages() {
