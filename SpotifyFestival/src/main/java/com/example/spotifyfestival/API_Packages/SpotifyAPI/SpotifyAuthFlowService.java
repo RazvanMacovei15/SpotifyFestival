@@ -204,9 +204,7 @@ public class SpotifyAuthFlowService {
         HttpRequest emailRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(apiUrl))
-                .headers(headers.entrySet().stream()
-                        .map(e -> e.getKey() + ": " + e.getValue())
-                        .toArray(String[]::new))
+                .headers("Authorization", "Bearer " + accessToken)
                 .build();
 
         // Send the request and get the response

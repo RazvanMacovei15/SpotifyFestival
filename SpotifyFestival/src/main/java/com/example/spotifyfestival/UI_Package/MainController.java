@@ -11,8 +11,6 @@ import javafx.scene.control.Label;
 import java.io.IOException;
 
 public class MainController {
-
-
     @FXML
     private Button button;
     @FXML
@@ -57,6 +55,10 @@ public class MainController {
         AppSwitchScenesMethods.switchScene(actionEvent, "getFestivalSuggestions.fxml");
     }
 
+    public void onGetEmailBClicked(ActionEvent event) throws IOException, InterruptedException {
+        SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
+        spotifyAuthFlowService.getEmail();
+    }
 
     public void onLogOffButtonClicked(ActionEvent actionEvent) throws IOException {
         AppSwitchScenesMethods.switchScene(actionEvent, "NotLoggedIn.fxml");
@@ -76,8 +78,4 @@ public class MainController {
             throw new RuntimeException("Unable to move forward", e);
         }
     }
-
-
-
 }
-
