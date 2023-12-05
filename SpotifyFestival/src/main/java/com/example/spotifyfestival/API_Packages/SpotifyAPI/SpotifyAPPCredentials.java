@@ -16,7 +16,7 @@ public final class SpotifyAPPCredentials {
         this.clientId = "40f0faeac8b043ee99f7bd42e134f97c";
         this.clientSecret = "9713d372e12e4c699accf979bd406435";
         this.redirectUri = "http://localhost:8888/callback";
-        this.userTopReadScope = "user-top-read";
+        this.userTopReadScope = "user-read-email";
         this.userReadPlaybackPosition = "user-read-playback-position";
         this.userReadRecentlyPlayed = "user-read-recently-played";
         this.stringToEncode = clientId + ":" + clientSecret;

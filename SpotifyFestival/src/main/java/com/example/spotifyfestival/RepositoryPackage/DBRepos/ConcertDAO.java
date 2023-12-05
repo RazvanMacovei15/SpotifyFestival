@@ -36,6 +36,19 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         return deleteQuery;
     }
     private final VenueDAO venueDAO;
+
+    public VenueDAO getVenueDAO() {
+        return venueDAO;
+    }
+
+    public ArtistDAO getArtistDAO() {
+        return artistDAO;
+    }
+
+    public FestivalStageDAO getFestivalStageDAO() {
+        return festivalStageDAO;
+    }
+
     private final ArtistDAO artistDAO;
     private final FestivalStageDAO festivalStageDAO;
     private final CRUDHelper crudHelper;
@@ -70,7 +83,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         int id = (int) crudHelper.create(
                 tableName,
                 columns,
-                new Object[]{item.getId(), item.getDescription(), item.getStartOfTheConcert(), item.getTime(), item.getVenue().getId(), item.getArtist().getId(), item.getFestivalStage().getId()},
+                new Object[]{item.getId(), item.getDescription(), item.getStartOfTheConcert(), item.getTime(), item.getVenueId(), item.getArtistIdValue(), item.getFestivalStage().getId()},
                 types
         );
         //update cache
@@ -99,7 +112,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         long rows = crudHelper.update(
                 tableName,
                 updateColumns,
-                new Object[]{item.getDescription(), item.getStartOfTheConcert(), item.getTime(), item.getVenue().getId(), item.getArtist().getId(), item.getFestivalStage().getId()},
+                new Object[]{item.getDescription(), item.getStartOfTheConcert(), item.getTime(), item.getVenueId(), item.getArtistIdValue(), item.getStageId()},
                 updateTypes,
                 "concert_id",
                 Types.INTEGER,
@@ -129,6 +142,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
     @Override
     public void readAllObjectsFromTable() {
+        initializeHelperRepos(artistDAO, festivalStageDAO, venueDAO);
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
@@ -145,10 +159,10 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                 Concert concert = new Concert(
                         rs.getInt("concert_id"),
                         rs.getString("description"),
-                        list,
-                        venue,
                         rs.getString("start_date"),
                         rs.getString("start_time"),
+                        venue,
+                        artist,
                         stage);
                 concert.setArtist(artist);
 
@@ -175,5 +189,14 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                 columns[0],
                 types[0],
                 index);
+    }
+    public void initializeHelperRepos(ArtistDAO artistDAO, FestivalStageDAO festivalStageDAO, VenueDAO venueDAO){
+        artistDAO = ArtistDAO.getInstance();
+        festivalStageDAO = FestivalStageDAO.getInstance();
+        venueDAO = VenueDAO.getInstance();
+
+        artistDAO.readAllObjectsFromTable();
+        festivalStageDAO.readAllObjectsFromTable();
+        venueDAO.readAllObjectsFromTable();
     }
 }

@@ -1,9 +1,10 @@
 package com.example.spotifyfestival.DatabasePackage.DAO.Implementations;
 
-import com.example.spotifyfestival.DatabasePackage.DAO.Interfaces.GenericDAO;
+
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

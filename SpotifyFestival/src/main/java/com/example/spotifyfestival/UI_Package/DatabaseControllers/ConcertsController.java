@@ -3,6 +3,7 @@ package com.example.spotifyfestival.UI_Package.DatabaseControllers;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import com.example.spotifyfestival.RepositoryPackage.DBRepos.ConcertDAO;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.VenueDAO;
 import com.example.spotifyfestival.Services.ConcertDAOService;
 import javafx.beans.binding.Bindings;
@@ -23,15 +24,23 @@ public class ConcertsController {
     private ConcertDAOService service;
     @FXML
     protected TableView<Concert> concertTableView;
-    @FXML protected TableColumn idColumn;
-    @FXML protected TableColumn descriptionColumn;
-    @FXML protected TableColumn startDateColumn;
-    @FXML protected TableColumn startTimeColumn;
-    @FXML protected TableColumn venueIdColumn;
-    @FXML protected TableColumn artistIdColumn;
-    @FXML protected TableColumn stageIdColumn;
+    @FXML
+    protected TableColumn idColumn;
+    @FXML
+    protected TableColumn descriptionColumn;
+    @FXML
+    protected TableColumn startDateColumn;
+    @FXML
+    protected TableColumn startTimeColumn;
+    @FXML
+    protected TableColumn venueIdColumn;
+    @FXML
+    protected TableColumn artistIdColumn;
+    @FXML
+    protected TableColumn stageIdColumn;
     ObservableList<Concert> concertObservableList;
-    public void initialize(){
+
+    public void initialize() {
         service = new ConcertDAOService();
 
         concertObservableList = FXCollections.observableArrayList();
@@ -41,16 +50,16 @@ public class ConcertsController {
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         startDateColumn.setCellValueFactory(new PropertyValueFactory<>("startOfTheConcert"));
         startTimeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
-        venueIdColumn.setCellValueFactory(new PropertyValueFactory<>("venue"));
-        artistIdColumn.setCellValueFactory(new PropertyValueFactory<>("artist"));
-        stageIdColumn.setCellValueFactory(new PropertyValueFactory<>("festivalStage"));
+        venueIdColumn.setCellValueFactory(new PropertyValueFactory<>("venueId"));
+        artistIdColumn.setCellValueFactory(new PropertyValueFactory<>("artistIdValue"));
+        stageIdColumn.setCellValueFactory(new PropertyValueFactory<>("stageId"));
 
         concertTableView.setItems(concertObservableList);
     }
 
-    private Dialog<Venue> createVenueDialog(Venue venue) {
+    private Dialog<Concert> createConcertDialog(Concert concert) {
         //create the dialog itself
-        Dialog<Venue> dialog = new Dialog<>();
+        Dialog<Concert> dialog = new Dialog<>();
         dialog.setTitle("Add Dialog");
         dialog.setHeaderText("Add a new venue to the database");
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -64,38 +73,43 @@ public class ConcertsController {
         grid.setPadding(new Insets(20, 150, 10, 10));
         TextField id = new TextField();
         id.setPromptText("ID");
-        TextField name = new TextField();
-        name.setPromptText("NAME");
-        TextField city = new TextField();
-        city.setPromptText("CITY");
-        TextField address = new TextField();
-        address.setPromptText("ADDRESS");
-        TextField latitude = new TextField();
-        latitude.setPromptText("LATITUDE");
-        TextField longitude = new TextField();
-        longitude.setPromptText("LONGITUDE");
+        TextField description = new TextField();
+        description.setPromptText("DESCRIPTION");
+        TextField startDate = new TextField();
+        startDate.setPromptText("START DATE");
+        TextField startTime = new TextField();
+        startTime.setPromptText("START TIME");
+        TextField venueId = new TextField();
+        venueId.setPromptText("VENUE ID");
+        TextField artistId = new TextField();
+        artistId.setPromptText("ARTIST ID");
+        TextField stageId = new TextField();
+        stageId.setPromptText("STAGE ID");
         grid.add(new Label("ID:"), 0, 0);
         grid.add(id, 1, 0);
-        grid.add(new Label("NAME:"), 0, 1);
-        grid.add(name, 1, 1);
-        grid.add(new Label("CITY:"), 0, 2);
-        grid.add(city, 1, 2);
-        grid.add(new Label("ADDRESS:"), 0, 3);
-        grid.add(address, 1, 3);
-        grid.add(new Label("LATITUDE:"), 0, 4);
-        grid.add(latitude, 1, 4);
-        grid.add(new Label("LONGITUDE:"), 0, 5);
-        grid.add(longitude, 1, 5);
+        grid.add(new Label("DESCRIPTION:"), 0, 1);
+        grid.add(description, 1, 1);
+        grid.add(new Label("START DATE:"), 0, 2);
+        grid.add(startDate, 1, 2);
+        grid.add(new Label("START TIME:"), 0, 3);
+        grid.add(startTime, 1, 3);
+        grid.add(new Label("VENUE ID:"), 0, 4);
+        grid.add(venueId, 1, 4);
+        grid.add(new Label("ARTIST ID:"), 0, 5);
+        grid.add(artistId, 1, 5);
+        grid.add(new Label("STAGE ID:"), 0, 6);
+        grid.add(stageId, 1, 6);
         dialog.getDialogPane().setContent(grid);
 
         //disable the OK button if the fields haven't been filled in
         dialog.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(
                 Bindings.createBooleanBinding(() -> id.getText().trim().isEmpty(), id.textProperty())
-                        .or(Bindings.createBooleanBinding(() -> name.getText().trim().isEmpty(), name.textProperty())
-                                .or(Bindings.createBooleanBinding(() -> city.getText().trim().isEmpty(), city.textProperty())
-                                        .or(Bindings.createBooleanBinding(() -> address.getText().trim().isEmpty(), address.textProperty())
-                                                .or(Bindings.createBooleanBinding(()-> latitude.getText().trim().isEmpty(), latitude.textProperty())
-                                                        .or(Bindings.createBooleanBinding(()->longitude.getText().trim().isEmpty(), longitude.textProperty()))
+                        .or(Bindings.createBooleanBinding(() -> description.getText().trim().isEmpty(), description.textProperty())
+                                .or(Bindings.createBooleanBinding(() -> startDate.getText().trim().isEmpty(), startDate.textProperty())
+                                        .or(Bindings.createBooleanBinding(() -> startTime.getText().trim().isEmpty(), startTime.textProperty())
+                                                .or(Bindings.createBooleanBinding(() -> venueId.getText().trim().isEmpty(), venueId.textProperty())
+                                                        .or(Bindings.createBooleanBinding(() -> artistId.getText().trim().isEmpty(), artistId.textProperty()))
+                                                        .or(Bindings.createBooleanBinding(() -> stageId.getText().trim().isEmpty(), stageId.textProperty()))
                                                 )))));
 
         //ensure only numeric input (integers) in age text field
@@ -117,42 +131,44 @@ public class ConcertsController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
                 int id2 = -1;
-                if (venue != null) id2 = venue.getId();
-                return new Venue(Integer.parseInt(id.getText()), name.getText(), city.getText(), address.getText(), latitude.getText(), longitude.getText());
+                if (concert != null) id2 = concert.getId();
+                return new Concert(Integer.parseInt(id.getText()), description.getText(), startDate.getText(), startTime.getText(), service.getConcertDAO().getVenueDAO().getItem(Integer.valueOf(venueId.getText())), service.getConcertDAO().getArtistDAO().getItem(Integer.valueOf(artistId.getText())), service.getConcertDAO().getFestivalStageDAO().getItem(Integer.valueOf(stageId.getText())));
             }
             return null;
         });
 
         //if a record is supplied, use it to fill in the fields automatically
-        if (venue != null) {
-            id.setText(String.valueOf(venue.getId()));
+        if (concert != null) {
+            id.setText(String.valueOf(concert.getId()));
             id.setEditable(false);
-            name.setText(venue.getVenueName());
-            city.setText(venue.getCity());
-            address.setText(venue.getStreetAddress());
-            latitude.setText(venue.getLocationLatitude());
-            longitude.setText(venue.getLocationLongitude());
+            description.setText(concert.getDescription());
+            startDate.setText(concert.getStartOfTheConcert());
+            startTime.setText(concert.getTime());
+            venueId.setText(String.valueOf(concert.getVenueId()));
+            artistId.setText(String.valueOf(concert.getArtist().getId()));
+            stageId.setText(String.valueOf(concert.getFestivalStage().getId()));
         }
 
         return dialog;
     }
 
     public void add(ActionEvent event) {
-        Dialog<Venue> addVenueDialog = createVenueDialog(null);
-        Optional<Venue> result = addVenueDialog.showAndWait();
+        Dialog<Concert> concertDialog = createConcertDialog(null);
+        Optional<Concert> result = concertDialog.showAndWait();
 
-        result.ifPresent(venue ->
+        result.ifPresent(concert ->
         {
             try {
-                Venue venueToAdd = new Venue(venue.getId(),
-                        venue.getVenueName(),
-                        venue.getCity(),
-                        venue.getStreetAddress(),
-                        venue.getLocationLatitude(),
-                        venue.getLocationLongitude()
+                Concert concertToAdd = new Concert(concert.getId(),
+                        concert.getDescription(),
+                        concert.getStartOfTheConcert(),
+                        concert.getTime(),
+                        service.getConcertDAO().getVenueDAO().getItem(concert.getVenueId()),
+                        service.getConcertDAO().getArtistDAO().getItem(concert.getArtistIdValue()),
+                        service.getConcertDAO().getFestivalStageDAO().getItem(concert.getStageId())
                 );
-                service.add(venueToAdd);
-                concertObservableList.add(venueToAdd);
+                service.add(concertToAdd);
+                concertObservableList.add(concertToAdd);
             } catch (DuplicateEntityException e) {
                 throw new RuntimeException(e);
             }
@@ -168,16 +184,16 @@ public class ConcertsController {
             alert.setHeaderText("Artist editing error");
             alert.setContentText("One artist must be selected when editing");
         } else {
-            Dialog<Venue> dialog = createVenueDialog((Venue) concertTableView.getSelectionModel().getSelectedItem());
-            Optional<Venue> optionalVenue = dialog.showAndWait();
-            VenueDAO venueDAO = service.getVenueDAO();
-            optionalVenue.ifPresent(updatedVenue -> {
-                venueDAO.updateObjectInDB(updatedVenue);
+            Dialog<Concert> dialog = createConcertDialog((Concert) concertTableView.getSelectionModel().getSelectedItem());
+            Optional<Concert> optionalConcert = dialog.showAndWait();
+            ConcertDAO concertDAO = service.getConcertDAO();
+            optionalConcert.ifPresent(updatedConcert -> {
+                concertDAO.updateObjectInDB(updatedConcert);
 
                 // Update the artistList to reflect the changes in the TableView
-                int index = concertObservableList.indexOf(updatedVenue);
+                int index = concertObservableList.indexOf(updatedConcert);
                 if (index != -1) {
-                    concertObservableList.set(index, updatedVenue);
+                    concertObservableList.set(index, updatedConcert);
                 } else {
                     // Handle the case where the artist is not found in the list
                     System.out.println("Error: Venue not found in the list.");
@@ -186,15 +202,16 @@ public class ConcertsController {
         }
         event.consume();
     }
-    public void delete(ActionEvent event){
-        for (Venue venue : concertTableView.getSelectionModel().getSelectedItems()) {
-            service.delete(venue.getId());
-            concertObservableList.remove(venue);
+
+    public void delete(ActionEvent event) {
+        for (Concert concert : concertTableView.getSelectionModel().getSelectedItems()) {
+            service.delete(concert.getId());
+            concertObservableList.remove(concert);
         }
         event.consume();
     }
 
-    public void list(){
+    public void list() {
         service.list();
     }
 }

@@ -19,6 +19,9 @@ public class Concert extends Entity {
     private String startOfTheConcert;
     private String time;
     private FestivalStage festivalStage;
+    protected int venueId;
+    protected int artistIdValue;
+    protected int stageId;
 
     public Concert(int id, String description, List<Artist> listOfArtists, Venue venue, String startOfTheConcert, String time, FestivalStage festivalStage) {
         super(id);
@@ -30,13 +33,14 @@ public class Concert extends Entity {
         this.festivalStage = festivalStage;
     }
 
-    public Concert(int id, String description, Artist artist, Venue venue, String startOfTheConcert, String time) {
+    public Concert(int id, String description, String startOfTheConcert, String time, Venue venue, Artist artist,  FestivalStage stage) {
         super(id);
         this.description = description;
         this.artist = artist;
         this.venue = venue;
         this.startOfTheConcert = startOfTheConcert;
         this.time = time;
+        this.festivalStage = stage;
     }
 
     public FestivalStage getFestivalStage() {
@@ -59,6 +63,11 @@ public class Concert extends Entity {
     public void setDescription(String description) {
         this.description = description;
     }
+    public int getVenueId() {
+        return venueId = venue.getId();
+    }
+    public int getArtistIdValue(){return  artistIdValue = artist.getId();}
+    public int getStageId(){return  stageId = festivalStage.getId();}
     public Venue getVenue() {
         return venue;
     }

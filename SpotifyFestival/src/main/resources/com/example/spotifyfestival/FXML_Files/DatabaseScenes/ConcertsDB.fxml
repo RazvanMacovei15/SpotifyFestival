@@ -15,7 +15,7 @@
         <RowConstraints percentHeight="20"/>
     </rowConstraints>
 
-    <TableView fx:id="artistsTable" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="600">
+    <TableView fx:id="concertTableView" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="600">
         <columns>
             <TableColumn fx:id="idColumn" editable="false" text="ID" />
             <TableColumn fx:id="descriptionColumn" editable="false" text="DESCRIPTION" />

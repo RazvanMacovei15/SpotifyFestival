@@ -159,6 +159,7 @@ public class CRUDHelper {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not add record to database");
+            ex.printStackTrace();
             return -1;
         }
         return -1;
