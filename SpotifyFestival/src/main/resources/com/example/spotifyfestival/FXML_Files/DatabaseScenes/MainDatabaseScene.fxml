@@ -17,10 +17,19 @@
     <RadioButton text="Venues Table" fx:id="venuesButton">
 
     </RadioButton>
-    <RadioButton text="Concert Table" fx:id="concertButton">
+    <RadioButton text="Concerts Table" fx:id="concertButton">
 
     </RadioButton>
     <RadioButton text="ArtistGenre Table" fx:id="artistGenreButton">
+
+    </RadioButton>
+    <RadioButton text="Genres Table" fx:id="genresButton">
+
+    </RadioButton>
+    <RadioButton text="Festivals Table" fx:id="festivalsButton">
+
+    </RadioButton>
+    <RadioButton text="Stages Table" fx:id="stagesButton">
 
     </RadioButton>
     <Button text="LOAD" fx:id="loadButton" onAction="#loadPage">

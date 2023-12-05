@@ -108,6 +108,7 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
+        instance.delete(id);
         return crudHelper.delete(
                 tableName,
                 id,

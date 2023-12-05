@@ -120,6 +120,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
+        instance.delete(id);
         return crudHelper.delete(
                 tableName,
                 id,

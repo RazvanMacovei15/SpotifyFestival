@@ -16,14 +16,14 @@ import java.io.IOException;
 
 public class DatabaseController {
     private FestivalDBService festivalDBService;
-    @FXML
-    protected RadioButton artistsButton;
-    @FXML
-    protected RadioButton venuesButton;
-    @FXML
-    protected RadioButton concertButton;
-    @FXML
-    protected RadioButton artistGenreButton;
+    @FXML protected RadioButton artistsButton;
+    @FXML protected RadioButton venuesButton;
+    @FXML protected RadioButton concertButton;
+    @FXML protected RadioButton artistGenreButton;
+    @FXML protected RadioButton genresButton;
+    @FXML protected RadioButton festivalsButton;
+    @FXML protected RadioButton stagesButton;
+
     @FXML
     protected Button loadButton;
     @FXML
@@ -42,9 +42,12 @@ public class DatabaseController {
         artistsButton.setToggleGroup(tableGroup);
         venuesButton.setToggleGroup(tableGroup);
         concertButton.setToggleGroup(tableGroup);
+        genresButton.setToggleGroup(tableGroup);
+        festivalsButton.setToggleGroup(tableGroup);
+        stagesButton.setToggleGroup(tableGroup);
 
         // Set a default selected RadioButton (optional)
-//        artistsButton.setSelected(true);
+        artistsButton.setSelected(true);
     }
 
     public void loadPage() {
@@ -66,7 +69,6 @@ public class DatabaseController {
             } catch (IOException e) {
                 e.printStackTrace(); // Add better logging or handling based on your needs
             }
-            // Add code to navigate to Page 1
         } else if ("ArtistGenre Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 2...");
             try {
@@ -74,61 +76,20 @@ public class DatabaseController {
             } catch (IOException e) {
                 e.printStackTrace(); // Add better logging or handling based on your needs
             }
-            // Add code to navigate to Page 2
-        }
-    }
-
-    public void whenLoadButtonPressed() throws IOException {
-        RadioButton selectedRadioButton = (RadioButton) tableGroup.getSelectedToggle();
-
-        if (selectedRadioButton != null) {
-            String selectedEntityType = selectedRadioButton.getText();
-
-            switch (selectedEntityType) {
-                case "Artists":
-                    loadArtistsScene();
-                    break;
-                case "Venues":
-                    loadVenuesScene();
-                    break;
-                case "Concerts":
-                    loadConcertsScene();
-                    break;
-                case "ArtistGenres":
-                    loadArtistGenresScene();
-                    break;
-                default:
-                    // Handle default case or do nothing
-                    break;
+        }else if ("Venues Table".equals(selectedButtonText)) {
+            System.out.println("Loading Page 3...");
+            try {
+                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/VenuesDB.fxml");
+            } catch (IOException e) {
+                e.printStackTrace(); // Add better logging or handling based on your needs
             }
-        } else {
-            // No radio button selected, handle as needed
+        }else if ("Concerts Table".equals(selectedButtonText)) {
+            System.out.println("Loading Page 4...");
+            try {
+                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ConcertsDB.fxml");
+            } catch (IOException e) {
+                e.printStackTrace(); // Add better logging or handling based on your needs
+            }
         }
     }
-
-    public void loadArtistsScene() throws IOException {
-        try {
-            AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsDB.fxml");
-        } catch (IOException e) {
-            e.printStackTrace(); // Add better logging or handling based on your needs
-        }
-    }
-
-    public void loadVenuesScene() {
-
-    }
-
-    public void loadConcertsScene() {
-
-    }
-
-    public void loadArtistGenresScene(){
-        try {
-            AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsGenresDB.fxml");
-        } catch (IOException e) {
-            e.printStackTrace(); // Add better logging or handling based on your needs
-        }
-    }
-
-
 }

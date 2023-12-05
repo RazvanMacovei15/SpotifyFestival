@@ -25,7 +25,7 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
     private final String deleteQuery = "DELETE FROM " + tableName + " WHERE venue_id = ?";
 
     private final int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE};
-    private final int[] updateTypes = {Types.INTEGER, Types.INTEGER};
+    private final int[] updateTypes = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.DOUBLE, Types.DOUBLE};
 
     public String getReadQuery() {
         return readQuery;
@@ -67,11 +67,9 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
         int id = (int) crudHelper.create(
                 tableName,
                 columns,
-                new Object[]{venue.getId(), venue.getVenueName(), venue.getCity(), venue.getStreetAddress(), venue.getLocationLatitude(), venue.getLocationLongitude()},
+                new Object[]{venue.getId(), venue.getVenueName(), venue.getCity(), venue.getStreetAddress(), Double.parseDouble(venue.getLocationLatitude()), Double.parseDouble(venue.getLocationLongitude())},
                 types
         );
-        //update cache
-        venueList.add(venue);
         //update MemoryRepo
         try {
             super.add(venue.getId(), venue);
@@ -117,6 +115,7 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
+        instance.delete(id);
         return crudHelper.delete(
                 tableName,
                 id,

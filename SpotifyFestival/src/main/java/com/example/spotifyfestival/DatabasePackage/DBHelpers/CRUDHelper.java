@@ -136,6 +136,8 @@ public class CRUDHelper {
                     break;
                 case Types.INTEGER:
                     queryBuilder.append((int) values[i]);
+                case Types.DOUBLE:
+                    queryBuilder.append(values[i]);
             }
             if (i < number - 1) queryBuilder.append(", ");
         }

@@ -111,6 +111,7 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
+        instance.delete(id);
         return crudHelper.delete(
                 tableName,
                 id,

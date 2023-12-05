@@ -115,6 +115,7 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
 
     @Override
     public int deleteObjectByIDInDB(Integer id) {
+        instance.delete(id);
         return crudHelper.delete(
                 tableName,
                 id,
