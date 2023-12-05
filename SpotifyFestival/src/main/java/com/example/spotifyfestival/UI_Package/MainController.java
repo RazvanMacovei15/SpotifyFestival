@@ -23,7 +23,7 @@ public class MainController {
         SpotifyAuthFlowService.getInstance().openLogin();
     }
     public void handleDBButton(ActionEvent event) throws IOException {
-        AppSwitchScenesMethods.switchSceneForDatabase(event, "/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
+        AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
     public void onGetBackButtonClicked(ActionEvent event){

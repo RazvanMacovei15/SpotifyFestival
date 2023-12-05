@@ -90,6 +90,27 @@ public class DatabaseController {
             } catch (IOException e) {
                 e.printStackTrace(); // Add better logging or handling based on your needs
             }
+        } else if ("Genres Table".equals(selectedButtonText)) {
+            System.out.println("Loading Page 2...");
+            try {
+                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/GenresDB.fxml");
+            } catch (IOException e) {
+                e.printStackTrace(); // Add better logging or handling based on your needs
+            }
+        }else if ("Festivals Table".equals(selectedButtonText)) {
+            System.out.println("Loading Page 3...");
+            try {
+                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/FestivalsDB.fxml");
+            } catch (IOException e) {
+                e.printStackTrace(); // Add better logging or handling based on your needs
+            }
+        }else if ("Stages Table".equals(selectedButtonText)) {
+            System.out.println("Loading Page 4...");
+            try {
+                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/StagesDB.fxml");
+            } catch (IOException e) {
+                e.printStackTrace(); // Add better logging or handling based on your needs
+            }
         }
     }
 }
