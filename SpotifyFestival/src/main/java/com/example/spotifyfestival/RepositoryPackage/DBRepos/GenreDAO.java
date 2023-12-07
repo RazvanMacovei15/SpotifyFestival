@@ -68,8 +68,6 @@ public class GenreDAO extends DBGenericRepository<Integer, Genre> implements Gen
                 new Object[]{genre.getId(), genre.getName()},
                 types
         );
-        //update cache
-        genreList.add(genre);
         //update MemoryRepo
         try {
             super.add(genre.getId(), genre);

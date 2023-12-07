@@ -22,6 +22,10 @@ public class FestivalStageDAOService implements CRUDInterface<FestivalStage> {
         initialize();
     }
 
+    public FestivalStageDAO getStageDAO() {
+        return stageDAO;
+    }
+
     @Override
     public void add(FestivalStage item) throws DuplicateEntityException {
         stageDAO.insertObjectInDB(item);

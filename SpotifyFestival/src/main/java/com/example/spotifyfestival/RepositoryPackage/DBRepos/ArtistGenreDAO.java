@@ -61,8 +61,6 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
                 new Object[]{artistGenre.getArtist_id(), artistGenre.getGenre_id()},
                 types
         );
-        //update cache
-        artistGenreList.add(artistGenre);
         //update MemoryRepo
         try {
             super.add(artistGenre.getId(), artistGenre);

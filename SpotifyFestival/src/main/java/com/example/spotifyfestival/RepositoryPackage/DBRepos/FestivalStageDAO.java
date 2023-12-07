@@ -50,6 +50,10 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
         return instance;
     }
 
+    public VenueDAO getVenueDAO() {
+        return venueDAO;
+    }
+
     public void initialize(){
         instance.readAllObjectsFromTable();
     }
@@ -70,8 +74,6 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
                 new Object[]{item.getId(), item.getName(), item.getVenue().getId()},
                 types
         );
-        //update cache
-        festivalStages.add(item);
         //update MemoryRepo
         try {
             super.add(item.getId(), item);
@@ -126,6 +128,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
 
     @Override
     public void readAllObjectsFromTable() {
+        initializeHelperRepos(venueDAO);
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
@@ -151,6 +154,10 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
         } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);
         }
+    }
+    public void initializeHelperRepos(VenueDAO venueDAO){
+        venueDAO = VenueDAO.getInstance();
+        venueDAO.readAllObjectsFromTable();
     }
 
     @Override

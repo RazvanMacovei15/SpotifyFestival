@@ -14,6 +14,10 @@ public class FestivalDAOService implements CRUDInterface<Festival> {
         initialize();
     }
 
+    public FestivalDAO getFestivalDAO() {
+        return festivalDAO;
+    }
+
     private void initialize(){
         festivalDAO.initialize();
     }

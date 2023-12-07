@@ -8,18 +8,18 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.spotifyfestival.UI_Package.DatabaseControllers.ArtistTableController">
+            fx:controller="com.example.spotifyfestival.UI_Package.DatabaseControllers.StagesController">
 
     <rowConstraints>
         <RowConstraints percentHeight="80"/>
         <RowConstraints percentHeight="20"/>
     </rowConstraints>
 
-    <TableView fx:id="artistsTable" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="600">
+    <TableView fx:id="festivalStageTableView" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="600">
         <columns>
             <TableColumn fx:id="idColumn" editable="false" text="ID" />
             <TableColumn fx:id="nameColumn" editable="false" text="NAME" />
-            <TableColumn fx:id="spotify_ID_column" editable="false" text="SPOTIFY_ID" />
+            <TableColumn fx:id="venueIdColumn" editable="false" text="VENUE ID" />
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -35,9 +35,9 @@
             <ColumnConstraints percentWidth="20"/>
         </columnConstraints>
 <!--        <Button text="LOAD" GridPane.rowIndex="0" GridPane.columnIndex="0"/>-->
-        <Button text="ADD" GridPane.rowIndex="0" GridPane.columnIndex="0" onAction="#addArtist"/>
-        <Button text="UPDATE" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#updateArtist"/>
-        <Button text="DELETE" GridPane.rowIndex="0" GridPane.columnIndex="3" onAction="#deleteArtist"/>
+        <Button text="ADD" GridPane.rowIndex="0" GridPane.columnIndex="0" onAction="#add"/>
+        <Button text="UPDATE" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#update"/>
+        <Button text="DELETE" GridPane.rowIndex="0" GridPane.columnIndex="3" onAction="#delete"/>
         <Button text="LIST" GridPane.rowIndex="0" GridPane.columnIndex="4" onAction="#list"/>
     </GridPane>
 </GridPane>

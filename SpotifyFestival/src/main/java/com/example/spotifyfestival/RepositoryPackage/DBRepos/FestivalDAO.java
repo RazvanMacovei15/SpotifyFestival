@@ -35,6 +35,11 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
         return deleteQuery;
     }
     private final VenueDAO venueDAO;
+
+    public VenueDAO getVenueDAO() {
+        return venueDAO;
+    }
+
     private final CRUDHelper crudHelper;
 
     //Singleton Creation
@@ -64,8 +69,6 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
                 new Object[]{item.getId(), item.getName(), item.getVenue().getId()},
                 types
         );
-        //update cache
-        festivalObservableList.add(item);
         //update MemoryRepo
         try {
             super.add(item.getId(), item);
@@ -118,8 +121,15 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
                 deleteQuery);
     }
 
+    public void initializeHelperRepos(VenueDAO venueDAO){
+        venueDAO = VenueDAO.getInstance();
+        venueDAO.readAllObjectsFromTable();
+    }
+
+
     @Override
     public void readAllObjectsFromTable() {
+        initializeHelperRepos(venueDAO);
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();

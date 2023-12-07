@@ -86,8 +86,6 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                 new Object[]{item.getId(), item.getDescription(), item.getStartOfTheConcert(), item.getTime(), item.getVenueId(), item.getArtistIdValue(), item.getFestivalStage().getId()},
                 types
         );
-        //update cache
-        concertList.add(item);
         //update MemoryRepo
         try {
             super.add(item.getId(), item);

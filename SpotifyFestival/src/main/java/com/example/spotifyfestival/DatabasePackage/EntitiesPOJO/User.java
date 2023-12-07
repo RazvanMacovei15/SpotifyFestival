@@ -9,13 +9,16 @@ public class User extends Entity {
     protected String role;
     protected Map<Integer, Genre> genreList;
 
-    public User(int id, String email, String username, String password, String role, Map<Integer, Genre> genreList) {
+    protected String spotifyId;
+
+    public User(int id, String email, String username, String password, String role, Map<Integer, Genre> genreList, String spotifyId) {
         super(id);
         this.email = email;
         this.username = username;
         this.password = password;
         this.role = role;
         this.genreList = genreList;
+        this.spotifyId = spotifyId;
     }
 
     public String getRole() {
@@ -56,5 +59,27 @@ public class User extends Entity {
 
     public void setGenreList(Map<Integer, Genre> genreList) {
         this.genreList = genreList;
+    }
+
+    public String getSpotifyId() {
+        return spotifyId;
+    }
+
+    public void setSpotifyId(String spotifyId) {
+        this.spotifyId = spotifyId;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
+                ", genreList=" + genreList +
+                ", spotifyId='" + spotifyId + '\'' +
+                +
+                '}';
     }
 }

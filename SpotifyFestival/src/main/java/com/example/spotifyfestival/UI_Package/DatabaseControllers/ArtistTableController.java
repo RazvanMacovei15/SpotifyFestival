@@ -35,7 +35,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     public void initialize(){
         artistDAOService = new ArtistDAOService();
         artistList = FXCollections.observableArrayList();
-        artistList = artistDAOService.getArtistDAO().getArtistList();
+        artistList = artistDAOService.getArtistList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
