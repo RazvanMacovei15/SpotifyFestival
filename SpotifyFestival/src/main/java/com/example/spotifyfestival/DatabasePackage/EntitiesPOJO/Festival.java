@@ -10,6 +10,12 @@ public class Festival extends Entity {
         this.venue=venue;
     }
 
+    protected int venueId;
+
+    public int getVenueId() {
+        return venueId = venue.getId();
+    }
+
     public String getName() {
         return name;
     }
