@@ -27,15 +27,16 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
     private final String deleteQuery = "DELETE FROM " + tableName + " WHERE concert_id = ?";
     private final int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER};
     private final int[] updateTypes = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.INTEGER, Types.INTEGER};
-    public String getReadQuery()
-    {
+
+    public String getReadQuery() {
         return readQuery;
     }
-    public String getDeleteQuery()
-    {
+
+    public String getDeleteQuery() {
         return deleteQuery;
     }
-    private final VenueDAO venueDAO;
+
+    private VenueDAO venueDAO;
 
     public VenueDAO getVenueDAO() {
         return venueDAO;
@@ -49,30 +50,43 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         return festivalStageDAO;
     }
 
-    private final ArtistDAO artistDAO;
-    private final FestivalStageDAO festivalStageDAO;
+    private ArtistDAO artistDAO;
+    private FestivalStageDAO festivalStageDAO;
     private final CRUDHelper crudHelper;
     //Singleton creation
     private static ConcertDAO instance;
-    private ConcertDAO(){
+
+    private ConcertDAO() {
         crudHelper = new CRUDHelper(location);
         venueDAO = VenueDAO.getInstance();
         artistDAO = ArtistDAO.getInstance();
         festivalStageDAO = FestivalStageDAO.getInstance();
     }
-    public static ConcertDAO getInstance(){
-        if(instance == null){
+
+    public static ConcertDAO getInstance() {
+        if (instance == null) {
             instance = new ConcertDAO();
 
         }
         return instance;
     }
 
-    public void initialize(){
-        instance.readAllObjectsFromTable();
+    public void initialize() {
+        instance.readAllObjectsFromTableIfNotAlready();
     }
+
+    private boolean isRead = false;
+    public void readAllObjectsFromTableIfNotAlready() {
+        if (!isRead) {
+            // Call the method only if it hasn't been called before
+            readAllObjectsFromTable();
+            isRead = true;
+        }
+    }
+
     //TableView JavaFX stuff
     ObservableList<Concert> concertList = FXCollections.observableArrayList();
+
     public ObservableList<Concert> getConcertList() {
         return concertList;
     }
@@ -164,7 +178,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                         stage);
                 concert.setArtist(artist);
 
-                venue.addConcertToList(concert);
+//                venue.addConcertToList(concert);
 
                 concertList.add(concert);
                 instance.add(rs.getInt("concert_id"), concert);
@@ -172,11 +186,13 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Festivals from database ");
+                    LocalDateTime.now() + ": Could not load Concerts from database ");
             concertList.clear();
         } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);
         }
+
+
     }
 
     @Override
@@ -188,13 +204,14 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                 types[0],
                 index);
     }
-    public void initializeHelperRepos(ArtistDAO artistDAO, FestivalStageDAO festivalStageDAO, VenueDAO venueDAO){
+
+    public void initializeHelperRepos(ArtistDAO artistDAO, FestivalStageDAO festivalStageDAO, VenueDAO venueDAO) {
         artistDAO = ArtistDAO.getInstance();
         festivalStageDAO = FestivalStageDAO.getInstance();
         venueDAO = VenueDAO.getInstance();
 
         artistDAO.readAllObjectsFromTable();
-        festivalStageDAO.readAllObjectsFromTable();
-        venueDAO.readAllObjectsFromTable();
+        festivalStageDAO.readAllObjectsFromTableIfNotAlready();
+        venueDAO.readAllObjectsFromTableIfNotAlready();
     }
 }

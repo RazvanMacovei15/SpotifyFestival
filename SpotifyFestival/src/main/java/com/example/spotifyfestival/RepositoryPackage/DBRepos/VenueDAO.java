@@ -50,7 +50,16 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
     }
 
     public void initialize(){
-        instance.readAllObjectsFromTable();
+        instance.readAllObjectsFromTableIfNotAlready();
+    }
+
+    private boolean isRead = false;
+    public void readAllObjectsFromTableIfNotAlready() {
+        if (!isRead) {
+            // Call the method only if it hasn't been called before
+            readAllObjectsFromTable();
+            isRead = true;
+        }
     }
 
 

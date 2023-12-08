@@ -55,7 +55,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
     }
 
     public void initialize(){
-        instance.readAllObjectsFromTable();
+        instance.readAllObjectsFromTableIfNotAlready();
     }
     //TableView JavaFX stuff
     ObservableList<FestivalStage> festivalStages = FXCollections.observableArrayList();
@@ -126,9 +126,18 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
                 deleteQuery);
     }
 
+    private boolean isRead = false;
+    public void readAllObjectsFromTableIfNotAlready() {
+        if (!isRead) {
+            // Call the method only if it hasn't been called before
+            readAllObjectsFromTable();
+            isRead = true;
+        }
+    }
+
     @Override
     public void readAllObjectsFromTable() {
-        initializeHelperRepos(venueDAO);
+//        initializeHelperRepos(venueDAO);
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
