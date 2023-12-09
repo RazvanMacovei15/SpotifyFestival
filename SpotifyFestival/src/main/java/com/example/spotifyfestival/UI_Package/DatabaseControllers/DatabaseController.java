@@ -1,21 +1,11 @@
 package com.example.spotifyfestival.UI_Package.DatabaseControllers;
 
-
-import com.example.spotifyfestival.Services.FestivalDBService;
-
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class DatabaseController {
-    private FestivalDBService festivalDBService;
     @FXML protected RadioButton artistsButton;
     @FXML protected RadioButton venuesButton;
     @FXML protected RadioButton concertButton;
@@ -28,11 +18,6 @@ public class DatabaseController {
     protected Button loadButton;
     @FXML
     private ToggleGroup tableGroup;
-
-    public void readFromDatabase() {
-        festivalDBService = new FestivalDBService();
-        festivalDBService.getDbRepo();
-    }
 
     @FXML
     public void initialize() {

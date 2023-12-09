@@ -13,13 +13,8 @@ public class FestivalStageDAOService implements CRUDInterface<FestivalStage> {
         return stageDAO;
     }
 
-    private void initialize(){
-        stageDAO.initialize();
-    }
-
     public FestivalStageDAOService() {
         stageDAO = FestivalStageDAO.getInstance();
-        initialize();
     }
 
     public FestivalStageDAO getStageDAO() {

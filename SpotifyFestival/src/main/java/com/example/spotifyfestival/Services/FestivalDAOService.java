@@ -11,15 +11,10 @@ public class FestivalDAOService implements CRUDInterface<Festival> {
 
     public FestivalDAOService() {
         festivalDAO = FestivalDAO.getInstance();
-        initialize();
     }
 
     public FestivalDAO getFestivalDAO() {
         return festivalDAO;
-    }
-
-    private void initialize(){
-        festivalDAO.initialize();
     }
 
     @Override

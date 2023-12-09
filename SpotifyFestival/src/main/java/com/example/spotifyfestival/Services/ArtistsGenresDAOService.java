@@ -15,12 +15,8 @@ public class ArtistsGenresDAOService implements CRUDInterface<ArtistGenre> {
 
     public ArtistsGenresDAOService() {
         artistGenreDAO = ArtistGenreDAO.getInstance();
-        initialize();
     }
 
-    public void initialize(){
-        artistGenreDAO.initialize();
-    }
 
     @Override
     public void add(ArtistGenre item) throws DuplicateEntityException {

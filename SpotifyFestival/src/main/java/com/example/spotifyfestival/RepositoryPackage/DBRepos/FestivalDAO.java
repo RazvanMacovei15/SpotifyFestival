@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class FestivalDAO extends DBGenericRepository<Integer, Festival> implements GenericDAO<Festival> {
     //DB specific attributes
-    private final String location = "festivalDB";
+    private static final String LOCATION = "festivalDB";
     private final String tableName = "Festivals";
     private final String[] columns = {"festival_id", "name", "venue_id"};
     private final String[] updateColumns = {"name", "venue_id"};
@@ -34,23 +34,25 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
     {
         return deleteQuery;
     }
-    private final VenueDAO venueDAO;
+    private static VenueDAO venueDAO;
 
     public VenueDAO getVenueDAO() {
         return venueDAO;
     }
 
-    private final CRUDHelper crudHelper;
+    private static CRUDHelper crudHelper;
 
     //Singleton Creation
     private static FestivalDAO instance;
     private FestivalDAO(){
-        crudHelper = new CRUDHelper(location);
-        this.venueDAO = VenueDAO.getInstance();
+
     }
     public static FestivalDAO getInstance(){
         if(instance == null){
             instance = new FestivalDAO();
+            crudHelper = new CRUDHelper(LOCATION);
+            venueDAO = VenueDAO.getInstance();
+            initialize();
         }
         return instance;
     }
@@ -101,14 +103,6 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
         );
         if (rows == 0)
             throw new IllegalStateException("Festivals to update with id " + item.getId() + "doesn't exist in the database!");
-        //update cache
-        Optional<Festival> optionalFestival = getItemByID(item.getId());
-        optionalFestival.ifPresentOrElse((oldFestival) -> {
-            festivalObservableList.remove(oldFestival);
-            festivalObservableList.add(item);
-        }, () -> {
-            throw new IllegalStateException("Festivals to update with id " + item.getId() + "doesn't exist in the database!");
-        });
         super.update(item.getId(), item);
     }
 
@@ -121,15 +115,8 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
                 deleteQuery);
     }
 
-    public void initializeHelperRepos(VenueDAO venueDAO){
-        venueDAO = VenueDAO.getInstance();
-        venueDAO.readAllObjectsFromTable();
-    }
-
-
     @Override
     public void readAllObjectsFromTable() {
-        initializeHelperRepos(venueDAO);
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
@@ -166,7 +153,7 @@ public class FestivalDAO extends DBGenericRepository<Integer, Festival> implemen
                 index);
     }
 
-    public void initialize() {
+    public static void initialize() {
         instance.readAllObjectsFromTable();
     }
 }

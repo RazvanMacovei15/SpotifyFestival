@@ -5,7 +5,6 @@ import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
 import com.example.spotifyfestival.Services.ArtistDAOService;
-import com.example.spotifyfestival.Services.FestivalDBService;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

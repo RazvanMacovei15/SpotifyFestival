@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements GenericDAO<Concert> {
     //DB specific attributes
-    private final String location = "festivalDB";
+    private static final String location = "festivalDB";
     private final String tableName = "Concerts";
     private final String[] columns = {"concert_id", "description", "start_date", "start_time", "venue_id", "artist_id", "stage_id"};
     private final String[] updateColumns = {"description", "start_date", "start_time", "venue_id", "artist_id", "stage_id"};
@@ -35,7 +35,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
     {
         return deleteQuery;
     }
-    private final VenueDAO venueDAO;
+    private static VenueDAO venueDAO;
 
     public VenueDAO getVenueDAO() {
         return venueDAO;
@@ -49,26 +49,28 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         return festivalStageDAO;
     }
 
-    private final ArtistDAO artistDAO;
-    private final FestivalStageDAO festivalStageDAO;
-    private final CRUDHelper crudHelper;
+    private static ArtistDAO artistDAO;
+    private static FestivalStageDAO festivalStageDAO;
+    private static CRUDHelper crudHelper;
     //Singleton creation
     private static ConcertDAO instance;
     private ConcertDAO(){
-        crudHelper = new CRUDHelper(location);
-        venueDAO = VenueDAO.getInstance();
-        artistDAO = ArtistDAO.getInstance();
-        festivalStageDAO = FestivalStageDAO.getInstance();
+
     }
     public static ConcertDAO getInstance(){
         if(instance == null){
             instance = new ConcertDAO();
+            crudHelper = new CRUDHelper(location);
+            venueDAO = VenueDAO.getInstance();
+            artistDAO = ArtistDAO.getInstance();
+            festivalStageDAO = FestivalStageDAO.getInstance();
+            initialize();
 
         }
         return instance;
     }
 
-    public void initialize(){
+    public static void initialize(){
         instance.readAllObjectsFromTable();
     }
     //TableView JavaFX stuff
@@ -118,14 +120,6 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
         );
         if (rows == 0)
             throw new IllegalStateException("Festivals to update with id " + item.getId() + "doesn't exist in the database!");
-        //update cache
-        Optional<Concert> optionalConcert = getItemByID(item.getId());
-        optionalConcert.ifPresentOrElse((oldConcert) -> {
-            concertList.remove(oldConcert);
-            concertList.add(item);
-        }, () -> {
-            throw new IllegalStateException("Festivals to update with id " + item.getId() + "doesn't exist in the database!");
-        });
         super.update(item.getId(), item);
     }
 
@@ -140,7 +134,6 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
     @Override
     public void readAllObjectsFromTable() {
-        initializeHelperRepos(artistDAO, festivalStageDAO, venueDAO);
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
@@ -150,8 +143,8 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                 Venue venue = venueDAO.getItem(rs.getInt("venue_id"));
                 Artist artist = artistDAO.getItem(rs.getInt("artist_id"));
                 FestivalStage stage = festivalStageDAO.getItem(rs.getInt("stage_id"));
-                List<Artist> list = new ArrayList<>();
-                list.add(artist);
+//                List<Artist> list = new ArrayList<>();
+//                list.add(artist);
                 //remember to add ConcertArtist class in case there are multiple artists at a concert
 
                 Concert concert = new Concert(
@@ -162,7 +155,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                         venue,
                         artist,
                         stage);
-                concert.setArtist(artist);
+//                concert.setArtist(artist);
 
                 venue.addConcertToList(concert);
 
@@ -187,14 +180,5 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                 columns[0],
                 types[0],
                 index);
-    }
-    public void initializeHelperRepos(ArtistDAO artistDAO, FestivalStageDAO festivalStageDAO, VenueDAO venueDAO){
-        artistDAO = ArtistDAO.getInstance();
-        festivalStageDAO = FestivalStageDAO.getInstance();
-        venueDAO = VenueDAO.getInstance();
-
-        artistDAO.readAllObjectsFromTable();
-        festivalStageDAO.readAllObjectsFromTable();
-        venueDAO.readAllObjectsFromTable();
     }
 }

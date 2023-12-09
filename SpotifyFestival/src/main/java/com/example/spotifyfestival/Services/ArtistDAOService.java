@@ -15,11 +15,6 @@ public class ArtistDAOService implements CRUDInterface<Artist> {
 
     public ArtistDAOService() {
         artistDAO = ArtistDAO.getInstance();
-        initialize();
-    }
-
-    public void initialize(){
-        artistDAO.initialize();
     }
 
     @Override

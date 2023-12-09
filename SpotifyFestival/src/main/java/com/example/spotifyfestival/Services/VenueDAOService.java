@@ -11,12 +11,7 @@ public class VenueDAOService implements CRUDInterface<Venue> {
 
     public VenueDAOService() {
         venueDAO = VenueDAO.getInstance();
-        initialize();
     }
-    private void initialize(){
-        venueDAO.initialize();
-    }
-
     public VenueDAO getVenueDAO() {
         return venueDAO;
     }

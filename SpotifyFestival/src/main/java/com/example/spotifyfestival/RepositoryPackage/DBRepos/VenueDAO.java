@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class VenueDAO extends DBGenericRepository<Integer, Venue> implements GenericDAO<Venue> {
     //DB specific attributes
-    private final String location = "festivalDB";
+    private static final String location = "festivalDB";
     private final String tableName = "Venues";
     private final String[] columns = {"venue_id", "name", "city", "address", "latitude", "longitude"};
     private final String[] updateColumns = {"name", "city", "address", "latitude", "longitude"};
@@ -34,25 +34,24 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
     public String getDeleteQuery() {
         return deleteQuery;
     }
-    private CRUDHelper crudHelper;
+    private static CRUDHelper crudHelper;
     //Singleton Creation
     private static VenueDAO instance;
 
-    private VenueDAO() {
-        crudHelper = new CRUDHelper(location);
-    }
+    private VenueDAO() {}
 
     public static VenueDAO getInstance() {
         if (instance == null) {
             instance = new VenueDAO();
+            crudHelper = new CRUDHelper(location);
+            initialize();
         }
         return instance;
     }
 
-    public void initialize(){
+    public static void initialize(){
         instance.readAllObjectsFromTable();
     }
-
 
     //TableView JavaFX stuff
     ObservableList<Venue> venueList = FXCollections.observableArrayList();
@@ -102,14 +101,6 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
         );
         if (rows == 0)
             throw new IllegalStateException("Venue to update with id " + item.getId() + "doesn't exist in the database!");
-        //update cache
-        Optional<Venue> optionalVenue = getItemByID(item.getId());
-        optionalVenue.ifPresentOrElse((oldVenue) -> {
-            venueList.remove(oldVenue);
-            venueList.add(item);
-        }, () -> {
-            throw new IllegalStateException("Venue to update with id " + item.getId() + "doesn't exist in the database!");
-        });
         super.update(item.getId(), item);
     }
 
@@ -137,8 +128,9 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
                         rs.getString("address"),
                         String.valueOf(rs.getDouble("latitude")),
                         String.valueOf(rs.getDouble("longitude")));
-                venueList.add(venue);
+
                 instance.add(rs.getInt("venue_id"), venue);
+                venueList.add(venue);
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(

@@ -13,13 +13,8 @@ public class ConcertDAOService implements CRUDInterface<Concert> {
         return concertDAO;
     }
 
-    public void initialize(){
-        concertDAO.initialize();
-    }
-
     public ConcertDAOService() {
         concertDAO = ConcertDAO.getInstance();
-        initialize();
     }
 
     @Override
