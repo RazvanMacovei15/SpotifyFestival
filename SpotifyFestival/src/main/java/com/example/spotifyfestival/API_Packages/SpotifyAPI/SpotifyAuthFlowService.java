@@ -1,13 +1,10 @@
-
 package com.example.spotifyfestival.API_Packages.SpotifyAPI;
-
 
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AuthFlowObserver;
 import javafx.application.Platform;
 import org.json.JSONObject;
 import spark.Spark;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -16,7 +13,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-
 
 public class SpotifyAuthFlowService {
 
@@ -119,14 +115,6 @@ public class SpotifyAuthFlowService {
                 }
             }
         }
-
-//        Runtime runtime = Runtime.getRuntime();
-//        String[] args = {"osascript", "-e", "open location \"" + url + "\""};
-//        try {
-//            Process process = runtime.exec(args);
-//        } catch (IOException e) {
-//            // do what you want with this
-//        }
     }
 
     public void openLogin() {
@@ -163,7 +151,6 @@ public class SpotifyAuthFlowService {
                 //request parameters
                 String requestBody = "grant_type=authorization_code&code=" + code + "&redirect_uri="
                         + spotifyAPPCredentials.getRedirectUri();
-
                 try {
                     HttpClient client = HttpClient.newBuilder().build();
 
@@ -197,7 +184,6 @@ public class SpotifyAuthFlowService {
 
             Platform.runLater(() -> {
                 try {
-
                     AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
                 } catch (IOException e) {
                     throw new RuntimeException(e);

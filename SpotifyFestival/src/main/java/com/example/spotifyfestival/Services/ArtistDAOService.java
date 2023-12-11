@@ -1,6 +1,7 @@
 package com.example.spotifyfestival.Services;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.DatabasePackage.ValidatorClasses.ArtistValidator;
 import com.example.spotifyfestival.GenericsPackage.CRUDInterface;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
@@ -8,6 +9,7 @@ import javafx.collections.ObservableList;
 
 public class ArtistDAOService implements CRUDInterface<Artist> {
     protected ArtistDAO artistDAO;
+    protected ArtistValidator validator;
 
     public ArtistDAO getArtistDAO() {
         return artistDAO;
@@ -15,11 +17,17 @@ public class ArtistDAOService implements CRUDInterface<Artist> {
 
     public ArtistDAOService() {
         artistDAO = ArtistDAO.getInstance();
+        validator = new ArtistValidator();
     }
 
     @Override
     public void add(Artist item) throws DuplicateEntityException {
-        artistDAO.insertObjectInDB(item);
+//        if(validator.validate(item)){
+            artistDAO.insertObjectInDB(item);
+//        }
+//        else{
+//            System.out.println("Validation was unsuccessful!");
+//        }
     }
 
     @Override
