@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage> implements GenericDAO<FestivalStage> {
     //DB specific attributes
-    private final String location = "festivalDB";
+    private static final String LOCATION = "festivalDB";
     private final String tableName = "Stages";
     private final String[] columns = {"stage_id", "name", "venue_id"};
     private final String[] updateColumns = {"name", "venue_id"};
@@ -34,18 +34,19 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
     {
         return deleteQuery;
     }
-    private CRUDHelper crudHelper;
+    private static CRUDHelper crudHelper;
     //Singleton Creation
     private static FestivalStageDAO instance;
 
     private FestivalStageDAO() {
-        crudHelper = new CRUDHelper(location);
-        venueDAO = VenueDAO.getInstance();
         // Private constructor to prevent instantiation outside of this class
     }
     public static FestivalStageDAO getInstance() {
         if (instance == null) {
             instance = new FestivalStageDAO();
+            crudHelper = new CRUDHelper(LOCATION);
+            venueDAO = VenueDAO.getInstance();
+            initialize();
         }
         return instance;
     }
@@ -54,8 +55,8 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
         return venueDAO;
     }
 
-    public void initialize(){
-        instance.readAllObjectsFromTableIfNotAlready();
+    public static void initialize(){
+        instance.readAllObjectsFromTable();
     }
     //TableView JavaFX stuff
     ObservableList<FestivalStage> festivalStages = FXCollections.observableArrayList();
@@ -64,7 +65,7 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
     }
 
     //
-    private final VenueDAO venueDAO;
+    private static VenueDAO venueDAO;
     @Override
     public void insertObjectInDB(FestivalStage item) {
         //update DB
@@ -106,14 +107,6 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
         );
         if (rows == 0)
             throw new IllegalStateException("Festivals to update with id " + item.getId() + "doesn't exist in the database!");
-        //update cache
-        Optional<FestivalStage> optionalFestivalStage = getItemByID(item.getId());
-        optionalFestivalStage.ifPresentOrElse((oldFestivalStage) -> {
-            festivalStages.remove(oldFestivalStage);
-            festivalStages.add(item);
-        }, () -> {
-            throw new IllegalStateException("Festivals to update with id " + item.getId() + "doesn't exist in the database!");
-        });
         super.update(item.getId(), item);
     }
 
@@ -126,18 +119,8 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
                 deleteQuery);
     }
 
-    private boolean isRead = false;
-    public void readAllObjectsFromTableIfNotAlready() {
-        if (!isRead) {
-            // Call the method only if it hasn't been called before
-            readAllObjectsFromTable();
-            isRead = true;
-        }
-    }
-
     @Override
     public void readAllObjectsFromTable() {
-//        initializeHelperRepos(venueDAO);
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
@@ -163,10 +146,6 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
         } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);
         }
-    }
-    public void initializeHelperRepos(VenueDAO venueDAO){
-        venueDAO = VenueDAO.getInstance();
-        venueDAO.readAllObjectsFromTable();
     }
 
     @Override

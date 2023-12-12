@@ -6,8 +6,8 @@ public class FestivalDBService {
     protected EntireDB_Repo dbRepo;
 
     public FestivalDBService() {
-        dbRepo = new EntireDB_Repo();
-        dbRepo.initialize();
+//        dbRepo = new EntireDB_Repo();
+//        dbRepo.initialize();
     }
 
     public EntireDB_Repo getDbRepo() {

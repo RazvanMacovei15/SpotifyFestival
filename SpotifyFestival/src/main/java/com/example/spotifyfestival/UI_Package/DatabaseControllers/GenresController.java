@@ -1,9 +1,8 @@
 package com.example.spotifyfestival.UI_Package.DatabaseControllers;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.RepositoryPackage.DBRepos.ArtistDAO;
 import com.example.spotifyfestival.RepositoryPackage.DBRepos.GenreDAO;
 import com.example.spotifyfestival.Services.GenresDAOService;
 import javafx.beans.binding.Bindings;
@@ -16,11 +15,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
-public class GenresController {
+public class GenresController extends GenericObservableList<Genre> {
     private GenresDAOService genresDAOService;
     @FXML
     protected TableView<Genre> genreTableView;
@@ -32,13 +30,14 @@ public class GenresController {
     ObservableList<Genre> genreList;
     public void initialize(){
         genresDAOService = new GenresDAOService();
-        genreList = FXCollections.observableArrayList();
-        genreList = genresDAOService.getGenresList();
+//        genreList = FXCollections.observableArrayList();
+//        genreList = genresDAOService.getGenresList();
+        super.observableList = genresDAOService.getGenresList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 
-        genreTableView.setItems(genreList);
+        genreTableView.setItems(super.observableList);
     }
 
     private Dialog<Genre> createArtistDialog(Genre genre) {
@@ -117,7 +116,7 @@ public class GenresController {
                         genre.getId(),
                         genre.getName());
                 genresDAOService.add(genreToAdd);
-                genreList.add(genreToAdd);
+                super.add(genreToAdd);
             } catch (DuplicateEntityException e) {
                 throw new RuntimeException(e);
             }
@@ -134,27 +133,23 @@ public class GenresController {
             alert.setContentText("One artist must be selected when editing");
         } else {
             Dialog<Genre> dialog = createArtistDialog((Genre) genreTableView.getSelectionModel().getSelectedItem());
-            Optional<Genre> optionalArtist = dialog.showAndWait();
+            Optional<Genre> optionalGenre = dialog.showAndWait();
             GenreDAO genreDAO = genresDAOService.getGenreDAO();
-            optionalArtist.ifPresent(updatedArtist -> {
-                genreDAO.updateObjectInDB(updatedArtist);
-
-                // Update the artistList to reflect the changes in the TableView
-                int index = genreList.indexOf(updatedArtist);
-                if (index != -1) {
-                    genreList.set(index, updatedArtist);
-                } else {
-                    // Handle the case where the artist is not found in the list
-                    System.out.println("Error: Genre not found in the list.");
-                }
-            });
+            if(optionalGenre.isPresent()){
+                super.update(optionalGenre.get());
+                genreDAO.updateObjectInDB(optionalGenre.get());
+            }else{
+                // Handle the case where the artist is not found in the list
+                System.out.println("Error: Genre not found in the list.");
+            }
         }
         event.consume();
     }
+
     public void delete(ActionEvent event){
         for (Genre genre : genreTableView.getSelectionModel().getSelectedItems()) {
             genresDAOService.delete(genre.getId());
-            genreList.remove(genre);
+            super.delete(genre.getId());
         }
         event.consume();
     }

@@ -1,10 +1,11 @@
-package com.example.spotifyfestival.DatabasePackage.DAO.ValidatorClasses;
+package com.example.spotifyfestival.DatabasePackage.ValidatorClasses;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.GenericsPackage.Validator;
 import javafx.collections.ObservableList;
 
-public class ArtistValidator {
+public class ArtistValidator implements Validator<Artist> {
 
     public static void validateArtist(Artist artist) throws IllegalArgumentException {
         validateName(artist.getName());
@@ -31,5 +32,14 @@ public class ArtistValidator {
         if (spotifyId == null || spotifyId.trim().isEmpty()) {
             throw new IllegalArgumentException("Spotify ID cannot be null or empty");
         }
+    }
+
+    @Override
+    public boolean validate(Artist item) {
+        if(item == null){
+            return false;
+        }
+        validateArtist(item);
+        return true;
     }
 }

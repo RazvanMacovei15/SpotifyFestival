@@ -15,11 +15,6 @@ public class GenresDAOService implements CRUDInterface<Genre> {
 
     public GenresDAOService() {
         genreDAO = GenreDAO.getInstance();
-        initialize();
-    }
-
-    private void initialize(){
-        genreDAO.initialize();
     }
 
     @Override

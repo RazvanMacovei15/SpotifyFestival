@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> implements GenericDAO<ArtistGenre> {
     //DB specific attributes
-    private final String location = "festivalDB";
+    private static final String location = "festivalDB";
     private final String tableName = "ArtistsGenres";
     private final String[] columns = {"artist_genre_id", "artist_id", "genre_id"};
     private final String[] updateColumns = {"artist_id", "genre_id"};
@@ -34,15 +34,17 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
     {
         return deleteQuery;
     }
-    protected CRUDHelper crudHelper;
+    protected static CRUDHelper crudHelper;
     //Singleton Creation
     private static ArtistGenreDAO instance;
     private ArtistGenreDAO(){
-        crudHelper = new CRUDHelper(location);
+
     }
     public static ArtistGenreDAO getInstance(){
         if(instance == null){
             instance = new ArtistGenreDAO();
+            crudHelper = new CRUDHelper(location);
+            initialize();
 
         }
         return instance;
@@ -93,14 +95,6 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
         );
         if (rows == 0)
             throw new IllegalStateException("Artist to update with id " + newArtistGenre.getId() + "doesn't exist in the database!");
-        //update cache
-        Optional<ArtistGenre> optionalArtistGenre = getItemByID(newArtistGenre.getId());
-        optionalArtistGenre.ifPresentOrElse((oldGenre) -> {
-            artistGenreList.remove(oldGenre);
-            artistGenreList.add(newArtistGenre);
-        }, () -> {
-            throw new IllegalStateException("Artist to update with id " + newArtistGenre.getId() + "doesn't exist in the database!");
-        });
         super.update(newArtistGenre.getId(), newArtistGenre);
     }
 
@@ -147,7 +141,7 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
                 types[0],
                 index);
     }
-    public void initialize(){
+    public static void initialize(){
         instance.readAllObjectsFromTable();
     }
 }

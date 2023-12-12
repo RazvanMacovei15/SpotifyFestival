@@ -36,19 +36,21 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
     {
         return deleteQuery;
     }
-    private CRUDHelper crudHelper;
+    private static CRUDHelper crudHelper;
     //Singleton Creation
     private static ArtistDAO instance;
 
     protected ArtistDAO() {
-        crudHelper = new CRUDHelper(LOCATION);
-        genreDAO = GenreDAO.getInstance();
-        artistGenreDAO = ArtistGenreDAO.getInstance();
+
     }
 
     public static ArtistDAO getInstance() {
         if (instance == null) {
             instance = new ArtistDAO();
+            crudHelper = new CRUDHelper(LOCATION);
+            genreDAO = GenreDAO.getInstance();
+            artistGenreDAO = ArtistGenreDAO.getInstance();
+            initialize();
         }
         return instance;
     }
@@ -62,12 +64,11 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
 
     //Repo Attributes To fill GenresList from Artist objects
 
-    protected GenreDAO genreDAO;
-    protected ArtistGenreDAO artistGenreDAO;
+    protected static GenreDAO genreDAO;
+    protected static ArtistGenreDAO artistGenreDAO;
 
     //DB related methods
     public void readAllObjectsFromTable() {
-        initializeHelperRepos(artistGenreDAO, genreDAO);
         String query = "SELECT * FROM " + tableName;
         try (Connection connection = DBUtils.getConnection("festivalDB")) {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -81,13 +82,13 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
                         rs.getString("name"),
                         genres,
                         rs.getString("spotify_id"));
-                artistList.add(artist);
                 instance.add(rs.getInt("artist_id"), artist);
+                artistList.add(artist);
             }
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Persons from database ");
+                    LocalDateTime.now() + ": Could not load Artists from database ");
             artistList.clear();
         } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);
@@ -135,14 +136,6 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         );
         if (rows == 0)
             throw new IllegalStateException("Artist to update with id " + newArtist.getId() + "doesn't exist in the database!");
-        //update cache
-        Optional<Artist> optionalArtist = getItemByID(newArtist.getId());
-        optionalArtist.ifPresentOrElse((oldArtist) -> {
-            artistList.remove(oldArtist);
-            artistList.add(newArtist);
-        }, () -> {
-            throw new IllegalStateException("Artist to update with id " + newArtist.getId() + "doesn't exist in the database!");
-        });
         super.update(newArtist.getId(), newArtist);
     }
 
@@ -165,13 +158,6 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
                 index);
     }
 
-    public void initializeHelperRepos(ArtistGenreDAO artistGenreDAO, GenreDAO genreDAO){
-        artistGenreDAO = ArtistGenreDAO.getInstance();
-        genreDAO = GenreDAO.getInstance();
-        artistGenreDAO.readAllObjectsFromTable();
-        genreDAO.readAllObjectsFromTable();
-    }
-
     public ObservableList<Genre> generateListOfGenresForArtist(ArtistGenreDAO artistGenreDAO, GenreDAO genreDAO, int id){
         ObservableList<Genre> artistGenreList = FXCollections.observableArrayList();
         Iterable<ArtistGenre> artistGenreDAOS = artistGenreDAO.getAll();
@@ -185,7 +171,7 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         return artistGenreList;
     }
 
-    public void initialize(){
+    public static void initialize(){
         instance.readAllObjectsFromTable();
     }
 }

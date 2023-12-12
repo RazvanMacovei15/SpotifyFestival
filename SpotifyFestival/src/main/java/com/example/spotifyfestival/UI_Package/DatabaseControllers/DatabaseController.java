@@ -1,21 +1,11 @@
 package com.example.spotifyfestival.UI_Package.DatabaseControllers;
 
-
-import com.example.spotifyfestival.Services.FestivalDBService;
-
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class DatabaseController {
-    private FestivalDBService festivalDBService;
     @FXML protected RadioButton artistsButton;
     @FXML protected RadioButton venuesButton;
     @FXML protected RadioButton concertButton;
@@ -28,11 +18,6 @@ public class DatabaseController {
     protected Button loadButton;
     @FXML
     private ToggleGroup tableGroup;
-
-    public void readFromDatabase() {
-        festivalDBService = new FestivalDBService();
-        festivalDBService.getDbRepo();
-    }
 
     @FXML
     public void initialize() {
@@ -91,21 +76,21 @@ public class DatabaseController {
                 e.printStackTrace(); // Add better logging or handling based on your needs
             }
         } else if ("Genres Table".equals(selectedButtonText)) {
-            System.out.println("Loading Page 2...");
+            System.out.println("Loading Page 5...");
             try {
                 AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/GenresDB.fxml");
             } catch (IOException e) {
                 e.printStackTrace(); // Add better logging or handling based on your needs
             }
         }else if ("Festivals Table".equals(selectedButtonText)) {
-            System.out.println("Loading Page 3...");
+            System.out.println("Loading Page 6...");
             try {
                 AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/FestivalsDB.fxml");
             } catch (IOException e) {
                 e.printStackTrace(); // Add better logging or handling based on your needs
             }
         }else if ("Stages Table".equals(selectedButtonText)) {
-            System.out.println("Loading Page 4...");
+            System.out.println("Loading Page 7...");
             try {
                 AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/StagesDB.fxml");
             } catch (IOException e) {
