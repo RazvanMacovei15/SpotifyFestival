@@ -20,13 +20,13 @@ public class UserDAO extends DBGenericRepository<Integer, User> implements Gener
     //DB specific attributes
     private static final String LOCATION = "Userbase";
     private static final String tableName = "Users";
-    private final String[] columns = {"user_id", "email", "username", "encrypted_password", "role", "genre_list_id", "spotify_id"};
-    private final String[] updateColumns = {"email", "username", "encrypted_password", "role", "genre_list_id", "spotify_id"};
+    private final String[] columns = {"user_id", "email", "username", "encrypted_password", "role", "spotify_id"};
+    private final String[] updateColumns = {"email", "username", "encrypted_password", "role", "spotify_id"};
     private final String readQuery = "SELECT * FROM " + tableName;
     private final String deleteQuery = "DELETE FROM " + tableName + " WHERE user_id = ?";
 
-    private final int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
-    private final int[] updateTypes = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR};
+    private final int[] types = {Types.INTEGER, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR};
+    private final int[] updateTypes = {Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.VARCHAR, Types.INTEGER, Types.VARCHAR};
     public String getReadQuery()
     {
         return readQuery;
@@ -64,7 +64,19 @@ public class UserDAO extends DBGenericRepository<Integer, User> implements Gener
 
     @Override
     public void insertObjectInDB(User item) {
-
+        //update MemoryRepo
+        try {
+            super.add(item.getId(), item);
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
+        }
+        //update DB
+        int id = (int) crudHelper.create(
+                tableName,
+                columns,
+                new Object[]{item.getId(), item.getEmail(), item.getUsername(), item.getPassword(),item.getRole(), item.getSpotifyId()},
+                types
+        );
     }
 
     @Override
@@ -103,7 +115,7 @@ public class UserDAO extends DBGenericRepository<Integer, User> implements Gener
         } catch (SQLException e) {
             Logger.getAnonymousLogger().log(
                     Level.SEVERE,
-                    LocalDateTime.now() + ": Could not load Artists from database ");
+                    LocalDateTime.now() + ": Could not load Users from database ");
             userObservableList.clear();
         } catch (DuplicateEntityException e) {
             throw new RuntimeException(e);
