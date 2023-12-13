@@ -37,7 +37,7 @@ public class TopArtistsController {
         on4WeeksButtonClicked();
     }
 
-    public static HttpResponse getUserTopArtists() {
+    public static HttpResponse<String> getUserTopArtists() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
@@ -48,7 +48,7 @@ public class TopArtistsController {
             return null;
         }
     }
-    public static HttpResponse getUserTopArtistsOver6Months() {
+    public static HttpResponse<String> getUserTopArtistsOver6Months() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
@@ -59,7 +59,7 @@ public class TopArtistsController {
             return null;
         }
     }
-    public static HttpResponse getUserTopArtistsOver4Weeks() {
+    public static HttpResponse<String> getUserTopArtistsOver4Weeks() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
@@ -90,7 +90,7 @@ public class TopArtistsController {
     }
 
     public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
-        HttpResponse response;
+        HttpResponse<String> response;
 
         switch (timeRange) {
             case "all time":
@@ -139,7 +139,7 @@ public class TopArtistsController {
 
     public void getBackToTopLists(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopLists.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }
@@ -165,7 +165,7 @@ public class TopArtistsController {
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminLoginScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

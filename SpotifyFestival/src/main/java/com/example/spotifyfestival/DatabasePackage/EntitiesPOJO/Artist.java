@@ -65,10 +65,10 @@ public class Artist extends Entity{
     @Override
     public String toString() {
         return "Artist{" +
-                "name='" + name + '\'' +
-                ", genres=" + genres +
+                "id=" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", genres=" + genres + '\'' +
                 ", spotify_id='" + spotify_id + '\'' +
-                ", id=" + id +
                 '}';
     }
 

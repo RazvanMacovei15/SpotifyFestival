@@ -1,10 +1,13 @@
 package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
+import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AuthFlowObserver;
 import javafx.application.Platform;
 import org.json.JSONObject;
 import spark.Spark;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URLEncoder;
@@ -15,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class SpotifyAuthFlowService {
-
     public void run() {
         Spark.port(8888);
 //        login();
@@ -23,14 +25,9 @@ public class SpotifyAuthFlowService {
     }
 
     SpotifyAPPCredentials spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
-
-
     private String responseBody = null;
-
     private String accessToken;
-
     private String STATE;
-
     private final List<AuthFlowObserver> observers = new ArrayList<>();
 
     public void addObserver(AuthFlowObserver observer) {
@@ -43,9 +40,7 @@ public class SpotifyAuthFlowService {
 
     private void notifyObservers(String accessToken) {
         for (AuthFlowObserver observer : observers) {
-
             observer.onAuthFlowCompleted(accessToken);
-
         }
     }
 
@@ -66,7 +61,6 @@ public class SpotifyAuthFlowService {
     }
 
     private String refreshToken;
-
     String originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
 
     public String getAlphaNumericString(int n) {
@@ -94,7 +88,6 @@ public class SpotifyAuthFlowService {
         encodedScope = URLEncoder.encode(spotifyAPPCredentials.getUserTopReadScope(), StandardCharsets.UTF_8);
         String encodedState = null;
         encodedState = URLEncoder.encode(STATE, StandardCharsets.UTF_8);
-
         return "https://accounts.spotify.com/authorize?" +
                 "response_type=code" +
                 "&client_id=" + spotifyAPPCredentials.getClientId() +
@@ -123,29 +116,23 @@ public class SpotifyAuthFlowService {
         openURL2(loginURL);
     }
 
-    public void login(){
+    public void login() {
         STATE = getAlphaNumericString(16);
         String loginURL = generateLoginURL(STATE);
         openURL2(loginURL);
-
         Spark.get("/login", (request, response) -> {
-
             response.redirect(loginURL);
-
             return null;
-
         });
     }
 
     public volatile boolean bool = false;
 
     public void defineCallbackPath() {
-
+        login();
         Spark.get("/callback", (request, response) -> {
-
             String code = request.queryParams("code");
             String state = request.queryParams("state");
-
             //if statement here to check if state is the same
             if (STATE.equals(state)) {
                 //request parameters
@@ -161,16 +148,11 @@ public class SpotifyAuthFlowService {
                             .header("Content-Type", "application/x-www-form-urlencoded")
                             .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                             .build();
-
                     HttpResponse<String> httpResponse = client.send(tokenRequest, HttpResponse.BodyHandlers.ofString());
                     int statusCode = httpResponse.statusCode();
                     responseBody = httpResponse.body();
-                    System.out.println(responseBody);
-                    System.out.println("The access token is this: " + getAccessToken(responseBody));
-
                     if (statusCode == 200) {
                         accessToken = getAccessToken(responseBody);
-//                        notifyObservers(accessToken); // Notify observers when API call is completed
                     } else {
                         // handle error responses here
                         System.err.println("Error: " + statusCode);
@@ -181,55 +163,61 @@ public class SpotifyAuthFlowService {
                     // Return an error response
                 }
             }
-
-            Platform.runLater(() -> {
-                try {
-                    AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+            String email = getUserEmail(getEmailResponse());
+            UserDAO userDAO = UserDAO.getInstance();
+            Iterable<User> users = userDAO.getAll();
+            for (User user : users) {
+                if (user.getEmail().equals(email)) {
+                    if (user.getRole().equals("admin")) {
+                        Platform.runLater(() -> {
+                            try {
+                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminLoginScreen.fxml");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    } else {
+                        Platform.runLater(() -> {
+                            try {
+                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userLoginScreen.fxml");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
                 }
-            });
+            }
             bool = true;
-            System.out.println("bool is true");
             return HtmlCONSTANTS.HTML_PAGE;
         });
     }
-    public void getEmail() throws IOException, InterruptedException {
-        String apiUrl = "https://api.spotify.com/v1/me";
 
+    public String getEmailResponse() throws IOException, InterruptedException {
+        String apiUrl = "https://api.spotify.com/v1/me";
         // Set up headers
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer " + accessToken);
-
         // Create HttpRequest
         HttpRequest emailRequest = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create(apiUrl))
                 .headers("Authorization", "Bearer " + accessToken)
                 .build();
-
         // Send the request and get the response
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpResponse<String> emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
-
-        // Print the response status code and body
-        System.out.println("Status Code: " + emailResponse.statusCode());
-        System.out.println("Response Body: " + emailResponse.body());
+        return emailResponse.body();
     }
 
     public String refreshTheToken(String jsonResponse) {
-
         refreshToken = getRefreshToken(jsonResponse);
-
         HttpClient client = HttpClient.newBuilder().build();
-
         HttpRequest httpRequest = HttpRequest.newBuilder()
                 .uri(URI.create("https://accounts.spotify.com/api/token"))
                 .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(originalInput.getBytes()))
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .POST(HttpRequest.BodyPublishers.ofString("grant_type=refresh_token&refresh_token=" + refreshToken))
                 .build();
-
         HttpResponse<String> refreshResponse = null;
         try {
             refreshResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
@@ -238,18 +226,20 @@ public class SpotifyAuthFlowService {
         }
         String refreshResponseBody = refreshResponse.body();
         int refreshStatusCode = refreshResponse.statusCode();
-
         if (refreshStatusCode == 200) {
-
             accessToken = getAccessToken(refreshResponseBody);
-            notifyObservers(refreshToken);
-
         } else {
             // Handle error responses here
             System.err.println("Error: " + refreshStatusCode);
             // Handle error response, log, or return an error message
         }
         return accessToken;
+    }
+
+    public String getUserEmail(String jsonResponse) {
+        JSONObject jsonObject = new JSONObject(jsonResponse);
+        String email = jsonObject.getString("email");
+        return email;
     }
 
     public String getAccessToken(String jsonResponse) {

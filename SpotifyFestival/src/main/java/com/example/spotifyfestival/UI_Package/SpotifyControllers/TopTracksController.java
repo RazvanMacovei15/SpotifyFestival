@@ -41,7 +41,7 @@ public class TopTracksController {
 
     public void getBackToTopLists(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopLists.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }
@@ -151,13 +151,13 @@ public class TopTracksController {
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminLoginScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }
     }
 
-    public static HttpResponse getUserTopTracksOfAllTime() {
+    public static HttpResponse<String> getUserTopTracksOfAllTime() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
@@ -168,7 +168,7 @@ public class TopTracksController {
             return null;
         }
     }
-    public static HttpResponse getUserTopTracksOver6Months() {
+    public static HttpResponse<String> getUserTopTracksOver6Months() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
@@ -179,7 +179,7 @@ public class TopTracksController {
             return null;
         }
     }
-    public static HttpResponse getUserTopTracksOver4Weeks() {
+    public static HttpResponse<String> getUserTopTracksOver4Weeks() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
@@ -192,7 +192,7 @@ public class TopTracksController {
     }
 
     public void onAllTimeButtonClicked() throws JsonProcessingException {
-        HttpResponse response = getUserTopTracksOfAllTime();
+        HttpResponse<String> response = getUserTopTracksOfAllTime();
 
         String jsonResponse = response.body().toString();
         // Call the extractAttribute method to get the artist attributes
@@ -204,7 +204,7 @@ public class TopTracksController {
     }
 
     public void on6MonthsButtonClicked() throws JsonProcessingException {
-        HttpResponse response = getUserTopTracksOver6Months();
+        HttpResponse<String> response = getUserTopTracksOver6Months();
 
         String jsonResponse = response.body().toString();
         // Call the extractAttribute method to get the artist attributes
@@ -215,7 +215,7 @@ public class TopTracksController {
         listView.setItems(concat);
     }
     public void on4WeeksButtonClicked() throws JsonProcessingException {
-        HttpResponse response = getUserTopTracksOver4Weeks();
+        HttpResponse<String> response = getUserTopTracksOver4Weeks();
 
         String jsonResponse = response.body().toString();
         // Call the extractAttribute method to get the artist attributes

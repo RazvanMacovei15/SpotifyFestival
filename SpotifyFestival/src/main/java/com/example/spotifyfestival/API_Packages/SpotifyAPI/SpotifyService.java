@@ -23,14 +23,13 @@ public class SpotifyService {
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
         return response;
     }
 
-    public HttpResponse getUserTopTracksAllTime(String accessToken) {
+    public HttpResponse<String> getUserTopTracksAllTime(String accessToken) {
 
         String API_URL = Tracks_API_URLS.getUserTopTracksAllTimeURI();
 
@@ -51,7 +50,7 @@ public class SpotifyService {
         return response;
     }
 
-    public HttpResponse getUserTopArtists(String accessToken)  {
+    public HttpResponse<String> getUserTopArtists(String accessToken)  {
 
         String API_URL = Artists_API_URLS.getUserTopArtistsAllTimeURI();
 

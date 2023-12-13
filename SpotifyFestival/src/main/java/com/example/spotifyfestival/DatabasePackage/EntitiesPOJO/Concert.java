@@ -90,8 +90,13 @@ public class Concert extends Entity {
     @Override
     public String toString() {
         return "Concert{" +
-                "description='" + description + '\'' +
-                ", id=" + id +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", startOfTheConcert='" + startOfTheConcert + '\'' +
+                ", time='" + time + '\'' +
+                ", venueId=" + venueId + '\'' +
+                ", artistIdValue=" + artistIdValue + '\'' +
+                ", stageId=" + stageId + '\'' +
                 '}';
     }
 }

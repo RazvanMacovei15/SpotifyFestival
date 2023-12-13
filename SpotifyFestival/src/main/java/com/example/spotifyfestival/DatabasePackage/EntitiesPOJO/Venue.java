@@ -84,8 +84,12 @@ public class Venue extends Entity {
     @Override
     public String toString() {
         return "Venue{" +
-                "venueName='" + venueName + '\'' +
-                ", id=" + id +
+                "id=" + id + '\'' +
+                ", city='" + city + '\'' +
+                ", venueName='" + venueName + '\'' +
+                ", streetAddress='" + streetAddress + '\'' +
+                ", locationLatitude='" + locationLatitude + '\'' +
+                ", locationLongitude='" + locationLongitude + '\'' +
                 '}';
     }
 }

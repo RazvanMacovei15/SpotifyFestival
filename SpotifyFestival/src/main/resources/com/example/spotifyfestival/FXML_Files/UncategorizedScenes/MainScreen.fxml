@@ -18,14 +18,10 @@
 <!--            <Image url="/src/main/resources/com/example/spotifyfestival/PNGs/SpotifyLogo.png"/>-->
         </image>
     </ImageView>
-    <Button fx:id="button" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+    <Button fx:id="loginButton" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"
             text="Log in with Spotify"
             style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
             onAction="#handleLoginButtonClick"/>
-    <Button fx:id="DBButton" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
-            text="GoToDB"
-            style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
-            onAction="#handleDBButton"/>
     <Label fx:id="label" text="Status: NOT LOGGED IN"
            GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="CENTER">
     </Label>

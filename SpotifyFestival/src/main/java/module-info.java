@@ -37,8 +37,6 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.Lab_facultate.Utils to javafx.fxml;
     exports com.example.spotifyfestival.MainPackage;
     opens com.example.spotifyfestival.MainPackage to javafx.fxml;
-    exports com.example.spotifyfestival.RepositoryPackage.DBRepos;
-    opens com.example.spotifyfestival.RepositoryPackage.DBRepos to javafx.fxml;
     opens com.example.spotifyfestival.UI_Package.DatabaseControllers;
     exports com.example.spotifyfestival.UI_Package.DatabaseControllers to javafx.fxml;
     exports com.example.spotifyfestival.Tree;
@@ -51,4 +49,6 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.UtilsPackage to javafx.fxml;
     opens com.example.spotifyfestival.UI_Package;
     exports com.example.spotifyfestival.UI_Package;
+    exports com.example.spotifyfestival.DatabasePackage.DAO;
+    opens com.example.spotifyfestival.DatabasePackage.DAO to javafx.fxml;
 }

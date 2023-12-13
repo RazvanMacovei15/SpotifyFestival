@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class MainController {
     @FXML
-    private Button button;
+    private Button loginButton;
     @FXML
     private Label label;
     @FXML
@@ -28,23 +28,23 @@ public class MainController {
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/afterLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminLoginScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }
     }
 
     public void onTopListsButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopLists.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
     }
     public void onTopArtistsButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopArtists.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopArtists.fxml");
     }
     public void onTopTracksButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopTracks.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopTracks.fxml");
     }
     public void onTopGenresButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TopGenres.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopGenres.fxml");
     }
 
     public void onGetFestivalSuggestionButtonClicked(ActionEvent actionEvent) throws IOException {
@@ -53,7 +53,7 @@ public class MainController {
 
     public void onGetEmailBClicked(ActionEvent event) throws IOException, InterruptedException {
         SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-        spotifyAuthFlowService.getEmail();
+        spotifyAuthFlowService.getEmailResponse();
     }
 
     public void onLogOffButtonClicked(ActionEvent actionEvent) throws IOException {

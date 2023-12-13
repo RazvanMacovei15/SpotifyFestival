@@ -19,8 +19,8 @@ public class Genre extends Entity {
     @Override
     public String toString() {
         return "Genre{" +
-                "name='" + name + '\'' +
-                ", id=" + id +
+                "id=" + id + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

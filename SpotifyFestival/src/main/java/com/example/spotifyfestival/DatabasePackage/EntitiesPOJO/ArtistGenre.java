@@ -29,9 +29,9 @@ public class ArtistGenre extends Entity {
     @Override
     public String toString() {
         return "ArtistGenre{" +
-                "artist_id=" + artist_id +
-                ", genre_id=" + genre_id +
-                ", id=" + id +
+                "id=" + id + '\'' +
+                ", artist_id=" + artist_id + '\'' +
+                ", genre_id=" + genre_id + '\'' +
                 '}';
     }
 }
