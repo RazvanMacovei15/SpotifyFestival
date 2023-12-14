@@ -11,6 +11,7 @@ import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -175,8 +176,63 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         instance.readAllObjectsFromTable();
     }
 
+    public void readFromDBAndWriteToFile(String filename){
+        Iterable<Artist> iterable = instance.getAll();
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
+            for(Artist artist : iterable){
+                writer.write(artist.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void readFromTXTFileJustToCheckIfItFuckingWorks(String filename){
+        try(BufferedReader r = new BufferedReader(new FileReader(filename))){
+            String line;
+            while ((line = r.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                if(parts.length != 3){
+                    throw new IllegalStateException("this format is not allowed!!");
+                }
+
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+                String spotifyId = parts[2];
+
+                Artist a = new Artist(id, name, spotifyId);
+
+                System.out.println(a);
+            }
+
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
+
+        String filename = "ArtistsTextRepo";
         ArtistDAO artistDAO = ArtistDAO.getInstance();
-        artistDAO.list();
+        artistDAO.readFromDBAndWriteToFile(filename);
+        artistDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename);
+        System.out.println();
+        String filename2 = "ArtistGenresTextRepo";
+        ArtistGenreDAO artistGenreDAO = ArtistGenreDAO.getInstance();
+        artistGenreDAO.readFromDBAndWriteToFile(filename2);
+        artistGenreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename2);
+        System.out.println();
+        String filename3 = "GenresTextRepo";
+        GenreDAO genreDAO = GenreDAO.getInstance();
+        genreDAO.readFromDBAndWriteToFile(filename3);
+        genreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename3);
+        
     }
 }

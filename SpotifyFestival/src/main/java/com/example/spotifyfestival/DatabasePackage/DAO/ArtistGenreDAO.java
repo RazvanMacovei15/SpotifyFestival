@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.DAO;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
@@ -9,6 +10,7 @@ import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -143,5 +145,46 @@ public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> im
     }
     public static void initialize(){
         instance.readAllObjectsFromTable();
+    }
+
+    public void readFromDBAndWriteToFile(String filename){
+        Iterable<ArtistGenre> iterable = instance.getAll();
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
+            for(ArtistGenre ag : iterable){
+                writer.write(ag.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void readFromTXTFileJustToCheckIfItFuckingWorks(String filename){
+        try(BufferedReader r = new BufferedReader(new FileReader(filename))){
+            String line;
+            while ((line = r.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                if(parts.length != 3){
+                    throw new IllegalStateException("this format is not allowed!!");
+                }
+
+                int id = Integer.parseInt(parts[0]);
+                int artistId = Integer.parseInt(parts[1]);
+                int genreId = Integer.parseInt(parts[2]);
+
+                ArtistGenre a = new ArtistGenre(id, artistId, genreId);
+
+                System.out.println(a);
+            }
+
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

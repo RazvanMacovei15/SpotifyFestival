@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.DAO;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
@@ -9,6 +10,7 @@ import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -143,5 +145,45 @@ public class GenreDAO extends MemoryRepository<Integer, Genre> implements Generi
                 columns[0],
                 types[0],
                 index);
+    }
+
+    public void readFromDBAndWriteToFile(String filename){
+        Iterable<Genre> iterable = instance.getAll();
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
+            for(Genre g : iterable){
+                writer.write(g.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void readFromTXTFileJustToCheckIfItFuckingWorks(String filename){
+        try(BufferedReader r = new BufferedReader(new FileReader(filename))){
+            String line;
+            while ((line = r.readLine()) != null) {
+                String[] parts = line.split(",");
+
+                if(parts.length != 2){
+                    throw new IllegalStateException("this format is not allowed!!");
+                }
+
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+
+                Genre g = new Genre(id, name);
+
+                System.out.println(g);
+            }
+
+
+
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

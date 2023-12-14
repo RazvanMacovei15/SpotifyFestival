@@ -9,6 +9,7 @@ import java.util.Objects;
 public class Artist extends Entity{
 
     protected String name;
+
     protected ObservableList<Genre> genres ;
     protected String spotify_id;
 
@@ -64,12 +65,7 @@ public class Artist extends Entity{
 
     @Override
     public String toString() {
-        return "Artist{" +
-                "id=" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", genres=" + genres + '\'' +
-                ", spotify_id='" + spotify_id + '\'' +
-                '}';
+        return id + "," + name + "," + spotify_id ;
     }
 
     @Override

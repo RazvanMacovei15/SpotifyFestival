@@ -3,7 +3,6 @@ package com.example.spotifyfestival.Services.UniServices;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.CRUDInterface;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.Lab_facultate.FileSavingStuff.FileRepository;
 import com.example.spotifyfestival.RepositoryPackage.BinFileRepos.ArtistBinaryRepo;
 import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRepo;
 
