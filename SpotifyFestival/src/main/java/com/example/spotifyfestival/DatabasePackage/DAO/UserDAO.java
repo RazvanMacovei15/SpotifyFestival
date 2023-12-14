@@ -17,9 +17,9 @@ import java.util.logging.Logger;
 
 public class UserDAO extends DBGenericRepository<Integer, User> implements GenericDAO<User> {
     //DB specific attributes
-    private static final String LOCATION = "Userbase";
+    private static final String LOCATION = "userBase";
     private static final String tableName = "AppUsers";
-    private final String[] columns = {"user_id", "email", "username", "role", "spotify_id"};
+    private final String[] columns = {"id", "email", "username", "role", "spotify_id"};
     private final String[] updateColumns = {"email", "username", "role", "spotify_id"};
     private final String readQuery = "SELECT * FROM " + tableName;
     private final String deleteQuery = "DELETE FROM " + tableName + " WHERE id = ?";
@@ -96,7 +96,7 @@ public class UserDAO extends DBGenericRepository<Integer, User> implements Gener
                 updateColumns,
                 new Object[]{newItem.getEmail(), newItem.getUsername(), newItem.getRole(), newItem.getSpotifyId()},
                 updateTypes,
-                "artist_id",
+                "id",
                 Types.INTEGER,
                 newItem.getId()
         );
@@ -117,8 +117,8 @@ public class UserDAO extends DBGenericRepository<Integer, User> implements Gener
     @Override
     public void readAllObjectsFromTable() {
         String query = "SELECT * FROM " + tableName;
-        try (Connection connection = DBUtils.getConnection("Userbase")) {
-            PreparedStatement statement = connection.prepareStatement(query);
+        try (Connection connection = DBUtils.getConnection("userBase")) {
+            PreparedStatement statement = connection.prepareStatement(readQuery);
             ResultSet rs = statement.executeQuery();
             userObservableList.clear();
             while (rs.next()) {

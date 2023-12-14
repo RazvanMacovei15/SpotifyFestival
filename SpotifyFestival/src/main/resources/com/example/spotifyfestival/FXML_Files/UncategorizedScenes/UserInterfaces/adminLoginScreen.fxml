@@ -32,7 +32,7 @@
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onGetFestivalSuggestionButtonClicked"/>
         <Button fx:id="DBButton" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
-                text="GoToDB"
+                text="DATABASE"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#handleDBButton"/>
     </VBox>
