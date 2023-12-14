@@ -1,10 +1,12 @@
 package com.example.spotifyfestival.RepositoryPackage.TextFileRepos;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import com.example.spotifyfestival.Lab_facultate.FileSavingStuff.FileRepository;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.Iterator;
 
 public class GenreTextRepo extends FileRepository<Integer, Genre> {
     public GenreTextRepo(String filename) {
@@ -13,12 +15,41 @@ public class GenreTextRepo extends FileRepository<Integer, Genre> {
 
     @Override
     protected void readFromFile() {
+        try(BufferedReader r = new BufferedReader(new FileReader(filename))){
+            String line;
+            while ((line = r.readLine()) != null) {
+                String[] parts = line.split(",");
 
+                if(parts.length != 2){
+                    throw new IllegalStateException("this format is not allowed!!");
+                }
+
+                int id = Integer.parseInt(parts[0]);
+                String name = parts[1];
+
+
+                Genre a = new Genre(id, name);
+                super.add(a.getId(), a);
+            }
+        } catch (DuplicateEntityException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void writeToFile() {
-
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
+            Iterable<Genre> iterable = this.getAll();
+            Iterator<Genre> it = iterable.iterator();
+            while(it.hasNext()){
+                Genre artist = (Genre) it.next();
+                writer.write(artist.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

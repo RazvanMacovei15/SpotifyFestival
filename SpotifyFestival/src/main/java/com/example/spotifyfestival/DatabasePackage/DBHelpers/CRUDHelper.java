@@ -1,6 +1,7 @@
 package com.example.spotifyfestival.DatabasePackage.DBHelpers;
 
 
+import java.io.Serializable;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
@@ -9,7 +10,7 @@ import java.util.logging.Logger;
 /**
  * Helper class for performing CRUD (Create, Read, Update, Delete) operations on a database.
  */
-public class CRUDHelper {
+public class CRUDHelper implements Serializable {
 
     protected String location;
 

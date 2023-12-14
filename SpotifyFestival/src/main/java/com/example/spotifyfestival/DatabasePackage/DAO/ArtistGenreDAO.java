@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> implements GenericDAO<ArtistGenre> {
+public class ArtistGenreDAO extends DBGenericRepository<Integer, ArtistGenre> implements GenericDAO<ArtistGenre>, Serializable {
     //DB specific attributes
     private static final String location = "festivalDB";
     private final String tableName = "ArtistsGenres";

@@ -1,12 +1,13 @@
 package com.example.spotifyfestival.RepositoryPackage.TextFileRepos;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import com.example.spotifyfestival.Lab_facultate.FileSavingStuff.FileRepository;
 
 import java.io.*;
+import java.util.Iterator;
 
 public class ArtistTextRepo extends FileRepository<Integer, Artist> {
-    protected String filename;
 
     public ArtistTextRepo(String filename) {
         super(filename);
@@ -28,22 +29,27 @@ public class ArtistTextRepo extends FileRepository<Integer, Artist> {
                 String spotifyId = parts[2];
 
                 Artist a = new Artist(id, name, spotifyId);
-
-                System.out.println(a);
+                super.add(a.getId(), a);
             }
-
-
-
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (DuplicateEntityException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
     protected void writeToFile() {
-
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(filename))){
+            Iterable<Artist> iterable = this.getAll();
+            Iterator<Artist> it = iterable.iterator();
+            while(it.hasNext()){
+                Artist artist = (Artist) it.next();
+                writer.write(artist.toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -54,12 +60,5 @@ public class ArtistTextRepo extends FileRepository<Integer, Artist> {
         } catch (IOException e) {
             e.printStackTrace(); // Handle exceptions appropriately
         }
-    }
-
-
-
-    public static void main(String[] args) {
-        String filename = "ArtistsTextRepo.txt" ;
-        ArtistTextRepo artistTextRepo = new ArtistTextRepo(filename);
     }
 }

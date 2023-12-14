@@ -18,7 +18,7 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist> {
+public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist>, Serializable{
     //DB specific attributes
     private static final String LOCATION = "festivalDB";
     private static final String tableName = "Artists";
@@ -108,7 +108,7 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         int id = (int) crudHelper.create(
                 tableName,
                 columns,
-                new Object[]{artist.getId(), artist.getName(), artist.getSpotify_id()},
+                new Object[]{artist.getId(), artist.getName(), artist.getSpotifyId()},
                 types
         );
     }
@@ -129,7 +129,7 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         long rows = crudHelper.update(
                 tableName,
                 updateColumns,
-                new Object[]{newArtist.getName(), newArtist.getSpotify_id()},
+                new Object[]{newArtist.getName(), newArtist.getSpotifyId()},
                 updateTypes,
                 "artist_id",
                 Types.INTEGER,
@@ -217,12 +217,23 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         }
     }
 
+    public void writeToBinaryFile() {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("ArtistsBinaryRepo"));
+            out.writeObject(instance);
+            out.close();
+        } catch (IOException var2) {
+            throw new RuntimeException(var2);
+        }
+    }
+
     public static void main(String[] args) {
 
         String filename = "ArtistsTextRepo";
         ArtistDAO artistDAO = ArtistDAO.getInstance();
         artistDAO.readFromDBAndWriteToFile(filename);
         artistDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename);
+
         System.out.println();
         String filename2 = "ArtistGenresTextRepo";
         ArtistGenreDAO artistGenreDAO = ArtistGenreDAO.getInstance();
@@ -233,6 +244,6 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         GenreDAO genreDAO = GenreDAO.getInstance();
         genreDAO.readFromDBAndWriteToFile(filename3);
         genreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename3);
-        
+
     }
 }

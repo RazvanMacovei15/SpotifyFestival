@@ -110,7 +110,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
             id.setText(String.valueOf(artist.getId()));
             id.setEditable(false);
             name.setText(artist.getName());
-            spotify_id.setText(artist.getSpotify_id());
+            spotify_id.setText(artist.getSpotifyId());
         }
 
         return dialog;
@@ -125,7 +125,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
             try {
                 Artist artistToADD = new Artist(artist.getId(),
                         artist.getName(),
-                        artist.getSpotify_id()
+                        artist.getSpotifyId()
                 );
                 artistDAOService.add(artistToADD);
                 artistList.add(artistToADD);

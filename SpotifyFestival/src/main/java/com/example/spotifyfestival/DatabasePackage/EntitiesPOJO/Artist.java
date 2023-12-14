@@ -4,26 +4,31 @@ import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Artist extends Entity{
+public class Artist extends Entity implements Serializable {
 
     protected String name;
 
     protected ObservableList<Genre> genres ;
-    protected String spotify_id;
+    protected String spotifyId;
+
+    public Artist(int id) {
+        super(id);
+    }
 
     public Artist(int id, String name, ObservableList<Genre> genres, String spotify_id) {
         super(id);
         this.name = name;
         this.genres = genres;
-        this.spotify_id = spotify_id;
+        this.spotifyId = spotify_id;
     }
 
     public Artist(int id, String name, String spotify_id) {
         super(id);
         this.name = name;
-        this.spotify_id = spotify_id;
+        this.spotifyId = spotify_id;
     }
 
     public ObservableList<Genre> getGenres() {
@@ -55,17 +60,17 @@ public class Artist extends Entity{
         this.name = name;
     }
 
-    public String getSpotify_id() {
-        return spotify_id;
+    public String getSpotifyId() {
+        return spotifyId;
     }
 
-    public void setSpotify_id(String spotify_id) {
-        this.spotify_id = spotify_id;
+    public void setSpotifyId(String spotifyId) {
+        this.spotifyId = spotifyId;
     }
 
     @Override
     public String toString() {
-        return id + "," + name + "," + spotify_id ;
+        return id + "," + name + "," + spotifyId;
     }
 
     @Override

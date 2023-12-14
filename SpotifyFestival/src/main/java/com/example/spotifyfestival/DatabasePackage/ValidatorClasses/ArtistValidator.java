@@ -10,7 +10,7 @@ public class ArtistValidator implements Validator<Artist> {
     public static void validateArtist(Artist artist) throws IllegalArgumentException {
         validateName(artist.getName());
         validateGenres(artist.getGenres());
-        validateSpotifyId(artist.getSpotify_id());
+        validateSpotifyId(artist.getSpotifyId());
         // Add more validation rules as needed
     }
 
