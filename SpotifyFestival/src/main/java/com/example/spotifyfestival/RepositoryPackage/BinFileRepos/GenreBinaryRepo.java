@@ -12,7 +12,7 @@ public class GenreBinaryRepo extends FileRepository<Integer, Genre> {
     }
 
     @Override
-    protected void readFromFle() {
+    protected void readFromFile() {
 
     }
 

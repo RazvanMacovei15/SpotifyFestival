@@ -1,17 +1,10 @@
 package com.example.spotifyfestival.GenericsPackage;
 
-
-import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBGenericRepository;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Identifiable;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class MemoryRepository<K, V extends Identifiable<K>> implements CRUDRepoInterface<K,V> {
     protected Map<K, V> dataStore;

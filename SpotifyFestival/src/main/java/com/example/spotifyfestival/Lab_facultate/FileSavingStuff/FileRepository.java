@@ -8,11 +8,11 @@ public abstract class FileRepository<K, V extends Identifiable<K>> extends Memor
     protected String filename;
 
     public FileRepository(String filename) {
-        readFromFle();
         this.filename = filename;
+        readFromFile();
     }
 
-    protected abstract void readFromFle();
+    protected abstract void readFromFile();
     protected abstract void writeToFile();
     protected abstract void clear();
     @Override

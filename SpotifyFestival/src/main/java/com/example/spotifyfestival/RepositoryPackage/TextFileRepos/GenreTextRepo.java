@@ -12,7 +12,7 @@ public class GenreTextRepo extends FileRepository<Integer, Genre> {
     }
 
     @Override
-    protected void readFromFle() {
+    protected void readFromFile() {
 
     }
 

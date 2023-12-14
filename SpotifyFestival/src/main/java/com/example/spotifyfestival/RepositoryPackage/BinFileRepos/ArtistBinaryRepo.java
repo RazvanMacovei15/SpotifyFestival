@@ -12,7 +12,7 @@ public class ArtistBinaryRepo extends FileRepository<Integer, Artist> {
     }
 
     @Override
-    protected void readFromFle() {
+    protected void readFromFile() {
 
     }
 
