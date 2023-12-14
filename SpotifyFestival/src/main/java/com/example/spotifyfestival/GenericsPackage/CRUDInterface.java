@@ -5,7 +5,6 @@ import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 
 public interface CRUDInterface<T extends Entity> {
     void add(T item) throws DuplicateEntityException;
-
     void update(T newItem);
     void delete(int id);
     T getItem(int id);

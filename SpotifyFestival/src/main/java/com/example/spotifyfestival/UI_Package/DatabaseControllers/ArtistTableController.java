@@ -5,6 +5,7 @@ import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
 import com.example.spotifyfestival.Services.DAOServices.ArtistDAOService;
+import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +22,7 @@ import java.util.function.UnaryOperator;
 
 public class ArtistTableController extends GenericObservableList<Artist> {
     private ArtistDAOService artistDAOService;
+    private ArtistFileService artistFileService;
     @FXML
     protected TableView<Artist> artistsTable;
     @FXML
@@ -32,6 +34,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     ObservableList<Artist> artistList;
     public void initialize(){
         artistDAOService = new ArtistDAOService();
+//        artistFileService = new ArtistFileService();
         artistList = FXCollections.observableArrayList();
         artistList = artistDAOService.getArtistList();
 

@@ -14,6 +14,7 @@ public abstract class FileRepository<K, V extends Identifiable<K>> extends Memor
 
     protected abstract void readFromFle();
     protected abstract void writeToFile();
+    protected abstract void clear();
     @Override
     public void add(K id, V value) throws DuplicateEntityException{
         super.add(id, value);
@@ -34,6 +35,7 @@ public abstract class FileRepository<K, V extends Identifiable<K>> extends Memor
     @Override
     public void update(K key, V value) {
         super.update(key, value);
+        writeToFile();
     }
 
     @Override
