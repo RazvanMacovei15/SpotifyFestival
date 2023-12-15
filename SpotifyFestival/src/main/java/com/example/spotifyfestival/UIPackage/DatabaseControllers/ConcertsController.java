@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UI_Package.DatabaseControllers;
+package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;

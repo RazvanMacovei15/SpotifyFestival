@@ -5,7 +5,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:controller="com.example.spotifyfestival.UI_Package.MainController"
+<GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="20" vgap="20"
           style="-fx-border-color: black; -fx-border-width: 2px;">
     <rowConstraints>

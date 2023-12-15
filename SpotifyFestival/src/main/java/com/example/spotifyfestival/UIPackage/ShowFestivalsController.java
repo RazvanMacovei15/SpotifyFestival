@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UI_Package;
+package com.example.spotifyfestival.UIPackage;
 
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.MainPackage.App;

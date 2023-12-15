@@ -1,11 +1,11 @@
-package com.example.spotifyfestival.UI_Package.DatabaseControllers;
+package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Festival;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
-import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
-import com.example.spotifyfestival.Services.DAOServices.FestivalDAOService;
+import com.example.spotifyfestival.DatabasePackage.DAO.GenreDAO;
+import com.example.spotifyfestival.Services.DAOServices.GenresDAOService;
 import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,40 +14,36 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
-public class FestivalsController {
-    private FestivalDAOService service;
+public class GenresController extends GenericObservableList<Genre> {
+    private GenresDAOService genresDAOService;
     @FXML
-    protected TableView<Festival> festivalTableView;
+    protected TableView<Genre> genreTableView;
     @FXML
     protected TableColumn idColumn;
     @FXML
     protected TableColumn nameColumn;
-    @FXML
-    protected TableColumn venueIdColumn;
 
-    ObservableList<Festival> festivalObservableList;
-
-    public void initialize() {
-        service = new FestivalDAOService();
-        festivalObservableList = FXCollections.observableArrayList();
-        festivalObservableList = service.getFestivalList();
+    ObservableList<Genre> genreList;
+    public void initialize(){
+        genresDAOService = new GenresDAOService();
+//        genreList = FXCollections.observableArrayList();
+//        genreList = genresDAOService.getGenresList();
+        super.observableList = genresDAOService.getGenresList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        venueIdColumn.setCellValueFactory(new PropertyValueFactory<>("venueId"));
 
-        festivalTableView.setItems(festivalObservableList);
+        genreTableView.setItems(super.observableList);
     }
 
-    private Dialog<Festival> createFestivalDialog(Festival festival) {
+    private Dialog<Genre> createArtistDialog(Genre genre) {
         //create the dialog itself
-        Dialog<Festival> dialog = new Dialog<>();
+        Dialog<Genre> dialog = new Dialog<>();
         dialog.setTitle("Add Dialog");
-        dialog.setHeaderText("Add a new festival to the database");
+        dialog.setHeaderText("Add a new genre to the database");
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         Stage dialogWindow = (Stage) dialog.getDialogPane().getScene().getWindow();
 //        dialogWindow.getIcons().add(new Image(SQLiteExampleApp.class.getResource("img/EdenCodingIcon.png").toExternalForm()));
@@ -61,22 +57,17 @@ public class FestivalsController {
         id.setPromptText("ID");
         TextField name = new TextField();
         name.setPromptText("NAME");
-        TextField venueId = new TextField();
-        venueId.setPromptText("VENUE ID");
         grid.add(new Label("ID:"), 0, 0);
         grid.add(id, 1, 0);
         grid.add(new Label("NAME:"), 0, 1);
         grid.add(name, 1, 1);
-        grid.add(new Label("VENUE ID:"), 0, 2);
-        grid.add(venueId, 1, 2);
         dialog.getDialogPane().setContent(grid);
 
         //disable the OK button if the fields haven't been filled in
         dialog.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(
                 Bindings.createBooleanBinding(() -> id.getText().trim().isEmpty(), id.textProperty())
                         .or(Bindings.createBooleanBinding(() -> name.getText().trim().isEmpty(), name.textProperty())
-                                .or(Bindings.createBooleanBinding(() -> venueId.getText().trim().isEmpty(), venueId.textProperty())
-                                )));
+                                ));
 
         //ensure only numeric input (integers) in age text field
         UnaryOperator<TextFormatter.Change> numberValidationFormatter = change -> {
@@ -97,36 +88,34 @@ public class FestivalsController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
                 int id2 = -1;
-                if (festival != null) id2 = festival.getId();
-                return new Festival(Integer.parseInt(id.getText()), name.getText(), service.getFestivalDAO().getVenueDAO().getItem(Integer.valueOf(venueId.getText())));
+                if (genre != null) id2 = genre.getId();
+                return new Genre(Integer.parseInt(id.getText()), name.getText());
             }
             return null;
         });
 
         //if a record is supplied, use it to fill in the fields automatically
-        if (festival != null) {
-            id.setText(String.valueOf(festival.getId()));
+        if (genre != null) {
+            id.setText(String.valueOf(genre.getId()));
             id.setEditable(false);
-            name.setText(festival.getName());
-            venueId.setText(String.valueOf(festival.getVenue().getId()));
+            name.setText(genre.getName());
         }
 
         return dialog;
     }
 
     public void add(ActionEvent event) {
-        Dialog<Festival> addFestivalDialog = createFestivalDialog(null);
-        Optional<Festival> result = addFestivalDialog.showAndWait();
+        Dialog<Genre> addArtistDialog = createArtistDialog(null);
+        Optional<Genre> result = addArtistDialog.showAndWait();
 
-        result.ifPresent(fe ->
+        result.ifPresent(genre ->
         {
             try {
-                Festival festivalToAdd = new Festival(
-                        fe.getId(),
-                        fe.getName(),
-                        fe.getVenue());
-                service.add(festivalToAdd);
-                festivalObservableList.add(festivalToAdd);
+                Genre genreToAdd = new Genre(
+                        genre.getId(),
+                        genre.getName());
+                genresDAOService.add(genreToAdd);
+                super.add(genreToAdd);
             } catch (DuplicateEntityException e) {
                 throw new RuntimeException(e);
             }
@@ -136,40 +125,35 @@ public class FestivalsController {
     }
 
     public void update(ActionEvent event) {
-        if (festivalTableView.getSelectionModel().getSelectedItems().size() != 1) {
+        if (genreTableView.getSelectionModel().getSelectedItems().size() != 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Artist editing error");
             alert.setContentText("One artist must be selected when editing");
         } else {
-            Dialog<Festival> dialog = createFestivalDialog((Festival) festivalTableView.getSelectionModel().getSelectedItem());
-            Optional<Festival> optionalFestival = dialog.showAndWait();
-            FestivalDAO festivalDAO = service.getFestivalDAO();
-            optionalFestival.ifPresent(updatedFestival -> {
-                festivalDAO.updateObjectInDB(updatedFestival);
-
-                // Update the artistList to reflect the changes in the TableView
-                int index = festivalObservableList.indexOf(updatedFestival);
-                if (index != -1) {
-                    festivalObservableList.set(index, updatedFestival);
-                } else {
-                    // Handle the case where the artist is not found in the list
-                    System.out.println("Error: Festival not found in the list.");
-                }
-            });
+            Dialog<Genre> dialog = createArtistDialog((Genre) genreTableView.getSelectionModel().getSelectedItem());
+            Optional<Genre> optionalGenre = dialog.showAndWait();
+            GenreDAO genreDAO = genresDAOService.getGenreDAO();
+            if(optionalGenre.isPresent()){
+                super.update(optionalGenre.get());
+                genreDAO.updateObjectInDB(optionalGenre.get());
+            }else{
+                // Handle the case where the artist is not found in the list
+                System.out.println("Error: Genre not found in the list.");
+            }
         }
         event.consume();
     }
 
-    public void delete(ActionEvent event) {
-        for (Festival festival : festivalTableView.getSelectionModel().getSelectedItems()) {
-            service.delete(festival.getId());
-            festivalObservableList.remove(festival);
+    public void delete(ActionEvent event){
+        for (Genre genre : genreTableView.getSelectionModel().getSelectedItems()) {
+            genresDAOService.delete(genre.getId());
+            super.delete(genre.getId());
         }
         event.consume();
     }
 
-    public void list() {
-        service.list();
+    public void list(){
+        genresDAOService.list();
     }
 }

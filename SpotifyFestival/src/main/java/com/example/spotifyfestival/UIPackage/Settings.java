@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UI_Package;
+package com.example.spotifyfestival.UIPackage;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

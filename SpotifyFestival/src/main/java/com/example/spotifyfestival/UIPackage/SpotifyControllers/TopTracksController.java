@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UI_Package.SpotifyControllers;
+package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.API_URLS.Tracks_API_URLS;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;

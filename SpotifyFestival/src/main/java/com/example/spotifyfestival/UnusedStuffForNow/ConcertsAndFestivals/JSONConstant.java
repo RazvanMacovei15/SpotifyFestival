@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.ConcertsAndFestivals;
+package com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
 
 public class JSONConstant {
     public static String getConstant() {

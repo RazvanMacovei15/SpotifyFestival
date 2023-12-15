@@ -1,11 +1,11 @@
-package com.example.spotifyfestival.UI_Package.DBControllers;
+package com.example.spotifyfestival.UIPackage.DBControllers;
 
 import com.example.spotifyfestival.RepositoryPackage.BinFileRepos.ArtistBinaryRepo;
 import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRepo;
 import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
 import com.example.spotifyfestival.Services.UniServices.ArtistGenreFileService;
 import com.example.spotifyfestival.Services.UniServices.GenreFileService;
-import com.example.spotifyfestival.UI_Package.Settings;
+import com.example.spotifyfestival.UIPackage.Settings;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

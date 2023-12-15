@@ -111,9 +111,10 @@ public class SpotifyAuthFlowService {
     }
 
     public void openLogin() {
-        STATE = getAlphaNumericString(16);
-        String loginURL = generateLoginURL(STATE);
-        openURL2(loginURL);
+//        STATE = getAlphaNumericString(16);
+//        String loginURL = generateLoginURL(STATE);
+//        openURL2(loginURL);
+        login();
     }
 
     public void login() {
@@ -129,7 +130,7 @@ public class SpotifyAuthFlowService {
     public volatile boolean bool = false;
 
     public void defineCallbackPath() {
-        login();
+//        login();
         Spark.get("/callback", (request, response) -> {
             String code = request.queryParams("code");
             String state = request.queryParams("state");

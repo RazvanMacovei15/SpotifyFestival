@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
-<GridPane fx:controller="com.example.spotifyfestival.UI_Package.SpotifyControllers.TopGenresController"
+<GridPane fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
 
     <padding>

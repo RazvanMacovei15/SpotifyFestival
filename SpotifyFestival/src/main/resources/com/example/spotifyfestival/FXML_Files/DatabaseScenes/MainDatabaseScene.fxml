@@ -8,7 +8,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.spotifyfestival.UI_Package.DatabaseControllers.DatabaseController">
+            fx:controller="com.example.spotifyfestival.UIPackage.DatabaseControllers.DatabaseController">
 
 
     <RadioButton text="Artists Table" fx:id="artistsButton">

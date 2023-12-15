@@ -6,7 +6,7 @@ import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MemoryRepository<K, V extends Identifiable<K>> implements CRUDRepoInterface<K,V>{
+public class MemoryRepository<K, V extends Identifiable<K>> implements RepoInterface<K,V> {
     protected Map<K, V> dataStore;
 
     public MemoryRepository() {

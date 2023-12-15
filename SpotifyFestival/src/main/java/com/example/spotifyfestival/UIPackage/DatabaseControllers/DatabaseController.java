@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UI_Package.DatabaseControllers;
+package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.fxml.FXML;

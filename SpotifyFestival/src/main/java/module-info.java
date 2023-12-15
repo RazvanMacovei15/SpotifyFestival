@@ -33,19 +33,19 @@ module com.example.spotifyfestival {
 
     exports com.example.spotifyfestival.Tree;
     opens com.example.spotifyfestival.Tree to javafx.fxml;
-    exports com.example.spotifyfestival.UI_Package.SpotifyControllers;
-    opens com.example.spotifyfestival.UI_Package.SpotifyControllers to javafx.fxml;
-    exports com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.ConcertsAndFestivals;
-    opens com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.ConcertsAndFestivals to javafx.fxml;
+    exports com.example.spotifyfestival.UIPackage.SpotifyControllers;
+    opens com.example.spotifyfestival.UIPackage.SpotifyControllers to javafx.fxml;
+    exports com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
+    opens com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals to javafx.fxml;
     exports com.example.spotifyfestival.UtilsPackage;
     opens com.example.spotifyfestival.UtilsPackage to javafx.fxml;
-    opens com.example.spotifyfestival.UI_Package;
-    exports com.example.spotifyfestival.UI_Package;
+    opens com.example.spotifyfestival.UIPackage;
+    exports com.example.spotifyfestival.UIPackage;
     exports com.example.spotifyfestival.DatabasePackage.DAO;
     opens com.example.spotifyfestival.DatabasePackage.DAO to javafx.fxml;
     opens com.example.spotifyfestival.FXML_Files.UncategorizedScenes.UserInterfaces to javafx.fxml;
-    exports com.example.spotifyfestival.UI_Package.DBControllers;
-    opens com.example.spotifyfestival.UI_Package.DBControllers to javafx.fxml;
+    exports com.example.spotifyfestival.UIPackage.DBControllers;
+    opens com.example.spotifyfestival.UIPackage.DBControllers to javafx.fxml;
 
 
 }

@@ -1,9 +1,11 @@
-package com.example.spotifyfestival.UI_Package.DatabaseControllers;
+package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.FestivalStage;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
-import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
-import com.example.spotifyfestival.Services.DAOServices.FestivalStageDAOService;
+import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
+import com.example.spotifyfestival.Services.DAOServices.ArtistDAOService;
+import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,36 +20,36 @@ import javafx.stage.Stage;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
-public class StagesController {
-    private FestivalStageDAOService service;
+public class ArtistTableController extends GenericObservableList<Artist> {
+    private ArtistDAOService artistDAOService;
+    private ArtistFileService artistFileService;
     @FXML
-    protected TableView<FestivalStage> festivalStageTableView;
+    protected TableView<Artist> artistsTable;
     @FXML
     protected TableColumn idColumn;
     @FXML
     protected TableColumn nameColumn;
     @FXML
-    protected TableColumn venueIdColumn;
-
-    ObservableList<FestivalStage> stageObservableList;
-
-    public void initialize() {
-        service = new FestivalStageDAOService();
-        stageObservableList = FXCollections.observableArrayList();
-        stageObservableList = service.getStageList();
+    protected TableColumn spotify_ID_column;
+    ObservableList<Artist> artistList;
+    public void initialize(){
+        artistDAOService = new ArtistDAOService();
+//        artistFileService = new ArtistFileService();
+        artistList = FXCollections.observableArrayList();
+        artistList = artistDAOService.getArtistList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        venueIdColumn.setCellValueFactory(new PropertyValueFactory<>("venueId"));
+        spotify_ID_column.setCellValueFactory(new PropertyValueFactory<>("spotify_id"));
 
-        festivalStageTableView.setItems(stageObservableList);
+        artistsTable.setItems(artistList);
     }
 
-    private Dialog<FestivalStage> createStageDialog(FestivalStage stage) {
+    private Dialog<Artist> createArtistDialog(Artist artist) {
         //create the dialog itself
-        Dialog<FestivalStage> dialog = new Dialog<>();
+        Dialog<Artist> dialog = new Dialog<>();
         dialog.setTitle("Add Dialog");
-        dialog.setHeaderText("Add a new stage to the database");
+        dialog.setHeaderText("Add a new person to the database");
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
         Stage dialogWindow = (Stage) dialog.getDialogPane().getScene().getWindow();
 //        dialogWindow.getIcons().add(new Image(SQLiteExampleApp.class.getResource("img/EdenCodingIcon.png").toExternalForm()));
@@ -61,21 +63,21 @@ public class StagesController {
         id.setPromptText("ID");
         TextField name = new TextField();
         name.setPromptText("NAME");
-        TextField venueId = new TextField();
-        venueId.setPromptText("VENUE ID");
+        TextField spotify_id = new TextField();
+        spotify_id.setPromptText("SPOTIFY ID");
         grid.add(new Label("ID:"), 0, 0);
         grid.add(id, 1, 0);
         grid.add(new Label("NAME:"), 0, 1);
         grid.add(name, 1, 1);
-        grid.add(new Label("VENUE ID:"), 0, 2);
-        grid.add(venueId, 1, 2);
+        grid.add(new Label("SPOTIFY ID:"), 0, 2);
+        grid.add(spotify_id, 1, 2);
         dialog.getDialogPane().setContent(grid);
 
         //disable the OK button if the fields haven't been filled in
         dialog.getDialogPane().lookupButton(ButtonType.OK).disableProperty().bind(
                 Bindings.createBooleanBinding(() -> id.getText().trim().isEmpty(), id.textProperty())
                         .or(Bindings.createBooleanBinding(() -> name.getText().trim().isEmpty(), name.textProperty())
-                                .or(Bindings.createBooleanBinding(() -> venueId.getText().trim().isEmpty(), venueId.textProperty())
+                                .or(Bindings.createBooleanBinding(() -> spotify_id.getText().trim().isEmpty(), spotify_id.textProperty())
                                 )));
 
         //ensure only numeric input (integers) in age text field
@@ -97,36 +99,36 @@ public class StagesController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
                 int id2 = -1;
-                if (stage != null) id2 = stage.getId();
-                return new FestivalStage(Integer.parseInt(id.getText()), name.getText(), service.getStageDAO().getVenueDAO().getItem(Integer.valueOf(venueId.getText())));
+                if (artist != null) id2 = artist.getId();
+                return new Artist(Integer.parseInt(id.getText()), name.getText(), spotify_id.getText());
             }
             return null;
         });
 
         //if a record is supplied, use it to fill in the fields automatically
-        if (stage != null) {
-            id.setText(String.valueOf(stage.getId()));
+        if (artist != null) {
+            id.setText(String.valueOf(artist.getId()));
             id.setEditable(false);
-            name.setText(stage.getName());
-            venueId.setText(String.valueOf(stage.getVenue().getId()));
+            name.setText(artist.getName());
+            spotify_id.setText(artist.getSpotifyId());
         }
 
         return dialog;
     }
 
-    public void add(ActionEvent event) {
-        Dialog<FestivalStage> addStageDialog = createStageDialog(null);
-        Optional<FestivalStage> result = addStageDialog.showAndWait();
+    public void addArtist(ActionEvent event) {
+        Dialog<Artist> addArtistDialog = createArtistDialog(null);
+        Optional<Artist> result = addArtistDialog.showAndWait();
 
-        result.ifPresent(stage ->
+        result.ifPresent(artist ->
         {
             try {
-                FestivalStage stageToAdd = new FestivalStage(
-                        stage.getId(),
-                        stage.getName(),
-                        stage.getVenue());
-                service.add(stageToAdd);
-                stageObservableList.add(stageToAdd);
+                Artist artistToADD = new Artist(artist.getId(),
+                        artist.getName(),
+                        artist.getSpotifyId()
+                );
+                artistDAOService.add(artistToADD);
+                artistList.add(artistToADD);
             } catch (DuplicateEntityException e) {
                 throw new RuntimeException(e);
             }
@@ -135,41 +137,40 @@ public class StagesController {
         event.consume();
     }
 
-    public void update(ActionEvent event) {
-        if (festivalStageTableView.getSelectionModel().getSelectedItems().size() != 1) {
+    public void updateArtist(ActionEvent event) {
+        if (artistsTable.getSelectionModel().getSelectedItems().size() != 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Artist editing error");
             alert.setContentText("One artist must be selected when editing");
         } else {
-            Dialog<FestivalStage> dialog = createStageDialog((FestivalStage) festivalStageTableView.getSelectionModel().getSelectedItem());
-            Optional<FestivalStage> optionalFestivalStage = dialog.showAndWait();
-            FestivalStageDAO stageDAO = service.getStageDAO();
-            optionalFestivalStage.ifPresent(updatedStage -> {
-                stageDAO.updateObjectInDB(updatedStage);
+            Dialog<Artist> dialog = createArtistDialog((Artist) artistsTable.getSelectionModel().getSelectedItem());
+            Optional<Artist> optionalArtist = dialog.showAndWait();
+            ArtistDAO artistDAO = artistDAOService.getArtistDAO();
+            optionalArtist.ifPresent(updatedArtist -> {
+                artistDAO.updateObjectInDB(updatedArtist);
 
                 // Update the artistList to reflect the changes in the TableView
-                int index = stageObservableList.indexOf(updatedStage);
+                int index = artistList.indexOf(updatedArtist);
                 if (index != -1) {
-                    stageObservableList.set(index, updatedStage);
+                    artistList.set(index, updatedArtist);
                 } else {
                     // Handle the case where the artist is not found in the list
-                    System.out.println("Error: Festival not found in the list.");
+                    System.out.println("Error: Artist not found in the list.");
                 }
             });
         }
         event.consume();
     }
-
-    public void delete(ActionEvent event) {
-        for (FestivalStage stage : festivalStageTableView.getSelectionModel().getSelectedItems()) {
-            service.delete(stage.getId());
-            stageObservableList.remove(stage);
+    public void deleteArtist(ActionEvent event){
+        for (Artist artist : artistsTable.getSelectionModel().getSelectedItems()) {
+            artistDAOService.delete(artist.getId());
+            artistList.remove(artist);
         }
         event.consume();
     }
 
-    public void list() {
-        service.list();
+    public void list(){
+        artistDAOService.list();
     }
 }

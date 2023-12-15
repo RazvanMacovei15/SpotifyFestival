@@ -1,7 +1,7 @@
-package com.example.spotifyfestival.UI_Package;
+package com.example.spotifyfestival.UIPackage;
 
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
+import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -17,7 +17,7 @@ public class MainController {
 
     @FXML
     private void handleLoginButtonClick(ActionEvent event){
-        SpotifyAuthFlowService.getInstance().openLogin();
+        SpotifyAuthFlowService.getInstance().login();
     }
     public void handleDBButton(ActionEvent event) throws IOException {
         AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/LoadDBFrom.fxml");
