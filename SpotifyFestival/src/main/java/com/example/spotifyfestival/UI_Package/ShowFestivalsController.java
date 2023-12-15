@@ -25,7 +25,7 @@ public class ShowFestivalsController {
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "adminLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "adminMainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

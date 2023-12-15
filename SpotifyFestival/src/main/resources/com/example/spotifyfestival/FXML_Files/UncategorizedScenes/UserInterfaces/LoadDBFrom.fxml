@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<GridPane fx:controller="com.example.spotifyfestival.UI_Package.DBControllers.LoadFromController"
+          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20"
+          style="-fx-border-color: black; -fx-border-width: 2px;">
+
+    <rowConstraints>
+        <RowConstraints percentHeight="20"/>
+        <RowConstraints percentHeight="80"/>
+    </rowConstraints>
+
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+        <image>
+            <!--            <Image url="@SpotifyLogo.png"/>-->
+        </image>
+    </ImageView>
+
+    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">
+        <Button fx:id="loadFromBinaryFile"
+                GridPane.halignment="CENTER"
+                text="Load From Binary Files"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                onAction="#onLoadFromBinaryFileButtonClicked"/>
+        <Button fx:id="loadFromTextFile" GridPane.halignment="CENTER"
+                text="Load From Text Files"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                onAction="#onLoadFromTextFileButtonClicked"/>
+        <Button fx:id="loadFromSqLite" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+                text="Load From SQLite"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                onAction="#onLoadFromSqLiteButtonClicked"/>
+    </VBox>
+</GridPane>

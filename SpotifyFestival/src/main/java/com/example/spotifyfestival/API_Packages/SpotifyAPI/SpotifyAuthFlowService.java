@@ -171,7 +171,7 @@ public class SpotifyAuthFlowService {
                     if (user.getRole().equals("admin")) {
                         Platform.runLater(() -> {
                             try {
-                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminLoginScreen.fxml");
+                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
@@ -179,7 +179,7 @@ public class SpotifyAuthFlowService {
                     } else {
                         Platform.runLater(() -> {
                             try {
-                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userLoginScreen.fxml");
+                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }

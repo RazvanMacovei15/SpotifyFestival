@@ -1,4 +1,3 @@
-
 package com.example.spotifyfestival.UI_Package;
 
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
@@ -11,24 +10,22 @@ import javafx.scene.control.Label;
 import java.io.IOException;
 
 public class MainController {
-    @FXML
-    private Button loginButton;
-    @FXML
-    private Label label;
-    @FXML
-    private Button DBButton;
+    @FXML private Button loginButton;
+    @FXML private Label label;
+    @FXML private Button DBButton;
+
 
     @FXML
     private void handleLoginButtonClick(ActionEvent event){
         SpotifyAuthFlowService.getInstance().openLogin();
     }
     public void handleDBButton(ActionEvent event) throws IOException {
-        AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
+        AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/LoadDBFrom.fxml");
     }
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminLoginScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }
@@ -51,25 +48,9 @@ public class MainController {
         AppSwitchScenesMethods.switchScene(actionEvent, "getFestivalSuggestions.fxml");
     }
 
-    public void onGetEmailBClicked(ActionEvent event) throws IOException, InterruptedException {
-        SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-        spotifyAuthFlowService.getEmailResponse();
-    }
-
-    public void onLogOffButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "NotLoggedIn.fxml");
-    }
     public void onBackToLoginClicked(ActionEvent actionEvent) {
         try {
             AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/MainScreen.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to move forward", e);
-        }
-    }
-
-    public void onSearchButtonClicked(ActionEvent event){
-        try {
-            AppSwitchScenesMethods.switchScene(event, "chooseTheSearchParameters.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }
