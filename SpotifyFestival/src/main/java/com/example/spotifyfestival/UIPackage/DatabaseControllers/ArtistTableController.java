@@ -4,8 +4,11 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
+import com.example.spotifyfestival.RepositoryPackage.BinFileRepos.ArtistBinaryRepo;
+import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRepo;
 import com.example.spotifyfestival.Services.DAOServices.ArtistDAOService;
 import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
+import com.example.spotifyfestival.UIPackage.Settings;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,14 +36,23 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     protected TableColumn spotify_ID_column;
     ObservableList<Artist> artistList;
     public void initialize(){
+        Settings settings = new Settings();
+
+        String artistBinarySetting = settings.getProperty("artistsBinaryRepo");
+        String artistTextSetting = settings.getProperty("artistsTextRepo");
+
+        ArtistTextRepo artistTextRepo = new ArtistTextRepo(artistTextSetting);
+        ArtistBinaryRepo artistBinaryRepo = new ArtistBinaryRepo(artistBinarySetting);
+
         artistDAOService = new ArtistDAOService();
-//        artistFileService = new ArtistFileService();
+        artistFileService = new ArtistFileService(artistTextRepo, artistBinaryRepo);
+
         artistList = FXCollections.observableArrayList();
         artistList = artistDAOService.getArtistList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        spotify_ID_column.setCellValueFactory(new PropertyValueFactory<>("spotify_id"));
+        spotify_ID_column.setCellValueFactory(new PropertyValueFactory<>("spotifyId"));
 
         artistsTable.setItems(artistList);
     }
@@ -128,6 +140,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
                         artist.getSpotifyId()
                 );
                 artistDAOService.add(artistToADD);
+                artistFileService.add(artistToADD);
                 artistList.add(artistToADD);
             } catch (DuplicateEntityException e) {
                 throw new RuntimeException(e);

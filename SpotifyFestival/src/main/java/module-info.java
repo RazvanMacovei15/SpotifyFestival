@@ -17,9 +17,12 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.API_Packages.RapidAPI to javafx.fxml;
     exports com.example.spotifyfestival.API_Packages.SpotifyAPI;
     opens com.example.spotifyfestival.API_Packages.SpotifyAPI to javafx.fxml;
-
+    exports com.example.spotifyfestival.UIPackage.DatabaseControllers;
+    opens com.example.spotifyfestival.UIPackage.DatabaseControllers to javafx.fxml;
     exports com.example.spotifyfestival.DatabasePackage.DBHelpers;
     opens com.example.spotifyfestival.DatabasePackage.DBHelpers to javafx.fxml;
+    exports com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
+    opens com.example.spotifyfestival.DatabasePackage.EntitiesPOJO to javafx.fxml;
 
     exports com.example.spotifyfestival.GenericsPackage;
     opens com.example.spotifyfestival.GenericsPackage to javafx.fxml;

@@ -10,6 +10,7 @@ public class ArtistFileService implements CRUDInterface<Artist> {
     protected ArtistTextRepo artistTextRepo;
     protected ArtistBinaryRepo artistBinaryRepo;
 
+
     public ArtistFileService(ArtistTextRepo artistTextRepo, ArtistBinaryRepo artistBinaryRepo) {
         this.artistTextRepo = artistTextRepo;
         this.artistBinaryRepo = artistBinaryRepo;

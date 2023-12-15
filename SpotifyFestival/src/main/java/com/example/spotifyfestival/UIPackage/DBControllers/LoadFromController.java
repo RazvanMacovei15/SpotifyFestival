@@ -37,7 +37,7 @@ public class LoadFromController {
         // Implement loading from the specified file
         System.out.println("Loading data from: " + filePath);
 
-        artistFileService = new ArtistFileService(artistTextRepo, artistBinaryRepo);
+        artistFileService = new ArtistFileService( artistTextRepo, artistBinaryRepo);
         artistFileService.list();
     }
 
@@ -46,7 +46,7 @@ public class LoadFromController {
         System.out.println("Loading data from DB: " + dbConnection);
     }
     public void onLoadFromBinaryFileButtonClicked(ActionEvent event){
-        artistFileService = new ArtistFileService(artistTextRepo, artistBinaryRepo);
+        artistFileService = new ArtistFileService( artistTextRepo, artistBinaryRepo);
         artistFileService.list();
     }
     public void onLoadFromTextFileButtonClicked(ActionEvent event){
