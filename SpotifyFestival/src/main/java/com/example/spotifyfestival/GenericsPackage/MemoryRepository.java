@@ -1,9 +1,8 @@
 package com.example.spotifyfestival.GenericsPackage;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Identifiable;
-import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 

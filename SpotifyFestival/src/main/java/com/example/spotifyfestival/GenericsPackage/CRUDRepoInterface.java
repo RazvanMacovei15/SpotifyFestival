@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.GenericsPackage;
 
-import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 
 import java.sql.SQLException;
 

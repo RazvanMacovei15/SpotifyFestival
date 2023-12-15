@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
-import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

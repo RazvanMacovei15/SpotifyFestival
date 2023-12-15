@@ -2,7 +2,7 @@ package com.example.spotifyfestival.UI_Package.DatabaseControllers;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
-import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
 import com.example.spotifyfestival.Services.DAOServices.ArtistDAOService;
 import com.example.spotifyfestival.Services.UniServices.ArtistFileService;

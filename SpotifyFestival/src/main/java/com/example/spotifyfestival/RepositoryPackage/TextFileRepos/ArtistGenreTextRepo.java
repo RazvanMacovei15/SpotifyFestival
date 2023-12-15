@@ -1,9 +1,8 @@
 package com.example.spotifyfestival.RepositoryPackage.TextFileRepos;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
-import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
-import com.example.spotifyfestival.Lab_facultate.FileSavingStuff.FileRepository;
+import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
+import com.example.spotifyfestival.LabFacultate.FileSavingStuff.FileRepository;
 
 import java.io.*;
 import java.util.Iterator;

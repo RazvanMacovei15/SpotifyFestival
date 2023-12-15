@@ -1,7 +1,7 @@
-package com.example.spotifyfestival.Lab_facultate.FileSavingStuff;
+package com.example.spotifyfestival.LabFacultate.FileSavingStuff;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Identifiable;
-import com.example.spotifyfestival.Lab_facultate.DuplicateEntityException;
+import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import com.example.spotifyfestival.GenericsPackage.MemoryRepository;
 
 public abstract class FileRepository<K, V extends Identifiable<K>> extends MemoryRepository<K, V> {

@@ -17,28 +17,20 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.API_Packages.RapidAPI to javafx.fxml;
     exports com.example.spotifyfestival.API_Packages.SpotifyAPI;
     opens com.example.spotifyfestival.API_Packages.SpotifyAPI to javafx.fxml;
-    exports com.example.spotifyfestival.DatabasePackage.ValidatorClasses;
-    opens com.example.spotifyfestival.DatabasePackage.ValidatorClasses to javafx.fxml;
+
     exports com.example.spotifyfestival.DatabasePackage.DBHelpers;
     opens com.example.spotifyfestival.DatabasePackage.DBHelpers to javafx.fxml;
-    exports com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
-    opens com.example.spotifyfestival.DatabasePackage.EntitiesPOJO to javafx.fxml;
+
     exports com.example.spotifyfestival.GenericsPackage;
     opens com.example.spotifyfestival.GenericsPackage to javafx.fxml;
-    exports com.example.spotifyfestival.Lab_facultate.FileSavingStuff;
-    opens com.example.spotifyfestival.Lab_facultate.FileSavingStuff to javafx.fxml;
-    exports com.example.spotifyfestival.Lab_facultate.JUnitTesting;
-    opens com.example.spotifyfestival.Lab_facultate.JUnitTesting to javafx.fxml;
-    exports com.example.spotifyfestival.Lab_facultate.Service;
-    opens com.example.spotifyfestival.Lab_facultate.Service to javafx.fxml;
-    exports com.example.spotifyfestival.Lab_facultate.UI;
-    opens com.example.spotifyfestival.Lab_facultate.UI to javafx.fxml;
-    exports com.example.spotifyfestival.Lab_facultate.Utils;
-    opens com.example.spotifyfestival.Lab_facultate.Utils to javafx.fxml;
+    exports com.example.spotifyfestival.LabFacultate.FileSavingStuff;
+    opens com.example.spotifyfestival.LabFacultate.FileSavingStuff to javafx.fxml;
+
+    exports com.example.spotifyfestival.LabFacultate.Utils;
+    opens com.example.spotifyfestival.LabFacultate.Utils to javafx.fxml;
     exports com.example.spotifyfestival.MainPackage;
     opens com.example.spotifyfestival.MainPackage to javafx.fxml;
-//    opens com.example.spotifyfestival.UI_Package.DatabaseControllers;
-//    exports com.example.spotifyfestival.UI_Package.DatabaseControllers to javafx.fxml;
+
     exports com.example.spotifyfestival.Tree;
     opens com.example.spotifyfestival.Tree to javafx.fxml;
     exports com.example.spotifyfestival.UI_Package.SpotifyControllers;
@@ -54,5 +46,6 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.FXML_Files.UncategorizedScenes.UserInterfaces to javafx.fxml;
     exports com.example.spotifyfestival.UI_Package.DBControllers;
     opens com.example.spotifyfestival.UI_Package.DBControllers to javafx.fxml;
+
 
 }

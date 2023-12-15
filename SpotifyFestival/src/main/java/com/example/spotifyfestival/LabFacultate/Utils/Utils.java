@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.Lab_facultate.Utils;
+package com.example.spotifyfestival.LabFacultate.Utils;
 
 import com.example.spotifyfestival.API_Packages.API_URLS.SearchAPI;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;

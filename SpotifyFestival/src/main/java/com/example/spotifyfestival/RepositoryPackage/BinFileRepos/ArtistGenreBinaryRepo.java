@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.RepositoryPackage.BinFileRepos;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
-import com.example.spotifyfestival.Lab_facultate.FileSavingStuff.FileRepository;
+import com.example.spotifyfestival.LabFacultate.FileSavingStuff.FileRepository;
 
 import java.io.*;
 import java.util.HashMap;

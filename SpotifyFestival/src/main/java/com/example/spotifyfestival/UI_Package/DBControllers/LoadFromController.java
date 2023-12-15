@@ -23,6 +23,7 @@ public class LoadFromController {
     @FXML private Button loadFromBinaryFile;
     @FXML private Button loadFromTextFile;
     @FXML private Button loadFromSqLite;
+
     public void initialize(){
         artistTextRepo = new ArtistTextRepo(settings.getProperty("textFilePath"));
         artistBinaryRepo = new ArtistBinaryRepo(settings.getProperty("binaryFilePath"));

@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.Lab_facultate.JUnitTesting;
+package com.example.spotifyfestival.LabFacultate.JUnitTesting;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 
