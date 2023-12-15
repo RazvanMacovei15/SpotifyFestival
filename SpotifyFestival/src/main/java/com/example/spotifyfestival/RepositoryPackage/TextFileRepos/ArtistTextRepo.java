@@ -13,6 +13,8 @@ public class ArtistTextRepo extends FileRepository<Integer, Artist> {
         super(filename);
     }
 
+
+
     @Override
     protected void readFromFile() {
         try(BufferedReader r = new BufferedReader(new FileReader(filename))){
@@ -30,6 +32,7 @@ public class ArtistTextRepo extends FileRepository<Integer, Artist> {
 
                 Artist a = new Artist(id, name, spotifyId);
                 super.add(a.getId(), a);
+
             }
         } catch (DuplicateEntityException | IOException e) {
             throw new RuntimeException(e);
