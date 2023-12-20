@@ -36,9 +36,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     protected TableColumn spotify_ID_column;
     ObservableList<Artist> artistList;
 
-    public ArtistTableController() {
-
-    }
+    public ArtistTableController() {}
 
     public void initialize(){
         Settings settings = new Settings();
@@ -53,7 +51,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         artistFileService = new ArtistFileService(artistTextRepo, artistBinaryRepo);
 
         artistList = FXCollections.observableArrayList();
-        artistList = artistFileService.getArtistTextRepo().getTableList();
+        artistList = artistDAOService.getArtistList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));

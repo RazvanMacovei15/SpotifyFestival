@@ -56,7 +56,7 @@ public class ArtistTextRepo extends FileRepository<Integer, Artist> {
     }
 
     @Override
-    protected void clear() {
+    public void clear() {
         // Simply delete the contents of the file for clearing the repository
         try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
             writer.print("");

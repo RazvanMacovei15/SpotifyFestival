@@ -1,5 +1,7 @@
 package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
+import java.util.Objects;
+
 public class ArtistGenre extends Entity {
     protected int artist_id;
     protected int genre_id;
@@ -29,5 +31,14 @@ public class ArtistGenre extends Entity {
     @Override
     public String toString() {
         return id + "," + artist_id + "," + genre_id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        ArtistGenre artist = (ArtistGenre) obj;
+        return Objects.equals(getId(), artist.getId());
     }
 }

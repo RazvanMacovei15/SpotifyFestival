@@ -5,6 +5,7 @@ import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBGenericRepository
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
@@ -16,6 +17,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -231,6 +233,10 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         }
     }
 
+    public void clear(){
+        instance.clear();
+    }
+
     public static void main(String[] args) {
 
         String filename = "ArtistsTextRepo";
@@ -249,17 +255,57 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         GenreDAO genreDAO = GenreDAO.getInstance();
         genreDAO.readFromDBAndWriteToFile(filename3);
         genreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename3);
-
+        System.out.println();
         List<ArtistGenre> agList = new ArrayList<>();
         Iterable<ArtistGenre> artistGenres = artistGenreDAO.getAll();
         for(ArtistGenre ag : artistGenres){
             agList.add(ag);
         }
 
+        List<Artist> aList = new ArrayList<>();
+        Iterable<Artist> artists = artistDAO.getAll();
+        for(Artist a : artists){
+            aList.add(a);
+        }
+
+        ConcertDAO concertDAO = ConcertDAO.getInstance();
+        List<Concert> cList = new ArrayList<>();
+        Iterable<Concert> concerts = concertDAO.getAll();
+        for(Concert c : concerts){
+            cList.add(c);
+        }
+
+        // Example 1: Filtering entities based on a condition
         List<ArtistGenre> strings = agList.stream()
                 .filter(ag -> ag.getArtist_id() == 1)
                 .collect(Collectors.toList());
         System.out.println(strings);
+        System.out.println();
+        // Example 2: Mapping entities to a different type
+        List<String> entityNames = aList.stream()
+                .map(Artist::getName)
+                .collect(Collectors.toList());
+        System.out.println(entityNames);
+        System.out.println();
+        // Example 3: Checking if any entity meets a condition
+        boolean anyMatch = aList.stream()
+                .anyMatch(entity -> entity.getName().startsWith("M"));
+        System.out.println("Any entity starts with 'M': " + anyMatch);
+        System.out.println();
+        // Example 4: Counting entities based on a condition
+        long count = cList.stream()
+                .filter(concert -> concert.getStartOfTheConcert().equals("2023-07-25"))
+                .count();
+        System.out.println("Number of concerts on 2023-07-25: " + count);
+        System.out.println();
+        // Example 5: Grouping entities by a property
+        Map<String, List<Concert>> groupedByCategory = cList.stream()
+                .collect(Collectors.groupingBy(Concert::getTime));
+        groupedByCategory.forEach((category, entities) -> {
+            System.out.println("Category: " + category);
+            entities.forEach(System.out::println);
+        });
+
 
 
 
