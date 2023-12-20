@@ -1,12 +1,12 @@
 package com.example.spotifyfestival.DatabasePackage.DAO;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
-import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
+import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBGenericRepository;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBGenericRepository;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,9 +14,12 @@ import javafx.collections.ObservableList;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements GenericDAO<Artist>, Serializable{
     //DB specific attributes
@@ -52,6 +55,7 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
             genreDAO = GenreDAO.getInstance();
             artistGenreDAO = ArtistGenreDAO.getInstance();
             initialize();
+
         }
         return instance;
     }
@@ -239,11 +243,25 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         ArtistGenreDAO artistGenreDAO = ArtistGenreDAO.getInstance();
         artistGenreDAO.readFromDBAndWriteToFile(filename2);
         artistGenreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename2);
+
         System.out.println();
         String filename3 = "GenresTextRepo";
         GenreDAO genreDAO = GenreDAO.getInstance();
         genreDAO.readFromDBAndWriteToFile(filename3);
         genreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename3);
+
+        List<ArtistGenre> agList = new ArrayList<>();
+        Iterable<ArtistGenre> artistGenres = artistGenreDAO.getAll();
+        for(ArtistGenre ag : artistGenres){
+            agList.add(ag);
+        }
+
+        List<ArtistGenre> strings = agList.stream()
+                .filter(ag -> ag.getArtist_id() == 1)
+                .collect(Collectors.toList());
+        System.out.println(strings);
+
+
 
     }
 }
