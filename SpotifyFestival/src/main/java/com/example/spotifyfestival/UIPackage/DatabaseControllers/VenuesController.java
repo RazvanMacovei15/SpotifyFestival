@@ -4,6 +4,7 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.VenueDAO;
 import com.example.spotifyfestival.Services.DAOServices.VenueDAOService;
+import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
@@ -192,5 +194,13 @@ public class VenuesController {
 
     public void list(){
         service.list();
+    }
+
+    public void back(ActionEvent event){
+        try {
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to go back", e);
+        }
     }
 }

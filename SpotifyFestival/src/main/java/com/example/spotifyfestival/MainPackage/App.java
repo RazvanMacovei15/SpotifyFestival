@@ -1,4 +1,3 @@
-
 package com.example.spotifyfestival.MainPackage;
 
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
@@ -30,7 +29,6 @@ public class App extends Application {
         double sceneHeight = 720; // Set your desired height
         primaryStage.setScene(new Scene(root, sceneWidth, sceneHeight));
         primaryStage.show();
-
     }
 
     @Override

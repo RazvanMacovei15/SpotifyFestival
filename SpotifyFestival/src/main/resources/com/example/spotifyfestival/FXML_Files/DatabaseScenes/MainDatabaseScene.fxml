@@ -35,4 +35,7 @@
     <Button text="LOAD" fx:id="loadButton" onAction="#loadPage">
 
     </Button>
+    <Button text="BACK" fx:id="backButton" onAction="#back">
+
+    </Button>
 </VBox>

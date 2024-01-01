@@ -20,12 +20,12 @@ public class ShowFestivalsController {
     public GridPane mainGridPane;
 
     public void onGenerateSuggestionList(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchSceneForCanvas(actionEvent, "ConcertCanvas.fxml");
+        AppSwitchScenesMethods.switchSceneForCanvas(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas.fxml");
     }
 
     public void onGetBackButtonClicked(ActionEvent event){
         try {
-            AppSwitchScenesMethods.switchScene(event, "adminMainScreen.fxml");
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }
@@ -37,7 +37,7 @@ public class ShowFestivalsController {
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainGridPane.getScene().getWindow());
         dialog.setTitle("Search parameters: ");
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("chooseTheSearchParameters.fxml"));
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/chooseTheSearchParameters.fxml"));
 
         try{
             dialog.getDialogPane().setContent(loader.load());

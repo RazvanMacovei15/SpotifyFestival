@@ -1,6 +1,7 @@
 package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
@@ -13,6 +14,7 @@ public class DatabaseController {
     @FXML protected RadioButton genresButton;
     @FXML protected RadioButton festivalsButton;
     @FXML protected RadioButton stagesButton;
+    @FXML protected Button backButton;
 
     @FXML
     protected Button loadButton;
@@ -33,6 +35,14 @@ public class DatabaseController {
 
         // Set a default selected RadioButton (optional)
         artistsButton.setSelected(true);
+    }
+
+    public void back(ActionEvent event){
+        try {
+            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to go back", e);
+        }
     }
 
     public void loadPage() {

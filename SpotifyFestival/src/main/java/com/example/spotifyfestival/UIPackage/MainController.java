@@ -45,7 +45,7 @@ public class MainController {
     }
 
     public void onGetFestivalSuggestionButtonClicked(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchScene(actionEvent, "getFestivalSuggestions.fxml");
+        AppSwitchScenesMethods.switchScene(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/getFestivalSuggestions.fxml");
     }
 
     public void onBackToLoginClicked(ActionEvent actionEvent) {

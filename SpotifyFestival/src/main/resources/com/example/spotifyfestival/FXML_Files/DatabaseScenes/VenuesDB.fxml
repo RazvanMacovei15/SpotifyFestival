@@ -42,5 +42,6 @@
         <Button text="UPDATE" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#update"/>
         <Button text="DELETE" GridPane.rowIndex="0" GridPane.columnIndex="3" onAction="#delete"/>
         <Button text="LIST" GridPane.rowIndex="0" GridPane.columnIndex="4" onAction="#list"/>
+        <Button text="BACK" GridPane.rowIndex="0" GridPane.columnIndex="5" onAction="#back"/>
     </GridPane>
 </GridPane>
