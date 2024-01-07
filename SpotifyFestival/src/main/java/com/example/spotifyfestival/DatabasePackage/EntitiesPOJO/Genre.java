@@ -20,7 +20,7 @@ public class Genre extends Entity {
 
     @Override
     public String toString() {
-        return id + "," + name;
+        return name + " with ID=" + id;
     }
 
     @Override

@@ -8,7 +8,6 @@ import javafx.scene.control.Label;
 import java.time.LocalDate;
 
 public class RapidAPIDialogController {
-
     private RapidAPIConcertsAPI rapidAPIConcertsAPI;
     @FXML
     public Label cityLabel;
@@ -35,5 +34,4 @@ public class RapidAPIDialogController {
         rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
         cityLabel.setText(rapidAPIConcertsAPI.getAttribute(rapidAPIConcertsAPI.handleIpInfoHttpResponse(), "city"));
     }
-
 }

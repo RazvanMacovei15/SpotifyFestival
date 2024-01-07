@@ -25,7 +25,7 @@ public class TreeNode<T> {
     }
 
     public void removeChild(TreeNode<T> child) {
-        if(child.children != null){
+        if (child.children != null) {
             child.children.clear();
         }
         children.remove(child);

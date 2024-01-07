@@ -15,7 +15,7 @@
     <MenuBar GridPane.rowIndex="3">
         <Menu text="File">
             <items>
-                <MenuItem text="New..." />
+                <MenuItem text="New..."/>
                 <SeparatorMenuItem/>
                 <MenuItem text="Exit"/>
             </items>
@@ -30,7 +30,7 @@
 
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
         <image>
-<!--            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>-->
+            <!--            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>-->
         </image>
     </ImageView>
 

@@ -7,8 +7,9 @@ public class MyTree<T extends Identifiable> extends Tree<T> {
     public MyTree(T data) {
         super(data);
     }
+
     @Override
-    public ObservableList getConcertsAtVenue(Identifiable venue) {
+    public ObservableList<T> getConcertsAtVenue(Identifiable venue) {
         return null;
     }
 
@@ -26,4 +27,5 @@ public class MyTree<T extends Identifiable> extends Tree<T> {
     public void drawConcertPin(Identifiable item) {
 
     }
+
 }

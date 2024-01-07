@@ -20,7 +20,7 @@ import java.util.*;
 public class SpotifyAuthFlowService {
     public void run() {
         Spark.port(8888);
-//        login();
+        login();
         defineCallbackPath();
     }
 
@@ -118,9 +118,11 @@ public class SpotifyAuthFlowService {
     }
 
     public void login() {
+
         STATE = getAlphaNumericString(16);
         String loginURL = generateLoginURL(STATE);
         openURL2(loginURL);
+
         Spark.get("/login", (request, response) -> {
             response.redirect(loginURL);
             return null;

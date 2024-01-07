@@ -3,8 +3,11 @@ package com.example.spotifyfestival.GenericsPackage;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Identifiable;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class MemoryRepository<K, V extends Identifiable<K>> implements RepoInterface<K,V> {
     protected Map<K, V> dataStore;
@@ -49,5 +52,11 @@ public class MemoryRepository<K, V extends Identifiable<K>> implements RepoInter
         for (Map.Entry<K, V> entry : dataStore.entrySet()) {
             System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue().toString());
         }
+    }
+    public List<K> getListOfKeys() {
+        return dataStore.entrySet()
+                .stream()
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 }

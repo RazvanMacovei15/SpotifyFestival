@@ -120,7 +120,8 @@ public class CRUDHelper implements Serializable {
     public long create(String tableName, String[] columns, Object[] values, int[] types) {
         // Determine the number of columns to insert
         int number = Math.min(Math.min(columns.length, values.length), types.length);
-        // Build the SQL insert query
+
+        // Build the SQL insert query using parameterized placeholders
         StringBuilder queryBuilder = new StringBuilder("INSERT INTO " + tableName + " (");
         for (int i = 0; i < number; i++) {
             queryBuilder.append(columns[i]);
@@ -128,27 +129,31 @@ public class CRUDHelper implements Serializable {
         }
         queryBuilder.append(") VALUES (");
         for (int i = 0; i < number; i++) {
-            // Append values based on their data types
-            switch (types[i]) {
-                case Types.VARCHAR:
-                    queryBuilder.append("'");
-                    queryBuilder.append((String) values[i]);
-                    queryBuilder.append("'");
-                    break;
-                case Types.INTEGER:
-                    queryBuilder.append((int) values[i]);
-                    break;
-                case Types.DOUBLE:
-                    queryBuilder.append((double) values[i]);
-                    break;
-            }
+            queryBuilder.append("?");
             if (i < number - 1) queryBuilder.append(", ");
         }
         queryBuilder.append(");");
-        try (Connection conn = DBUtils.getConnection(location)) {
-            // Prepare and execute the insert query
-            PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString(), Statement.RETURN_GENERATED_KEYS);
+
+        try (Connection conn = DBUtils.getConnection(location);
+             PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString(), Statement.RETURN_GENERATED_KEYS)) {
+
+            // Set parameter values based on their data types
+            for (int i = 0; i < number; i++) {
+                switch (types[i]) {
+                    case Types.VARCHAR:
+                        pstmt.setString(i + 1, (String) values[i]);
+                        break;
+                    case Types.INTEGER:
+                        pstmt.setInt(i + 1, (int) values[i]);
+                        break;
+                    case Types.DOUBLE:
+                        pstmt.setDouble(i + 1, (double) values[i]);
+                        break;
+                }
+            }
+
             int affectedRows = pstmt.executeUpdate();
+
             // Check the affected rows and return the generated ID
             if (affectedRows > 0) {
                 try (ResultSet rs = pstmt.getGeneratedKeys()) {
@@ -163,10 +168,10 @@ public class CRUDHelper implements Serializable {
                     Level.SEVERE,
                     LocalDateTime.now() + ": Could not add record to database");
             ex.printStackTrace();
-            return -1;
         }
         return -1;
     }
+
 
     /**
      * Deletes a record from the database by ID.

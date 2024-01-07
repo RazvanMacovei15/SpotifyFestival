@@ -1,8 +1,14 @@
-//package com.example.spotifyfestival.Controllers;
+//package com.example.spotifyfestival.UIPackage;
 //
-//import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.ConcertsAndFestivals.*;
+//import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
+//import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
+//import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
+//import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
+//import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
 //import com.example.spotifyfestival.Tree.Tree;
 //import com.example.spotifyfestival.Tree.TreeNode;
+//import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
+//import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
 //import javafx.animation.KeyFrame;
 //import javafx.animation.Timeline;
 //import javafx.collections.FXCollections;
@@ -17,6 +23,7 @@
 //import javafx.scene.shape.Circle;
 //import javafx.util.Duration;
 //
+//import java.time.LocalDate;
 //import java.util.List;
 //
 //
@@ -40,12 +47,12 @@
 ////        rapidAPIConcertsAPI.addParameters(parameters);
 ////        rapidAPIConcertsAPI.getConcertsInYourArea();
 ////        String json = rapidAPIConcertsAPI.httpRequest();
-////        Entity userLoc = new Entity();
+////        Entity userLoc = new Entity(0);
 ////        ConcertJSONUtils concertJSONUtils = new ConcertJSONUtils(userLoc);
 ////        ObservableList<Concert> concertsE = concertJSONUtils.extractConcerts(json);
 ////        System.out.println(concertsE.size());
 //
-//        Entity userLocation = new Entity();
+//        Entity userLocation = new Entity(0);
 //        userLocation.setId(10);
 //        ConcertJSONUtils utils = new ConcertJSONUtils(userLocation);
 //        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getConstant());

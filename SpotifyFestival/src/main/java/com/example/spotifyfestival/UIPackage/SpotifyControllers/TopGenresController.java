@@ -1,6 +1,12 @@
+// Import statements for necessary packages and classes
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.API_URLS.Artists_API_URLS;
+import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.GenreDAO;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.GenericsPackage.MapValueSorter;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
@@ -16,9 +22,16 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopArtistsController.getUserTopArtistsOver4Weeks;
+import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopArtistsController.getUserTopArtistsOver6Months;
+
+// Controller class for the TopGenres FXML file
 public class TopGenresController {
 
+    // FXML annotations to inject UI elements
     @FXML
     private ListView<String> listView;
 
@@ -34,22 +47,27 @@ public class TopGenresController {
     @FXML
     private Button fourWeeksButton;
 
+    // Initialize method, automatically triggered when the scene is shown
     @FXML
     public void initialize() throws JsonProcessingException {
         // Automatically trigger the "4 weeks" button when the scene is shown
-//        on4WeeksButtonClicked();
+        on4WeeksButtonClicked();
     }
 
-    public void onGetBackButtonClicked(ActionEvent event){
+    // Event handler for the "Get Back" button
+    public void onGetBackButtonClicked(ActionEvent event) {
         try {
+            // Switch scene to adminMainScreen.fxml
             AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }
     }
 
-    public static HttpResponse getUserTopArtists() {
+    // Method to get user's top artists from Spotify API
+    public static HttpResponse<String> getUserTopArtists() {
         try {
+            // Get access token and make API call for all-time top artists
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
             String token = spotifyAuthFlowService.getAccessToken();
             SpotifyService spotifyService = new SpotifyService();
@@ -59,87 +77,70 @@ public class TopGenresController {
             return null;
         }
     }
-    public static HttpResponse getUserTopArtistsOver6Months() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            SpotifyService spotifyService = new SpotifyService();
-            return spotifyService.getHttpResponse(token, Artists_API_URLS.getUserTopArtists6MonthsURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    public static HttpResponse getUserTopArtistsOver4Weeks() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            SpotifyService spotifyService = new SpotifyService();
-            return spotifyService.getHttpResponse(token, Artists_API_URLS.getUserTopArtistsOver4WeeksURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+
+    // Event handler for the "All Time" button
+    public void onAllTimeButtonClicked() throws JsonProcessingException {
+        // Delegate to the common method with the specified time range
+        onTimeRangeButtonClicked("all time");
     }
 
-//    public void onAllTimeButtonClicked() throws JsonProcessingException {
-//
-//        onTimeRangeButtonClicked("all time");
-//
-//    }
-//
-//    public void on6MonthsButtonClicked() throws JsonProcessingException {
-//
-//        onTimeRangeButtonClicked("6 months");
-//
-//    }
-//    public void on4WeeksButtonClicked() throws JsonProcessingException {
-//
-//        onTimeRangeButtonClicked("4 weeks");
-//
-//    }
+    // Event handler for the "6 Months" button
+    public void on6MonthsButtonClicked() throws JsonProcessingException {
+        // Delegate to the common method with the specified time range
+        onTimeRangeButtonClicked("6 months");
+    }
 
-//    public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
-//        HttpResponse response;
-//
-//        switch (timeRange) {
-//            case "all time":
-//                response = getUserTopArtists();
-//                break;
-//            case "6 months":
-//                response = getUserTopArtistsOver6Months();
-//                break;
-//            case "4 weeks":
-//                response = getUserTopArtistsOver4Weeks();
-//                break;
-//            default:
-//                // Handle the case when an unsupported time range is provided
-//                return;
-//        }
-//
-//        String jsonResponse = response.body().toString();
-//        // Call the extractAttribute method to get the artist attributes
-////        ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
-//        ObservableList<Artist> allArtists = extractArtists(jsonResponse);
-//        Map<String, Integer> genreCount = getGenreCountFromResponse(allArtists);
-//
-//        ObservableList<String> genres = FXCollections.observableArrayList();
-//        ObservableList<String> genresCount = FXCollections.observableArrayList();
-//
-//        for(Map.Entry<String, Integer> entry : genreCount.entrySet()){
-//            genres.add(entry.getKey());
-//        }
-//        for(Map.Entry<String, Integer> entry : genreCount.entrySet()){
-//            genresCount.add(String.valueOf(entry.getValue()));
-//        }
-//
-//        // Set the artist names in your ListView or perform other actions
-//        listView.setItems(genres);
-//        countListView.setItems(genresCount);
-//    }
+    // Event handler for the "4 Weeks" button
+    public void on4WeeksButtonClicked() throws JsonProcessingException {
+        // Delegate to the common method with the specified time range
+        onTimeRangeButtonClicked("4 weeks");
+    }
 
+    // Common method for handling time range button clicks
+    public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
+        // Get user's top artists based on the specified time range
+        HttpResponse<String> response;
+        switch (timeRange) {
+            case "all time":
+                response = getUserTopArtists();
+                break;
+            case "6 months":
+                response = getUserTopArtistsOver6Months();
+                break;
+            case "4 weeks":
+                response = getUserTopArtistsOver4Weeks();
+                break;
+            default:
+                // Handle the case when an unsupported time range is provided
+                return;
+        }
+        // Extract relevant information from the API response
+        String jsonResponse = response.body().toString();
+        ObservableList<Artist> allArtists = extractArtists(jsonResponse);
+        Map<Genre, Integer> genreCount = getGenreCountFromResponse(allArtists);
+        // Prepare data for UI display
+        ObservableList<Genre> genres = FXCollections.observableArrayList();
+        ObservableList<String> genresCount = FXCollections.observableArrayList();
+        ObservableList<String> genreNames = FXCollections.observableArrayList();
+
+        for (Map.Entry<Genre, Integer> entry : genreCount.entrySet()) {
+            genres.add(entry.getKey());
+        }
+        for (Map.Entry<Genre, Integer> entry : genreCount.entrySet()) {
+            genresCount.add(String.valueOf(entry.getValue()));
+        }
+        for (Genre genre : genres) {
+            String name = genre.getName();
+            genreNames.add(name);
+        }
+
+        // Set the data in the ListView UI elements
+        listView.setItems(genreNames);
+        countListView.setItems(genresCount);
+    }
+
+    // Method to extract a specific attribute from JSON response
     public static ObservableList<String> extractAttribute(String jsonResponse, String attributeName) {
-        // Create an empty ObservableList to store the attribute values
         ObservableList<String> attributeValues = FXCollections.observableArrayList();
 
         try {
@@ -159,53 +160,78 @@ public class TopGenresController {
         return attributeValues;
     }
 
-//    public ObservableList<Artist> extractArtists(String jsonResponse){
-//
-//        ObservableList<ObservableList<String>> allGenresExtracted = FXCollections.observableArrayList();
-//        ObservableList<Artist> listOfArtistsInResponse = FXCollections.observableArrayList();
-//        try{
-//            JSONObject jsonObject = new JSONObject(jsonResponse);
-//            JSONArray itemsArray = jsonObject.getJSONArray("items");
-//            for(int i=0; i<itemsArray.length(); i++){
-//                ObservableList<String> artistGenres = FXCollections.observableArrayList();
-//                JSONObject artistObject = itemsArray.getJSONObject(i);
-//                JSONArray array = artistObject.getJSONArray("genres");
-//                for(int j=0; j<array.length(); j++ ){
-//                    String genre = array.getString(j);
-//                    artistGenres.add(genre);
-//                }
-//                String name = artistObject.getString("name");
-//                String id = artistObject.getString("id");
-//                Artist artist = new Artist(name, artistGenres);
-//                artist.setId(id);
-//
-//                listOfArtistsInResponse.add(artist);
-//
-//            }
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return listOfArtistsInResponse;
-//    }
+    // Method to extract artists and their genres from JSON response
+    public ObservableList<Artist> extractArtists(String jsonResponse) {
+        ObservableList<ObservableList<String>> allGenresExtracted = FXCollections.observableArrayList();
+        ObservableList<Artist> listOfArtistsInResponse = FXCollections.observableArrayList();
+        try {
+            JSONObject jsonObject = new JSONObject(jsonResponse);
+            JSONArray itemsArray = jsonObject.getJSONArray("items");
+            for (int i = 0; i < itemsArray.length(); i++) {
+                ObservableList<Genre> artistGenres = FXCollections.observableArrayList();
+                JSONObject artistObject = itemsArray.getJSONObject(i);
+                JSONArray array = artistObject.getJSONArray("genres");
+                for (int j = 0; j < array.length(); j++) {
+                    String genreName = array.getString(j);
+                    int genreID = 0;
+                    GenreDAO genreDAO = GenreDAO.getInstance();
+                    if (!genreDAO.checkIfGenreInDB(genreName)) {
+                        genreID = genreDAO.returnHighestID() + 1;
+                        Genre genreToADD = new Genre(genreID, genreName);
+                        genreDAO.insertObjectInDB(genreToADD);
+                        artistGenres.add(genreToADD);
+                    } else {
+                        genreID = genreDAO.getGenreByName(genreName).getId();
+                        Genre genre = genreDAO.getItem(genreID);
+                        artistGenres.add(genre);
+                    }
+                }
+                String name = artistObject.getString("name");
 
-//    public Map<String, Integer> getGenreCountFromResponse(ObservableList<Artist> artists){
-//
-//        HashMap<String, Integer> genreCount = new HashMap<>();
-//        for(Artist artist : artists){
-//            ObservableList<Genre> genres = (ObservableList<Genre>) artist.getGenres();
-//            for(int i = 0; i < genres.size(); i++){
-//                Genre genre = genres.get(i);
-//                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
-//            }
-//        }
-//
-//        System.out.println(genreCount);
-//
-//        Map<String, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
-//        for (Map.Entry<String, Integer> entry : sortedGenreMap.entrySet()) {
-//            System.out.println(entry.getKey() + ": " + entry.getValue());
-//        }
-//        return sortedGenreMap;
-//    }
+                String spotifyId = artistObject.getString("id");
+                int artistId = 0;
+                ArtistDAO artistDAO = ArtistDAO.getInstance();
+                if (artistDAO.checkIfArtistInDB(name)) {
+                    artistId = artistDAO.getArtistByName(name).getId();
+                    Artist artist = artistDAO.getItem(artistId);
+                    if(artist.getGenres().isEmpty()){
+                        for(Genre genre : artistGenres){
+                            artist.addGenre(genre);
+                        }
+                    }
+                    listOfArtistsInResponse.add(artist);
 
+                } else {
+                    artistId = artistDAO.getHighestId() + 1;
+                    Artist artist = new Artist(artistId, name, artistGenres, spotifyId);
+                    artistDAO.insertObjectInDB(artist);
+                    listOfArtistsInResponse.add(artist);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return listOfArtistsInResponse;
+    }
+
+    // Method to count the occurrences of each genre in the list of artists
+    public Map<Genre, Integer> getGenreCountFromResponse(ObservableList<Artist> artists) {
+        HashMap<Genre, Integer> genreCount = new HashMap<>();
+        for (Artist artist : artists) {
+            ObservableList<Genre> genres = (ObservableList<Genre>) artist.getGenres();
+            for (int i = 0; i < genres.size(); i++) {
+                Genre genre = genres.get(i);
+                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
+            }
+        }
+        // Print the genre count to console
+        System.out.println(genreCount);
+
+        // Sort and return the genre count map
+        Map<Genre, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
+        for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
+            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
+        }
+        return sortedGenreMap;
+    }
 }

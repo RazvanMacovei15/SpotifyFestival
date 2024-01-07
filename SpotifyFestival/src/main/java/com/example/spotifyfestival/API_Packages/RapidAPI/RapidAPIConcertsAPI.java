@@ -25,27 +25,33 @@ public class RapidAPIConcertsAPI {
     public String getXRapidAPIKey() {
         return XRapidAPIKey;
     }
+
     private int countNumberAttempts;
     private Date lastUpdatedDate;
     private final String filepath = "RapidAPICounter.txt";
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private RapidAPIConcertsAPI(){
+
+    private RapidAPIConcertsAPI() {
         countNumberAttempts = 0;
         lastUpdatedDate = new Date();
         checkIfFileExists();
     }
-    private RapidAPIConcertsAPI(int count, Date date){
+
+    private RapidAPIConcertsAPI(int count, Date date) {
         this.countNumberAttempts = count;
         this.lastUpdatedDate = date;
     }
+
     private static RapidAPIConcertsAPI instance;
-    public static RapidAPIConcertsAPI getInstance(){
-        if(instance==null){
+
+    public static RapidAPIConcertsAPI getInstance() {
+        if (instance == null) {
             instance = new RapidAPIConcertsAPI();
         }
         return instance;
     }
-    public void writeCountAndDateToFile(int n, Date date){
+
+    public void writeCountAndDateToFile(int n, Date date) {
         try {
             FileWriter fileWriter = new FileWriter(filepath);
             BufferedWriter bw = new BufferedWriter(fileWriter);
@@ -65,7 +71,8 @@ public class RapidAPIConcertsAPI {
             throw new RuntimeException(e);
         }
     }
-    private void updateFile(){
+
+    private void updateFile() {
         try {
             FileWriter fileWriter = new FileWriter(filepath);
             BufferedWriter bw = new BufferedWriter(fileWriter);
@@ -85,14 +92,16 @@ public class RapidAPIConcertsAPI {
             throw new RuntimeException(e);
         }
     }
-    public void checkIfFileExists(){
-        File file =  new File(filepath);
-        if(file.exists()){
+
+    public void checkIfFileExists() {
+        File file = new File(filepath);
+        if (file.exists()) {
             readFromFile();
-        }else{
+        } else {
             writeCountAndDateToFile(0, new Date());
         }
     }
+
     private void readFromFile() {
         try {
             BufferedReader br = new BufferedReader(new FileReader(filepath));
@@ -107,7 +116,8 @@ public class RapidAPIConcertsAPI {
         }
 
     }
-    private void incrementIntAndDate(){
+
+    private void incrementIntAndDate() {
         Date date = new Date();
 
         checkExecutionCondition(checkIf24hHavePassed(date));
@@ -117,30 +127,34 @@ public class RapidAPIConcertsAPI {
 
         writeCountAndDateToFile(n, date);
     }
+
     double formattedDiff;
-    private boolean checkIf24hHavePassed(Date date){
+
+    private boolean checkIf24hHavePassed(Date date) {
         //calc the diff
         long timeDiff = date.getTime() - lastUpdatedDate.getTime();
         //convert to hours
-        double diffInHours = (double) timeDiff/(1000*60*60);
+        double diffInHours = (double) timeDiff / (1000 * 60 * 60);
 
         DecimalFormat decimalFormat = new DecimalFormat("#.##");
         formattedDiff = Double.parseDouble(decimalFormat.format(diffInHours));
 
         return formattedDiff > 24.00;
     }
-    private void checkExecutionCondition(Boolean bool){
-        if(countNumberAttempts >= 10){
-            if(bool){
+
+    private void checkExecutionCondition(Boolean bool) {
+        if (countNumberAttempts >= 10) {
+            if (bool) {
                 countNumberAttempts = 0;
                 updateFile();
 
-            }else{
+            } else {
                 System.out.println("You have x amount of hours to wait!");
             }
         }
     }
-    public String URIBuilder(){
+
+    public String URIBuilder() {
 
         RapidAPIParameters parameters = list.get(0);
 
@@ -155,16 +169,17 @@ public class RapidAPIConcertsAPI {
         String encodedEnd = URLEncoder.encode(end);
         String encodedLocation = URLEncoder.encode(location);
 
-        return "https://concerts-artists-events-tracker.p.rapidapi.com/location?name="+ encodedLocation +
+        return "https://concerts-artists-events-tracker.p.rapidapi.com/location?name=" + encodedLocation +
                 "&minDate=" + encodedStart +
                 "&maxDate=" + encodedEnd +
                 "&page=1";
 
     }
-    public void getConcertsInYourArea(){
+
+    public void getConcertsInYourArea() {
         Date date = new Date();
 
-        if(checkIf24hHavePassed(date)){
+        if (checkIf24hHavePassed(date)) {
             System.out.println("More then 24h have passed! Rapid API counter is reset!");
 
             resetCounterAndDate(date);
@@ -174,7 +189,7 @@ public class RapidAPIConcertsAPI {
             writeCountAndDateToFile(countNumberAttempts, lastUpdatedDate);
 
             httpRequest();
-        }else if(countNumberAttempts < 10 && !checkIf24hHavePassed(date)){
+        } else if (countNumberAttempts < 10 && !checkIf24hHavePassed(date)) {
             countNumberAttempts++;
 
             lastUpdatedDate = date;
@@ -182,15 +197,17 @@ public class RapidAPIConcertsAPI {
             writeCountAndDateToFile(countNumberAttempts, lastUpdatedDate);
 
             httpRequest();
-        }else{
+        } else {
             System.out.println("You have to wait " + (24 - formattedDiff) + " more hours until you are able to reuse this API! Have a nice day!");
         }
     }
+
     private void resetCounterAndDate(Date date) {
         countNumberAttempts = 0;
         lastUpdatedDate = date;
     }
-    public String httpRequest(){
+
+    public String httpRequest() {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URIBuilder()))
                 .header("X-RapidAPI-Key", getXRapidAPIKey())
@@ -206,12 +223,14 @@ public class RapidAPIConcertsAPI {
         System.out.println(response.body());
         return response.body();
     }
+
     private ObservableList<RapidAPIParameters> list = FXCollections.observableArrayList();
+
     public void addParameters(RapidAPIParameters rapidAPIParameters) {
         list.add(0, rapidAPIParameters);
     }
 
-    public HttpResponse<String> handleIpInfoHttpResponse(){
+    public HttpResponse<String> handleIpInfoHttpResponse() {
 
         HttpResponse<String> response = null;
 
@@ -227,13 +246,13 @@ public class RapidAPIConcertsAPI {
             if (response.statusCode() != 200) {
                 System.err.println("HTTP Request failed with status code: " + response.statusCode());
             }
-        }catch (IOException | InterruptedException e){
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         return response;
     }
 
-    public HttpResponse<String> handleIPAPIHttpResponse(String ipAddress){
+    public HttpResponse<String> handleIPAPIHttpResponse(String ipAddress) {
 
         HttpResponse<String> response = null;
 
@@ -248,26 +267,26 @@ public class RapidAPIConcertsAPI {
             if (response.statusCode() != 200) {
                 System.err.println("HTTP Request failed with status code: " + response.statusCode());
             }
-        }catch (IOException | InterruptedException e){
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
         return response;
     }
 
-    public String getAttribute(HttpResponse<String> response, String attribute){
+    public String getAttribute(HttpResponse<String> response, String attribute) {
         String attributeToReturn = null;
         String jsonResponse = response.body().toString();
 
-        try{
+        try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
             attributeToReturn = jsonObject.getString(attribute);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return attributeToReturn;
     }
 
-    public String getPublicIPAddress(){
+    public String getPublicIPAddress() {
         try {
             // Make an HTTP request to a service that provides the public IP address
             URL url = new URL("https://api.ipify.org?format=text");
@@ -281,18 +300,18 @@ public class RapidAPIConcertsAPI {
     }
 
     private double userLongitude;
-
     private double userLatitude;
 
-    public void getCoordinates(String str){
-        String[] coordinates  = str.split(",");
-        if(coordinates.length == 2){
+    public void getCoordinates(String str) {
+        String[] coordinates = str.split(",");
+        if (coordinates.length == 2) {
             userLatitude = Double.parseDouble(coordinates[0]);
             userLongitude = Double.parseDouble(coordinates[1]);
-        }else{
+        } else {
             System.out.println("You parsed the wrong attribute!");
         }
     }
+
     public static void main(String[] args) {
         RapidAPIConcertsAPI rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
         HttpResponse<String> response = rapidAPIConcertsAPI.handleIpInfoHttpResponse();
@@ -305,8 +324,5 @@ public class RapidAPIConcertsAPI {
         rapidAPIConcertsAPI.getPublicIPAddress();
         System.out.println(rapidAPIConcertsAPI.handleIPAPIHttpResponse(rapidAPIConcertsAPI.getPublicIPAddress()).body());
         System.out.println(rapidAPIConcertsAPI.getAttribute(getInstance().handleIPAPIHttpResponse(rapidAPIConcertsAPI.getPublicIPAddress()), "city"));
-
-
-
     }
 }

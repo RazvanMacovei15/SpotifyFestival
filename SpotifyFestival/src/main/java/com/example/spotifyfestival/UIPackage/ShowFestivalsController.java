@@ -19,11 +19,15 @@ public class ShowFestivalsController {
     @FXML
     public GridPane mainGridPane;
 
-    public void onGenerateSuggestionList(ActionEvent actionEvent) throws IOException {
-        AppSwitchScenesMethods.switchSceneForCanvas(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas.fxml");
+    public void onGenerateSuggestionList(ActionEvent actionEvent) {
+        try {
+            AppSwitchScenesMethods.switchSceneForCanvas(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void onGetBackButtonClicked(ActionEvent event){
+    public void onGetBackButtonClicked(ActionEvent event) {
         try {
             AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException e) {
@@ -32,16 +36,16 @@ public class ShowFestivalsController {
     }
 
     @FXML
-    public void showAPIParametersDialog(){
+    public void showAPIParametersDialog() {
 
         Dialog<ButtonType> dialog = new Dialog<>();
         dialog.initOwner(mainGridPane.getScene().getWindow());
         dialog.setTitle("Search parameters: ");
         FXMLLoader loader = new FXMLLoader(App.class.getResource("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/chooseTheSearchParameters.fxml"));
 
-        try{
+        try {
             dialog.getDialogPane().setContent(loader.load());
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return;
         }
@@ -50,18 +54,15 @@ public class ShowFestivalsController {
         dialog.getDialogPane().getButtonTypes().add(ButtonType.CANCEL);
 
         Optional<ButtonType> result = dialog.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK){
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             RapidAPIDialogController controller = loader.getController();
             RapidAPIParameters parameters = controller.processSelection();
             RapidAPIConcertsAPI concertsRapidAPI = RapidAPIConcertsAPI.getInstance();
             concertsRapidAPI.addParameters(parameters);
             concertsRapidAPI.getConcertsInYourArea();
 
-        }else{
+        } else {
             System.out.println("Cancel Clicked");
         }
     }
-
-
-
 }

@@ -6,9 +6,102 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Pos?>
+<?import javafx.collections.FXCollections?>
+<?import org.controlsfx.control.CheckComboBox?>
+<GridPane xmlns="http://javafx.com/javafx"
+          xmlns:fx="http://javafx.com/fxml"
+          fx:controller="com.example.spotifyfestival.UIPackage.ShowFestivalsController"
+          alignment="CENTER">
 
-</AnchorPane>
+    <columnConstraints>
+        <ColumnConstraints percentWidth="70"/>
+        <ColumnConstraints percentWidth="30"/>
+    </columnConstraints>
+
+    <Canvas GridPane.columnIndex="0"
+            GridPane.rowIndex="0">
+
+    </Canvas>
+    <GridPane GridPane.rowIndex="0"
+              GridPane.columnIndex="1"
+              style="-fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 5px;"
+              minHeight="600">
+        <rowConstraints>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+            <RowConstraints percentHeight="5"/>
+        </rowConstraints>
+
+        <Label GridPane.columnIndex="0"
+               GridPane.rowIndex="0"
+               text="---Search parameters---"
+               fx:id="searchParametersLabel"
+               alignment="CENTER"
+               style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 18px" minWidth="300">
+        </Label>
+        <DatePicker fx:id="startDatePicker" promptText="choose a start Date" GridPane.rowIndex="1" minWidth="300"/>
+
+        <DatePicker fx:id="endDatePicker" promptText="choose a start Date" GridPane.rowIndex="2" minWidth="300"/>
+
+        <HBox GridPane.rowIndex="4" minWidth="300">
+            <Label text="Current Location: ">
+                <font>
+                    <Font name="Calibri" size="20"/>
+                </font>
+            </Label>
+            <Label fx:id="cityLabel" text="Unknown">
+                <font>
+                    <Font name="Calibri bold" size="20"/>
+                </font>
+            </Label>
+        </HBox>
+        <Button text="Get Location" GridPane.rowIndex="5"/>
+        <Label text="---Advanced Search Parameters---"
+               GridPane.rowIndex="7"
+               style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
+               minWidth="300" alignment="CENTER"/>
+        <CheckComboBox fx:id="genreComboBox" GridPane.rowIndex="8" minWidth="300" title="GENRES">
+            <String fx:value="Option 1"/>
+            <String fx:value="Option 2"/>
+            <String fx:value="Option 3"/>
+        </CheckComboBox>
+        <CheckComboBox fx:id="venueComboBox" GridPane.rowIndex="9" minWidth="300" title="VENUES">
+            <String fx:value="Option 1"/>
+            <String fx:value="Option 2"/>
+            <String fx:value="Option 3"/>
+        </CheckComboBox>
+
+        <VBox GridPane.rowIndex="11" minWidth="300">
+            <Label text="Radius: ">
+                <font>
+                    <Font name="Calibri" size="20"/>
+                </font>
+            </Label>
+            <TextField fx:id="radiusField" promptText="INSERT RADIUS IN KM">
+                <font>
+                    <Font name="Calibri bold" size="12"/>
+                </font>
+            </TextField>
+        </VBox>
+    </GridPane>
+</GridPane>
