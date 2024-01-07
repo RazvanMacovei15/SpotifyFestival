@@ -57,7 +57,6 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
             genreDAO = GenreDAO.getInstance();
             artistGenreDAO = ArtistGenreDAO.getInstance();
             initialize();
-
         }
         return instance;
     }
@@ -73,6 +72,33 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
 
     protected static GenreDAO genreDAO;
     protected static ArtistGenreDAO artistGenreDAO;
+
+    public Integer getHighestId(){
+        List<Integer> keys = instance.getListOfKeys();
+        Integer highestValue = keys.stream()
+                .max(Integer::compareTo)
+                .orElse(null);
+        return highestValue;
+    }
+
+    public boolean checkIfArtistInDB(String name){
+        Iterable<Artist> artists = instance.getAll();
+        for(Artist artist : artists){
+            if(artist.getName().equals(name))
+                return true;
+        }
+        return false;
+    }
+
+    public Artist getArtistByName(String name){
+        Iterable<Artist> artists = instance.getAll();
+        for(Artist artist : artists){
+            if(artist.getName().equals(name))
+                return artist;
+        }
+        return null;
+    }
+
 
     //DB related methods
     public void readAllObjectsFromTable() {
@@ -243,68 +269,71 @@ public class ArtistDAO extends DBGenericRepository<Integer, Artist> implements G
         ArtistDAO artistDAO = ArtistDAO.getInstance();
         artistDAO.readFromDBAndWriteToFile(filename);
         artistDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename);
+        System.out.println(artistDAO.getArtistByName("Dennis Lloyd").getGenres());
 
-        System.out.println();
-        String filename2 = "ArtistGenresTextRepo";
-        ArtistGenreDAO artistGenreDAO = ArtistGenreDAO.getInstance();
-        artistGenreDAO.readFromDBAndWriteToFile(filename2);
-        artistGenreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename2);
-
-        System.out.println();
-        String filename3 = "GenresTextRepo";
-        GenreDAO genreDAO = GenreDAO.getInstance();
-        genreDAO.readFromDBAndWriteToFile(filename3);
-        genreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename3);
-        System.out.println();
-        List<ArtistGenre> agList = new ArrayList<>();
-        Iterable<ArtistGenre> artistGenres = artistGenreDAO.getAll();
-        for(ArtistGenre ag : artistGenres){
-            agList.add(ag);
-        }
-
-        List<Artist> aList = new ArrayList<>();
-        Iterable<Artist> artists = artistDAO.getAll();
-        for(Artist a : artists){
-            aList.add(a);
-        }
-
-        ConcertDAO concertDAO = ConcertDAO.getInstance();
-        List<Concert> cList = new ArrayList<>();
-        Iterable<Concert> concerts = concertDAO.getAll();
-        for(Concert c : concerts){
-            cList.add(c);
-        }
-
-        // Example 1: Filtering entities based on a condition
-        List<ArtistGenre> strings = agList.stream()
-                .filter(ag -> ag.getArtist_id() == 1)
-                .collect(Collectors.toList());
-        System.out.println(strings);
-        System.out.println();
-        // Example 2: Mapping entities to a different type
-        List<String> entityNames = aList.stream()
-                .map(Artist::getName)
-                .collect(Collectors.toList());
-        System.out.println(entityNames);
-        System.out.println();
-        // Example 3: Checking if any entity meets a condition
-        boolean anyMatch = aList.stream()
-                .anyMatch(entity -> entity.getName().startsWith("M"));
-        System.out.println("Any entity starts with 'M': " + anyMatch);
-        System.out.println();
-        // Example 4: Counting entities based on a condition
-        long count = cList.stream()
-                .filter(concert -> concert.getStartOfTheConcert().equals("2023-07-25"))
-                .count();
-        System.out.println("Number of concerts on 2023-07-25: " + count);
-        System.out.println();
-        // Example 5: Grouping entities by a property
-        Map<String, List<Concert>> groupedByCategory = cList.stream()
-                .collect(Collectors.groupingBy(Concert::getTime));
-        groupedByCategory.forEach((category, entities) -> {
-            System.out.println("Category: " + category);
-            entities.forEach(System.out::println);
-        });
+//        System.out.println();
+//        String filename2 = "ArtistGenresTextRepo";
+//        ArtistGenreDAO artistGenreDAO = ArtistGenreDAO.getInstance();
+//        artistGenreDAO.readFromDBAndWriteToFile(filename2);
+//        artistGenreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename2);
+//
+//        System.out.println();
+//        String filename3 = "GenresTextRepo";
+//        GenreDAO genreDAO = GenreDAO.getInstance();
+//        genreDAO.readFromDBAndWriteToFile(filename3);
+//        genreDAO.readFromTXTFileJustToCheckIfItFuckingWorks(filename3);
+//        System.out.println();
+//        List<ArtistGenre> agList = new ArrayList<>();
+//        Iterable<ArtistGenre> artistGenres = artistGenreDAO.getAll();
+//        for(ArtistGenre ag : artistGenres){
+//            agList.add(ag);
+//        }
+//
+//        List<Artist> aList = new ArrayList<>();
+//        Iterable<Artist> artists = artistDAO.getAll();
+//        for(Artist a : artists){
+//            aList.add(a);
+//        }
+//
+//        ConcertDAO concertDAO = ConcertDAO.getInstance();
+//        List<Concert> cList = new ArrayList<>();
+//        Iterable<Concert> concerts = concertDAO.getAll();
+//        for(Concert c : concerts){
+//            cList.add(c);
+//        }
+//
+//        // Example 1: Filtering entities based on a condition
+//        List<ArtistGenre> strings = agList.stream()
+//                .filter(ag -> ag.getArtist_id() == 1)
+//                .collect(Collectors.toList());
+//        System.out.println(strings);
+//        System.out.println();
+//        // Example 2: Mapping entities to a different type
+//        List<String> entityNames = aList.stream()
+//                .map(Artist::getName)
+//                .collect(Collectors.toList());
+//        System.out.println(entityNames);
+//        System.out.println();
+//        // Example 3: Checking if any entity meets a condition
+//        boolean anyMatch = aList.stream()
+//                .anyMatch(entity -> entity.getName().startsWith("M"));
+//        System.out.println("Any entity starts with 'M': " + anyMatch);
+//        System.out.println();
+//        // Example 4: Counting entities based on a condition
+//        long count = cList.stream()
+//                .filter(concert -> concert.getStartOfTheConcert().equals("2023-07-25"))
+//                .count();
+//        System.out.println("Number of concerts on 2023-07-25: " + count);
+//        System.out.println();
+//        // Example 5: Grouping entities by a property
+//        Map<String, List<Concert>> groupedByCategory = cList.stream()
+//                .collect(Collectors.groupingBy(Concert::getTime));
+//        groupedByCategory.forEach((category, entities) -> {
+//            System.out.println("Category: " + category);
+//            entities.forEach(System.out::println);
+//        });
+//
+//        System.out.println(artistDAO.getHighestId());
 
 
 

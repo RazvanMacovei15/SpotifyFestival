@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -57,6 +58,33 @@ public class GenreDAO extends MemoryRepository<Integer, Genre> implements Generi
 
     public ObservableList<Genre> getGenresList() {
         return genreList;
+    }
+
+    public boolean checkIfGenreInDB(String name){
+        Iterable<Genre> genres = instance.getAll();
+        for(Genre genre : genres){
+            if (genre.getName().equals(name))
+                return true;
+            }
+        return false;
+    }
+
+    public Integer returnHighestID(){
+
+        List<Integer> keys = instance.getListOfKeys();
+        Integer highestValue = keys.stream()
+                .max(Integer::compareTo)
+                .orElse(null);
+        return highestValue;
+    }
+
+    public Genre getGenreByName(String name){
+        Iterable<Genre> genres = instance.getAll();
+        for(Genre genre : genres){
+            if(genre.getName().equals(name))
+                return genre;
+        }
+        return null;
     }
 
 
