@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
 <GridPane fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
 
@@ -61,15 +62,20 @@
             </Button>
         </HBox>
     </GridPane>
+    <GridPane GridPane.rowIndex="3">
+        <columnConstraints>
+            <ColumnConstraints percentWidth="80"/>
+            <ColumnConstraints percentWidth="20"/>
+        </columnConstraints>
 
-    <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
+        <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="CENTER">
 
-    </ListView>
+        </ListView>
 
-    <ListView fx:id="countListView" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.halignment="CENTER">
+        <ListView fx:id="countListView" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="CENTER">
 
-    </ListView>
-
+        </ListView>
+    </GridPane>
     <Button alignment="CENTER"
             GridPane.halignment="CENTER"
             GridPane.rowIndex="4"
