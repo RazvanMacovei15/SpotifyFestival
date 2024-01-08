@@ -2,8 +2,8 @@ package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
 import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AuthFlowObserver;
+import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.application.Platform;
 import org.json.JSONObject;
 import spark.Spark;

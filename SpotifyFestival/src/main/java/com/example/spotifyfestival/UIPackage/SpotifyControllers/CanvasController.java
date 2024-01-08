@@ -2,9 +2,15 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserLocation;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,6 +26,8 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.Date;
 import org.controlsfx.control.CheckComboBox;
+
+import java.util.List;
 import java.util.Map;
 
 import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopArtistsController.getUserTopArtistsOver4Weeks;
@@ -80,6 +88,8 @@ public class CanvasController {
             String name = genre.getName();
             genreNames.add(name);
         }
+        System.out.println(genreNames);
+        genreComboBox.getItems().setAll(genreNames);
         return genreNames;
     }
 
@@ -89,6 +99,14 @@ public class CanvasController {
         Map<Genre, Integer> genreCount = retrieveGenreCount();
         System.out.println(genreCount);
         System.out.println(genres);
+
+        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+        HttpResponse<String> response = SpotifyService.getArtistByName("Metallica", auth.getAccessToken());
+        String json = response.body().toString();
+        System.out.println(json);
+        Artist artist = SpotifyService.createArtistFromSearchResult(json);
+        System.out.println(artist.getId());
+        System.out.println(artist);
     }
 
     public void onBackButtonClicked(ActionEvent e){
@@ -122,4 +140,7 @@ public class CanvasController {
         api.addParameters(parameters);
         api.getConcertsInYourArea();
     }
+
+
+
 }

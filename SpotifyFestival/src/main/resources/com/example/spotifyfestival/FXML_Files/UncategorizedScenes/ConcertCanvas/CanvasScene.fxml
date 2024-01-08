@@ -79,7 +79,7 @@
         </HBox>
         <Button fx:id="getLocation" text="Get Location" GridPane.rowIndex="5" onAction="#onGetLocationButtonClicked"/>
         <Button fx:id="showConcertsInArea"
-                text="THIS IS THE WAY"
+                text="SHOW CONCERTS IN MY AREA"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
                 GridPane.rowIndex="6"
                 minWidth="300"
@@ -91,14 +91,10 @@
                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
                minWidth="300" alignment="CENTER"/>
         <CheckComboBox fx:id="genreComboBox" GridPane.rowIndex="9" minWidth="300" title="GENRES">
-            <String fx:value="Option 1"/>
-            <String fx:value="Option 2"/>
-            <String fx:value="Option 3"/>
+
         </CheckComboBox>
         <CheckComboBox fx:id="venueComboBox" GridPane.rowIndex="10" minWidth="300" title="VENUES">
-            <String fx:value="Option 1"/>
-            <String fx:value="Option 2"/>
-            <String fx:value="Option 3"/>
+
         </CheckComboBox>
 
         <VBox GridPane.rowIndex="12" minWidth="300">
@@ -116,7 +112,7 @@
 
         <Button fx:id="generateSuggestions"
                 GridPane.rowIndex="18"
-                text="GENERATE SUGGESTIONS"
+                text="THIS IS THE WAY"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
                 minWidth="300"
                 onAction="#onGenerateSuggestionsButtonClicked"/>

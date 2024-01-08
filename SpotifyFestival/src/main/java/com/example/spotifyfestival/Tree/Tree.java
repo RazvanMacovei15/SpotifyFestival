@@ -3,7 +3,7 @@ package com.example.spotifyfestival.Tree;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Identifiable;
 import javafx.collections.ObservableList;
 
-public abstract class Tree<T extends Identifiable> {
+public class Tree<T extends Identifiable> {
     private final TreeNode<T> root;
 
     public Tree(T data) {
@@ -37,12 +37,4 @@ public abstract class Tree<T extends Identifiable> {
             printTreeRecursive(child, depth + 1);
         }
     }
-
-    public abstract ObservableList<T> getConcertsAtVenue(T venue);
-
-    public abstract void drawLocationPin(T item);
-
-    public abstract void drawVenuePin(T item);
-
-    public abstract void drawConcertPin(T item);
 }

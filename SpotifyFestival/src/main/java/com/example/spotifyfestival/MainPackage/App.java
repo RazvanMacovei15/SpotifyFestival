@@ -34,8 +34,8 @@ public class App extends Application {
     @Override
     public void init() {
         SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
-        AccessTokenObserver accessTokenObserver = new AccessTokenObserver();
-        authFlowService.addObserver(accessTokenObserver);
+//        AccessTokenObserver accessTokenObserver = new AccessTokenObserver();
+//        authFlowService.addObserver(accessTokenObserver);
         authFlowService.run();
     }
 

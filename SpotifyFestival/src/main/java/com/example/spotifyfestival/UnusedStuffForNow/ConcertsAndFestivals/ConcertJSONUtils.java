@@ -2,6 +2,7 @@ package com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
 
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
@@ -92,6 +93,8 @@ public class ConcertJSONUtils extends Tree<Entity> {
                     JSONObject performerObject = performers.getJSONObject(j);
 
                     String artistName = performerObject.getString("name");
+                    SpotifyService service = new SpotifyService();
+                    String name = service.getArtistByName(artistName);
                     Artist artist = new Artist(artistName);
                     artistList.add(artist);
                 }
@@ -133,7 +136,7 @@ public class ConcertJSONUtils extends Tree<Entity> {
                 if (!address.has("streetAddress")) {
                     streetAddress = "Exact street address unknown!";
                 } else {
-                    if(address.get("streetAddress").equals(null)){
+                    if(address.get("streetAddress") == null){
                         streetAddress = "Exact street address unknown!";
                     }else{
                         streetAddress = address.getString("streetAddress");
