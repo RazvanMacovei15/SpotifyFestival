@@ -6,9 +6,6 @@ import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowServic
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserLocation;
-import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
-import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +13,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.*;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -35,6 +33,8 @@ public class CanvasController {
     Canvas canvas;
     @FXML
     GridPane mainGridPane;
+    @FXML
+    BorderPane canvasBorderPane;
     @FXML
     Label searchParametersLabel;
     @FXML
@@ -85,25 +85,27 @@ public class CanvasController {
             String name = genre.getName();
             genreNames.add(name);
         }
-        System.out.println(genreNames);
-        genreComboBox.getItems().setAll(genreNames);
+//        System.out.println(genreNames);
+
         return genreNames;
     }
 
     public void initialize() {
         //retrieve user genre history
         ObservableList<String> genres = retrieveUserGenreHistory();
+        genreComboBox.getItems().setAll(genres);
+
         Map<Genre, Integer> genreCount = retrieveGenreCount();
-        System.out.println(genreCount);
-        System.out.println(genres);
+//        System.out.println(genreCount);
+//        System.out.println(genres);
 
-        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
-        String responseJson = SpotifyService.getArtistByNameHttpResponse("Metallica", auth.getAccessToken());
+//        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+//        String responseJson = SpotifyService.getArtistByNameHttpResponse("Metallica", auth.getAccessToken());
 
-        System.out.println(responseJson);
-        Artist artist = SpotifyService.createArtistFromSearchResult(responseJson, 900);
-        System.out.println(artist.getId());
-        System.out.println(artist);
+//        System.out.println(responseJson);
+//        Artist artist = SpotifyService.createArtistFromSearchResult(responseJson, 900);
+//        System.out.println(artist.getId());
+//        System.out.println(artist);
 
     }
 
@@ -134,7 +136,6 @@ public class CanvasController {
         double canvasH = 600;
         double userLocationRadius = 10;
 
-
         canvas.setHeight(canvasH);
         canvas.setWidth(canvasW);
 
@@ -147,7 +148,7 @@ public class CanvasController {
         userLocationCircle.setCenterY(y);
         userLocationCircle.setFill(Color.BLUE);
 
-        mainGridPane.getChildren().add(userLocationCircle);
+        canvasBorderPane.getChildren().add(userLocationCircle);
 
     }
 

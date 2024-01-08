@@ -1,9 +1,10 @@
 package com.example.spotifyfestival.Tree;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Identifiable;
 import javafx.collections.ObservableList;
 
-public class Tree<T extends Identifiable> {
+public class Tree<T extends Entity> {
     private final TreeNode<T> root;
 
     public Tree(T data) {
@@ -26,7 +27,7 @@ public class Tree<T extends Identifiable> {
         // Print the node's data with an indent based on the depth
         StringBuilder indent = new StringBuilder();
         for (int i = 0; i < depth; i++) {
-            indent.append("  "); // Two spaces per depth level
+            indent.append("    "); // Two spaces per depth level
         }
 
         T concert = node.getData(); // Get the Concert object

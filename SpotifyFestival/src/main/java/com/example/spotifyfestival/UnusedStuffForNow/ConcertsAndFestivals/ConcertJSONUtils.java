@@ -10,6 +10,7 @@ import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.VenueDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.Tree;
+import com.example.spotifyfestival.Tree.TreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
@@ -48,19 +49,23 @@ public class ConcertJSONUtils {
 
         return "Unknown format";
     }
+
     public static Date parseDateTime(String dateTimeStr) throws ParseException {
         SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
         return iso8601Format.parse(dateTimeStr);
     }
+
     public static String formatDate(Date date) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
         return dateFormatter.format(date);
     }
+
     public static String formatTime(Date date) {
         SimpleDateFormat timeFormatter = new SimpleDateFormat("HH:mm:ss");
         return timeFormatter.format(date);
     }
-    public ObservableList<Concert> extractConcerts(String jsonResponse) {
+
+    public static ObservableList<Concert> extractConcerts(String jsonResponse) {
 
         ObservableList<Concert> concertList = FXCollections.observableArrayList();
 
@@ -84,15 +89,15 @@ public class ConcertJSONUtils {
                     JSONObject performerObject = performers.getJSONObject(j);
 
                     String artistName = performerObject.getString("name");
-                    System.out.println(artistName);
+//                    System.out.println(artistName);
 
                     SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
                     String token = auth.getAccessToken();
 
                     String json = SpotifyService.getArtistByNameHttpResponse(artistName, token);
-                    System.out.println(json);
+//                    System.out.println(json);
 
-                    Artist artist = SpotifyService.createArtistFromSearchResult(json, 0);;
+                    Artist artist = SpotifyService.createArtistFromSearchResult(json, 0);
 
                     artistList.add(artist);
                 }
@@ -133,7 +138,7 @@ public class ConcertJSONUtils {
 
                 if (addressObject != null) {
                     streetAddress = addressObject.optString("streetAddress", "N/A");
-                    System.out.println("Event " + (i + 1) + " Street Address: " + streetAddress);
+//                    System.out.println("Event " + (i + 1) + " Street Address: " + streetAddress);
                 }
 
                 String venueName = location.getString("name");
@@ -165,7 +170,7 @@ public class ConcertJSONUtils {
                             existingVenue = venueToCheck;
 
                             ConcertDAO concertDAO = ConcertDAO.getInstance();
-                            int id = concertDAO.getHighestId() +1;
+                            int id = concertDAO.getHighestId() + 1;
                             FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
                             int stageID = festivalStageDAO.getHighestId() + 1;
                             FestivalStage stage = new FestivalStage(stageID);
@@ -185,7 +190,7 @@ public class ConcertJSONUtils {
                     listOfVenues.add(venue);
 
                     ConcertDAO concertDAO = ConcertDAO.getInstance();
-                    int id = concertDAO.getHighestId() +1;
+                    int id = concertDAO.getHighestId() + 1;
                     FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
                     int stageID = festivalStageDAO.getHighestId() + 1;
                     FestivalStage stage = new FestivalStage(stageID);
@@ -201,9 +206,48 @@ public class ConcertJSONUtils {
         return concertList;
     }
 
-    public ObservableList<Entity> getConcertsAtVenue(Entity venue) {
+    public static void createTree() {
+
+        ConcertJSONUtils utils = new ConcertJSONUtils();
+        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
+        for(Concert concert : concerts){
+            System.out.println(concert.getDescription());
+            System.out.println(concert.getVenue());
+            System.out.println(concert.getListOfArtists());
+            System.out.println(concert.getTime());
+            System.out.println(concert.getStartOfTheConcert());
+            System.out.println();
+        }
+
+        UserLocation userLocation = new UserLocation(0);
+//        System.out.println(userLocation.getLatitude());
+
+        Tree<Entity> concertTree = new Tree<>(userLocation);
+        TreeNode<Entity> root = concertTree.getRoot();
+
+        ObservableList<Venue> venues = createListOfALlVenues(concerts);
+
+        ObservableList<Entity> entityVenues = FXCollections.observableArrayList();
+        entityVenues.addAll(venues);
+
+        for (Entity entity : entityVenues) {
+
+            TreeNode<Entity> rootChild = new TreeNode<>(entity);
+            root.addChild(rootChild);
+
+            ObservableList<Entity> concertsAtEntityVenue = getConcertsAtVenue(entity);
+
+            for (Entity concertEntity : concertsAtEntityVenue) {
+                TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
+                rootChild.addChild(venueChild);
+            }
+        }
+        concertTree.printTree(concertTree);
+    }
+
+    public static ObservableList<Entity> getConcertsAtVenue(Entity venue) {
         //retrieve data from JSON
-        ObservableList<Concert> allConcerts = extractConcerts(JSONConstant.getConstant());
+        ObservableList<Concert> allConcerts = extractConcerts(JSONConstant.getJsonData());
         //list to store concerts as entities;
         ObservableList<Entity> allEntityConcerts = FXCollections.observableArrayList();
         //list that will store the venue concerts
@@ -211,20 +255,20 @@ public class ConcertJSONUtils {
 
         allEntityConcerts.addAll(allConcerts);
 
-        if(venue instanceof Venue venueToCheck){
+        if (venue instanceof Venue venueToCheck) {
 
-            for(Entity concertEntity : allEntityConcerts){
+            for (Entity concertEntity : allEntityConcerts) {
 
-                if(concertEntity instanceof Concert concertToCheck){
+                if (concertEntity instanceof Concert concertToCheck) {
 
-                    if(venueToCheck.getVenueName().equals(concertToCheck.getVenue().getVenueName())){
+                    if (venueToCheck.getVenueName().equals(concertToCheck.getVenue().getVenueName())) {
                         allVenueConcerts.add(concertEntity);
                     }
                 }
             }
             List<Concert> concertsAtVenueToCheck = new ArrayList<>();
-            for(Entity entity : allVenueConcerts){
-                if(entity instanceof Concert){
+            for (Entity entity : allVenueConcerts) {
+                if (entity instanceof Concert) {
                     Concert concert = (Concert) entity;
                     concertsAtVenueToCheck.add(concert);
                 }
@@ -234,26 +278,28 @@ public class ConcertJSONUtils {
         }
         return allVenueConcerts;
     }
-    public ObservableList<Concert> createListOfConcertsForEveryVenue(Venue venue){
+
+    public ObservableList<Concert> createListOfConcertsForEveryVenue(Venue venue) {
         ObservableList<Concert> allConcerts = FXCollections.observableArrayList();
         allConcerts = extractConcerts(JSONConstant.getConstant());
         ObservableList<Concert> venueConcerts = FXCollections.observableArrayList();
 
-        for(Concert concert : allConcerts){
-            if(venue.getVenueName().equals(concert.getVenue().getVenueName())){
+        for (Concert concert : allConcerts) {
+            if (venue.getVenueName().equals(concert.getVenue().getVenueName())) {
                 venueConcerts.add(concert);
             }
         }
         venue.setListOfAllConcertsAtThatVenue(venueConcerts);
         return venueConcerts;
     }
-    public ObservableList<Venue> createListOfALlVenues(ObservableList<Concert> list){
-        ObservableList<Venue> listOfVenues =FXCollections.observableArrayList();
+
+    public static ObservableList<Venue> createListOfALlVenues(ObservableList<Concert> list) {
+        ObservableList<Venue> listOfVenues = FXCollections.observableArrayList();
         String city = null;
         String streetAddress = null;
         String venueLatitude = null;
         String venueLongitude = null;
-        for(int i = 0; i< list.size(); i++){
+        for (int i = 0; i < list.size(); i++) {
 
             city = list.get(i).getVenue().getCity();
             String venueName = list.get(i).getVenue().getVenueName();
@@ -288,10 +334,11 @@ public class ConcertJSONUtils {
 //        ConcertJSONUtils concertJSONUtils = new ConcertJSONUtils(userLoc);
 //        ObservableList<Concert> concertsE = concertJSONUtils.extractConcerts(json);
 //        System.out.println(concertsE.size());
-        ConcertJSONUtils utils = new ConcertJSONUtils();
-        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
-        for(Concert concert : concerts){
-            System.out.println(concert.getDescription());
-        }
+        //      ConcertJSONUtils utils = new ConcertJSONUtils();
+//        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
+//        for(Concert concert : concerts){
+//            System.out.println(concert.getDescription());
+//        }
+        createTree();
     }
 }

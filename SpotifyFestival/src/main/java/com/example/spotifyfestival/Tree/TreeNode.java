@@ -1,11 +1,13 @@
 package com.example.spotifyfestival.Tree;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class TreeNode<T> {
-    private T data;
-    private List<TreeNode<T>> children;
+public class TreeNode<T extends Entity> {
+    protected T data;
+    protected List<TreeNode<T>> children;
 
     public TreeNode(T data) {
         this.data = data;

@@ -22,11 +22,16 @@
         <ColumnConstraints percentWidth="30"/>
     </columnConstraints>
 
-    <Canvas GridPane.columnIndex="0"
-            GridPane.rowIndex="0"
-            fx:id="canvas">
+    <BorderPane fx:id="canvasBorderPane"
+                GridPane.rowIndex="0"
+                GridPane.columnIndex="0">
+        <center>
+            <Canvas fx:id="canvas" >
 
-    </Canvas>
+            </Canvas>
+        </center>
+
+    </BorderPane>
     <GridPane GridPane.rowIndex="0"
               GridPane.columnIndex="1"
               minHeight="600">
