@@ -12,6 +12,10 @@ public class FestivalStage extends Entity {
         this.venue = venue;
     }
 
+    public FestivalStage(int id) {
+        super(id);
+    }
+
     protected int venueId;
 
     public int getVenueId() {

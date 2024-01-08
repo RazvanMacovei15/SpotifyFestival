@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +78,13 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
         }
     }
 
+    public Integer getHighestId(){
+        List<Integer> keys = instance.getListOfKeys();
+        Integer highestValue = keys.stream()
+                .max(Integer::compareTo)
+                .orElse(null);
+        return highestValue;
+    }
     @Override
     public Optional<Venue> getItemByID(int id) {
         Iterable<Venue> venues = super.getAll();

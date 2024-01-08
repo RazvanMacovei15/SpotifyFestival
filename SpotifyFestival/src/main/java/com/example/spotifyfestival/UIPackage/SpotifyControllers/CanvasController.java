@@ -5,32 +5,29 @@ import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserLocation;
+import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
+import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.*;
 import javafx.scene.control.*;
-import javafx.scene.control.Control;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
-import java.util.Date;
+
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import org.controlsfx.control.CheckComboBox;
 
-import java.util.List;
 import java.util.Map;
 
-import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopArtistsController.getUserTopArtistsOver4Weeks;
 import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController.getUserTopArtists;
 
 public class CanvasController {
@@ -62,7 +59,7 @@ public class CanvasController {
     Button showConcertsInArea;
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
 
-    private Map<Genre, Integer> retrieveGenreCount(){
+    private Map<Genre, Integer> retrieveGenreCount() {
         TopGenresController controller = new TopGenresController();
         HttpResponse<String> response = getUserTopArtists();
         String jsonResponse = response.body().toString();
@@ -71,7 +68,7 @@ public class CanvasController {
         return genreCount;
     }
 
-    public ObservableList<String> retrieveUserGenreHistory(){
+    public ObservableList<String> retrieveUserGenreHistory() {
         Map<Genre, Integer> genreCount = retrieveGenreCount();
 
         ObservableList<Genre> genres = FXCollections.observableArrayList();
@@ -93,7 +90,7 @@ public class CanvasController {
         return genreNames;
     }
 
-    public void initialize(){
+    public void initialize() {
         //retrieve user genre history
         ObservableList<String> genres = retrieveUserGenreHistory();
         Map<Genre, Integer> genreCount = retrieveGenreCount();
@@ -101,15 +98,16 @@ public class CanvasController {
         System.out.println(genres);
 
         SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
-        HttpResponse<String> response = SpotifyService.getArtistByName("Metallica", auth.getAccessToken());
-        String json = response.body().toString();
-        System.out.println(json);
-        Artist artist = SpotifyService.createArtistFromSearchResult(json);
+        String responseJson = SpotifyService.getArtistByNameHttpResponse("Metallica", auth.getAccessToken());
+
+        System.out.println(responseJson);
+        Artist artist = SpotifyService.createArtistFromSearchResult(responseJson, 900);
         System.out.println(artist.getId());
         System.out.println(artist);
+
     }
 
-    public void onBackButtonClicked(ActionEvent e){
+    public void onBackButtonClicked(ActionEvent e) {
         try {
             AppSwitchScenesMethods.switchScene(e, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException event) {
@@ -117,7 +115,7 @@ public class CanvasController {
         }
     }
 
-    public RapidAPIParameters processSelection(){
+    public RapidAPIParameters processSelection() {
         LocalDate startDateArea = startDatePicker.getValue();
         LocalDate endDateArea = endDatePicker.getValue();
         String cityArea = cityLabel.getText().trim();
@@ -127,20 +125,41 @@ public class CanvasController {
         return rapidAPIParameters;
     }
 
-    public void onGenerateSuggestionsButtonClicked(){
+    public void onGenerateSuggestionsButtonClicked() {
         System.out.println("WIP!!!");
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        double canvasW = 700;
+        double canvasH = 600;
+        double userLocationRadius = 10;
+
+
+        canvas.setHeight(canvasH);
+        canvas.setWidth(canvasW);
+
+        double x = canvas.getWidth() / 2;
+        double y = canvas.getHeight() / 2;
+
+        Circle userLocationCircle = new Circle();
+        userLocationCircle.setRadius(userLocationRadius);
+        userLocationCircle.setCenterX(x);
+        userLocationCircle.setCenterY(y);
+        userLocationCircle.setFill(Color.BLUE);
+
+        mainGridPane.getChildren().add(userLocationCircle);
+
     }
-    public void onGetLocationButtonClicked(){
+
+    public void onGetLocationButtonClicked() {
         rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
         cityLabel.setText(rapidAPIConcertsAPI.getAttribute(rapidAPIConcertsAPI.handleIpInfoHttpResponse(), "city"));
     }
-    public void onShowConcertsButtonClicked(){
+
+    public void onShowConcertsButtonClicked() {
         RapidAPIParameters parameters = processSelection();
         RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
         api.addParameters(parameters);
         api.getConcertsInYourArea();
     }
-
-
-
 }

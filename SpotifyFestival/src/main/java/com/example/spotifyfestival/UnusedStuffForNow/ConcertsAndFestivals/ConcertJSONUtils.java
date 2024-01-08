@@ -2,41 +2,32 @@ package com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
 
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
+import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.VenueDAO;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.Tree;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class ConcertJSONUtils extends Tree<Entity> {
+public class ConcertJSONUtils {
 
-    public ConcertJSONUtils(Entity data) {
-        super(data);
-    }
-
-    @Override
-    public void drawLocationPin(Entity userLocation) {
+    public ConcertJSONUtils() {
 
     }
-    @Override
-    public void drawVenuePin(Entity venue) {
 
-    }
-    @Override
-    public void drawConcertPin(Entity concert) {
-
-    }
     public static String detectDateTimeFormat(String dateTimeStr) {
         String[] dateFormats = {
                 "yyyy-MM-dd'T'HH:mm:ssZ",
@@ -93,9 +84,16 @@ public class ConcertJSONUtils extends Tree<Entity> {
                     JSONObject performerObject = performers.getJSONObject(j);
 
                     String artistName = performerObject.getString("name");
-                    SpotifyService service = new SpotifyService();
-                    String name = service.getArtistByName(artistName);
-                    Artist artist = new Artist(artistName);
+                    System.out.println(artistName);
+
+                    SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+                    String token = auth.getAccessToken();
+
+                    String json = SpotifyService.getArtistByNameHttpResponse(artistName, token);
+                    System.out.println(json);
+
+                    Artist artist = SpotifyService.createArtistFromSearchResult(json, 0);;
+
                     artistList.add(artist);
                 }
 
@@ -130,17 +128,12 @@ public class ConcertJSONUtils extends Tree<Entity> {
                 JSONObject address = location.getJSONObject("address");
 
                 String city = address.getString("addressLocality");
-
                 String streetAddress = null;
+                JSONObject addressObject = location.optJSONObject("address");
 
-                if (!address.has("streetAddress")) {
-                    streetAddress = "Exact street address unknown!";
-                } else {
-                    if(address.get("streetAddress") == null){
-                        streetAddress = "Exact street address unknown!";
-                    }else{
-                        streetAddress = address.getString("streetAddress");
-                    }
+                if (addressObject != null) {
+                    streetAddress = addressObject.optString("streetAddress", "N/A");
+                    System.out.println("Event " + (i + 1) + " Street Address: " + streetAddress);
                 }
 
                 String venueName = location.getString("name");
@@ -170,7 +163,14 @@ public class ConcertJSONUtils extends Tree<Entity> {
                         if (venueToCheck.getVenueName().equals(venueName)) {
                             // You found a venue with the matching name
                             existingVenue = venueToCheck;
-                            Concert concert = new Concert(concertDescription, artistList, existingVenue, startDate, time);
+
+                            ConcertDAO concertDAO = ConcertDAO.getInstance();
+                            int id = concertDAO.getHighestId() +1;
+                            FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
+                            int stageID = festivalStageDAO.getHighestId() + 1;
+                            FestivalStage stage = new FestivalStage(stageID);
+
+                            Concert concert = new Concert(id, concertDescription, artistList, existingVenue, startDate, time, stage);
                             concertList.add(concert);
                             // You can now work with the existingVenue as needed
                             break;
@@ -178,9 +178,20 @@ public class ConcertJSONUtils extends Tree<Entity> {
                     }
                 } else {
                     // Create a new Venue and add it to the list
-                    venue = new Venue(city, venueName, streetAddress, venueLatitude, venueLongitude);
+                    VenueDAO venueDAO = VenueDAO.getInstance();
+                    int venueID = venueDAO.getHighestId() + 1;
+
+                    venue = new Venue(venueID, city, venueName, streetAddress, venueLatitude, venueLongitude);
                     listOfVenues.add(venue);
-                    Concert concert = new Concert(concertDescription, artistList, venue, startDate, time);
+
+                    ConcertDAO concertDAO = ConcertDAO.getInstance();
+                    int id = concertDAO.getHighestId() +1;
+                    FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
+                    int stageID = festivalStageDAO.getHighestId() + 1;
+                    FestivalStage stage = new FestivalStage(stageID);
+
+                    Concert concert = new Concert(id, concertDescription, artistList, existingVenue, startDate, time, stage);
+                    concert.setVenue(venue);
                     concertList.add(concert);
                 }
             }
@@ -189,7 +200,7 @@ public class ConcertJSONUtils extends Tree<Entity> {
         }
         return concertList;
     }
-    @Override
+
     public ObservableList<Entity> getConcertsAtVenue(Entity venue) {
         //retrieve data from JSON
         ObservableList<Concert> allConcerts = extractConcerts(JSONConstant.getConstant());
@@ -267,15 +278,20 @@ public class ConcertJSONUtils extends Tree<Entity> {
     }
 
     public static void main(String[] args) {
-        RapidAPIConcertsAPI rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
-        LocalDate future = LocalDate.now().plusDays(20);
-        RapidAPIParameters parameters = new RapidAPIParameters(LocalDate.now(),future,"Cluj-Napoca");
-        rapidAPIConcertsAPI.addParameters(parameters);
-        rapidAPIConcertsAPI.getConcertsInYourArea();
-        String json = rapidAPIConcertsAPI.httpRequest();
+//        RapidAPIConcertsAPI rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
+//        LocalDate future = LocalDate.now().plusDays(20);
+//        RapidAPIParameters parameters = new RapidAPIParameters(LocalDate.now(),future,"Cluj-Napoca");
+//        rapidAPIConcertsAPI.addParameters(parameters);
+//        rapidAPIConcertsAPI.getConcertsInYourArea();
+//        String json = rapidAPIConcertsAPI.httpRequest();
 //        Entity userLoc = new Entity();
 //        ConcertJSONUtils concertJSONUtils = new ConcertJSONUtils(userLoc);
 //        ObservableList<Concert> concertsE = concertJSONUtils.extractConcerts(json);
 //        System.out.println(concertsE.size());
+        ConcertJSONUtils utils = new ConcertJSONUtils();
+        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
+        for(Concert concert : concerts){
+            System.out.println(concert.getDescription());
+        }
     }
 }

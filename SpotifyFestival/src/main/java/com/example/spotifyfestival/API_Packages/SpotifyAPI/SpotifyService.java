@@ -75,7 +75,7 @@ public class SpotifyService {
         return response;
     }
 
-    public static HttpResponse<String> getArtistByName(String name, String accessToken){
+    public static String getArtistByNameHttpResponse(String name, String accessToken){
         String API_URL = SearchAPI.searchForArtist(name);
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -89,10 +89,11 @@ public class SpotifyService {
         }catch (IOException | InterruptedException e){
             throw new RuntimeException(e);
         }
-        return response;
+
+        return response.body().toString();
     }
 
-    public static Artist createArtistFromSearchResult(String json){
+    public static Artist createArtistFromSearchResult(String json, int id){
         // Create an empty ObservableList to store the attribute values
         ObservableList<String> attributeValues = FXCollections.observableArrayList();
         String name = null;
@@ -114,6 +115,6 @@ public class SpotifyService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new Artist(900, name, spotifyID);
+        return new Artist(id, name, spotifyID);
     }
 }

@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,6 +67,13 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
         }
         return instance;
+    }
+    public Integer getHighestId(){
+        List<Integer> keys = instance.getListOfKeys();
+        Integer highestValue = keys.stream()
+                .max(Integer::compareTo)
+                .orElse(null);
+        return highestValue;
     }
 
     public static void initialize(){
