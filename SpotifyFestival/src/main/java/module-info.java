@@ -10,6 +10,7 @@ module com.example.spotifyfestival {
     requires spark.core;
     requires java.desktop;
     requires junit;
+    requires org.controlsfx.controls;
 
     exports com.example.spotifyfestival.API_Packages.API_URLS;
     opens com.example.spotifyfestival.API_Packages.API_URLS to javafx.fxml;

@@ -1,5 +1,7 @@
-package com.example.spotifyfestival.API_Packages.RapidAPI;
+package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
+import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
+import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;

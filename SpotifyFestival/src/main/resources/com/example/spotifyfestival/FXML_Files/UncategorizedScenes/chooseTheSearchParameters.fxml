@@ -5,7 +5,7 @@
 <?import javafx.scene.text.Font?>
 <DialogPane
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIDialogController"
+      fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.RapidAPIDialogController"
       minHeight="400" minWidth="400">
     <content>
         <GridPane alignment="CENTER" vgap="10" hgap="10">

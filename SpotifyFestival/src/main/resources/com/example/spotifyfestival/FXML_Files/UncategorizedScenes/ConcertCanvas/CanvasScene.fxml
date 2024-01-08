@@ -13,8 +13,9 @@
 <?import org.controlsfx.control.CheckComboBox?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.example.spotifyfestival.UIPackage.ShowFestivalsController"
-          alignment="CENTER">
+          fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.CanvasController"
+          alignment="CENTER"
+          fx:id="mainGridPane">
 
     <columnConstraints>
         <ColumnConstraints percentWidth="70"/>
@@ -22,12 +23,12 @@
     </columnConstraints>
 
     <Canvas GridPane.columnIndex="0"
-            GridPane.rowIndex="0">
+            GridPane.rowIndex="0"
+            fx:id="canvas">
 
     </Canvas>
     <GridPane GridPane.rowIndex="0"
               GridPane.columnIndex="1"
-              style="-fx-border-color: black; -fx-border-width: 2px; -fx-border-radius: 5px;"
               minHeight="600">
         <rowConstraints>
             <RowConstraints percentHeight="5"/>
@@ -57,7 +58,8 @@
                text="---Search parameters---"
                fx:id="searchParametersLabel"
                alignment="CENTER"
-               style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 18px" minWidth="300">
+               style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 18px"
+               minWidth="300">
         </Label>
         <DatePicker fx:id="startDatePicker" promptText="choose a start Date" GridPane.rowIndex="1" minWidth="300"/>
 
@@ -75,23 +77,31 @@
                 </font>
             </Label>
         </HBox>
-        <Button text="Get Location" GridPane.rowIndex="5"/>
-        <Label text="---Advanced Search Parameters---"
-               GridPane.rowIndex="7"
+        <Button fx:id="getLocation" text="Get Location" GridPane.rowIndex="5" onAction="#onGetLocationButtonClicked"/>
+        <Button fx:id="showConcertsInArea"
+                text="THIS IS THE WAY"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
+                GridPane.rowIndex="6"
+                minWidth="300"
+                onAction="#onShowConcertsButtonClicked">
+
+        </Button>
+        <Label text="---Advanced Search Parameters(WIP)---"
+               GridPane.rowIndex="8"
                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
                minWidth="300" alignment="CENTER"/>
-        <CheckComboBox fx:id="genreComboBox" GridPane.rowIndex="8" minWidth="300" title="GENRES">
+        <CheckComboBox fx:id="genreComboBox" GridPane.rowIndex="9" minWidth="300" title="GENRES">
             <String fx:value="Option 1"/>
             <String fx:value="Option 2"/>
             <String fx:value="Option 3"/>
         </CheckComboBox>
-        <CheckComboBox fx:id="venueComboBox" GridPane.rowIndex="9" minWidth="300" title="VENUES">
+        <CheckComboBox fx:id="venueComboBox" GridPane.rowIndex="10" minWidth="300" title="VENUES">
             <String fx:value="Option 1"/>
             <String fx:value="Option 2"/>
             <String fx:value="Option 3"/>
         </CheckComboBox>
 
-        <VBox GridPane.rowIndex="11" minWidth="300">
+        <VBox GridPane.rowIndex="12" minWidth="300">
             <Label text="Radius: ">
                 <font>
                     <Font name="Calibri" size="20"/>
@@ -103,5 +113,18 @@
                 </font>
             </TextField>
         </VBox>
+
+        <Button fx:id="generateSuggestions"
+                GridPane.rowIndex="18"
+                text="GENERATE SUGGESTIONS"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
+                minWidth="300"
+                onAction="#onGenerateSuggestionsButtonClicked"/>
+        <Button fx:id="backButton"
+                GridPane.rowIndex="19"
+                text="BACK"
+                minWidth="300"
+                style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 16px"
+                onAction="#onBackButtonClicked"/>
     </GridPane>
 </GridPane>

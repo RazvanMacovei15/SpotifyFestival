@@ -3,7 +3,7 @@ package com.example.spotifyfestival.UIPackage;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.MainPackage.App;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
-import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIDialogController;
+import com.example.spotifyfestival.UIPackage.SpotifyControllers.RapidAPIDialogController;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
