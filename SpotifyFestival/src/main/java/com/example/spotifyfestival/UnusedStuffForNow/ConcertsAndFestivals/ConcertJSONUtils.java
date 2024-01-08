@@ -210,7 +210,7 @@ public class ConcertJSONUtils {
 
         ConcertJSONUtils utils = new ConcertJSONUtils();
         ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
-        for(Concert concert : concerts){
+        for (Concert concert : concerts) {
             System.out.println(concert.getDescription());
             System.out.println(concert.getVenue());
             System.out.println(concert.getListOfArtists());
@@ -235,7 +235,7 @@ public class ConcertJSONUtils {
             TreeNode<Entity> rootChild = new TreeNode<>(entity);
             root.addChild(rootChild);
 
-            ObservableList<Entity> concertsAtEntityVenue = getConcertsAtVenue(entity);
+            ObservableList<Entity> concertsAtEntityVenue = getConcertsAtVenue(entity, concerts);
 
             for (Entity concertEntity : concertsAtEntityVenue) {
                 TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
@@ -245,9 +245,8 @@ public class ConcertJSONUtils {
         concertTree.printTree(concertTree);
     }
 
-    public static ObservableList<Entity> getConcertsAtVenue(Entity venue) {
+    public static ObservableList<Entity> getConcertsAtVenue(Entity venue, ObservableList<Concert> allConcerts) {
         //retrieve data from JSON
-        ObservableList<Concert> allConcerts = extractConcerts(JSONConstant.getJsonData());
         //list to store concerts as entities;
         ObservableList<Entity> allEntityConcerts = FXCollections.observableArrayList();
         //list that will store the venue concerts
@@ -268,8 +267,7 @@ public class ConcertJSONUtils {
             }
             List<Concert> concertsAtVenueToCheck = new ArrayList<>();
             for (Entity entity : allVenueConcerts) {
-                if (entity instanceof Concert) {
-                    Concert concert = (Concert) entity;
+                if (entity instanceof Concert concert) {
                     concertsAtVenueToCheck.add(concert);
                 }
             }
@@ -334,7 +332,7 @@ public class ConcertJSONUtils {
 //        ConcertJSONUtils concertJSONUtils = new ConcertJSONUtils(userLoc);
 //        ObservableList<Concert> concertsE = concertJSONUtils.extractConcerts(json);
 //        System.out.println(concertsE.size());
-        //      ConcertJSONUtils utils = new ConcertJSONUtils();
+//              ConcertJSONUtils utils = new ConcertJSONUtils();
 //        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
 //        for(Concert concert : concerts){
 //            System.out.println(concert.getDescription());
