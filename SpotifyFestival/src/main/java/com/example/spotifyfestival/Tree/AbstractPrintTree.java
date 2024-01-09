@@ -19,6 +19,7 @@ public abstract class AbstractPrintTree {
         ConcertJSONUtils utils = new ConcertJSONUtils();
         ObservableList<Concert> concerts = utils.extractConcerts(str);
 
+
         for (Concert concert : concerts)
         {
             System.out.println(concert.getDescription());
@@ -39,7 +40,8 @@ public abstract class AbstractPrintTree {
         userLocationCircle.setUserData(userLocation);
         userLocationCircle.setOnMouseClicked(event -> {
                     UserLocation user = (UserLocation) userLocationCircle.getUserData();
-                    System.out.println(user.getId());
+                    System.out.println(user.getLatitude());
+                    System.out.println(user.getLongitude());
                 });
         ObservableList<Venue> venues = utils.createListOfALlVenues(concerts);
 

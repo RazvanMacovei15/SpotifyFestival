@@ -177,6 +177,12 @@ public class CanvasController extends AbstractPrintTree {
     @Override
     public Circle drawUserLocationCircle(double userLocationRadius, Canvas canvas) {
         //create circle that stores the user location info
+        double canvasW = 700;
+        double canvasH = 600;
+
+        canvas.setHeight(canvasH);
+        canvas.setWidth(canvasW);
+
         Circle userLocationCircle =  new Circle();
         userLocationCircle.setRadius(userLocationRadius);
 
