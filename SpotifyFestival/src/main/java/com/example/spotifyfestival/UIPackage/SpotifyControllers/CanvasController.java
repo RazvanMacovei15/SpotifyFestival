@@ -180,6 +180,7 @@ public class CanvasController extends AbstractPrintTree {
         double canvasW = 700;
         double canvasH = 600;
 
+
         canvas.setHeight(canvasH);
         canvas.setWidth(canvasW);
 
