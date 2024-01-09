@@ -48,6 +48,7 @@ public abstract class AbstractPrintTree {
         ObservableList<Entity> entityVenues = FXCollections.observableArrayList();
         entityVenues.addAll(venues);
 
+
         for (Entity entity : entityVenues) {
 
             TreeNode<Entity> rootChild = new TreeNode<>(entity);
