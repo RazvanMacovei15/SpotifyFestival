@@ -65,7 +65,7 @@ public class ConcertJSONUtils {
         return timeFormatter.format(date);
     }
 
-    public static ObservableList<Concert> extractConcerts(String jsonResponse) {
+    public ObservableList<Concert> extractConcerts(String jsonResponse) {
 
         ObservableList<Concert> concertList = FXCollections.observableArrayList();
 
@@ -97,7 +97,7 @@ public class ConcertJSONUtils {
                     String json = SpotifyService.getArtistByNameHttpResponse(artistName, token);
 //                    System.out.println(json);
 
-                    Artist artist = SpotifyService.createArtistFromSearchResult(json, 0);
+                    Artist artist = SpotifyService.createArtistFromSearchResult(json, 3);
 
                     artistList.add(artist);
                 }
@@ -169,10 +169,10 @@ public class ConcertJSONUtils {
                             // You found a venue with the matching name
                             existingVenue = venueToCheck;
 
-                            ConcertDAO concertDAO = ConcertDAO.getInstance();
-                            int id = concertDAO.getHighestId() + 1;
-                            FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
-                            int stageID = festivalStageDAO.getHighestId() + 1;
+//                            ConcertDAO concertDAO = ConcertDAO.getInstance();
+                            int id = 2;
+//                            FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
+                            int stageID = 4;
                             FestivalStage stage = new FestivalStage(stageID);
 
                             Concert concert = new Concert(id, concertDescription, artistList, existingVenue, startDate, time, stage);
@@ -183,16 +183,16 @@ public class ConcertJSONUtils {
                     }
                 } else {
                     // Create a new Venue and add it to the list
-                    VenueDAO venueDAO = VenueDAO.getInstance();
-                    int venueID = venueDAO.getHighestId() + 1;
+//                    VenueDAO venueDAO = VenueDAO.getInstance();
+                    int venueID = 1;
 
                     venue = new Venue(venueID, city, venueName, streetAddress, venueLatitude, venueLongitude);
                     listOfVenues.add(venue);
 
                     ConcertDAO concertDAO = ConcertDAO.getInstance();
-                    int id = concertDAO.getHighestId() + 1;
-                    FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
-                    int stageID = festivalStageDAO.getHighestId() + 1;
+                    int id = 2;
+//                    FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
+                    int stageID = 4;
                     FestivalStage stage = new FestivalStage(stageID);
 
                     Concert concert = new Concert(id, concertDescription, artistList, existingVenue, startDate, time, stage);
@@ -206,10 +206,10 @@ public class ConcertJSONUtils {
         return concertList;
     }
 
-    public static void createTree() {
+    public static void createTree(String str) {
 
         ConcertJSONUtils utils = new ConcertJSONUtils();
-        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
+        ObservableList<Concert> concerts = utils.extractConcerts(str);
         for (Concert concert : concerts) {
             System.out.println(concert.getDescription());
             System.out.println(concert.getVenue());
@@ -337,6 +337,6 @@ public class ConcertJSONUtils {
 //        for(Concert concert : concerts){
 //            System.out.println(concert.getDescription());
 //        }
-        createTree();
+        createTree(JSONConstant.getJsonData());
     }
 }

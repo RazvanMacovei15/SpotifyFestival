@@ -6,6 +6,9 @@ import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowServic
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.Tree.AbstractPrintTree;
+import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
+import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +31,7 @@ import java.util.Map;
 
 import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController.getUserTopArtists;
 
-public class CanvasController {
+public class CanvasController extends AbstractPrintTree {
     @FXML
     Canvas canvas;
     @FXML
@@ -57,6 +60,7 @@ public class CanvasController {
     Button backButton;
     @FXML
     Button showConcertsInArea;
+
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
 
     private Map<Genre, Integer> retrieveGenreCount() {
@@ -158,9 +162,33 @@ public class CanvasController {
     }
 
     public void onShowConcertsButtonClicked() {
-        RapidAPIParameters parameters = processSelection();
-        RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
-        api.addParameters(parameters);
-        api.getConcertsInYourArea();
+//        RapidAPIParameters parameters = processSelection();
+//        RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
+//        api.addParameters(parameters);
+
+//        ConcertJSONUtils utils = new ConcertJSONUtils();
+//        System.out.println(api.getConcertsInYourArea());
+//        System.out.println(utils.extractConcerts(JSONConstant.getJsonData()));
+//        ConcertJSONUtils.createTree(JSONConstant.getJsonData());
+        double userLocationRadius = 10;
+        createTree(JSONConstant.getJsonData(), canvas, userLocationRadius);
+    }
+
+    @Override
+    public Circle drawUserLocationCircle(double userLocationRadius, Canvas canvas) {
+        //create circle that stores the user location info
+        Circle userLocationCircle =  new Circle();
+        userLocationCircle.setRadius(userLocationRadius);
+
+        double x = canvas.getWidth() / 2;
+        double y = canvas.getHeight() / 2;
+
+        userLocationCircle.setCenterX(x);
+        userLocationCircle.setCenterY(y);
+        userLocationCircle.setFill(Color.BLUE);
+
+        canvasBorderPane.getChildren().add(userLocationCircle);
+
+        return userLocationCircle;
     }
 }

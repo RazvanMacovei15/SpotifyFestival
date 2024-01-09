@@ -176,7 +176,7 @@ public class RapidAPIConcertsAPI {
 
     }
 
-    public void getConcertsInYourArea() {
+    public String getConcertsInYourArea() {
         Date date = new Date();
 
         if (checkIf24hHavePassed(date)) {
@@ -188,7 +188,7 @@ public class RapidAPIConcertsAPI {
 
             writeCountAndDateToFile(countNumberAttempts, lastUpdatedDate);
 
-            httpRequest();
+            return httpRequest().toString();
         } else if (countNumberAttempts < 10 && !checkIf24hHavePassed(date)) {
             countNumberAttempts++;
 
@@ -196,9 +196,9 @@ public class RapidAPIConcertsAPI {
 
             writeCountAndDateToFile(countNumberAttempts, lastUpdatedDate);
 
-            httpRequest();
+            return httpRequest().toString();
         } else {
-            System.out.println("You have to wait " + (24 - formattedDiff) + " more hours until you are able to reuse this API! Have a nice day!");
+            return "You have to wait " + (24 - formattedDiff) + " more hours until you are able to reuse this API! Have a nice day!";
         }
     }
 
@@ -207,7 +207,7 @@ public class RapidAPIConcertsAPI {
         lastUpdatedDate = date;
     }
 
-    public String httpRequest() {
+    private String httpRequest() {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URIBuilder()))
                 .header("X-RapidAPI-Key", getXRapidAPIKey())
@@ -220,7 +220,7 @@ public class RapidAPIConcertsAPI {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println(response.body());
+//        System.out.println(response.body());
         return response.body();
     }
 
