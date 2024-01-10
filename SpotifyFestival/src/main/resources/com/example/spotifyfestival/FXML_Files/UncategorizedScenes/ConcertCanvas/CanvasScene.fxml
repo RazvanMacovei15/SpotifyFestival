@@ -102,18 +102,26 @@
 
         </CheckComboBox>
 
-        <VBox GridPane.rowIndex="12" minWidth="300">
-            <Label text="Radius: ">
+        <HBox GridPane.rowIndex="11" minWidth="300">
+            <Label text="Radius: " minWidth="70">
                 <font>
                     <Font name="Calibri" size="20"/>
                 </font>
             </Label>
-            <TextField fx:id="radiusField" promptText="INSERT RADIUS IN KM">
+            <TextField fx:id="radiusField" promptText="INSERT RADIUS IN KM" minWidth="230">
                 <font>
-                    <Font name="Calibri bold" size="12"/>
+                    <Font name="Calibri bold" size="14"/>
                 </font>
             </TextField>
-        </VBox>
+        </HBox>
+        <Label text="---Details---"
+               GridPane.rowIndex="12"
+               minWidth="300"
+               alignment="CENTER"
+               style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"/>
+        <ListView fx:id="detailsListView" GridPane.rowIndex="13" minWidth="300" GridPane.rowSpan="5">
+
+        </ListView>
 
         <Button fx:id="generateSuggestions"
                 GridPane.rowIndex="18"

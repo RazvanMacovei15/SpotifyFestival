@@ -12,10 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -25,6 +22,7 @@ import org.controlsfx.control.CheckComboBox;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController.getUserTopArtists;
@@ -58,6 +56,8 @@ public class CanvasController extends AbstractPrintTree {
     Button backButton;
     @FXML
     Button showConcertsInArea;
+    @FXML
+    ListView<String> detailsListView;
     protected double userLocationRadius;
     protected double venueCircleRadius;
     protected double concertCircleRadius;
@@ -185,9 +185,14 @@ public class CanvasController extends AbstractPrintTree {
         userLocationCircle.setUserData(userLocation);
         userLocationCircle.setOnMouseClicked(event -> {
             UserLocation user = (UserLocation) userLocationCircle.getUserData();
-            System.out.println(user.getLatitude());
-            System.out.println(user.getLongitude());
+            String latitude = "Device Latitude: " + user.getLatitude();
+            String longitude = "Device Longitude: " + user.getLongitude();
+            ObservableList<String> userDetails = FXCollections.observableArrayList();
+            userDetails.add(latitude);
+            userDetails.add(longitude);
+            detailsListView.setItems(userDetails);
         });
+
         return userLocationCircle;
     }
 
@@ -204,8 +209,14 @@ public class CanvasController extends AbstractPrintTree {
 
             venueLocationCircle.setOnMouseClicked(event -> {
                 Venue venueToCheck = (Venue) venueLocationCircle.getUserData();
-                System.out.println(venueToCheck.getVenueName());
-                System.out.println(venueToCheck.getId());
+                ObservableList<String> venueDetails = FXCollections.observableArrayList();
+                String x = "Venue NAME: "+venueToCheck.getVenueName();
+                String y = "City: "+venueToCheck.getCity();
+                String z = "Street Address: "+venueToCheck.getStreetAddress();
+                String w = venueToCheck.getLocationLatitude() + "\n" + venueToCheck.getLocationLongitude();
+                String u = "Distance From User Unknown!";
+                venueDetails.addAll(x, y, z, u);
+                detailsListView.setItems(venueDetails);
             });
         }
         return venueLocationCircle;
@@ -222,8 +233,18 @@ public class CanvasController extends AbstractPrintTree {
 
             concertLocationCircle.setOnMouseClicked(event -> {
                 Concert venueToCheck = (Concert) concertLocationCircle.getUserData();
-                System.out.println(venueToCheck.getDescription());
-                System.out.println(venueToCheck.getId());
+                String description = "Description: "+venueToCheck.getDescription();
+                String date = "Date: "+venueToCheck.getStartOfTheConcert();
+                String venueTime = "Time: "+venueToCheck.getTime();
+                StringBuilder sb = new StringBuilder();
+                sb.append("Artists: ");
+                for(Artist artist:venueToCheck.getListOfArtists()){
+                    sb.append(artist.getName()).append(" ");
+                }
+                String artists = sb.toString();
+                ObservableList<String> concerts = FXCollections.observableArrayList();
+                concerts.addAll(description, date, venueTime, artists);
+                detailsListView.setItems(concerts);
             });
         }
         return concertLocationCircle;
