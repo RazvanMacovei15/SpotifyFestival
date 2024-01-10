@@ -107,26 +107,28 @@ public abstract class AbstractPrintTree {
             );
 
             if (firstCircleObject.getUserData() instanceof UserLocation) {
-                currentUserCircle = firstCircleObject;
-                currentUserCircle.setUserData(firstCircleObject.getUserData());
+                currentUserCircle = getCircleDetails(firstCircleObject);
+
+                Circle circleForLambda = getCircleDetails(currentUserCircle);
 
                 lineKeyFrame = new KeyFrame(
                         Duration.seconds(currentIndex),
                         event -> {
-                            drawEdgeBetweenTwoPoints(firstCircleObject.getCenterX(), firstCircleObject.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                            drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                         }
                 );
                 timeline.getKeyFrames().add(lineKeyFrame);
                 currentIndex++;
             } else if (firstCircleObject.getUserData() instanceof Venue) {
-                currentVenueCircle = firstCircleObject;
-                currentVenueCircle.setUserData(firstCircleObject.getUserData());
+                currentVenueCircle = getCircleDetails(firstCircleObject);
+
+                Circle circleForLambda = getCircleDetails(currentVenueCircle);
 
                 if(nextCircleObject.getUserData() instanceof Concert){
                     lineKeyFrame = new KeyFrame(
                             Duration.seconds(currentIndex),
                             event -> {
-                                drawEdgeBetweenTwoPoints(firstCircleObject.getCenterX(), firstCircleObject.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                                drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                             }
                     );
                     timeline.getKeyFrames().add(lineKeyFrame);
@@ -135,7 +137,7 @@ public abstract class AbstractPrintTree {
             } else if (firstCircleObject.getUserData() instanceof Concert) {
                 if(currentUserCircle != null && currentVenueCircle != null){
                     if(nextCircleObject.getUserData() instanceof Venue){
-                        currentVenueCircle = nextCircleObject;
+                        currentVenueCircle = getCircleDetails(nextCircleObject);
 
                     }else{
                         lineKeyFrame = new KeyFrame(
@@ -188,6 +190,11 @@ public abstract class AbstractPrintTree {
         double y  = circleTwo.getCenterY();
         double radius = circleTwo.getRadius();
         Object userData = circleTwo.getUserData();
-        return new Circle();
+        Circle circleToReturn = new Circle();
+        circleToReturn.setCenterX(x);
+        circleToReturn.setCenterY(y);
+        circleToReturn.setRadius(radius);
+        circleToReturn.setUserData(userData);
+        return circleToReturn;
     }
 }
