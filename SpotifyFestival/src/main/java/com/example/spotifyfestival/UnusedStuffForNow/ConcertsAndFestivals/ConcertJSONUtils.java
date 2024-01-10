@@ -206,45 +206,6 @@ public class ConcertJSONUtils {
         return concertList;
     }
 
-    public static void createTree(String str) {
-
-        ConcertJSONUtils utils = new ConcertJSONUtils();
-        ObservableList<Concert> concerts = utils.extractConcerts(str);
-        for (Concert concert : concerts) {
-            System.out.println(concert.getDescription());
-            System.out.println(concert.getVenue());
-            System.out.println(concert.getListOfArtists());
-            System.out.println(concert.getTime());
-            System.out.println(concert.getStartOfTheConcert());
-            System.out.println();
-        }
-
-        UserLocation userLocation = new UserLocation(0);
-//        System.out.println(userLocation.getLatitude());
-
-        Tree<Entity> concertTree = new Tree<>(userLocation);
-        TreeNode<Entity> root = concertTree.getRoot();
-
-        ObservableList<Venue> venues = createListOfALlVenues(concerts);
-
-        ObservableList<Entity> entityVenues = FXCollections.observableArrayList();
-        entityVenues.addAll(venues);
-
-        for (Entity entity : entityVenues) {
-
-            TreeNode<Entity> rootChild = new TreeNode<>(entity);
-            root.addChild(rootChild);
-
-            ObservableList<Entity> concertsAtEntityVenue = getConcertsAtVenue(entity, concerts);
-
-            for (Entity concertEntity : concertsAtEntityVenue) {
-                TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
-                rootChild.addChild(venueChild);
-            }
-        }
-        concertTree.printTree(concertTree);
-    }
-
     public static ObservableList<Entity> getConcertsAtVenue(Entity venue, ObservableList<Concert> allConcerts) {
         //retrieve data from JSON
         //list to store concerts as entities;
@@ -291,7 +252,7 @@ public class ConcertJSONUtils {
         return venueConcerts;
     }
 
-    public static ObservableList<Venue> createListOfALlVenues(ObservableList<Concert> list) {
+    public ObservableList<Venue> createListOfALlVenues(ObservableList<Concert> list) {
         ObservableList<Venue> listOfVenues = FXCollections.observableArrayList();
         String city = null;
         String streetAddress = null;
@@ -319,24 +280,5 @@ public class ConcertJSONUtils {
             }
         }
         return listOfVenues;
-    }
-
-    public static void main(String[] args) {
-//        RapidAPIConcertsAPI rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
-//        LocalDate future = LocalDate.now().plusDays(20);
-//        RapidAPIParameters parameters = new RapidAPIParameters(LocalDate.now(),future,"Cluj-Napoca");
-//        rapidAPIConcertsAPI.addParameters(parameters);
-//        rapidAPIConcertsAPI.getConcertsInYourArea();
-//        String json = rapidAPIConcertsAPI.httpRequest();
-//        Entity userLoc = new Entity();
-//        ConcertJSONUtils concertJSONUtils = new ConcertJSONUtils(userLoc);
-//        ObservableList<Concert> concertsE = concertJSONUtils.extractConcerts(json);
-//        System.out.println(concertsE.size());
-//              ConcertJSONUtils utils = new ConcertJSONUtils();
-//        ObservableList<Concert> concerts = utils.extractConcerts(JSONConstant.getJsonData());
-//        for(Concert concert : concerts){
-//            System.out.println(concert.getDescription());
-//        }
-        createTree(JSONConstant.getJsonData());
     }
 }

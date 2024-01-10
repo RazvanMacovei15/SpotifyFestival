@@ -2,6 +2,7 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
+import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
 import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
@@ -64,8 +65,11 @@ public class CanvasController extends AbstractPrintTree {
     protected double x;
 
     protected double y;
+    protected ConcertDAO concertDAO;
 
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
+
+    protected GraphicsContext gc;
 
     private Map<Genre, Integer> retrieveGenreCount() {
         TopGenresController controller = new TopGenresController();
@@ -99,6 +103,8 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     public void initialize() {
+        concertDAO = ConcertDAO.getInstance();
+
         //initialize canvas
         double canvasW = 700;
         double canvasH = 600;
@@ -108,13 +114,16 @@ public class CanvasController extends AbstractPrintTree {
 
         userLocationRadius = 10;
         venueCircleRadius = 20;
-        concertCircleRadius = 30;
+        concertCircleRadius = 20;
+
+        gc = canvas.getGraphicsContext2D();
 
         //retrieve user genre history
         ObservableList<String> genres = retrieveUserGenreHistory();
         genreComboBox.getItems().setAll(genres);
 
         Map<Genre, Integer> genreCount = retrieveGenreCount();
+
 //        System.out.println(genreCount);
 //        System.out.println(genres);
 
@@ -156,7 +165,7 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     public void onShowConcertsButtonClicked() {
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+
 //        RapidAPIParameters parameters = processSelection();
 //        RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
 //        api.addParameters(parameters);
@@ -165,7 +174,7 @@ public class CanvasController extends AbstractPrintTree {
 //        System.out.println(api.getConcertsInYourArea());
 //        System.out.println(utils.extractConcerts(JSONConstant.getJsonData()));
 //        ConcertJSONUtils.createTree(JSONConstant.getJsonData());
-        createTree(JSONConstant.getJsonData(),canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
+        createTree(concertDAO, JSONConstant.getJsonData(), canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
     }
 
     @Override
@@ -200,7 +209,7 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
         double venueCenterX = x;
         double venueCenterY = y;
-        double radiusFromUserLocation = 200;
+        double radiusFromUserLocation = 150;
         Circle venueLocationCircle = drawCircleAtPoint(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         venueLocationCircle.setFill(Color.RED);
 
@@ -224,7 +233,7 @@ public class CanvasController extends AbstractPrintTree {
 
     @Override
     public Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY) {
-        double radiusFromVenueLocation = 100;
+        double radiusFromVenueLocation = 120;
         Circle concertLocationCircle = drawCircleAtPoint(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
         concertLocationCircle.setFill(Color.GREEN);
 

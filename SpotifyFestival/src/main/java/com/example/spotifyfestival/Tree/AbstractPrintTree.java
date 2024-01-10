@@ -1,5 +1,7 @@
 package com.example.spotifyfestival.Tree;
 
+import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.VenueDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserLocation;
@@ -32,7 +34,14 @@ public abstract class AbstractPrintTree {
 
     protected List<Circle> allCircles = new ArrayList<>();
 
-    public void createTree(String str, BorderPane canvasBorderPane, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius, GraphicsContext gc) {
+    public void createTree(ConcertDAO concertDAO, String str, BorderPane canvasBorderPane, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius, GraphicsContext gc) {
+        Iterable<Concert> dbConcerts = concertDAO.getAll();
+        ObservableList<Entity> dbOBSConcerts =FXCollections.observableArrayList();
+        ObservableList<Concert> dbConcertsOBS = FXCollections.observableArrayList();
+        for(Concert concert : dbConcerts){
+            dbOBSConcerts.add(concert);
+            dbConcertsOBS.add(concert);
+        }
 
         ConcertJSONUtils utils = new ConcertJSONUtils();
         ObservableList<Concert> concerts = utils.extractConcerts(str);
@@ -46,8 +55,12 @@ public abstract class AbstractPrintTree {
         allCircles.add(userLocationCircle);
         ObservableList<Venue> venues = utils.createListOfALlVenues(concerts);
 
+        ObservableList<Entity> venueDBEntities = FXCollections.observableArrayList();
+        venueDBEntities.addAll(concertDAO.getVenueDAO().getVenuesList());
+
         ObservableList<Entity> entityVenues = FXCollections.observableArrayList();
         entityVenues.addAll(venues);
+        entityVenues.addAll(venueDBEntities);
 
         for (int i = 0; i < entityVenues.size(); i++) {
 
@@ -62,8 +75,9 @@ public abstract class AbstractPrintTree {
 
             allCircles.add(venueCircle);
 
-
             ObservableList<Entity> concertsAtEntityVenue = utils.getConcertsAtVenue(venueEntity, concerts);
+            ObservableList<Entity> concertsAtEntityDBVenues = utils.getConcertsAtVenue(venueEntity, dbConcertsOBS);
+            concertsAtEntityVenue.addAll(concertsAtEntityDBVenues);
 
             for (int j = 0; j < concertsAtEntityVenue.size(); j++) {
                 Entity concertEntity = concertsAtEntityVenue.get(j);
@@ -80,7 +94,6 @@ public abstract class AbstractPrintTree {
                 allCircles.add(concertCircle);
             }
         }
-        concertTree.printTree(concertTree);
         displayCirclesOneAtATime(allCircles, canvasBorderPane, gc, null, null);
     }
 
@@ -100,7 +113,7 @@ public abstract class AbstractPrintTree {
             KeyFrame lineKeyFrame = null;
 
             keyFrame = new KeyFrame(
-                    Duration.millis(currentIndex*300),
+                    Duration.millis(currentIndex * 300),
                     event -> {
                         canvasBorderPane.getChildren().add(firstCircleObject);
                     }
@@ -112,7 +125,7 @@ public abstract class AbstractPrintTree {
                 Circle circleForLambda = getCircleDetails(currentUserCircle);
 
                 lineKeyFrame = new KeyFrame(
-                        Duration.millis(currentIndex*300),
+                        Duration.millis(currentIndex * 300),
                         event -> {
                             drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                         }
@@ -124,9 +137,9 @@ public abstract class AbstractPrintTree {
 
                 Circle circleForLambda = getCircleDetails(currentVenueCircle);
 
-                if(nextCircleObject.getUserData() instanceof Concert){
+                if (nextCircleObject.getUserData() instanceof Concert) {
                     lineKeyFrame = new KeyFrame(
-                            Duration.millis(currentIndex*300),
+                            Duration.millis(currentIndex * 300),
                             event -> {
                                 drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                             }
@@ -135,23 +148,23 @@ public abstract class AbstractPrintTree {
                     currentIndex++;
                 }
             } else if (firstCircleObject.getUserData() instanceof Concert) {
-                if(currentUserCircle != null && currentVenueCircle != null){
-                    if(nextCircleObject.getUserData() instanceof Venue){
+                if (currentUserCircle != null && currentVenueCircle != null) {
+                    if (nextCircleObject.getUserData() instanceof Venue) {
                         currentVenueCircle = getCircleDetails(nextCircleObject);
                         Circle user = getCircleDetails(currentUserCircle);
                         Circle venue = getCircleDetails(currentVenueCircle);
                         lineKeyFrame = new KeyFrame(
-                                Duration.millis(currentIndex*300),
+                                Duration.millis(currentIndex * 300),
                                 event -> {
                                     drawEdgeBetweenTwoPoints(user.getCenterX(), user.getCenterY(), venue.getCenterX(), venue.getCenterY(), gc);
                                 }
                         );
                         timeline.getKeyFrames().add(lineKeyFrame);
                         currentIndex++;
-                    }else{
+                    } else {
                         Circle venue = getCircleDetails(currentVenueCircle);
                         lineKeyFrame = new KeyFrame(
-                                Duration.millis(currentIndex*300),
+                                Duration.millis(currentIndex * 300),
                                 event -> {
                                     drawEdgeBetweenTwoPoints(venue.getCenterX(), venue.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                                 }
@@ -167,23 +180,18 @@ public abstract class AbstractPrintTree {
             currentIndex++;
 
 
-
         }
         // Add a separate key frame for the last circle
         if (!circles.isEmpty()) {
             Circle lastCircleObject = circles.get(circles.size() - 1);
 
             KeyFrame lastKeyFrame = new KeyFrame(
-                    Duration.millis(currentIndex*300),
+                    Duration.millis(currentIndex * 300),
                     event -> canvasBorderPane.getChildren().add(lastCircleObject)
             );
             timeline.getKeyFrames().add(lastKeyFrame);
 
         }
-//        for (KeyFrame key : timeline.getKeyFrames()) {
-//            System.out.println(key);
-//        }
-
         // Play the timeline
         timeline.play();
     }
@@ -195,9 +203,9 @@ public abstract class AbstractPrintTree {
         gc.strokeLine(Ax, Ay, Bx, By);
     }
 
-    public Circle getCircleDetails(Circle circleTwo){
+    public Circle getCircleDetails(Circle circleTwo) {
         double x = circleTwo.getCenterX();
-        double y  = circleTwo.getCenterY();
+        double y = circleTwo.getCenterY();
         double radius = circleTwo.getRadius();
         Object userData = circleTwo.getUserData();
         Circle circleToReturn = new Circle();
