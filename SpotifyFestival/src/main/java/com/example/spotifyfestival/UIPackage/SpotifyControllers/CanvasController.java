@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -155,6 +156,7 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     public void onShowConcertsButtonClicked() {
+        GraphicsContext gc = canvas.getGraphicsContext2D();
 //        RapidAPIParameters parameters = processSelection();
 //        RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
 //        api.addParameters(parameters);
@@ -163,7 +165,7 @@ public class CanvasController extends AbstractPrintTree {
 //        System.out.println(api.getConcertsInYourArea());
 //        System.out.println(utils.extractConcerts(JSONConstant.getJsonData()));
 //        ConcertJSONUtils.createTree(JSONConstant.getJsonData());
-        createTree(JSONConstant.getJsonData(),canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius);
+        createTree(JSONConstant.getJsonData(),canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
     }
 
     @Override
