@@ -20,7 +20,7 @@ import java.util.List;
 public abstract class AbstractPrintTree {
     public abstract Circle drawUserLocationCircle(double userLocationRadius, Canvas canvas, UserLocation userLocation);
     public abstract Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueLocationRadius, Entity entity);
-    public abstract Circle drawConcertCircle(double concertLocationRadius);
+    public abstract Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY);
     public abstract Circle drawFestivalCircle();
     public abstract Circle drawStageCircle();
 
@@ -55,28 +55,37 @@ public abstract class AbstractPrintTree {
 
         for (int i = 0; i < entityVenues.size(); i++) {
 
-            Entity entity = entityVenues.get(i);
+            Entity venueEntity = entityVenues.get(i);
 
-            TreeNode<Entity> rootChild = new TreeNode<>(entity);
+            TreeNode<Entity> rootChild = new TreeNode<>(venueEntity);
             root.addChild(rootChild);
 
             int numberOfVenueCircles = entityVenues.size();
 
-            Circle venueCircle = drawVenueCircle(i, numberOfVenueCircles, venueCircleRadius, entity);
+            Circle venueCircle = drawVenueCircle(i, numberOfVenueCircles, venueCircleRadius, venueEntity);
 
             allCircles.add(venueCircle);
 
-            ObservableList<Entity> concertsAtEntityVenue = utils.getConcertsAtVenue(entity, concerts);
 
-            for (Entity concertEntity : concertsAtEntityVenue) {
+            ObservableList<Entity> concertsAtEntityVenue = utils.getConcertsAtVenue(venueEntity, concerts);
+
+            for (int j = 0; j < concertsAtEntityVenue.size(); j++)
+            {
+                Entity concertEntity = concertsAtEntityVenue.get(j);
+
                 TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
                 rootChild.addChild(venueChild);
 
-                drawConcertCircle(concertLocationRadius);
+                int numberOfConcertCircles = concertsAtEntityVenue.size();
+                double concertCircleX = venueCircle.getCenterX();
+                double concertCircleY = venueCircle.getCenterY();
+
+                Circle concertCircle = drawConcertCircle(j, numberOfConcertCircles, concertLocationRadius, concertEntity, concertCircleX, concertCircleY);
+
+                allCircles.add(concertCircle);
             }
         }
         concertTree.printTree(concertTree);
-
         displayCirclesOneAtATime(allCircles, canvasBorderPane);
     }
 

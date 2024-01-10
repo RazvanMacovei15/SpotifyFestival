@@ -10,19 +10,20 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.canvas.*;
-import javafx.scene.control.*;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-
-import java.io.IOException;
-import java.net.http.HttpResponse;
-import java.time.LocalDate;
-
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import org.controlsfx.control.CheckComboBox;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
+import java.time.LocalDate;
 import java.util.Map;
 
 import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController.getUserTopArtists;
@@ -209,8 +210,21 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     @Override
-    public Circle drawConcertCircle(double concertCircleRadius) {
-        return null;
+    public Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY) {
+        double radiusFromVenueLocation = 150;
+        Circle concertLocationCircle = drawCircleAtPoint(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
+        concertLocationCircle.setFill(Color.GREEN);
+
+        if(entity instanceof Concert concert){
+            concertLocationCircle.setUserData(concert);
+
+            concertLocationCircle.setOnMouseClicked(event -> {
+                Venue venueToCheck = (Venue) concertLocationCircle.getUserData();
+                System.out.println(venueToCheck.getVenueName());
+                System.out.println(venueToCheck.getId());
+            });
+        }
+        return concertLocationCircle;
     }
 
     @Override
@@ -234,6 +248,4 @@ public class CanvasController extends AbstractPrintTree {
 
         return circleToAdd;
     }
-
-
 }
