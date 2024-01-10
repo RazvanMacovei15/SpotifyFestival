@@ -36,8 +36,8 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.Tree to javafx.fxml;
     exports com.example.spotifyfestival.UIPackage.SpotifyControllers;
     opens com.example.spotifyfestival.UIPackage.SpotifyControllers to javafx.fxml;
-//    exports com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
-//    opens com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals to javafx.fxml;
+    exports com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
+    opens com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals to javafx.graphics;
     exports com.example.spotifyfestival.UtilsPackage;
     opens com.example.spotifyfestival.UtilsPackage to javafx.fxml;
     opens com.example.spotifyfestival.UIPackage;
@@ -47,4 +47,9 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.FXML_Files.UncategorizedScenes.UserInterfaces to javafx.fxml;
     exports com.example.spotifyfestival.UIPackage.DBControllers;
     opens com.example.spotifyfestival.UIPackage.DBControllers to javafx.fxml;
+
+    // Export your application package to javafx.graphics module
+    exports com.example.spotifyfestival.UnusedStuffForNow to javafx.graphics;
+
+    opens com.example.spotifyfestival.UnusedStuffForNow to javafx.fxml;
 }

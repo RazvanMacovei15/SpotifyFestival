@@ -2,12 +2,8 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
-import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
 import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.collections.FXCollections;
@@ -60,6 +56,12 @@ public class CanvasController extends AbstractPrintTree {
     Button backButton;
     @FXML
     Button showConcertsInArea;
+    protected double userLocationRadius;
+    protected double venueCircleRadius;
+    protected double concertCircleRadius;
+    protected double x;
+
+    protected double y;
 
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
 
@@ -95,6 +97,17 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     public void initialize() {
+        //initialize canvas
+        double canvasW = 700;
+        double canvasH = 600;
+
+        canvas.setHeight(canvasH);
+        canvas.setWidth(canvasW);
+
+        userLocationRadius = 10;
+        venueCircleRadius = 20;
+        concertCircleRadius = 30;
+
         //retrieve user genre history
         ObservableList<String> genres = retrieveUserGenreHistory();
         genreComboBox.getItems().setAll(genres);
@@ -133,27 +146,6 @@ public class CanvasController extends AbstractPrintTree {
 
     public void onGenerateSuggestionsButtonClicked() {
         System.out.println("WIP!!!");
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-
-        double canvasW = 700;
-        double canvasH = 600;
-        double userLocationRadius = 10;
-
-        canvas.setHeight(canvasH);
-        canvas.setWidth(canvasW);
-
-        double x = canvas.getWidth() / 2;
-        double y = canvas.getHeight() / 2;
-
-        Circle userLocationCircle = new Circle();
-        userLocationCircle.setRadius(userLocationRadius);
-        userLocationCircle.setCenterX(x);
-        userLocationCircle.setCenterY(y);
-        userLocationCircle.setFill(Color.BLUE);
-
-        canvasBorderPane.getChildren().add(userLocationCircle);
-
     }
 
     public void onGetLocationButtonClicked() {
@@ -170,32 +162,78 @@ public class CanvasController extends AbstractPrintTree {
 //        System.out.println(api.getConcertsInYourArea());
 //        System.out.println(utils.extractConcerts(JSONConstant.getJsonData()));
 //        ConcertJSONUtils.createTree(JSONConstant.getJsonData());
-        double userLocationRadius = 10;
-        createTree(JSONConstant.getJsonData(), canvas, userLocationRadius);
+        createTree(JSONConstant.getJsonData(),canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius);
     }
 
     @Override
-    public Circle drawUserLocationCircle(double userLocationRadius, Canvas canvas) {
+    public Circle drawUserLocationCircle(double userLocationRadius, Canvas canvas, UserLocation userLocation) {
         //create circle that stores the user location info
-        double canvasW = 700;
-        double canvasH = 600;
 
-
-        canvas.setHeight(canvasH);
-        canvas.setWidth(canvasW);
-
-        Circle userLocationCircle =  new Circle();
+        Circle userLocationCircle = new Circle();
         userLocationCircle.setRadius(userLocationRadius);
 
-        double x = canvas.getWidth() / 2;
-        double y = canvas.getHeight() / 2;
+        x = canvas.getWidth() / 2;
+        y = canvas.getHeight() / 2;
 
         userLocationCircle.setCenterX(x);
         userLocationCircle.setCenterY(y);
         userLocationCircle.setFill(Color.BLUE);
 
-        canvasBorderPane.getChildren().add(userLocationCircle);
-
+        userLocationCircle.setUserData(userLocation);
+        userLocationCircle.setOnMouseClicked(event -> {
+            UserLocation user = (UserLocation) userLocationCircle.getUserData();
+            System.out.println(user.getLatitude());
+            System.out.println(user.getLongitude());
+        });
         return userLocationCircle;
     }
+
+    @Override
+    public Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
+        double venueCenterX = x;
+        double venueCenterY = y;
+        double radiusFromUserLocation = 100;
+        Circle venueLocationCircle = drawCircleAtPoint(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
+        venueLocationCircle.setFill(Color.RED);
+
+        if(entity instanceof Venue venue){
+            venueLocationCircle.setUserData(venue);
+
+            venueLocationCircle.setOnMouseClicked(event -> {
+                Venue venueToCheck = (Venue) venueLocationCircle.getUserData();
+                System.out.println(venueToCheck.getVenueName());
+                System.out.println(venueToCheck.getId());
+            });
+        }
+        return venueLocationCircle;
+    }
+
+    @Override
+    public Circle drawConcertCircle(double concertCircleRadius) {
+        return null;
+    }
+
+    @Override
+    public Circle drawFestivalCircle() {
+        return null;
+    }
+
+    @Override
+    public Circle drawStageCircle() {
+        return null;
+    }
+
+    public Circle drawCircleAtPoint(int i, int numberOfCircles, double circleCenterX, double circleCenterY, double radius, double circleRadius) {
+        double angle = 2 * Math.PI * i / numberOfCircles;
+        double circleX = circleCenterX + radius * Math.cos(angle);
+        double circleY = circleCenterY + radius * Math.sin(angle);
+        Circle circleToAdd = new Circle();
+        circleToAdd.setCenterX(circleX);
+        circleToAdd.setCenterY(circleY);
+        circleToAdd.setRadius(circleRadius);
+
+        return circleToAdd;
+    }
+
+
 }
