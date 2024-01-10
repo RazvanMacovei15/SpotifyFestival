@@ -195,7 +195,7 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
         double venueCenterX = x;
         double venueCenterY = y;
-        double radiusFromUserLocation = 100;
+        double radiusFromUserLocation = 200;
         Circle venueLocationCircle = drawCircleAtPoint(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         venueLocationCircle.setFill(Color.RED);
 
@@ -213,7 +213,7 @@ public class CanvasController extends AbstractPrintTree {
 
     @Override
     public Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY) {
-        double radiusFromVenueLocation = 150;
+        double radiusFromVenueLocation = 100;
         Circle concertLocationCircle = drawCircleAtPoint(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
         concertLocationCircle.setFill(Color.GREEN);
 
@@ -221,8 +221,8 @@ public class CanvasController extends AbstractPrintTree {
             concertLocationCircle.setUserData(concert);
 
             concertLocationCircle.setOnMouseClicked(event -> {
-                Venue venueToCheck = (Venue) concertLocationCircle.getUserData();
-                System.out.println(venueToCheck.getVenueName());
+                Concert venueToCheck = (Concert) concertLocationCircle.getUserData();
+                System.out.println(venueToCheck.getDescription());
                 System.out.println(venueToCheck.getId());
             });
         }

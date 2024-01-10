@@ -100,7 +100,7 @@ public abstract class AbstractPrintTree {
             KeyFrame lineKeyFrame = null;
 
             keyFrame = new KeyFrame(
-                    Duration.seconds(currentIndex),
+                    Duration.millis(currentIndex*300),
                     event -> {
                         canvasBorderPane.getChildren().add(firstCircleObject);
                     }
@@ -112,7 +112,7 @@ public abstract class AbstractPrintTree {
                 Circle circleForLambda = getCircleDetails(currentUserCircle);
 
                 lineKeyFrame = new KeyFrame(
-                        Duration.seconds(currentIndex),
+                        Duration.millis(currentIndex*300),
                         event -> {
                             drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                         }
@@ -126,7 +126,7 @@ public abstract class AbstractPrintTree {
 
                 if(nextCircleObject.getUserData() instanceof Concert){
                     lineKeyFrame = new KeyFrame(
-                            Duration.seconds(currentIndex),
+                            Duration.millis(currentIndex*300),
                             event -> {
                                 drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                             }
@@ -138,12 +138,22 @@ public abstract class AbstractPrintTree {
                 if(currentUserCircle != null && currentVenueCircle != null){
                     if(nextCircleObject.getUserData() instanceof Venue){
                         currentVenueCircle = getCircleDetails(nextCircleObject);
-
-                    }else{
+                        Circle user = getCircleDetails(currentUserCircle);
+                        Circle venue = getCircleDetails(currentVenueCircle);
                         lineKeyFrame = new KeyFrame(
-                                Duration.seconds(currentIndex),
+                                Duration.millis(currentIndex*300),
                                 event -> {
-                                    drawEdgeBetweenTwoPoints(firstCircleObject.getCenterX(), firstCircleObject.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                                    drawEdgeBetweenTwoPoints(user.getCenterX(), user.getCenterY(), venue.getCenterX(), venue.getCenterY(), gc);
+                                }
+                        );
+                        timeline.getKeyFrames().add(lineKeyFrame);
+                        currentIndex++;
+                    }else{
+                        Circle venue = getCircleDetails(currentVenueCircle);
+                        lineKeyFrame = new KeyFrame(
+                                Duration.millis(currentIndex*300),
+                                event -> {
+                                    drawEdgeBetweenTwoPoints(venue.getCenterX(), venue.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                                 }
                         );
                         timeline.getKeyFrames().add(lineKeyFrame);
@@ -164,15 +174,15 @@ public abstract class AbstractPrintTree {
             Circle lastCircleObject = circles.get(circles.size() - 1);
 
             KeyFrame lastKeyFrame = new KeyFrame(
-                    Duration.seconds(currentIndex),
+                    Duration.millis(currentIndex*300),
                     event -> canvasBorderPane.getChildren().add(lastCircleObject)
             );
             timeline.getKeyFrames().add(lastKeyFrame);
 
         }
-        for (KeyFrame key : timeline.getKeyFrames()) {
-            System.out.println(key);
-        }
+//        for (KeyFrame key : timeline.getKeyFrames()) {
+//            System.out.println(key);
+//        }
 
         // Play the timeline
         timeline.play();
