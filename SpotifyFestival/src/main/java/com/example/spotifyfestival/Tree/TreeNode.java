@@ -32,4 +32,17 @@ public class TreeNode<T extends Entity> {
         }
         children.remove(child);
     }
+
+    public void clearChildren() {
+        children.clear();
+    }
+
+    @Override
+    public String toString() {
+        return "TreeNode{" +
+                "data=" + data +
+                ", children=" + children +
+                '}';
+    }
+
 }

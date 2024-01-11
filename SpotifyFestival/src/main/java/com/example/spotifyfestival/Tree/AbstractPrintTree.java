@@ -23,7 +23,7 @@ import java.util.List;
 public abstract class AbstractPrintTree {
     public abstract Circle drawUserLocationCircle(double userLocationRadius, Canvas canvas, UserLocation userLocation);
 
-    public abstract Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueLocationRadius, Entity entity);
+    public abstract Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueLocationRadius, Entity entity, UserLocation userLocation);
 
     public abstract Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex);
 
@@ -69,7 +69,7 @@ public abstract class AbstractPrintTree {
             drawFestivalCircle(i, numberOfVenueCircles, venueCircleRadius, entity);
 
             if (entity instanceof Venue) {
-                venueCircle = drawVenueCircle(i, numberOfVenueCircles, venueCircleRadius, entity);
+                venueCircle = drawVenueCircle(i, numberOfVenueCircles, venueCircleRadius, entity, userLocation);
                 allCircles.add(venueCircle);
                 concertsOrStagesAtEntityVenue = ConcertJSONUtils.getConcertsAtVenue(entity, concerts);
                 for (int j = 0; j < concertsOrStagesAtEntityVenue.size(); j++) {
@@ -77,6 +77,7 @@ public abstract class AbstractPrintTree {
 
                     TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
                     rootChild.addChild(venueChild);
+                    rootChild.toString();
 
                     int numberOfConcertCircles = concertsOrStagesAtEntityVenue.size();
                     double concertCircleX = venueCircle.getCenterX();
@@ -145,10 +146,11 @@ public abstract class AbstractPrintTree {
             }
             System.out.println();
         }
-        displayCirclesOneAtATime(allCircles, canvasBorderPane, gc, null, null);
+        concertTree.printTree(concertTree);
+        displayCirclesOneAtATime(allCircles, canvasBorderPane, gc, null, null, null);
     }
 
-    private void displayCirclesOneAtATime(List<Circle> circles, BorderPane canvasBorderPane, GraphicsContext gc, Circle currentUserCircle, Circle currentFestivalCircle) {
+    private void displayCirclesOneAtATime(List<Circle> circles, BorderPane canvasBorderPane, GraphicsContext gc, Circle currentUserCircle, Circle currentFestivalOrVenueCircle, Circle currentStage) {
 
         int currentIndex = 0;
 
@@ -184,9 +186,9 @@ public abstract class AbstractPrintTree {
                 timeline.getKeyFrames().add(lineKeyFrame);
                 currentIndex++;
             } else if (firstCircleObject.getUserData() instanceof Venue) {
-                currentFestivalCircle = getCircleDetails(firstCircleObject);
+                currentFestivalOrVenueCircle = getCircleDetails(firstCircleObject);
 
-                Circle circleForLambda = getCircleDetails(currentFestivalCircle);
+                Circle circleForLambda = getCircleDetails(currentFestivalOrVenueCircle);
 
                 if (nextCircleObject.getUserData() instanceof Concert) {
                     lineKeyFrame = new KeyFrame(
@@ -200,9 +202,9 @@ public abstract class AbstractPrintTree {
                 }
 
             } else if (firstCircleObject.getUserData() instanceof Festival) {
-                currentFestivalCircle = getCircleDetails(firstCircleObject);
+                currentFestivalOrVenueCircle = getCircleDetails(firstCircleObject);
 
-                Circle circleForLambda = getCircleDetails(currentFestivalCircle);
+                Circle circleForLambda = getCircleDetails(currentFestivalOrVenueCircle);
 
                 if (nextCircleObject.getUserData() instanceof FestivalStage) {
                     lineKeyFrame = new KeyFrame(
@@ -215,12 +217,27 @@ public abstract class AbstractPrintTree {
                     currentIndex++;
                 }
 
+            } else if (firstCircleObject.getUserData() instanceof FestivalStage) {
+                if (currentUserCircle != null && currentFestivalOrVenueCircle != null){
+                    currentStage = getCircleDetails(firstCircleObject);
+                    Circle circleForLambda = getCircleDetails(firstCircleObject);
+                    if (nextCircleObject.getUserData() instanceof Concert) {
+                        lineKeyFrame = new KeyFrame(
+                                Duration.millis(currentIndex * 300),
+                                event -> {
+                                    drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                                }
+                        );
+                        timeline.getKeyFrames().add(lineKeyFrame);
+                        currentIndex++;
+                    }
+                }
             } else if (firstCircleObject.getUserData() instanceof Concert) {
-                if (currentUserCircle != null && currentFestivalCircle != null) {
+                if (currentUserCircle != null && currentFestivalOrVenueCircle != null) {
                     if (nextCircleObject.getUserData() instanceof Venue) {
-                        currentFestivalCircle = getCircleDetails(nextCircleObject);
+                        currentFestivalOrVenueCircle = getCircleDetails(nextCircleObject);
                         Circle user = getCircleDetails(currentUserCircle);
-                        Circle venue = getCircleDetails(currentFestivalCircle);
+                        Circle venue = getCircleDetails(currentFestivalOrVenueCircle);
                         lineKeyFrame = new KeyFrame(
                                 Duration.millis(currentIndex * 300),
                                 event -> {
@@ -229,16 +246,55 @@ public abstract class AbstractPrintTree {
                         );
                         timeline.getKeyFrames().add(lineKeyFrame);
                         currentIndex++;
-                    } else {
-                        Circle venue = getCircleDetails(currentFestivalCircle);
+                    } else if(nextCircleObject.getUserData() instanceof Festival){
+                        currentFestivalOrVenueCircle = getCircleDetails(nextCircleObject);
+                        Circle user = getCircleDetails(currentUserCircle);
                         lineKeyFrame = new KeyFrame(
                                 Duration.millis(currentIndex * 300),
                                 event -> {
-                                    drawEdgeBetweenTwoPoints(venue.getCenterX(), venue.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                                    drawEdgeBetweenTwoPoints(user.getCenterX(), user.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
                                 }
                         );
                         timeline.getKeyFrames().add(lineKeyFrame);
                         currentIndex++;
+                    } else if(nextCircleObject.getUserData() instanceof FestivalStage){
+                        currentStage = getCircleDetails(nextCircleObject);
+                        Circle festivalStage = getCircleDetails(nextCircleObject);
+                        Circle festival = getCircleDetails(currentFestivalOrVenueCircle);
+                        lineKeyFrame = new KeyFrame(
+                                Duration.millis(currentIndex * 300),
+                                event -> {
+                                    drawEdgeBetweenTwoPoints(festivalStage.getCenterX(), festivalStage.getCenterY(), festival.getCenterX(), festival.getCenterY(), gc);
+                                }
+                        );
+                        timeline.getKeyFrames().add(lineKeyFrame);
+                        currentIndex++;
+                    }else if (nextCircleObject.getUserData() instanceof Concert) {
+                        if(currentFestivalOrVenueCircle.getUserData() instanceof Venue){
+                            Circle festival = getCircleDetails(currentFestivalOrVenueCircle);
+
+                            lineKeyFrame = new KeyFrame(
+                                    Duration.millis(currentIndex * 300),
+                                    event -> {
+                                        drawEdgeBetweenTwoPoints(festival.getCenterX(), festival.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                                    }
+                            );
+                            timeline.getKeyFrames().add(lineKeyFrame);
+                            currentIndex++;
+                        }else{
+                            Circle festival = getCircleDetails(currentStage);
+
+                            lineKeyFrame = new KeyFrame(
+                                    Duration.millis(currentIndex * 300),
+                                    event -> {
+                                        drawEdgeBetweenTwoPoints(festival.getCenterX(), festival.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                                    }
+                            );
+                            timeline.getKeyFrames().add(lineKeyFrame);
+                            currentIndex++;
+                        }
+
+
                     }
                 }
             }

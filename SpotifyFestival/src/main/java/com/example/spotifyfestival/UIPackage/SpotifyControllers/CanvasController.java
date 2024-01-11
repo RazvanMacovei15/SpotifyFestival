@@ -7,6 +7,7 @@ import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
+import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
 import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.collections.FXCollections;
@@ -30,6 +31,9 @@ import java.util.Map;
 import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController.getUserTopArtists;
 
 public class CanvasController extends AbstractPrintTree {
+
+    // Radius of the Earth in kilometers
+    private static final double EARTH_RADIUS = 6371.0;
     @FXML
     Canvas canvas;
     @FXML
@@ -120,7 +124,7 @@ public class CanvasController extends AbstractPrintTree {
 
         userLocationRadius = 10;
         venueCircleRadius = 10;
-        concertCircleRadius = 10;
+        concertCircleRadius = 5;
 
         gc = canvas.getGraphicsContext2D();
 
@@ -175,11 +179,8 @@ public class CanvasController extends AbstractPrintTree {
 //        RapidAPIParameters parameters = processSelection();
 //        RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
 //        api.addParameters(parameters);
+//        String json = api.getConcertsInYourArea();
 
-//        ConcertJSONUtils utils = new ConcertJSONUtils();
-//        System.out.println(api.getConcertsInYourArea());
-//        System.out.println(utils.extractConcerts(JSONConstant.getJsonData()));
-//        ConcertJSONUtils.createTree(JSONConstant.getJsonData());
         createTree(festivalStageDAO, festivalDAO, concertDAO, JSONConstant.getJsonData(), canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
     }
 
@@ -191,7 +192,7 @@ public class CanvasController extends AbstractPrintTree {
         userLocationCircle.setRadius(userLocationRadius);
 
         x = canvas.getWidth() / 2;
-        y = canvas.getHeight() / 2;
+        y = canvas.getHeight() * ((double) 3 /4) - 40;
 
         userLocationCircle.setCenterX(x);
         userLocationCircle.setCenterY(y);
@@ -212,7 +213,7 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     @Override
-    public Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
+    public Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity, UserLocation userLocation) {
         double venueCenterX = x;
         double venueCenterY = y;
         double radiusFromUserLocation = 130;
@@ -229,7 +230,7 @@ public class CanvasController extends AbstractPrintTree {
                 String y = "City: "+venueToCheck.getCity();
                 String z = "Street Address: "+venueToCheck.getStreetAddress();
                 String w = venueToCheck.getLocationLatitude() + "\n" + venueToCheck.getLocationLongitude();
-                String u = "Distance From User Unknown!";
+                String u = "Distance From User: " + calculateDistance(userLocation.getLatitude(), userLocation.getLongitude(), Double.parseDouble(venueToCheck.getLocationLatitude()), Double.parseDouble(venueToCheck.getLocationLongitude())) + "km!";
                 venueDetails.addAll(x, y, z, u);
                 detailsListView.setItems(venueDetails);
             });
@@ -237,9 +238,34 @@ public class CanvasController extends AbstractPrintTree {
         return venueLocationCircle;
     }
 
+    //use the Haversine formula to calculate the distance between two geographical points given their latitude and longitude coordinates
+    public static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        // Convert latitude and longitude from degrees to radians
+        double lat1Rad = Math.toRadians(lat1);
+        double lon1Rad = Math.toRadians(lon1);
+        double lat2Rad = Math.toRadians(lat2);
+        double lon2Rad = Math.toRadians(lon2);
+
+        // Calculate the differences
+        double dLat = lat2Rad - lat1Rad;
+        double dLon = lon2Rad - lon1Rad;
+
+        // Haversine formula
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(lat1Rad) * Math.cos(lat2Rad)
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        // Distance in kilometers
+        double distance = EARTH_RADIUS * c;
+
+        return distance;
+    }
+
     @Override
     public Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
-        double radiusFromVenueLocation = 10;
+        double radiusFromVenueLocation = 20;
         Circle concertLocationCircle = null;
         if(venueIndex < numberOfVenueCircles/4){
             concertLocationCircle = drawCircleOnTheRightSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
@@ -256,6 +282,16 @@ public class CanvasController extends AbstractPrintTree {
 
             concertLocationCircle.setOnMouseClicked(event -> {
                 System.out.println(concert);
+                ObservableList<String> concertToListView = FXCollections.observableArrayList();
+
+                concertToListView.addAll(
+                        "Description: " +
+                                concert.getDescription(),
+                                "Venue: " + concert.getVenue().getVenueName(),
+                                concert.listOfArtistToString(concert.getListOfArtists()),
+                                "Date: " + concert.getStartOfTheConcert(),
+                                "Time: " + concert.getTime());
+                detailsListView.setItems(concertToListView);
             });
         }
         return concertLocationCircle;
@@ -265,7 +301,7 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawFestivalCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
         double venueCenterX = x;
         double venueCenterY = y;
-        double radiusFromUserLocation = 150;
+        double radiusFromUserLocation = 240;
 
         Circle festivalLocationCircle = drawCircleOnTheRightSide(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         festivalLocationCircle.setFill(Color.DARKMAGENTA);
@@ -285,7 +321,7 @@ public class CanvasController extends AbstractPrintTree {
 
     @Override
     public Circle drawStageCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
-        double radiusFromVenueLocation = 40;
+        double radiusFromVenueLocation = 50;
         Circle concertLocationCircle = null;
         if(venueIndex < numberOfVenueCircles/4){
             concertLocationCircle = drawCircleOnTheRightSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);

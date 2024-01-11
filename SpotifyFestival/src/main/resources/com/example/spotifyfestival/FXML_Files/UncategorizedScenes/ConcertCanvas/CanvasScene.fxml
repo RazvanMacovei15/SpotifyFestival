@@ -11,11 +11,14 @@
 <?import javafx.geometry.Pos?>
 <?import javafx.collections.FXCollections?>
 <?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.scene.shape.Line?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.CanvasController"
           alignment="CENTER"
+
           fx:id="mainGridPane">
+
 
     <columnConstraints>
         <ColumnConstraints percentWidth="70"/>
@@ -26,7 +29,7 @@
                 GridPane.rowIndex="0"
                 GridPane.columnIndex="0">
         <center>
-            <Canvas fx:id="canvas" >
+            <Canvas fx:id="canvas">
 
             </Canvas>
         </center>
@@ -34,7 +37,9 @@
     </BorderPane>
     <GridPane GridPane.rowIndex="0"
               GridPane.columnIndex="1"
-              minHeight="600">
+              minHeight="600"
+              style="-fx-border-color: black;
+                -fx-border-width: 0.5px;">
         <rowConstraints>
             <RowConstraints percentHeight="5"/>
             <RowConstraints percentHeight="5"/>
@@ -70,7 +75,7 @@
 
         <DatePicker fx:id="endDatePicker" promptText="choose a start Date" GridPane.rowIndex="2" minWidth="300"/>
 
-        <HBox GridPane.rowIndex="4" minWidth="300">
+        <HBox GridPane.rowIndex="4" minWidth="300" alignment="CENTER">
             <Label text="Current Location: ">
                 <font>
                     <Font name="Calibri" size="20"/>
@@ -82,10 +87,20 @@
                 </font>
             </Label>
         </HBox>
-        <Button fx:id="getLocation" text="Get Location" GridPane.rowIndex="5" onAction="#onGetLocationButtonClicked"/>
+        <Button fx:id="getLocation"
+                text="GET LOCATION"
+                GridPane.rowIndex="5"
+                onAction="#onGetLocationButtonClicked"
+                minWidth="300"
+                alignment="CENTER"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-border-color: black;
+                -fx-border-width: 0.5px;">
+
+        </Button>
         <Button fx:id="showConcertsInArea"
                 text="SHOW CONCERTS IN MY AREA"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-border-color: black;
+                -fx-border-width: 0.5px;"
                 GridPane.rowIndex="6"
                 minWidth="300"
                 onAction="#onShowConcertsButtonClicked">
@@ -126,14 +141,22 @@
         <Button fx:id="generateSuggestions"
                 GridPane.rowIndex="18"
                 text="THIS IS THE WAY"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-border-color: black;
+                -fx-border-width: 0.5px;"
                 minWidth="300"
-                onAction="#onGenerateSuggestionsButtonClicked"/>
+                onAction="#onGenerateSuggestionsButtonClicked">
+            <style>
+                -fx-border-color: black;
+                -fx-border-width: 2px;
+            </style>
+        </Button>
         <Button fx:id="backButton"
                 GridPane.rowIndex="19"
                 text="BACK"
                 minWidth="300"
                 style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 16px"
-                onAction="#onBackButtonClicked"/>
+                onAction="#onBackButtonClicked">
+
+        </Button>
     </GridPane>
 </GridPane>

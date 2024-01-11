@@ -225,12 +225,12 @@ public class TopGenresController {
             }
         }
         // Print the genre count to console
-        System.out.println(genreCount);
+//        System.out.println(genreCount);
 
         // Sort and return the genre count map
         Map<Genre, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
         for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
-            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
+//            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
         }
         return sortedGenreMap;
 

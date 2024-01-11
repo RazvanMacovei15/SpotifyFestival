@@ -33,6 +33,28 @@ public class Concert extends Entity {
         this.festivalStage = festivalStage;
     }
 
+    public String listOfArtistToString(List<Artist> artists) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Artists: ");
+        if (artists.size() == 1) {
+            sb.append(artists.get(0).getName());
+        } else if (artists.size() == 2) {
+
+            sb.append(artists.get(0).getName());
+            sb.append(" & ");
+            sb.append(artists.get(1).getName());
+
+        } else {
+            for (int i = 0; i < artists.size() - 1; i++) {
+                Artist artistToAdd = artists.get(i);
+                sb.append(artistToAdd.getName());
+                sb.append(" & ");
+            }
+            sb.append(artists.get(artists.size()).getName());
+        }
+        return sb.toString();
+    }
+
 //    public Concert(int id, String description, String startOfTheConcert, String time, Venue venue, Artist artist,  FestivalStage stage) {
 //        super(id);
 //        this.description = description;
@@ -43,60 +65,64 @@ public class Concert extends Entity {
 //        this.festivalStage = stage;
 //    }
 
-    public FestivalStage getFestivalStage() {
-        return festivalStage;
-    }
+        public FestivalStage getFestivalStage () {
+            return festivalStage;
+        }
 
-    public void setFestivalStage(FestivalStage festivalStage) {
-        this.festivalStage = festivalStage;
-    }
+        public void setFestivalStage (FestivalStage festivalStage){
+            this.festivalStage = festivalStage;
+        }
 
-    public String getTime() {
-        return time;
-    }
-    public void setTime(String time) {
-        this.time = time;
-    }
-    public String getDescription() {
-        return description;
-    }
-    public void setDescription(String description) {
-        this.description = description;
-    }
-    public int getVenueId() {
-        return venueId = venue.getId();
-    }
-    public int getArtistIdValue(){return  artistIdValue = artist.getId();}
-    public int getStageId(){return  stageId = festivalStage.getId();}
-    public Venue getVenue() {
-        return venue;
-    }
-    public void setVenue(Venue venue) {
-        this.venue = venue;
-    }
-    public String getStartOfTheConcert() {
-        return startOfTheConcert;
-    }
-    public void setStartOfTheConcert(String startOfTheConcert) {
-        this.startOfTheConcert = startOfTheConcert;
-    }
-    public List<Artist> getListOfArtists() {
-        return listOfArtists;
-    }
-    public void setListOfArtists(List<Artist> listOfArtists) {
-        this.listOfArtists = listOfArtists;
-    }
+        public String getTime () {
+            return time;
+        }
+        public void setTime (String time){
+            this.time = time;
+        }
+        public String getDescription () {
+            return description;
+        }
+        public void setDescription (String description){
+            this.description = description;
+        }
+        public int getVenueId () {
+            return venueId = venue.getId();
+        }
+        public int getArtistIdValue () {
+            return artistIdValue = artist.getId();
+        }
+        public int getStageId () {
+            return stageId = festivalStage.getId();
+        }
+        public Venue getVenue () {
+            return venue;
+        }
+        public void setVenue (Venue venue){
+            this.venue = venue;
+        }
+        public String getStartOfTheConcert () {
+            return startOfTheConcert;
+        }
+        public void setStartOfTheConcert (String startOfTheConcert){
+            this.startOfTheConcert = startOfTheConcert;
+        }
+        public List<Artist> getListOfArtists () {
+            return listOfArtists;
+        }
+        public void setListOfArtists (List < Artist > listOfArtists) {
+            this.listOfArtists = listOfArtists;
+        }
 
-    @Override
-    public String toString() {
-        return "Concert{" +
-                "id=" + id +
-                ", description='" + description + '\'' +
-                ", startOfTheConcert='" + startOfTheConcert + '\'' +
-                ", time='" + time + '\'' +
-                ", venueId=" + venueId + '\'' +
-                ", artistIdValue=" + artistIdValue + '\'' +
-                ", stageId=" + stageId + '\'' +
-                '}';
+        @Override
+        public String toString () {
+            return "Concert{" +
+                    "id=" + id +
+                    ", description='" + description + '\'' +
+                    ", startOfTheConcert='" + startOfTheConcert + '\'' +
+                    ", time='" + time + '\'' +
+                    ", venueId=" + venueId + '\'' +
+                    ", artistIdValue=" + artistIdValue + '\'' +
+                    ", stageId=" + stageId + '\'' +
+                    '}';
+        }
     }
-}

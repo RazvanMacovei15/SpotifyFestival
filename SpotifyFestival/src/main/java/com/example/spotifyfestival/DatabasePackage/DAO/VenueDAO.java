@@ -131,8 +131,8 @@ public class VenueDAO extends DBGenericRepository<Integer, Venue> implements Gen
 
                 Venue venue = new Venue(
                         rs.getInt("venue_id"),
-                        rs.getString("name"),
                         rs.getString("city"),
+                        rs.getString("name"),
                         rs.getString("address"),
                         String.valueOf(rs.getDouble("latitude")),
                         String.valueOf(rs.getDouble("longitude")));
