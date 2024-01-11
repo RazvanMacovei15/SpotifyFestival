@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -50,12 +51,25 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
 
     private static ArtistDAO artistDAO;
     private static FestivalStageDAO festivalStageDAO;
+    private static FestivalDAO festivalDAO;
     private static CRUDHelper crudHelper;
     //Singleton creation
     private static ConcertDAO instance;
     private ConcertDAO(){
 
     }
+
+    public ObservableList<Concert> getAllConcertsForAStage(FestivalStage stage){
+        Iterable<Concert> concerts = instance.getAll();
+        ObservableList<Concert> concertsForTheStage = FXCollections.observableArrayList();
+        for(Concert concert : concerts){
+            if(concert.getFestivalStage().getId() == stage.getId()){
+                concertsForTheStage.add(concert);
+            }
+        }
+        return concertsForTheStage;
+    }
+
     public static ConcertDAO getInstance(){
         if(instance == null){
             instance = new ConcertDAO();
@@ -63,6 +77,7 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
             venueDAO = VenueDAO.getInstance();
             artistDAO = ArtistDAO.getInstance();
             festivalStageDAO = FestivalStageDAO.getInstance();
+            festivalDAO = FestivalDAO.getInstance();
             initialize();
 
         }
@@ -149,19 +164,20 @@ public class ConcertDAO extends DBGenericRepository<Integer, Concert> implements
                 Venue venue = venueDAO.getItem(rs.getInt("venue_id"));
                 Artist artist = artistDAO.getItem(rs.getInt("artist_id"));
                 FestivalStage stage = festivalStageDAO.getItem(rs.getInt("stage_id"));
-//                List<Artist> list = new ArrayList<>();
-//                list.add(artist);
+                List<Artist> list = new ArrayList<>();
+                list.add(artist);
                 //remember to add ConcertArtist class in case there are multiple artists at a concert
 
                 Concert concert = new Concert(
                         rs.getInt("concert_id"),
                         rs.getString("description"),
+                        list,
+                        venue,
                         rs.getString("start_date"),
                         rs.getString("start_time"),
-                        venue,
-                        artist,
                         stage);
-//                concert.setArtist(artist);
+
+                concert.setArtist(artist);
 
                 venue.addConcertToList(concert);
 

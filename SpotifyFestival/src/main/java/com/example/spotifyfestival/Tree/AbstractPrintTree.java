@@ -1,11 +1,10 @@
 package com.example.spotifyfestival.Tree;
 
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.VenueDAO;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserLocation;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,22 +25,15 @@ public abstract class AbstractPrintTree {
 
     public abstract Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueLocationRadius, Entity entity);
 
-    public abstract Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY);
+    public abstract Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex);
 
-    public abstract Circle drawFestivalCircle();
+    public abstract Circle drawFestivalCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity);
 
-    public abstract Circle drawStageCircle();
+    public abstract Circle drawStageCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex);
 
     protected List<Circle> allCircles = new ArrayList<>();
 
-    public void createTree(ConcertDAO concertDAO, String str, BorderPane canvasBorderPane, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius, GraphicsContext gc) {
-        Iterable<Concert> dbConcerts = concertDAO.getAll();
-        ObservableList<Entity> dbOBSConcerts =FXCollections.observableArrayList();
-        ObservableList<Concert> dbConcertsOBS = FXCollections.observableArrayList();
-        for(Concert concert : dbConcerts){
-            dbOBSConcerts.add(concert);
-            dbConcertsOBS.add(concert);
-        }
+    public void createTree(FestivalStageDAO festivalStageDAO, FestivalDAO festivalDAO, ConcertDAO concertDAO, String str, BorderPane canvasBorderPane, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius, GraphicsContext gc) {
 
         ConcertJSONUtils utils = new ConcertJSONUtils();
         ObservableList<Concert> concerts = utils.extractConcerts(str);
@@ -55,49 +47,108 @@ public abstract class AbstractPrintTree {
         allCircles.add(userLocationCircle);
         ObservableList<Venue> venues = utils.createListOfALlVenues(concerts);
 
-        ObservableList<Entity> venueDBEntities = FXCollections.observableArrayList();
-        venueDBEntities.addAll(concertDAO.getVenueDAO().getVenuesList());
+        ObservableList<Entity> entityLocations = FXCollections.observableArrayList();
+        entityLocations.addAll(venues);
 
-        ObservableList<Entity> entityVenues = FXCollections.observableArrayList();
-        entityVenues.addAll(venues);
-        entityVenues.addAll(venueDBEntities);
+        Iterable<Festival> festivals = festivalDAO.getAll();
+        for (Festival festival : festivals) {
+            System.out.println(festival.getName());
+            entityLocations.add(festival);
+        }
 
-        for (int i = 0; i < entityVenues.size(); i++) {
+        for (int i = 0; i < entityLocations.size(); i++) {
 
-            Entity venueEntity = entityVenues.get(i);
+            Entity entity = entityLocations.get(i);
+            Circle venueCircle = null;
+            ObservableList<Entity> concertsOrStagesAtEntityVenue = FXCollections.observableArrayList();
 
-            TreeNode<Entity> rootChild = new TreeNode<>(venueEntity);
+            TreeNode<Entity> rootChild = new TreeNode<>(entity);
             root.addChild(rootChild);
 
-            int numberOfVenueCircles = entityVenues.size();
+            int numberOfVenueCircles = entityLocations.size();
+            drawFestivalCircle(i, numberOfVenueCircles, venueCircleRadius, entity);
 
-            Circle venueCircle = drawVenueCircle(i, numberOfVenueCircles, venueCircleRadius, venueEntity);
+            if (entity instanceof Venue) {
+                venueCircle = drawVenueCircle(i, numberOfVenueCircles, venueCircleRadius, entity);
+                allCircles.add(venueCircle);
+                concertsOrStagesAtEntityVenue = ConcertJSONUtils.getConcertsAtVenue(entity, concerts);
+                for (int j = 0; j < concertsOrStagesAtEntityVenue.size(); j++) {
+                    Entity concertEntity = concertsOrStagesAtEntityVenue.get(j);
 
-            allCircles.add(venueCircle);
+                    TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
+                    rootChild.addChild(venueChild);
 
-            ObservableList<Entity> concertsAtEntityVenue = utils.getConcertsAtVenue(venueEntity, concerts);
-            ObservableList<Entity> concertsAtEntityDBVenues = utils.getConcertsAtVenue(venueEntity, dbConcertsOBS);
-            concertsAtEntityVenue.addAll(concertsAtEntityDBVenues);
+                    int numberOfConcertCircles = concertsOrStagesAtEntityVenue.size();
+                    double concertCircleX = venueCircle.getCenterX();
+                    double concertCircleY = venueCircle.getCenterY();
 
-            for (int j = 0; j < concertsAtEntityVenue.size(); j++) {
-                Entity concertEntity = concertsAtEntityVenue.get(j);
+                    Circle concertCircle = drawConcertCircle(j, numberOfConcertCircles, concertLocationRadius, concertEntity, concertCircleX, concertCircleY, numberOfVenueCircles, i);
 
-                TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
-                rootChild.addChild(venueChild);
+                    allCircles.add(concertCircle);
+                }
+            } else if (entity instanceof Festival festival) {
+                Venue venue = null;
+                ObservableList<FestivalStage> stages = FXCollections.observableArrayList();
 
-                int numberOfConcertCircles = concertsAtEntityVenue.size();
-                double concertCircleX = venueCircle.getCenterX();
-                double concertCircleY = venueCircle.getCenterY();
 
-                Circle concertCircle = drawConcertCircle(j, numberOfConcertCircles, concertLocationRadius, concertEntity, concertCircleX, concertCircleY);
+                venue = festival.getVenue();
+                stages = festivalStageDAO.getAllStagesAtAVenueFestival(festivalStageDAO, venue);
 
-                allCircles.add(concertCircle);
+                venueCircle = drawFestivalCircle(i, numberOfVenueCircles, venueCircleRadius, entity);
+                allCircles.add(venueCircle);
+
+                concertsOrStagesAtEntityVenue.addAll(stages);
+
+                System.out.println(stages);
+
+                for (int j = 0; j < concertsOrStagesAtEntityVenue.size(); j++) {
+                    Entity stageEntity = concertsOrStagesAtEntityVenue.get(j);
+
+                    TreeNode<Entity> venueChild = new TreeNode<>(stageEntity);
+                    rootChild.addChild(venueChild);
+
+                    ObservableList<Concert> concertObservableList = FXCollections.observableArrayList();
+
+                    if (stageEntity instanceof FestivalStage stage) {
+                        concertObservableList = concertDAO.getAllConcertsForAStage(stage);
+                    }
+
+
+                    int numberOfStagesCircles = concertsOrStagesAtEntityVenue.size();
+                    double stageCircleX = venueCircle.getCenterX();
+                    double stageCircleY = venueCircle.getCenterY();
+
+                    Circle stageCircle = drawStageCircle(j, numberOfStagesCircles, concertLocationRadius, stageEntity, stageCircleX, stageCircleY, numberOfVenueCircles, i);
+
+                    allCircles.add(stageCircle);
+                    for (int k = 0; k < concertObservableList.size(); k++) {
+                        Entity concertEntity = concertObservableList.get(k);
+
+                        TreeNode<Entity> stageChild = new TreeNode<>(concertEntity);
+                        venueChild.addChild(stageChild);
+
+                        int numberOfConcertCircles = concertObservableList.size();
+                        double concertCircleX = stageCircle.getCenterX();
+                        double concertCircleY = stageCircle.getCenterY();
+
+                        Circle concertCircle = drawConcertCircle(k, numberOfConcertCircles, concertLocationRadius, concertEntity, concertCircleX, concertCircleY, numberOfStagesCircles, j);
+                        allCircles.add(concertCircle);
+                    }
+                }
             }
+        }
+        for (Circle circle : allCircles) {
+            if (!(circle.getUserData() == null)) {
+                System.out.println(circle.getUserData().getClass());
+            } else {
+                System.out.println("null");
+            }
+            System.out.println();
         }
         displayCirclesOneAtATime(allCircles, canvasBorderPane, gc, null, null);
     }
 
-    private void displayCirclesOneAtATime(List<Circle> circles, BorderPane canvasBorderPane, GraphicsContext gc, Circle currentUserCircle, Circle currentVenueCircle) {
+    private void displayCirclesOneAtATime(List<Circle> circles, BorderPane canvasBorderPane, GraphicsContext gc, Circle currentUserCircle, Circle currentFestivalCircle) {
 
         int currentIndex = 0;
 
@@ -133,9 +184,9 @@ public abstract class AbstractPrintTree {
                 timeline.getKeyFrames().add(lineKeyFrame);
                 currentIndex++;
             } else if (firstCircleObject.getUserData() instanceof Venue) {
-                currentVenueCircle = getCircleDetails(firstCircleObject);
+                currentFestivalCircle = getCircleDetails(firstCircleObject);
 
-                Circle circleForLambda = getCircleDetails(currentVenueCircle);
+                Circle circleForLambda = getCircleDetails(currentFestivalCircle);
 
                 if (nextCircleObject.getUserData() instanceof Concert) {
                     lineKeyFrame = new KeyFrame(
@@ -147,12 +198,29 @@ public abstract class AbstractPrintTree {
                     timeline.getKeyFrames().add(lineKeyFrame);
                     currentIndex++;
                 }
+
+            } else if (firstCircleObject.getUserData() instanceof Festival) {
+                currentFestivalCircle = getCircleDetails(firstCircleObject);
+
+                Circle circleForLambda = getCircleDetails(currentFestivalCircle);
+
+                if (nextCircleObject.getUserData() instanceof FestivalStage) {
+                    lineKeyFrame = new KeyFrame(
+                            Duration.millis(currentIndex * 300),
+                            event -> {
+                                drawEdgeBetweenTwoPoints(circleForLambda.getCenterX(), circleForLambda.getCenterY(), nextCircleObject.getCenterX(), nextCircleObject.getCenterY(), gc);
+                            }
+                    );
+                    timeline.getKeyFrames().add(lineKeyFrame);
+                    currentIndex++;
+                }
+
             } else if (firstCircleObject.getUserData() instanceof Concert) {
-                if (currentUserCircle != null && currentVenueCircle != null) {
+                if (currentUserCircle != null && currentFestivalCircle != null) {
                     if (nextCircleObject.getUserData() instanceof Venue) {
-                        currentVenueCircle = getCircleDetails(nextCircleObject);
+                        currentFestivalCircle = getCircleDetails(nextCircleObject);
                         Circle user = getCircleDetails(currentUserCircle);
-                        Circle venue = getCircleDetails(currentVenueCircle);
+                        Circle venue = getCircleDetails(currentFestivalCircle);
                         lineKeyFrame = new KeyFrame(
                                 Duration.millis(currentIndex * 300),
                                 event -> {
@@ -162,7 +230,7 @@ public abstract class AbstractPrintTree {
                         timeline.getKeyFrames().add(lineKeyFrame);
                         currentIndex++;
                     } else {
-                        Circle venue = getCircleDetails(currentVenueCircle);
+                        Circle venue = getCircleDetails(currentFestivalCircle);
                         lineKeyFrame = new KeyFrame(
                                 Duration.millis(currentIndex * 300),
                                 event -> {
@@ -203,7 +271,7 @@ public abstract class AbstractPrintTree {
         gc.strokeLine(Ax, Ay, Bx, By);
     }
 
-    public Circle getCircleDetails(Circle circleTwo) {
+    public static Circle getCircleDetails(Circle circleTwo) {
         double x = circleTwo.getCenterX();
         double y = circleTwo.getCenterY();
         double radius = circleTwo.getRadius();

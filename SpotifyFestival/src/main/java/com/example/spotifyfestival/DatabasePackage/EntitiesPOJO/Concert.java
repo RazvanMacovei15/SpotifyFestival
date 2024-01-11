@@ -33,15 +33,15 @@ public class Concert extends Entity {
         this.festivalStage = festivalStage;
     }
 
-    public Concert(int id, String description, String startOfTheConcert, String time, Venue venue, Artist artist,  FestivalStage stage) {
-        super(id);
-        this.description = description;
-        this.artist = artist;
-        this.venue = venue;
-        this.startOfTheConcert = startOfTheConcert;
-        this.time = time;
-        this.festivalStage = stage;
-    }
+//    public Concert(int id, String description, String startOfTheConcert, String time, Venue venue, Artist artist,  FestivalStage stage) {
+//        super(id);
+//        this.description = description;
+//        this.artist = artist;
+//        this.venue = venue;
+//        this.startOfTheConcert = startOfTheConcert;
+//        this.time = time;
+//        this.festivalStage = stage;
+//    }
 
     public FestivalStage getFestivalStage() {
         return festivalStage;

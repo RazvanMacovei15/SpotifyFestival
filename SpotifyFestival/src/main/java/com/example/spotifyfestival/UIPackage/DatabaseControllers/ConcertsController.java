@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Concert;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
@@ -17,6 +18,8 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 
@@ -132,7 +135,9 @@ public class ConcertsController {
             if (dialogButton == ButtonType.OK) {
                 int id2 = -1;
                 if (concert != null) id2 = concert.getId();
-                return new Concert(Integer.parseInt(id.getText()), description.getText(), startDate.getText(), startTime.getText(), service.getConcertDAO().getVenueDAO().getItem(Integer.valueOf(venueId.getText())), service.getConcertDAO().getArtistDAO().getItem(Integer.valueOf(artistId.getText())), service.getConcertDAO().getFestivalStageDAO().getItem(Integer.valueOf(stageId.getText())));
+                List<Artist> artists = new ArrayList<>();
+                artists.add( service.getConcertDAO().getArtistDAO().getItem(Integer.valueOf(artistId.getText())));
+                return new Concert(Integer.parseInt(id.getText()), description.getText(), artists, service.getConcertDAO().getVenueDAO().getItem(Integer.valueOf(venueId.getText())), startDate.getText(), startTime.getText(), service.getConcertDAO().getFestivalStageDAO().getItem(Integer.valueOf(stageId.getText())));
             }
             return null;
         });
@@ -159,12 +164,14 @@ public class ConcertsController {
         result.ifPresent(concert ->
         {
             try {
+                List<Artist> artists = new ArrayList<>();
+                artists.add(service.getConcertDAO().getArtistDAO().getItem(concert.getArtistIdValue()));
                 Concert concertToAdd = new Concert(concert.getId(),
                         concert.getDescription(),
+                        artists,
+                        service.getConcertDAO().getVenueDAO().getItem(concert.getVenueId()),
                         concert.getStartOfTheConcert(),
                         concert.getTime(),
-                        service.getConcertDAO().getVenueDAO().getItem(concert.getVenueId()),
-                        service.getConcertDAO().getArtistDAO().getItem(concert.getArtistIdValue()),
                         service.getConcertDAO().getFestivalStageDAO().getItem(concert.getStageId())
                 );
                 service.add(concertToAdd);

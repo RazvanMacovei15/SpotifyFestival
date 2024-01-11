@@ -3,6 +3,8 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
 import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
@@ -23,7 +25,6 @@ import org.controlsfx.control.CheckComboBox;
 import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Map;
 
 import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController.getUserTopArtists;
@@ -66,6 +67,8 @@ public class CanvasController extends AbstractPrintTree {
 
     protected double y;
     protected ConcertDAO concertDAO;
+    protected FestivalDAO festivalDAO;
+    protected FestivalStageDAO festivalStageDAO;
 
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
 
@@ -104,6 +107,9 @@ public class CanvasController extends AbstractPrintTree {
 
     public void initialize() {
         concertDAO = ConcertDAO.getInstance();
+        festivalDAO = FestivalDAO.getInstance();
+        festivalStageDAO = FestivalStageDAO.getInstance();
+
 
         //initialize canvas
         double canvasW = 700;
@@ -113,8 +119,8 @@ public class CanvasController extends AbstractPrintTree {
         canvas.setWidth(canvasW);
 
         userLocationRadius = 10;
-        venueCircleRadius = 20;
-        concertCircleRadius = 20;
+        venueCircleRadius = 10;
+        concertCircleRadius = 10;
 
         gc = canvas.getGraphicsContext2D();
 
@@ -174,7 +180,7 @@ public class CanvasController extends AbstractPrintTree {
 //        System.out.println(api.getConcertsInYourArea());
 //        System.out.println(utils.extractConcerts(JSONConstant.getJsonData()));
 //        ConcertJSONUtils.createTree(JSONConstant.getJsonData());
-        createTree(concertDAO, JSONConstant.getJsonData(), canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
+        createTree(festivalStageDAO, festivalDAO, concertDAO, JSONConstant.getJsonData(), canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
     }
 
     @Override
@@ -209,8 +215,8 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
         double venueCenterX = x;
         double venueCenterY = y;
-        double radiusFromUserLocation = 150;
-        Circle venueLocationCircle = drawCircleAtPoint(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
+        double radiusFromUserLocation = 130;
+        Circle venueLocationCircle = drawCircleOnTheRightSide(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         venueLocationCircle.setFill(Color.RED);
 
         if(entity instanceof Venue venue){
@@ -232,47 +238,91 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     @Override
-    public Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY) {
-        double radiusFromVenueLocation = 120;
-        Circle concertLocationCircle = drawCircleAtPoint(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
+    public Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
+        double radiusFromVenueLocation = 10;
+        Circle concertLocationCircle = null;
+        if(venueIndex < numberOfVenueCircles/4){
+            concertLocationCircle = drawCircleOnTheRightSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
+        }else{
+            concertLocationCircle = drawCircleOnTheLeftSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
+
+        }
+
         concertLocationCircle.setFill(Color.GREEN);
+        Circle circleForLambda = getCircleDetails(concertLocationCircle);
 
         if(entity instanceof Concert concert){
             concertLocationCircle.setUserData(concert);
 
             concertLocationCircle.setOnMouseClicked(event -> {
-                Concert venueToCheck = (Concert) concertLocationCircle.getUserData();
-                String description = "Description: "+venueToCheck.getDescription();
-                String date = "Date: "+venueToCheck.getStartOfTheConcert();
-                String venueTime = "Time: "+venueToCheck.getTime();
-                StringBuilder sb = new StringBuilder();
-                sb.append("Artists: ");
-                for(Artist artist:venueToCheck.getListOfArtists()){
-                    sb.append(artist.getName()).append(" ");
-                }
-                String artists = sb.toString();
-                ObservableList<String> concerts = FXCollections.observableArrayList();
-                concerts.addAll(description, date, venueTime, artists);
-                detailsListView.setItems(concerts);
+                System.out.println(concert);
             });
         }
         return concertLocationCircle;
     }
 
     @Override
-    public Circle drawFestivalCircle() {
-        return null;
+    public Circle drawFestivalCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
+        double venueCenterX = x;
+        double venueCenterY = y;
+        double radiusFromUserLocation = 150;
+
+        Circle festivalLocationCircle = drawCircleOnTheRightSide(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
+        festivalLocationCircle.setFill(Color.DARKMAGENTA);
+
+        if(entity instanceof Festival festival){
+            festivalLocationCircle.setUserData(festival);
+
+            festivalLocationCircle.setOnMouseClicked(event -> {
+                Festival venueToCheck = (Festival) festivalLocationCircle.getUserData();
+                ObservableList<String> festivals = FXCollections.observableArrayList();
+                festivals.add(venueToCheck.getName());
+                detailsListView.setItems(festivals);
+            });
+        }
+        return festivalLocationCircle;
     }
 
     @Override
-    public Circle drawStageCircle() {
-        return null;
+    public Circle drawStageCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
+        double radiusFromVenueLocation = 40;
+        Circle concertLocationCircle = null;
+        if(venueIndex < numberOfVenueCircles/4){
+            concertLocationCircle = drawCircleOnTheRightSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
+        }else{
+            concertLocationCircle = drawCircleOnTheLeftSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
+
+        }
+
+        concertLocationCircle.setFill(Color.GREENYELLOW);
+        Circle circleForLambda = getCircleDetails(concertLocationCircle);
+
+        if(entity instanceof FestivalStage stage){
+            concertLocationCircle.setUserData(stage);
+
+            concertLocationCircle.setOnMouseClicked(event -> {
+                System.out.println(stage);
+            });
+        }
+        return concertLocationCircle;
     }
 
-    public Circle drawCircleAtPoint(int i, int numberOfCircles, double circleCenterX, double circleCenterY, double radius, double circleRadius) {
+    public Circle drawCircleOnTheRightSide(int i, int numberOfCircles, double circleCenterX, double circleCenterY, double radius, double circleRadius) {
         double angle = 2 * Math.PI * i / numberOfCircles;
         double circleX = circleCenterX + radius * Math.cos(angle);
         double circleY = circleCenterY + radius * Math.sin(angle);
+        Circle circleToAdd = new Circle();
+        circleToAdd.setCenterX(circleX);
+        circleToAdd.setCenterY(circleY);
+        circleToAdd.setRadius(circleRadius);
+
+        return circleToAdd;
+    }
+
+    public Circle drawCircleOnTheLeftSide(int i, int numberOfCircles, double circleCenterX, double circleCenterY, double radius, double circleRadius) {
+        double angle = 2 * Math.PI * i / numberOfCircles;
+        double circleX = circleCenterX - radius * Math.cos(angle);
+        double circleY = circleCenterY - radius * Math.sin(angle);
         Circle circleToAdd = new Circle();
         circleToAdd.setCenterX(circleX);
         circleToAdd.setCenterY(circleY);

@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.DatabasePackage.DAO;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Festival;
 import com.example.spotifyfestival.GenericsPackage.GenericDAO;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.CRUDHelper;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
@@ -99,6 +100,19 @@ public class FestivalStageDAO extends DBGenericRepository<Integer, FestivalStage
                 return Optional.of(stage);
         }
         return Optional.empty();
+    }
+
+    public ObservableList<FestivalStage> getAllStagesAtAVenueFestival(FestivalStageDAO stageDAO, Venue venue){
+        ObservableList<FestivalStage> stages = FXCollections.observableArrayList();
+
+        Iterable<FestivalStage> stagesToLookInto = stageDAO.getAll();
+        for(FestivalStage stage : stagesToLookInto){
+            int stageVenueID = stage.getVenueId();
+            if(stageVenueID == venue.getId()){
+                stages.add(stage);
+            }
+        }
+        return stages;
     }
 
     @Override
