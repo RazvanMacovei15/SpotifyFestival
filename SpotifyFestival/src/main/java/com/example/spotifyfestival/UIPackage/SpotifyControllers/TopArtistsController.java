@@ -72,21 +72,27 @@ public class TopArtistsController {
     }
 
 
-    public void onAllTimeButtonClicked() throws JsonProcessingException {
-
-        onTimeRangeButtonClicked("all time");
-
+    private void onAllTimeButtonClicked()  {
+        try {
+            onTimeRangeButtonClicked("all time");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public void on6MonthsButtonClicked() throws JsonProcessingException {
-
-        onTimeRangeButtonClicked("6 months");
-
+    private void on6MonthsButtonClicked()  {
+        try {
+            onTimeRangeButtonClicked("6 months");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
-    public void on4WeeksButtonClicked() throws JsonProcessingException {
-
-        onTimeRangeButtonClicked("4 weeks");
-
+    private void on4WeeksButtonClicked()  {
+        try {
+            onTimeRangeButtonClicked("4 weeks");
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
@@ -107,7 +113,8 @@ public class TopArtistsController {
                 return;
         }
 
-        String jsonResponse = response.body().toString();
+        assert response != null;
+        String jsonResponse = response.body();
         // Call the extractAttribute method to get the artist attributes
         ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
         ObservableList<String> artistID = extractAttribute(jsonResponse, "id");
@@ -144,31 +151,4 @@ public class TopArtistsController {
             throw new RuntimeException("Unable to move forward", e);
         }
     }
-
-
-    //never used methods
-
-    public static void printNamesAndIDs(ObservableList<String> artistNames, ObservableList<String> artistID) {
-        if (artistNames.size() != artistID.size()) {
-            System.out.println("Error: The sizes of artistNames and artistID lists do not match.");
-            return;
-        }
-
-        for (int i = 0; i < artistNames.size(); i++) {
-            String name = artistNames.get(i);
-            String id = artistID.get(i);
-            System.out.println("Name: " + name);
-            System.out.println("ID: " + id);
-        }
-    }
-
-
-    public void onGetBackButtonClicked(ActionEvent event){
-        try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to go back", e);
-        }
-    }
-
 }

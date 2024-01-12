@@ -7,7 +7,6 @@ import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
-import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
 import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import javafx.collections.FXCollections;
@@ -17,6 +16,8 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
@@ -133,18 +134,30 @@ public class CanvasController extends AbstractPrintTree {
         genreComboBox.getItems().setAll(genres);
 
         Map<Genre, Integer> genreCount = retrieveGenreCount();
+        genreComboBox.setDisable(true);
+        venueComboBox.setDisable(true);
+        radiusField.setDisable(true);
 
-//        System.out.println(genreCount);
-//        System.out.println(genres);
+        //exercising with images
 
-//        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
-//        String responseJson = SpotifyService.getArtistByNameHttpResponse("Metallica", auth.getAccessToken());
+        // Load an image
+        Image image = new Image("https://i.scdn.co/image/ab6761610000f178ee07b5820dd91d15d397e29c");
 
-//        System.out.println(responseJson);
-//        Artist artist = SpotifyService.createArtistFromSearchResult(responseJson, 900);
-//        System.out.println(artist.getId());
-//        System.out.println(artist);
+        // Create an ImageView with the image
+        ImageView imageView = new ImageView(image);
 
+        // Draw the image on the canvas
+//        gc.drawImage(image, 0, 0);
+
+        // Set the desired width and height to scale down the image
+        double scaledWidth = 50;
+        double scaledHeight = 50;
+
+        // Set the fitWidth and fitHeight properties to scale the image
+        imageView.setFitWidth(scaledWidth);
+        imageView.setFitHeight(scaledHeight);
+
+        mainGridPane.add(imageView, 0, 0);
     }
 
     public void onBackButtonClicked(ActionEvent e) {
@@ -176,12 +189,13 @@ public class CanvasController extends AbstractPrintTree {
 
     public void onShowConcertsButtonClicked() {
 
-//        RapidAPIParameters parameters = processSelection();
-//        RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
-//        api.addParameters(parameters);
+        RapidAPIParameters parameters = processSelection();
+        RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
+        api.addParameters(parameters);
 //        String json = api.getConcertsInYourArea();
 
         createTree(festivalStageDAO, festivalDAO, concertDAO, JSONConstant.getJsonData(), canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
+        displayCirclesOneAtATime(canvasBorderPane, gc, null, null, null);
     }
 
     @Override

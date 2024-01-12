@@ -37,9 +37,8 @@
     </BorderPane>
     <GridPane GridPane.rowIndex="0"
               GridPane.columnIndex="1"
-              minHeight="600"
-              style="-fx-border-color: black;
-                -fx-border-width: 0.5px;">
+              minHeight="600">
+
         <rowConstraints>
             <RowConstraints percentHeight="5"/>
             <RowConstraints percentHeight="5"/>
@@ -125,7 +124,7 @@
             </Label>
             <TextField fx:id="radiusField" promptText="INSERT RADIUS IN KM" minWidth="230">
                 <font>
-                    <Font name="Calibri bold" size="14"/>
+                    <Font name="Calibri bold" size="13"/>
                 </font>
             </TextField>
         </HBox>

@@ -191,7 +191,8 @@ public class SpotifyAuthFlowService {
                 }
             }
             bool = true;
-            return HtmlCONSTANTS.HTML_PAGE;
+//            return HtmlCONSTANTS.HTML_PAGE;
+            return null;
         });
     }
 

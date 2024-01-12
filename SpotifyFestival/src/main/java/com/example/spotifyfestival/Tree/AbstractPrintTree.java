@@ -3,7 +3,6 @@ package com.example.spotifyfestival.Tree;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
-import com.example.spotifyfestival.DatabasePackage.DAO.VenueDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
 import javafx.animation.KeyFrame;
@@ -33,7 +32,7 @@ public abstract class AbstractPrintTree {
 
     protected List<Circle> allCircles = new ArrayList<>();
 
-    public void createTree(FestivalStageDAO festivalStageDAO, FestivalDAO festivalDAO, ConcertDAO concertDAO, String str, BorderPane canvasBorderPane, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius, GraphicsContext gc) {
+    public Tree<Entity> createTree(FestivalStageDAO festivalStageDAO, FestivalDAO festivalDAO, ConcertDAO concertDAO, String str, BorderPane canvasBorderPane, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius, GraphicsContext gc) {
 
         ConcertJSONUtils utils = new ConcertJSONUtils();
         ObservableList<Concert> concerts = utils.extractConcerts(str);
@@ -147,10 +146,15 @@ public abstract class AbstractPrintTree {
             System.out.println();
         }
         concertTree.printTree(concertTree);
-        displayCirclesOneAtATime(allCircles, canvasBorderPane, gc, null, null, null);
+        return concertTree;
     }
 
-    private void displayCirclesOneAtATime(List<Circle> circles, BorderPane canvasBorderPane, GraphicsContext gc, Circle currentUserCircle, Circle currentFestivalOrVenueCircle, Circle currentStage) {
+    public List<Circle> getAllCircles() {
+        return allCircles;
+    }
+
+    public void displayCirclesOneAtATime(BorderPane canvasBorderPane, GraphicsContext gc, Circle currentUserCircle, Circle currentFestivalOrVenueCircle, Circle currentStage) {
+        List<Circle> circles = getAllCircles();
 
         int currentIndex = 0;
 
