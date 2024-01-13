@@ -1,6 +1,8 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.API_URLS.Artists_API_URLS;
+import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
@@ -9,15 +11,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
+import java.util.Iterator;
+import java.util.List;
 
 public class TopArtistsController {
+    protected SpotifyService service;
 
     @FXML
     private ListView<String> listView;
@@ -30,11 +46,90 @@ public class TopArtistsController {
 
     @FXML
     private Button fourWeeksButton;
+    @FXML
+    private GridPane mainGridPane;
+//    @FXML
+//    public GridPane scrollPaneGridPane;
+//    @FXML
+//    public ScrollPane scrollPane;
 
     @FXML
     public void initialize() throws JsonProcessingException {
         // Automatically trigger the "4 weeks" button when the scene is shown
-        on4WeeksButtonClicked();
+//        on4WeeksButtonClicked();
+
+        something();
+    }
+
+    public void something(){
+
+
+        GridPane gridPane = new GridPane();
+        gridPane.setGridLinesVisible(false);
+        gridPane.setAlignment(Pos.CENTER);
+        ScrollPane scrollPane = new ScrollPane(gridPane);
+
+
+        // Ensure scroll bars are displayed only if needed
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+
+        for(int i = 0;  i<3; i++){
+            gridPane.getColumnConstraints().add(new ColumnConstraints(100));
+        }
+
+        ArtistDAO artistDAO = ArtistDAO.getInstance();
+
+        int rows = artistDAO.getSize()/3;
+        int row = 0;
+        int col = 0;
+        for(Artist artist : artistDAO.getAll()){
+
+            SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+            String token = auth.getAccessToken();
+
+            String json = SpotifyService.getArtistByNameHttpResponse(artist.getName(), token);
+
+            SpotifyService service1 = new SpotifyService();
+            String url = service1.getImageURL(json);
+
+            // Load an image
+            Image originalImage = new Image(url);
+
+            // Create an ImageView with the image
+            ImageView imageView = new ImageView(originalImage);
+
+            // Set the desired width and height to scale down the image
+            double scaledWidth = 50;
+            double scaledHeight = 50;
+
+            // Set the fitWidth and fitHeight properties to scale the image
+            imageView.setFitWidth(scaledWidth);
+            imageView.setFitHeight(scaledHeight);
+
+            Text text = new Text(artist.getId() + ". " + artist.getName());
+
+            VBox vBox = new VBox();
+
+            text.setWrappingWidth(100);
+            vBox.minWidth(100);
+            vBox.minHeight(100);
+
+            vBox.getChildren().add(imageView);
+            text.setTextAlignment(TextAlignment.CENTER); // Center-align the text
+
+            vBox.getChildren().add(text);
+            vBox.setAlignment(Pos.CENTER);
+            gridPane.add(vBox, col, row);
+            col++;
+
+            if(col == 3){
+                col = 0;
+                gridPane.getRowConstraints().add(new RowConstraints(100));
+                row++;
+            }
+        }
+        mainGridPane.add(scrollPane, 0, 3);
     }
 
     public static HttpResponse<String> getUserTopArtists() {
@@ -48,6 +143,7 @@ public class TopArtistsController {
             return null;
         }
     }
+
     public static HttpResponse<String> getUserTopArtistsOver6Months() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
@@ -59,6 +155,7 @@ public class TopArtistsController {
             return null;
         }
     }
+
     public static HttpResponse<String> getUserTopArtistsOver4Weeks() {
         try {
             SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
@@ -72,30 +169,19 @@ public class TopArtistsController {
     }
 
 
-    private void onAllTimeButtonClicked()  {
-        try {
-            onTimeRangeButtonClicked("all time");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public void onAllTimeButtonClicked() {
+        onTimeRangeButtonClicked("all time");
     }
 
-    private void on6MonthsButtonClicked()  {
-        try {
-            onTimeRangeButtonClicked("6 months");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    private void on4WeeksButtonClicked()  {
-        try {
-            onTimeRangeButtonClicked("4 weeks");
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
+    public void on6MonthsButtonClicked() {
+        onTimeRangeButtonClicked("6 months");
     }
 
-    public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
+    public void on4WeeksButtonClicked() {
+        onTimeRangeButtonClicked("4 weeks");
+    }
+
+    public void onTimeRangeButtonClicked(String timeRange) {
         HttpResponse<String> response;
 
         switch (timeRange) {
@@ -117,7 +203,6 @@ public class TopArtistsController {
         String jsonResponse = response.body();
         // Call the extractAttribute method to get the artist attributes
         ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
-        ObservableList<String> artistID = extractAttribute(jsonResponse, "id");
 
         // Set the artist names in your ListView or perform other actions
         listView.setItems(artistNames);
@@ -144,7 +229,7 @@ public class TopArtistsController {
         return attributeValues;
     }
 
-    public void getBackToTopLists(ActionEvent event){
+    public void getBackToTopLists(ActionEvent event) {
         try {
             AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
         } catch (IOException e) {

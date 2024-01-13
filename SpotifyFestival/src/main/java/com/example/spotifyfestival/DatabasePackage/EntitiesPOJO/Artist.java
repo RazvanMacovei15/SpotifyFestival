@@ -14,6 +14,12 @@ public class Artist extends Entity implements Serializable {
     protected ObservableList<Genre> genres ;
     protected String spotifyId;
 
+    protected String imageUrl;
+
+    protected String spotifyLink;
+    protected int popularity;
+
+
     public Artist(int id) {
         super(id);
     }
@@ -29,6 +35,16 @@ public class Artist extends Entity implements Serializable {
         super(id);
         this.name = name;
         this.spotifyId = spotify_id;
+    }
+
+    public Artist(int id, String name,  String spotifyId, ObservableList<Genre> genres, String imageUrl, String spotifyLink, int popularity) {
+        super(id);
+        this.name = name;
+        this.genres = genres;
+        this.spotifyId = spotifyId;
+        this.imageUrl = imageUrl;
+        this.spotifyLink = spotifyLink;
+        this.popularity = popularity;
     }
 
     public ObservableList<Genre> getGenres() {
@@ -66,6 +82,30 @@ public class Artist extends Entity implements Serializable {
 
     public void setSpotifyId(String spotifyId) {
         this.spotifyId = spotifyId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getSpotifyLink() {
+        return spotifyLink;
+    }
+
+    public void setSpotifyLink(String spotifyLink) {
+        this.spotifyLink = spotifyLink;
+    }
+
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
     }
 
     @Override

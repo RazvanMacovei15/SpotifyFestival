@@ -23,6 +23,8 @@
             style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
             onAction="#handleLoginButtonClick"/>
     <Label fx:id="label" text="Status: NOT LOGGED IN"
-           GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.halignment="CENTER">
+           GridPane.rowIndex="2"
+           GridPane.columnIndex="0"
+           GridPane.halignment="CENTER">
     </Label>
 </GridPane>

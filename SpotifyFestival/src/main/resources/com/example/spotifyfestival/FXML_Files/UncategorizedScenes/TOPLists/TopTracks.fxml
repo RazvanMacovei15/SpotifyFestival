@@ -30,7 +30,7 @@
             </image>
     </ImageView>
 
-    <Label text="Top Tracks" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="360"
+    <Label text="Top Tracks" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="300"
            style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 25px"/>
 
     <GridPane
@@ -42,22 +42,22 @@
 
         <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
             <Button fx:id="fourWeeksButton" text="4 weeks" alignment="CENTER" onAction="#on4WeeksButtonClicked">
-                <minWidth>120</minWidth>
-                <prefWidth>120</prefWidth>
+                <minWidth>100</minWidth>
+                <prefWidth>100</prefWidth>
             </Button>
         </HBox>
 
         <HBox GridPane.columnIndex="1" GridPane.halignment="CENTER" alignment="CENTER">
             <Button fx:id="sixMonthsButton" text="6 months" alignment="CENTER" onAction="#on6MonthsButtonClicked">
-                <minWidth>120</minWidth>
-                <prefWidth>120</prefWidth>
+                <minWidth>100</minWidth>
+                <prefWidth>100</prefWidth>
             </Button>
         </HBox>
 
         <HBox GridPane.columnIndex="2" GridPane.halignment="CENTER" alignment="CENTER">
             <Button fx:id="allTimeButton" text="All Time" alignment="CENTER" onAction="#onAllTimeButtonClicked">
-                <minWidth>120</minWidth>
-                <prefWidth>120</prefWidth>
+                <minWidth>100</minWidth>
+                <prefWidth>100</prefWidth>
             </Button>
         </HBox>
     </GridPane>
@@ -65,6 +65,7 @@
     <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
 
     </ListView>
+
 
     <Button alignment="CENTER"
             GridPane.halignment="CENTER"

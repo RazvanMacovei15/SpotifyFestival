@@ -1,22 +1,14 @@
 package com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
 
-import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
-import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
-import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
-import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
-import com.example.spotifyfestival.DatabasePackage.DAO.VenueDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
-import com.example.spotifyfestival.Tree.Tree;
-import com.example.spotifyfestival.Tree.TreeNode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -97,7 +89,7 @@ public class ConcertJSONUtils {
                     String json = SpotifyService.getArtistByNameHttpResponse(artistName, token);
 //                    System.out.println(json);
 
-                    Artist artist = SpotifyService.createArtistFromSearchResult(json, 3);
+                    Artist artist = SpotifyService.createArtistFromSearchResultForConcertRetrieval(json, 3);
 
                     artistList.add(artist);
                 }

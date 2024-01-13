@@ -2,109 +2,109 @@
 <dataSource name="UserBase">
   <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.51">
     <root id="1"/>
-    <collation id="2" parent="1" name="RTRIM"/>
+    <collation id="2" parent="1" name="BINARY"/>
     <collation id="3" parent="1" name="NOCASE"/>
-    <collation id="4" parent="1" name="BINARY"/>
-    <package id="5" parent="1" name="json_tree"/>
-    <package id="6" parent="1" name="json_each"/>
-    <package id="7" parent="1" name="fts4aux"/>
-    <package id="8" parent="1" name="fts3"/>
-    <package id="9" parent="1" name="fts4"/>
-    <package id="10" parent="1" name="fts3tokenize"/>
+    <collation id="4" parent="1" name="RTRIM"/>
+    <package id="5" parent="1" name="dbstat"/>
+    <package id="6" parent="1" name="fts3"/>
+    <package id="7" parent="1" name="fts3tokenize"/>
+    <package id="8" parent="1" name="fts4"/>
+    <package id="9" parent="1" name="fts4aux"/>
+    <package id="10" parent="1" name="fts5"/>
     <package id="11" parent="1" name="fts5vocab"/>
-    <package id="12" parent="1" name="rtree_i32"/>
-    <package id="13" parent="1" name="fts5"/>
+    <package id="12" parent="1" name="json_each"/>
+    <package id="13" parent="1" name="json_tree"/>
     <package id="14" parent="1" name="rtree"/>
-    <package id="15" parent="1" name="dbstat"/>
-    <routine id="16" parent="1" name="julianday">
+    <package id="15" parent="1" name="rtree_i32"/>
+    <routine id="16" parent="1" name="bm25">
+      <Variadic>1</Variadic>
+    </routine>
+    <routine id="17" parent="1" name="char">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="17" parent="1" name="json_array">
+    <routine id="18" parent="1" name="coalesce">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="18" parent="1" name="json_remove">
+    <routine id="19" parent="1" name="date">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="19" parent="1" name="json_object">
+    <routine id="20" parent="1" name="datetime">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="20" parent="1" name="json_insert">
+    <routine id="21" parent="1" name="format">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="21" parent="1" name="printf">
+    <routine id="22" parent="1" name="highlight">
+      <Variadic>1</Variadic>
+    </routine>
+    <routine id="23" parent="1" name="json_array">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="22" parent="1" name="json_replace">
+    <routine id="24" parent="1" name="json_extract">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="23" parent="1" name="json_extract">
+    <routine id="25" parent="1" name="json_insert">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="24" parent="1" name="time">
+    <routine id="26" parent="1" name="json_object">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="25" parent="1" name="strftime">
+    <routine id="27" parent="1" name="json_remove">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="26" parent="1" name="char">
+    <routine id="28" parent="1" name="json_replace">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="27" parent="1" name="unixepoch">
+    <routine id="29" parent="1" name="json_set">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="28" parent="1" name="date">
+    <routine id="30" parent="1" name="julianday">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="29" parent="1" name="coalesce">
+    <routine id="31" parent="1" name="max">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="30" parent="1" name="format">
+    <routine id="32" parent="1" name="min">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="31" parent="1" name="datetime">
+    <routine id="33" parent="1" name="printf">
       <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="32" parent="1" name="max">
-      <Deterministic>1</Deterministic>
+    <routine id="34" parent="1" name="regexp">
       <Variadic>1</Variadic>
     </routine>
-    <routine id="33" parent="1" name="min">
-      <Deterministic>1</Deterministic>
-      <Variadic>1</Variadic>
-    </routine>
-    <routine id="34" parent="1" name="json_set">
-      <Deterministic>1</Deterministic>
-      <Variadic>1</Variadic>
-    </routine>
-    <routine id="35" parent="1" name="regexp">
+    <routine id="35" parent="1" name="rtreecheck">
       <Variadic>1</Variadic>
     </routine>
     <routine id="36" parent="1" name="snippet">
       <Variadic>1</Variadic>
     </routine>
-    <routine id="37" parent="1" name="rtreecheck">
+    <routine id="37" parent="1" name="strftime">
+      <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="38" parent="1" name="highlight">
+    <routine id="38" parent="1" name="time">
+      <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
-    <routine id="39" parent="1" name="bm25">
+    <routine id="39" parent="1" name="unixepoch">
+      <Deterministic>1</Deterministic>
       <Variadic>1</Variadic>
     </routine>
     <routine id="40" parent="1" name="lag">
@@ -444,7 +444,7 @@
     <routine id="176" parent="1" name="fts5"/>
     <schema id="177" parent="1" name="main">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2023-12-12.13:39:35</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2023-12-14.04:11:59</LastIntrospectionLocalTimestamp>
     </schema>
     <argument id="178" parent="16">
       <ArgumentDirection>R</ArgumentDirection>
@@ -1468,50 +1468,48 @@
     </argument>
     <table id="518" parent="177" name="AppUsers"/>
     <table id="519" parent="177" name="Genres"/>
-    <table id="520" parent="177" name="sqlite_master">
+    <table id="520" parent="177" name="Users"/>
+    <table id="521" parent="177" name="sqlite_master">
       <System>1</System>
     </table>
-    <table id="521" parent="177" name="users"/>
-    <column id="522" parent="518" name="id">
+    <table id="522" parent="177" name="sqlite_sequence">
+      <System>1</System>
+    </table>
+    <column id="523" parent="518" name="id">
+      <AutoIncrement>1</AutoIncrement>
       <DasType>INTEGER|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="523" parent="518" name="email">
+    <column id="524" parent="518" name="email">
       <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="524" parent="518" name="username">
+    <column id="525" parent="518" name="username">
       <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="525" parent="518" name="role">
+    <column id="526" parent="518" name="role">
       <DasType>varchar(200)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="526" parent="518" name="spotifyId">
+    <column id="527" parent="518" name="spotifyId">
       <DasType>varchar(200)|0s</DasType>
-      <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <index id="527" parent="518" name="sqlite_autoindex_AppUsers_1">
-      <ColNames>id</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Unique>1</Unique>
-    </index>
-    <index id="528" parent="518" name="sqlite_autoindex_AppUsers_2">
+    <index id="528" parent="518" name="sqlite_autoindex_AppUsers_1">
       <ColNames>email</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="529" parent="518" name="sqlite_autoindex_AppUsers_3">
+    <index id="529" parent="518" name="sqlite_autoindex_AppUsers_2">
       <ColNames>username</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="530" parent="518" name="sqlite_autoindex_AppUsers_4">
+    <index id="530" parent="518" name="sqlite_autoindex_AppUsers_3">
       <ColNames>spotifyId</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
@@ -1519,86 +1517,110 @@
     <key id="531" parent="518">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
-      <UnderlyingIndexName>sqlite_autoindex_AppUsers_1</UnderlyingIndexName>
     </key>
     <key id="532" parent="518">
-      <ColNames>id</ColNames>
+      <ColNames>email</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_AppUsers_1</UnderlyingIndexName>
     </key>
     <key id="533" parent="518">
-      <ColNames>email</ColNames>
+      <ColNames>username</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_AppUsers_2</UnderlyingIndexName>
     </key>
     <key id="534" parent="518">
-      <ColNames>username</ColNames>
+      <ColNames>spotifyId</ColNames>
       <UnderlyingIndexName>sqlite_autoindex_AppUsers_3</UnderlyingIndexName>
     </key>
-    <key id="535" parent="518">
-      <ColNames>spotifyId</ColNames>
-      <UnderlyingIndexName>sqlite_autoindex_AppUsers_4</UnderlyingIndexName>
-    </key>
-    <column id="536" parent="519" name="id">
+    <column id="535" parent="519" name="id">
       <DasType>SERIAL|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="537" parent="519" name="genre_name">
+    <column id="536" parent="519" name="genre_name">
       <DasType>VARCHAR(255)|0s</DasType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <index id="538" parent="519" name="sqlite_autoindex_Genres_1">
+    <index id="537" parent="519" name="sqlite_autoindex_Genres_1">
       <ColNames>id</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="539" parent="519">
+    <key id="538" parent="519">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_Genres_1</UnderlyingIndexName>
     </key>
-    <column id="540" parent="520" name="type">
+    <column id="539" parent="520" name="user_id">
+      <DasType>SERIAL|0s</DasType>
+      <Position>1</Position>
+    </column>
+    <column id="540" parent="520" name="email">
+      <DasType>VARCHAR(255)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="541" parent="520" name="username">
+      <DasType>VARCHAR(255)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="542" parent="520" name="encrypted_password">
+      <DasType>VARCHAR(255)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="543" parent="520" name="role">
+      <DasType>VARCHAR(255)|0s</DasType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="544" parent="520" name="genre_list_id">
+      <DasType>INT|0s</DasType>
+      <Position>6</Position>
+    </column>
+    <column id="545" parent="520" name="spotify_id">
+      <DasType>TEXT|0s</DasType>
+      <Position>7</Position>
+    </column>
+    <foreign-key id="546" parent="520">
+      <ColNames>genre_list_id</ColNames>
+      <RefColNames>id</RefColNames>
+      <RefTableName>Genres</RefTableName>
+    </foreign-key>
+    <index id="547" parent="520" name="sqlite_autoindex_Users_1">
+      <ColNames>user_id</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="548" parent="520">
+      <ColNames>user_id</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_Users_1</UnderlyingIndexName>
+    </key>
+    <column id="549" parent="521" name="type">
       <DasType>TEXT|0s</DasType>
       <Position>1</Position>
     </column>
-    <column id="541" parent="520" name="name">
+    <column id="550" parent="521" name="name">
       <DasType>TEXT|0s</DasType>
       <Position>2</Position>
     </column>
-    <column id="542" parent="520" name="tbl_name">
+    <column id="551" parent="521" name="tbl_name">
       <DasType>TEXT|0s</DasType>
       <Position>3</Position>
     </column>
-    <column id="543" parent="520" name="rootpage">
+    <column id="552" parent="521" name="rootpage">
       <DasType>INT|0s</DasType>
       <Position>4</Position>
     </column>
-    <column id="544" parent="520" name="sql">
+    <column id="553" parent="521" name="sql">
       <DasType>TEXT|0s</DasType>
       <Position>5</Position>
     </column>
-    <column id="545" parent="521" name="user_id">
-      <DasType>NUM|0s</DasType>
+    <column id="554" parent="522" name="name">
       <Position>1</Position>
     </column>
-    <column id="546" parent="521" name="email">
-      <DasType>TEXT|0s</DasType>
+    <column id="555" parent="522" name="seq">
       <Position>2</Position>
-    </column>
-    <column id="547" parent="521" name="username">
-      <DasType>TEXT|0s</DasType>
-      <Position>3</Position>
-    </column>
-    <column id="548" parent="521" name="encrypted_password">
-      <DasType>TEXT|0s</DasType>
-      <Position>4</Position>
-    </column>
-    <column id="549" parent="521" name="role">
-      <DasType>TEXT|0s</DasType>
-      <Position>5</Position>
-    </column>
-    <column id="550" parent="521" name="spotify_id">
-      <DasType>TEXT|0s</DasType>
-      <Position>6</Position>
     </column>
   </database-model>
 </dataSource>

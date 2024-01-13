@@ -56,7 +56,7 @@ public class SpotifyService {
         return response;
     }
 
-    public HttpResponse<String> getUserTopArtists(String accessToken)  {
+    public HttpResponse<String> getUserTopArtists(String accessToken) {
 
         String API_URL = Artists_API_URLS.getUserTopArtistsAllTimeURI();
 
@@ -75,7 +75,7 @@ public class SpotifyService {
         return response;
     }
 
-    public static String getArtistByNameHttpResponse(String name, String accessToken){
+    public static String getArtistByNameHttpResponse(String name, String accessToken) {
         String API_URL = SearchAPI.searchForArtist(name);
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
@@ -84,16 +84,16 @@ public class SpotifyService {
                 .GET()
                 .build();
         HttpResponse<String> response = null;
-        try{
+        try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        }catch (IOException | InterruptedException e){
+        } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
 
         return response.body().toString();
     }
 
-    public static Artist createArtistFromSearchResult(String json, int id){
+    public static Artist createArtistFromSearchResultForConcertRetrieval(String json, int id) {
         // Create an empty ObservableList to store the attribute values
         ObservableList<String> attributeValues = FXCollections.observableArrayList();
         String name = null;
@@ -118,5 +118,27 @@ public class SpotifyService {
         return new Artist(id, name, spotifyID);
     }
 
+    public String getImageURL(String json) {
+        // Create an empty ObservableList to store the attribute values
+        ObservableList<String> attributeValues = FXCollections.observableArrayList();
+        String url = null;
+        String spotifyID = null;
+        try {
+            // Parse the JSON response
+            JSONObject responseJson = new JSONObject(json);
+            JSONObject obj = responseJson.getJSONObject("artists");
+            JSONArray itemsArray = obj.getJSONArray("items");
+
+            // Iterate through the items and extract the specified attribute
+            for (int i = 0; i < itemsArray.length(); i++) {
+                JSONObject itemObject = itemsArray.getJSONObject(i);
+                JSONArray urlList = itemObject.getJSONArray("images");
+                url = urlList.getJSONObject(2).getString("url");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
 
 }

@@ -17,7 +17,7 @@ public class AppSwitchScenesMethods {
 
         Parent sceneRoot = loader.load();
 
-        double sceneWidth = 400; // Set your desired width
+        double sceneWidth = 300; // Set your desired width
         double sceneHeight = 600; // Set your desired height
         Scene scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
         Stage stage = App.getPrimaryStage();
@@ -73,7 +73,7 @@ public class AppSwitchScenesMethods {
         FXMLLoader loader = new FXMLLoader(AppSwitchScenesMethods.class.getResource(sceneFXML));
         Parent sceneRoot = loader.load();
 
-        double sceneWidth = 400; // Set your desired width
+        double sceneWidth = 300; // Set your desired width
         double sceneHeight = 600; // Set your desired height
         Scene scene = new Scene(sceneRoot, sceneWidth, sceneHeight);
         Stage stage = App.getPrimaryStage();
