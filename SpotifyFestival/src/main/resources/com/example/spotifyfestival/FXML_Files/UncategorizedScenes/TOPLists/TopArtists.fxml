@@ -56,8 +56,6 @@
         </HBox>
     </GridPane>
 
-
-
     <ScrollPane fx:id="scrollPane" GridPane.rowIndex="3">
 
     </ScrollPane>

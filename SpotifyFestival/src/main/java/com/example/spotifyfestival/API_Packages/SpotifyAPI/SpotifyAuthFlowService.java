@@ -198,9 +198,6 @@ public class SpotifyAuthFlowService {
 
     public String getEmailResponse() throws IOException, InterruptedException {
         String apiUrl = "https://api.spotify.com/v1/me";
-        // Set up headers
-        Map<String, String> headers = new HashMap<>();
-        headers.put("Authorization", "Bearer " + accessToken);
         // Create HttpRequest
         HttpRequest emailRequest = HttpRequest.newBuilder()
                 .GET()
