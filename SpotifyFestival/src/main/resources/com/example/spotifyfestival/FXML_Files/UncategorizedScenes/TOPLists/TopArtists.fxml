@@ -56,9 +56,11 @@
         </HBox>
     </GridPane>
 
-<!--    <ListView fx:id="listView"-->
-<!--            GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER" maxWidth="300" maxHeight="420"/>-->
 
+
+    <ScrollPane fx:id="scrollPane" GridPane.rowIndex="3">
+
+    </ScrollPane>
 
     <Button alignment="CENTER"
             GridPane.halignment="CENTER"

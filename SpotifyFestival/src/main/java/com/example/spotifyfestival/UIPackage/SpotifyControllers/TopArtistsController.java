@@ -13,10 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.effect.Light;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,7 +35,7 @@ public class TopArtistsController {
     protected SpotifyService service;
 
     @FXML
-    private ListView<String> listView;
+    protected Label infoLabel;
 
     @FXML
     private Button allTimeButton;
@@ -50,62 +47,43 @@ public class TopArtistsController {
     private Button fourWeeksButton;
     @FXML
     private GridPane mainGridPane;
-//    @FXML
-//    public GridPane scrollPaneGridPane;
-//    @FXML
-//    public ScrollPane scrollPane;
+
+    @FXML
+    public ScrollPane scrollPane;
 
     @FXML
     public void initialize() throws JsonProcessingException {
-        // Automatically trigger the "4 weeks" button when the scene is shown
-//        on4WeeksButtonClicked();
         service = new SpotifyService();
-        Platform.runLater(()->{
-            something();
-        });
+
+        // Automatically trigger the "4 weeks" button when the scene is shown
+        on4WeeksButtonClicked();
 
     }
 
-    public void something(){
+    public void something(ScrollPane scrollPane, String response) {
+        scrollPane.setContent(null);
+        GridPane gridPane = new GridPane();
 
         service = new SpotifyService();
+        scrollPane.setContent(gridPane);
 
-
-        GridPane gridPane = new GridPane();
         gridPane.setGridLinesVisible(false);
         gridPane.setAlignment(Pos.CENTER);
-        ScrollPane scrollPane = new ScrollPane(gridPane);
-
 
         // Ensure scroll bars are displayed only if needed
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        for(int i = 0;  i<3; i++){
+        for (int i = 0; i < 3; i++) {
             gridPane.getColumnConstraints().add(new ColumnConstraints(100));
         }
 
-        ArtistDAO artistDAO = ArtistDAO.getInstance();
+        List<Artist> artists = service.getTopArtists(response);
 
-        SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-        String token = spotifyAuthFlowService.getAccessToken();
-        SpotifyService spotifyService = new SpotifyService();
-        HttpResponse<String> response =  spotifyService.getHttpResponse(token, Artists_API_URLS.getUserTopArtistsOver4WeeksURI());
-
-        List<Artist> artists = service.getTopArtists(response.body());
-
-
-        int rows = artistDAO.getSize()/3;
         int row = 0;
         int col = 0;
-        for(Artist artist : artists){
+        for (Artist artist : artists) {
 
-
-            token = spotifyAuthFlowService.getAccessToken();
-
-//            String json = SpotifyService.getArtistByNameHttpResponse(artist.getName(), token);
-
-//            SpotifyService service1 = new SpotifyService();
             String url = artist.getImageUrl();
 
             // Load an image
@@ -141,13 +119,13 @@ public class TopArtistsController {
             gridPane.add(vBox, col, row);
             col++;
 
-            if(col == 3){
+            if (col == 3) {
                 col = 0;
                 gridPane.getRowConstraints().add(new RowConstraints(100));
                 row++;
             }
         }
-        mainGridPane.add(scrollPane, 0, 3);
+
     }
 
     public static HttpResponse<String> getUserTopArtists() {
@@ -223,9 +201,9 @@ public class TopArtistsController {
 //        List<Artist>
         // Call the extractAttribute method to get the artist attributes
         ObservableList<String> artistNames = extractAttribute(jsonResponse, "name");
-
+        something(scrollPane, jsonResponse);
         // Set the artist names in your ListView or perform other actions
-        listView.setItems(artistNames);
+//        listView.setItems(artistNames);
     }
 
     public static ObservableList<String> extractAttribute(String jsonResponse, String attributeName) {
