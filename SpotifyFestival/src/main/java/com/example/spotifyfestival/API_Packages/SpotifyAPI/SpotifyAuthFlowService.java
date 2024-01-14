@@ -28,23 +28,10 @@ public class SpotifyAuthFlowService {
     private String responseBody = null;
     private String accessToken;
     private String STATE;
-    private final List<AuthFlowObserver> observers = new ArrayList<>();
-
-    public void addObserver(AuthFlowObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(AuthFlowObserver observer) {
-        observers.remove(observer);
-    }
-
-    private void notifyObservers(String accessToken) {
-        for (AuthFlowObserver observer : observers) {
-            observer.onAuthFlowCompleted(accessToken);
-        }
-    }
 
     private static SpotifyAuthFlowService instance;
+
+    protected SpotifyService service = new SpotifyService();
 
     private SpotifyAuthFlowService() {
     }
@@ -52,6 +39,7 @@ public class SpotifyAuthFlowService {
     public static SpotifyAuthFlowService getInstance() {
         if (instance == null) {
             instance = new SpotifyAuthFlowService();
+
         }
         return instance;
     }
@@ -111,9 +99,6 @@ public class SpotifyAuthFlowService {
     }
 
     public void openLogin() {
-//        STATE = getAlphaNumericString(16);
-//        String loginURL = generateLoginURL(STATE);
-//        openURL2(loginURL);
         login();
     }
 
@@ -166,7 +151,8 @@ public class SpotifyAuthFlowService {
                     // Return an error response
                 }
             }
-            String email = getUserEmail(getEmailResponse());
+            String email = service.getEmailResponse(accessToken);
+
             UserDAO userDAO = UserDAO.getInstance();
             Iterable<User> users = userDAO.getAll();
             for (User user : users) {
@@ -191,23 +177,8 @@ public class SpotifyAuthFlowService {
                 }
             }
             bool = true;
-//            return HtmlCONSTANTS.HTML_PAGE;
-            return null;
+            return HtmlCONSTANTS.HTML_PAGE;
         });
-    }
-
-    public String getEmailResponse() throws IOException, InterruptedException {
-        String apiUrl = "https://api.spotify.com/v1/me";
-        // Create HttpRequest
-        HttpRequest emailRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(apiUrl))
-                .headers("Authorization", "Bearer " + accessToken)
-                .build();
-        // Send the request and get the response
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
-        return emailResponse.body();
     }
 
     public String refreshTheToken(String jsonResponse) {

@@ -1,7 +1,6 @@
 package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
 public final class SpotifyAPPCredentials {
-
     private final String clientId;
     private final String clientSecret;
     private final String redirectUri;
@@ -9,8 +8,6 @@ public final class SpotifyAPPCredentials {
     private final String userReadPlaybackPosition;
     private final String userReadRecentlyPlayed;
     private final String stringToEncode;
-
-
 
     public SpotifyAPPCredentials() {
         this.clientId = "40f0faeac8b043ee99f7bd42e134f97c";
