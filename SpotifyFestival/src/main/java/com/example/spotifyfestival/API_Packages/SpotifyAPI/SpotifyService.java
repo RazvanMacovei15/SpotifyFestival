@@ -4,6 +4,7 @@ import com.example.spotifyfestival.API_Packages.API_URLS.Artists_API_URLS;
 import com.example.spotifyfestival.API_Packages.API_URLS.SearchAPI;
 import com.example.spotifyfestival.API_Packages.API_URLS.Tracks_API_URLS;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
@@ -14,6 +15,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpotifyService {
 
@@ -139,6 +142,70 @@ public class SpotifyService {
             e.printStackTrace();
         }
         return url;
+    }
+
+    public List<Artist> getTopArtists(String jsonResponse){
+        List<Artist> artists = new ArrayList<>();
+        int id = 0;
+        String name  = null;
+        ObservableList<Genre> genres = FXCollections.observableArrayList();
+        String spotifyID = null;
+        String spotifyLink = null;
+        String imageURL = null;
+        int popularity = 0;
+
+        try {
+            // Parse the JSON response
+            JSONObject responseObject = new JSONObject(jsonResponse);
+            int limit = responseObject.getInt("limit");
+
+            JSONArray itemsArray = responseObject.getJSONArray("items");
+
+            // Iterate through the items and extract the specified attribute
+            for (int i = 1; i < limit + 1; i++) {
+
+                JSONObject itemObject = itemsArray.getJSONObject(i-1);
+
+                name = itemObject.getString("name");
+                JSONArray genresArray = itemObject.getJSONArray("genres");
+
+                for(int j = 1 ; j < genresArray.length() + 1; j++){
+
+                    int genreId = j;
+                    String genreName = (String) genresArray.get(j-1);
+                    Genre genre = new Genre(genreId, genreName);
+
+                    genres.add(genre);
+                }
+                spotifyID = itemObject.getString("id");
+                spotifyLink = itemObject.getString("uri");
+
+                JSONArray urlList = itemObject.getJSONArray("images");
+                imageURL = urlList.getJSONObject(2).getString("url");
+
+                popularity = itemObject.getInt("popularity");
+                Artist artist = new Artist(i, name, spotifyID, genres, imageURL, spotifyLink, popularity);
+                System.out.println(artist);
+                artists.add(artist);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return artists;
+    }
+
+    public void openURL2(String url) {
+        if (java.awt.Desktop.isDesktopSupported()) {
+            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+                try {
+                    java.net.URI uri = new java.net.URI(url);
+                    desktop.browse(uri);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
 }

@@ -192,9 +192,9 @@ public class CanvasController extends AbstractPrintTree {
         RapidAPIParameters parameters = processSelection();
         RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
         api.addParameters(parameters);
-//        String json = api.getConcertsInYourArea();
+        String json = api.getConcertsInYourArea();
 
-        createTree(festivalStageDAO, festivalDAO, concertDAO, JSONConstant.getJsonData(), canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
+        createTree(festivalStageDAO, festivalDAO, concertDAO, json, canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
         displayCirclesOneAtATime(canvasBorderPane, gc, null, null, null);
     }
 
