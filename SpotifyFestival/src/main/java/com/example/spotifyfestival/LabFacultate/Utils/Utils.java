@@ -1,25 +1,9 @@
 package com.example.spotifyfestival.LabFacultate.Utils;
 
-import com.example.spotifyfestival.API_Packages.API_URLS.SearchAPI;
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.http.HttpResponse;
-
 public class Utils {
-    public static HttpResponse<String> getArtistSpotifyDetails(String str) {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            SpotifyService spotifyService = new SpotifyService();
-            return spotifyService.getHttpResponse(token, SearchAPI.searchForArtist(str));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public String extractSpotifyID(String jsonResponse){
         String id = null;

@@ -1,9 +1,7 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
-import com.example.spotifyfestival.API_Packages.API_URLS.Tracks_API_URLS;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
+import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,6 +29,12 @@ public class TopTracksController {
 
     @FXML
     private Button fourWeeksButton;
+
+    protected SpotifyService service;
+
+    public TopTracksController() {
+        this.service = new SpotifyService();
+    }
 
     @FXML
     public void initialize() throws JsonProcessingException {
@@ -110,45 +114,6 @@ public class TopTracksController {
         return attributeValues;
     }
 
-
-
-    public static ObservableList<String> extractArtistNamesFromTracks(String jsonResponse) {
-        ObservableList<String> ol = FXCollections.observableArrayList();
-        String allArtistsOfASong = null;
-        try {
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray allTheTracks = jsonObject.getJSONArray("items");
-
-            for(int i = 0; i < allTheTracks.length(); i++){
-
-                JSONObject objectTracks = allTheTracks.getJSONObject(i);
-                JSONArray trackObjects = objectTracks.getJSONArray("artists");
-
-                StringBuilder sb = new StringBuilder();
-                sb.append("performed by: ");
-                for(int j = 0; j < trackObjects.length(); j++){
-                    JSONObject artistObject = trackObjects.getJSONObject(j);
-                    String individualArtists = artistObject.getString("name");
-                    sb.append(individualArtists);
-                    // Check if it's not the last item in the loop before adding a comma
-                    if (j < trackObjects.length()-1) {
-                        sb.append(", "); // Add a comma and space as a separator
-                    }
-                }
-
-                allArtistsOfASong = sb.toString();
-
-                ol.add(allArtistsOfASong);
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return ol;
-    }
-
     public void onGetBackButtonClicked(ActionEvent event){
         try {
             AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
@@ -157,69 +122,40 @@ public class TopTracksController {
         }
     }
 
-    public static HttpResponse<String> getUserTopTracksOfAllTime() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            SpotifyService spotifyService = new SpotifyService();
-            return spotifyService.getHttpResponse(token, Tracks_API_URLS.getUserTopTracksAllTimeURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    public static HttpResponse<String> getUserTopTracksOver6Months() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            SpotifyService spotifyService = new SpotifyService();
-            return spotifyService.getHttpResponse(token, Tracks_API_URLS.getUserTopTracks6MonthsURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    public static HttpResponse<String> getUserTopTracksOver4Weeks() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            SpotifyService spotifyService = new SpotifyService();
-            return spotifyService.getHttpResponse(token, Tracks_API_URLS.getUserTopTracksOver4WeeksURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-    public void onAllTimeButtonClicked() throws JsonProcessingException {
-        HttpResponse<String> response = getUserTopTracksOfAllTime();
 
-        String jsonResponse = response.body().toString();
+    public void onAllTimeButtonClicked(){
+        HttpResponse<String> response = SpotifyService.getUserTopTracksOfAllTime();
+
+        assert response != null;
+        String jsonResponse = response.body();
         // Call the extractAttribute method to get the artist attributes
-        ObservableList<String> artistNamesFromTracks = extractArtistNamesFromTracks(jsonResponse);
+        ObservableList<String> artistNamesFromTracks = service.extractArtistNamesFromTracks(jsonResponse);
         ObservableList<String> trackNames = extractAttribute(jsonResponse, "name");
 
         ObservableList<String> concat = listOfNamesAndSongs(artistNamesFromTracks, trackNames);
         listView.setItems(concat);
     }
 
-    public void on6MonthsButtonClicked() throws JsonProcessingException {
-        HttpResponse<String> response = getUserTopTracksOver6Months();
+    public void on6MonthsButtonClicked() {
+        HttpResponse<String> response = SpotifyService.getUserTopTracksOver6Months();
 
-        String jsonResponse = response.body().toString();
+        assert response != null;
+        String jsonResponse = response.body();
         // Call the extractAttribute method to get the artist attributes
-        ObservableList<String> artistNamesFromTracks = extractArtistNamesFromTracks(jsonResponse);
+        ObservableList<String> artistNamesFromTracks = service.extractArtistNamesFromTracks(jsonResponse);
         ObservableList<String> trackNames = extractAttribute(jsonResponse, "name");
 
         ObservableList<String> concat = listOfNamesAndSongs(artistNamesFromTracks, trackNames);
         listView.setItems(concat);
     }
-    public void on4WeeksButtonClicked() throws JsonProcessingException {
-        HttpResponse<String> response = getUserTopTracksOver4Weeks();
+    public void on4WeeksButtonClicked() {
+        HttpResponse<String> response = SpotifyService.getUserTopTracksOver4Weeks();
 
-        String jsonResponse = response.body().toString();
+        assert response != null;
+        String jsonResponse = response.body();
         // Call the extractAttribute method to get the artist attributes
-        ObservableList<String> artistNamesFromTracks = extractArtistNamesFromTracks(jsonResponse);
+        ObservableList<String> artistNamesFromTracks = service.extractArtistNamesFromTracks(jsonResponse);
         ObservableList<String> trackNames = extractAttribute(jsonResponse, "name");
 
         ObservableList<String> concat = listOfNamesAndSongs(artistNamesFromTracks, trackNames);

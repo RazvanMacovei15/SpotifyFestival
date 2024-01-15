@@ -1,20 +1,19 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.API_URLS.Artists_API_URLS;
-import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.effect.Light;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
@@ -28,7 +27,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.net.http.HttpResponse;
-import java.util.Iterator;
 import java.util.List;
 
 public class TopArtistsController {
@@ -182,13 +180,13 @@ public class TopArtistsController {
 
         switch (timeRange) {
             case "all time":
-                response = getUserTopArtists();
+                response = SpotifyService.getUserTopArtists();
                 break;
             case "6 months":
-                response = getUserTopArtistsOver6Months();
+                response = SpotifyService.getUserTopArtistsOver6Months();
                 break;
             case "4 weeks":
-                response = getUserTopArtistsOver4Weeks();
+                response = SpotifyService.getUserTopArtistsOver4Weeks();
                 break;
             default:
                 // Handle the case when an unsupported time range is provided
