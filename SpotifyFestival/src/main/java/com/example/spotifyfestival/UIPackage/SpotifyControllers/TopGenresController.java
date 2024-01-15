@@ -25,8 +25,7 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopArtistsController.getUserTopArtistsOver4Weeks;
-import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopArtistsController.getUserTopArtistsOver6Months;
+
 
 // Controller class for the TopGenres FXML file
 public class TopGenresController {
@@ -102,20 +101,20 @@ public class TopGenresController {
         HttpResponse<String> response;
         switch (timeRange) {
             case "all time":
-                response = getUserTopArtists();
+                response = SpotifyService.getUserTopArtists();
                 break;
             case "6 months":
-                response = getUserTopArtistsOver6Months();
+                response = SpotifyService.getUserTopArtistsOver6Months();
                 break;
             case "4 weeks":
-                response = getUserTopArtistsOver4Weeks();
+                response = SpotifyService.getUserTopArtistsOver4Weeks();
                 break;
             default:
                 // Handle the case when an unsupported time range is provided
                 return;
         }
         // Extract relevant information from the API response
-        String jsonResponse = response.body().toString();
+        String jsonResponse = response.body();
         ObservableList<Artist> allArtists = extractArtists(jsonResponse);
         Map<Genre, Integer> genreCount = getGenreCountFromResponse(allArtists);
         // Prepare data for UI display
