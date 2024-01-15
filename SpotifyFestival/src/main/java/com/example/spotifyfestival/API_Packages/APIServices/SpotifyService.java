@@ -1,8 +1,11 @@
-package com.example.spotifyfestival.API_Packages.SpotifyAPI;
+package com.example.spotifyfestival.API_Packages.APIServices;
 
 import com.example.spotifyfestival.API_Packages.API_URLS.Artists_API_URLS;
 import com.example.spotifyfestival.API_Packages.API_URLS.SearchAPI;
 import com.example.spotifyfestival.API_Packages.API_URLS.Tracks_API_URLS;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
+import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
+import com.example.spotifyfestival.DatabasePackage.DAO.GenreDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
@@ -200,28 +203,6 @@ public class SpotifyService {
         }
     }
 
-    //extract attribute from top artists api response
-    public static ObservableList<String> extractAttribute(String jsonResponse, String attributeName) {
-        // Create an empty ObservableList to store the attribute values
-        ObservableList<String> attributeValues = FXCollections.observableArrayList();
-
-        try {
-            // Parse the JSON response
-            JSONObject responseJson = new JSONObject(jsonResponse);
-            JSONArray itemsArray = responseJson.getJSONArray("items");
-
-            // Iterate through the items and extract the specified attribute
-            for (int i = 0; i < itemsArray.length(); i++) {
-                JSONObject itemObject = itemsArray.getJSONObject(i);
-                String attributeValue = itemObject.getString(attributeName);
-                attributeValues.add(attributeValue);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return attributeValues;
-    }
-
     //TOP TRACKS RETRIEVAL METHODS
     public static List<Track> getTopTracks(String jsonResponse) {
         List<Track> tracks = new ArrayList<>();
@@ -314,72 +295,59 @@ public class SpotifyService {
         }
     }
 
-    //from tracks api response
-    public ObservableList<String> extractArtistNamesFromTracks(String jsonResponse) {
-        ObservableList<String> ol = FXCollections.observableArrayList();
-        String allArtistsOfASong = null;
+    //top genres helpers spotify service methods
+
+    // Method to extract artists and their genres from JSON response
+    public static ObservableList<Artist> extractArtists(String jsonResponse) {
+        ObservableList<ObservableList<String>> allGenresExtracted = FXCollections.observableArrayList();
+        ObservableList<Artist> listOfArtistsInResponse = FXCollections.observableArrayList();
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray allTheTracks = jsonObject.getJSONArray("items");
-
-            for (int i = 0; i < allTheTracks.length(); i++) {
-
-                JSONObject objectTracks = allTheTracks.getJSONObject(i);
-                JSONArray trackObjects = objectTracks.getJSONArray("artists");
-
-                StringBuilder sb = new StringBuilder();
-                sb.append("performed by: ");
-                for (int j = 0; j < trackObjects.length(); j++) {
-                    JSONObject artistObject = trackObjects.getJSONObject(j);
-                    String individualArtists = artistObject.getString("name");
-                    sb.append(individualArtists);
-                    // Check if it's not the last item in the loop before adding a comma
-                    if (j < trackObjects.length() - 1) {
-                        sb.append(", "); // Add a comma and space as a separator
+            JSONArray itemsArray = jsonObject.getJSONArray("items");
+            for (int i = 0; i < itemsArray.length(); i++) {
+                ObservableList<Genre> artistGenres = FXCollections.observableArrayList();
+                JSONObject artistObject = itemsArray.getJSONObject(i);
+                JSONArray array = artistObject.getJSONArray("genres");
+                for (int j = 0; j < array.length(); j++) {
+                    String genreName = array.getString(j);
+                    int genreID = 0;
+                    GenreDAO genreDAO = GenreDAO.getInstance();
+                    if (!genreDAO.checkIfGenreInDB(genreName)) {
+                        genreID = genreDAO.returnHighestID() + 1;
+                        Genre genreToADD = new Genre(genreID, genreName);
+                        genreDAO.insertObjectInDB(genreToADD);
+                        artistGenres.add(genreToADD);
+                    } else {
+                        genreID = genreDAO.getGenreByName(genreName).getId();
+                        Genre genre = genreDAO.getItem(genreID);
+                        artistGenres.add(genre);
                     }
                 }
+                String name = artistObject.getString("name");
 
-                allArtistsOfASong = sb.toString();
+                String spotifyId = artistObject.getString("id");
+                int artistId = 0;
+                ArtistDAO artistDAO = ArtistDAO.getInstance();
+                if (artistDAO.checkIfArtistInDB(name)) {
+                    artistId = artistDAO.getArtistByName(name).getId();
+                    Artist artist = artistDAO.getItem(artistId);
+                    if(artist.getGenres().isEmpty()){
+                        for(Genre genre : artistGenres){
+                            artist.addGenre(genre);
+                        }
+                    }
+                    listOfArtistsInResponse.add(artist);
 
-                ol.add(allArtistsOfASong);
-
+                } else {
+                    artistId = artistDAO.getHighestId() + 1;
+                    Artist artist = new Artist(artistId, name, artistGenres, spotifyId);
+                    artistDAO.insertObjectInDB(artist);
+                    listOfArtistsInResponse.add(artist);
+                }
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return ol;
+        return listOfArtistsInResponse;
     }
-
-    //search by artist name api
-    public static HttpResponse<String> getArtistSpotifyDetails(String artistName) {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            return getHttpResponse(token, SearchAPI.searchForArtist(artistName));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    //extract spotify id from search api
-    public String extractSpotifyID(String jsonResponse) {
-        String id = null;
-        try {
-            JSONObject jsonObject = new JSONObject(jsonResponse);
-            JSONArray artistsArray = jsonObject.getJSONArray("artists");
-            for (int i = 0; i < artistsArray.length(); i++) {
-                JSONObject artistObject = artistsArray.getJSONObject(i);
-                id = artistObject.getString("id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return id;
-    }
-
-
 }

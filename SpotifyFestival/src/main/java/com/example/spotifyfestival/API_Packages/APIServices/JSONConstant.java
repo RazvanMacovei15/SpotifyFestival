@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
+package com.example.spotifyfestival.API_Packages.APIServices;
 
 public class JSONConstant {
     public static String getConstant() {

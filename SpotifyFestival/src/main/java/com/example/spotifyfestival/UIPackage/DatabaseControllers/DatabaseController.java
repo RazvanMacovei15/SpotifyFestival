@@ -1,7 +1,6 @@
 package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
-import javafx.event.ActionEvent;
+import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.io.IOException;
@@ -37,9 +36,9 @@ public class DatabaseController {
         artistsButton.setSelected(true);
     }
 
-    public void back(ActionEvent event){
+    public void back(){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

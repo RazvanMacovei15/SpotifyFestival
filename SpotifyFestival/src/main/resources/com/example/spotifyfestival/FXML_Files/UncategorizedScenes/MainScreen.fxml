@@ -5,19 +5,22 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainController"
+<?import javafx.scene.image.Image?>
+<GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainPageController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="20" vgap="20"
           style="-fx-border-color: black; -fx-border-width: 2px;">
+
+    <ImageView fx:id="image" preserveRatio="true"
+               GridPane.rowIndex="0"
+               GridPane.columnIndex="0"
+               GridPane.halignment="CENTER"/>
+
     <rowConstraints>
         <RowConstraints percentHeight="20"/>
         <RowConstraints percentHeight="75"/>
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-        <image>
-<!--            <Image url="/src/main/resources/com/example/spotifyfestival/PNGs/SpotifyLogo.png"/>-->
-        </image>
-    </ImageView>
+
     <Button fx:id="loginButton" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"
             text="Log in with Spotify"
             style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"

@@ -1,8 +1,6 @@
-package com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals;
+package com.example.spotifyfestival.API_Packages.APIServices;
 
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
-import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,9 +13,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class ConcertJSONUtils {
+public class ConcertAPIService {
 
-    public ConcertJSONUtils() {
+    public ConcertAPIService() {
 
     }
 
@@ -81,13 +79,11 @@ public class ConcertJSONUtils {
                     JSONObject performerObject = performers.getJSONObject(j);
 
                     String artistName = performerObject.getString("name");
-//                    System.out.println(artistName);
 
                     SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
                     String token = auth.getAccessToken();
 
                     String json = SpotifyService.getArtistByNameHttpResponse(artistName, token);
-//                    System.out.println(json);
 
                     Artist artist = SpotifyService.createArtistFromSearchResultForConcertRetrieval(json, 3);
 
@@ -130,7 +126,6 @@ public class ConcertJSONUtils {
 
                 if (addressObject != null) {
                     streetAddress = addressObject.optString("streetAddress", "N/A");
-//                    System.out.println("Event " + (i + 1) + " Street Address: " + streetAddress);
                 }
 
                 String venueName = location.getString("name");
@@ -161,9 +156,7 @@ public class ConcertJSONUtils {
                             // You found a venue with the matching name
                             existingVenue = venueToCheck;
 
-//                            ConcertDAO concertDAO = ConcertDAO.getInstance();
                             int id = 2;
-//                            FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
                             int stageID = 4;
                             FestivalStage stage = new FestivalStage(stageID);
 
@@ -175,15 +168,12 @@ public class ConcertJSONUtils {
                     }
                 } else {
                     // Create a new Venue and add it to the list
-//                    VenueDAO venueDAO = VenueDAO.getInstance();
                     int venueID = 1;
 
                     venue = new Venue(venueID, city, venueName, streetAddress, venueLatitude, venueLongitude);
                     listOfVenues.add(venue);
 
-                    ConcertDAO concertDAO = ConcertDAO.getInstance();
                     int id = 2;
-//                    FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
                     int stageID = 4;
                     FestivalStage stage = new FestivalStage(stageID);
 
@@ -230,19 +220,6 @@ public class ConcertJSONUtils {
         return allVenueConcerts;
     }
 
-    public ObservableList<Concert> createListOfConcertsForEveryVenue(Venue venue) {
-        ObservableList<Concert> allConcerts = FXCollections.observableArrayList();
-        allConcerts = extractConcerts(JSONConstant.getConstant());
-        ObservableList<Concert> venueConcerts = FXCollections.observableArrayList();
-
-        for (Concert concert : allConcerts) {
-            if (venue.getVenueName().equals(concert.getVenue().getVenueName())) {
-                venueConcerts.add(concert);
-            }
-        }
-        venue.setListOfAllConcertsAtThatVenue(venueConcerts);
-        return venueConcerts;
-    }
 
     public ObservableList<Venue> createListOfALlVenues(ObservableList<Concert> list) {
         ObservableList<Venue> listOfVenues = FXCollections.observableArrayList();
@@ -267,7 +244,7 @@ public class ConcertJSONUtils {
             }
 
             if (!venueNamesSet.contains(venueName)) {
-                venue = new Venue(1, city, venueName, streetAddress, venueLatitude, venueLongitude);
+                venue = new Venue(i, city, venueName, streetAddress, venueLatitude, venueLongitude);
                 listOfVenues.add(venue);
             }
         }

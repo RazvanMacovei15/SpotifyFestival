@@ -1,6 +1,5 @@
 package com.example.spotifyfestival.UIPackage;
 
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
 import com.example.spotifyfestival.MainPackage.App;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.UIPackage.SpotifyControllers.RapidAPIDialogController;
@@ -29,7 +28,7 @@ public class ShowFestivalsController {
 
     public void onGetBackButtonClicked(ActionEvent event) {
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

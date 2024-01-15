@@ -1,7 +1,6 @@
 package com.example.spotifyfestival.MainPackage;
 
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
-import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AccessTokenObserver;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,8 +33,6 @@ public class App extends Application {
     @Override
     public void init() {
         SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
-//        AccessTokenObserver accessTokenObserver = new AccessTokenObserver();
-//        authFlowService.addObserver(accessTokenObserver);
         authFlowService.run();
     }
 

@@ -6,7 +6,7 @@ import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
 import com.example.spotifyfestival.Services.UniServices.ArtistGenreFileService;
 import com.example.spotifyfestival.Services.UniServices.GenreFileService;
 import com.example.spotifyfestival.UIPackage.Settings;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -45,11 +45,11 @@ public class LoadFromController {
         // Implement loading directly from the database
         System.out.println("Loading data from DB: " + dbConnection);
     }
-    public void onLoadFromBinaryFileButtonClicked(ActionEvent event){
+    public void onLoadFromBinaryFileButtonClicked(){
         artistFileService = new ArtistFileService( artistTextRepo, artistBinaryRepo);
         artistFileService.list();
     }
-    public void onLoadFromTextFileButtonClicked(ActionEvent event){
+    public void onLoadFromTextFileButtonClicked(){
 
     }
     public void onLoadFromSqLiteButtonClicked(ActionEvent event){

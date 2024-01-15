@@ -4,7 +4,7 @@ import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
-import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.ConcertJSONUtils;
+import com.example.spotifyfestival.API_Packages.APIServices.ConcertAPIService;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -34,7 +34,7 @@ public abstract class AbstractPrintTree {
 
     public Tree<Entity> createTree(FestivalStageDAO festivalStageDAO, FestivalDAO festivalDAO, ConcertDAO concertDAO, String str, BorderPane canvasBorderPane, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius, GraphicsContext gc) {
 
-        ConcertJSONUtils utils = new ConcertJSONUtils();
+        ConcertAPIService utils = new ConcertAPIService();
         ObservableList<Concert> concerts = utils.extractConcerts(str);
 
         UserLocation userLocation = new UserLocation(0);
@@ -70,7 +70,7 @@ public abstract class AbstractPrintTree {
             if (entity instanceof Venue) {
                 venueCircle = drawVenueCircle(i, numberOfVenueCircles, venueCircleRadius, entity, userLocation);
                 allCircles.add(venueCircle);
-                concertsOrStagesAtEntityVenue = ConcertJSONUtils.getConcertsAtVenue(entity, concerts);
+                concertsOrStagesAtEntityVenue = ConcertAPIService.getConcertsAtVenue(entity, concerts);
                 for (int j = 0; j < concertsOrStagesAtEntityVenue.size(); j++) {
                     Entity concertEntity = concertsOrStagesAtEntityVenue.get(j);
 

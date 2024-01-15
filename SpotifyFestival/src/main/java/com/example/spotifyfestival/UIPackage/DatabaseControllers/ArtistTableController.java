@@ -9,7 +9,7 @@ import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRep
 import com.example.spotifyfestival.Services.DAOServices.ArtistDAOService;
 import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
 import com.example.spotifyfestival.UIPackage.Settings;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -192,9 +192,9 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         artistDAOService.list();
     }
 
-    public void back(ActionEvent event){
+    public void back(){
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

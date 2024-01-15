@@ -1,14 +1,11 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyService;
+import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,20 +24,6 @@ public class TopArtistsController {
     protected SpotifyService service;
 
     @FXML
-    protected Label infoLabel;
-
-    @FXML
-    private Button allTimeButton;
-
-    @FXML
-    private Button sixMonthsButton;
-
-    @FXML
-    private Button fourWeeksButton;
-    @FXML
-    private GridPane mainGridPane;
-
-    @FXML
     public ScrollPane scrollPane;
 
     @FXML
@@ -49,10 +32,9 @@ public class TopArtistsController {
 
         // Automatically trigger the "4 weeks" button when the scene is shown
         on4WeeksButtonClicked();
-
     }
 
-    public void something(ScrollPane scrollPane, String response) {
+    public void populateScrollPaneWithArtists(ScrollPane scrollPane, String response) {
         scrollPane.setContent(null);
         GridPane gridPane = new GridPane();
 
@@ -152,17 +134,13 @@ public class TopArtistsController {
 
         assert response != null;
         String jsonResponse = response.body();
-//        SpotifyService spotifyService = new SpotifyService();
-//        List<Artist>
-        // Call the extractAttribute method to get the artist attributes
-        something(scrollPane, jsonResponse);
-        // Set the artist names in your ListView or perform other actions
-//        listView.setItems(artistNames);
+
+        populateScrollPaneWithArtists(scrollPane, jsonResponse);
     }
 
-    public void getBackToTopLists(ActionEvent event) {
+    public void getBackToTopLists() {
         try {
-            AppSwitchScenesMethods.switchScene(event, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to move forward", e);
         }

@@ -2,16 +2,15 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
+import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
-import com.example.spotifyfestival.UnusedStuffForNow.ConcertsAndFestivals.JSONConstant;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -28,8 +27,6 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.Map;
-
-import static com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController.getUserTopArtists;
 
 public class CanvasController extends AbstractPrintTree {
 
@@ -81,9 +78,9 @@ public class CanvasController extends AbstractPrintTree {
 
     private Map<Genre, Integer> retrieveGenreCount() {
         TopGenresController controller = new TopGenresController();
-        HttpResponse<String> response = getUserTopArtists();
-        String jsonResponse = response.body().toString();
-        ObservableList<Artist> allArtists = controller.extractArtists(jsonResponse);
+        HttpResponse<String> response = SpotifyService.getUserTopArtists();
+        String jsonResponse = response.body();
+        ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
         Map<Genre, Integer> genreCount = controller.getGenreCountFromResponse(allArtists);
         return genreCount;
     }
@@ -160,9 +157,9 @@ public class CanvasController extends AbstractPrintTree {
         mainGridPane.add(imageView, 0, 0);
     }
 
-    public void onBackButtonClicked(ActionEvent e) {
+    public void onBackButtonClicked() {
         try {
-            AppSwitchScenesMethods.switchScene(e, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         } catch (IOException event) {
             throw new RuntimeException("Unable to move forward", event);
         }

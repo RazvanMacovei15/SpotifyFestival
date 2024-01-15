@@ -16,11 +16,11 @@
         <RowConstraints percentHeight="80"/>
     </rowConstraints>
 
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-        <image>
+<!--    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">-->
+<!--        <image>-->
 <!--            <Image url="@SpotifyLogo.png"/>-->
-        </image>
-    </ImageView>
+<!--        </image>-->
+<!--    </ImageView>-->
 
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">
         <Button GridPane.halignment="CENTER"

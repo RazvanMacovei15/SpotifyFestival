@@ -63,7 +63,7 @@ public class Track extends Entity{
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name);
-        sb.append(" performed by: ");
+        sb.append(", performed by: ");
         if (artists.size() == 1){
             sb.append(artists.get(0).getName());
         }else{

@@ -2,8 +2,7 @@ package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
 import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
-import com.example.spotifyfestival.UnusedStuffForNow.helperObsLis.AuthFlowObserver;
-import com.example.spotifyfestival.UtilsPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
 import javafx.application.Platform;
 import org.json.JSONObject;
 import spark.Spark;
@@ -20,7 +19,7 @@ import java.util.*;
 public class SpotifyAuthFlowService {
     public void run() {
         Spark.port(8888);
-        login();
+//        login();
         defineCallbackPath();
     }
 
@@ -28,21 +27,6 @@ public class SpotifyAuthFlowService {
     private String responseBody = null;
     private String accessToken;
     private String STATE;
-    private final List<AuthFlowObserver> observers = new ArrayList<>();
-
-    public void addObserver(AuthFlowObserver observer) {
-        observers.add(observer);
-    }
-
-    public void removeObserver(AuthFlowObserver observer) {
-        observers.remove(observer);
-    }
-
-    private void notifyObservers(String accessToken) {
-        for (AuthFlowObserver observer : observers) {
-            observer.onAuthFlowCompleted(accessToken);
-        }
-    }
 
     private static SpotifyAuthFlowService instance;
 
@@ -191,8 +175,7 @@ public class SpotifyAuthFlowService {
                 }
             }
             bool = true;
-//            return HtmlCONSTANTS.HTML_PAGE;
-            return null;
+            return HtmlCONSTANTS.HTML_PAGE;
         });
     }
 

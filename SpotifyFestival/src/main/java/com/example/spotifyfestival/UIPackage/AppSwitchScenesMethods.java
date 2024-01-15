@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UtilsPackage;
+package com.example.spotifyfestival.UIPackage;
 
 import com.example.spotifyfestival.MainPackage.App;
 import javafx.event.ActionEvent;
@@ -11,7 +11,7 @@ import java.io.IOException;
 
 
 public class AppSwitchScenesMethods {
-    public static void switchScene(ActionEvent event, String path) throws IOException {
+    public static void switchScene(String path) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(AppSwitchScenesMethods.class.getResource(path));
 

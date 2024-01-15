@@ -18,12 +18,6 @@
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-        <image>
-<!--            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>-->
-        </image>
-    </ImageView>
-
     <Label GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"
             text="YOU ARE NOT LOGGED IN"
             style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"/>
