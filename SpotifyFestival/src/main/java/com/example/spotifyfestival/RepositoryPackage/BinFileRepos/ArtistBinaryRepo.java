@@ -77,9 +77,4 @@ public class ArtistBinaryRepo extends FileRepository<Integer, Artist> implements
             throw new RuntimeException("Exception occurred");
         }
     }
-
-    public static void main(String[] args) {
-        ArtistBinaryRepo artistBinaryRepo = new ArtistBinaryRepo("ArtistsBinaryRepo");
-        artistBinaryRepo.list();
-    }
 }
