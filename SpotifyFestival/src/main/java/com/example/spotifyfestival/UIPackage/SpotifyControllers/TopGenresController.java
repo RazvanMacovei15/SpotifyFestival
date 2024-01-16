@@ -34,12 +34,8 @@ public class TopGenresController {
 
     // Event handler for the "Get Back" button
     public void onGetBackButtonClicked() {
-        try {
-            // Switch scene to adminMainScreen.fxml
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to go back", e);
-        }
+        // Switch scene to adminMainScreen.fxml
+        AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
     }
 
     // Event handler for the "All Time" button

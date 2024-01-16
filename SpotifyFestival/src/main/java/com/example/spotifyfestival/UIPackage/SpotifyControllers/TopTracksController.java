@@ -98,11 +98,7 @@ public class TopTracksController {
     }
 
     public void getBackToTopLists(ActionEvent event) {
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to move forward", e);
-        }
+        AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
     }
 
     public void onAllTimeButtonClicked() {

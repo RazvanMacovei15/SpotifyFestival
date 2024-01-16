@@ -30,14 +30,6 @@ public class MainController {
 
     public void initialize() {
 
-        for(Node node : mainGridPane.getChildren()){
-            System.out.println(node.toString());
-        }
-
-        for(Node node : vBox.getChildren()){
-            System.out.println(node.toString());
-        }
-
         Helper.mouseHoverUpOnButton(admin);
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);
@@ -45,47 +37,11 @@ public class MainController {
     }
 
     public void handleDBButton() {
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void onGetBackButtonClicked() {
-        Helper.backToMainPageCondition();
+        AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
     public void onTopListsButtonClicked() {
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void onTopArtistsButtonClicked() {
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopArtists.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void onTopTracksButtonClicked() {
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopTracks.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void onTopGenresButtonClicked() {
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopGenres.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
     }
 
     public void onGetFestivalSuggestionButtonClicked() {

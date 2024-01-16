@@ -9,17 +9,9 @@ import java.io.IOException;
 public class Helper {
     public static void backToMainPageCondition() {
         if(UserManager.isAdmin()){
-            try {
-                AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
-            } catch (IOException event) {
-                throw new RuntimeException("Unable to move forward", event);
-            }
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
         }else{
-            try {
-                AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
-            } catch (IOException event) {
-                throw new RuntimeException("Unable to move forward", event);
-            }
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
         }
     }
 

@@ -10,7 +10,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainController"
+<GridPane fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.TopListsController"
           xmlns:fx="http://javafx.com/fxml"
           alignment="TOP_CENTER"
           hgap="20"
@@ -23,15 +23,15 @@
     </rowConstraints>
 
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" spacing="10" alignment="CENTER">
-        <Button
+        <Button fx:id="artists"
                 text="Top Artists"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onTopArtistsButtonClicked"/>
-        <Button
+        <Button fx:id="tracks"
                 text="Top Tracks"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onTopTracksButtonClicked"/>
-        <Button
+        <Button fx:id="genres"
                 text="Top Genres"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onTopGenresButtonClicked"/>
