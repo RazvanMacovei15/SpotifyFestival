@@ -16,8 +16,15 @@ public class MainPageController {
     public Label label;
     public void initialize(){
         // Load the image from resources
-        Image imageS = new Image(getClass().getResource("/com/example/spotifyfestival/PNGs/SpotifyLogo.png").toExternalForm());
+        Image imageS = new Image(getClass().getResource("/com/example/spotifyfestival/PNGs/forApp.jpeg").toExternalForm());
 
+        // Set the desired width and height to scale down the image
+        double scaledWidth = 300;
+        double scaledHeight = 120;
+
+        // Set the fitWidth and fitHeight properties to scale the image
+        image.setFitWidth(scaledWidth);
+        image.setFitHeight(scaledHeight);
         // Set the image to the ImageView
         image.setImage(imageS);
     }
