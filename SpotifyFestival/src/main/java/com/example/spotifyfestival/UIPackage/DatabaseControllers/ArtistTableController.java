@@ -8,8 +8,9 @@ import com.example.spotifyfestival.RepositoryPackage.BinFileRepos.ArtistBinaryRe
 import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRepo;
 import com.example.spotifyfestival.Services.DAOServices.ArtistDAOService;
 import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
-import com.example.spotifyfestival.UIPackage.Settings;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Settings;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -193,10 +194,6 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     }
 
     public void back(){
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to go back", e);
-        }
+        Helper.backToMainPageCondition();
     }
 }

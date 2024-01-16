@@ -5,8 +5,8 @@ import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRep
 import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
 import com.example.spotifyfestival.Services.UniServices.ArtistGenreFileService;
 import com.example.spotifyfestival.Services.UniServices.GenreFileService;
-import com.example.spotifyfestival.UIPackage.Settings;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Settings;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

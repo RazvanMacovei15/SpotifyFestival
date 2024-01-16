@@ -2,7 +2,7 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;

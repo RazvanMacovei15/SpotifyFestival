@@ -4,7 +4,8 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.FestivalStage;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.Services.DAOServices.FestivalStageDAOService;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -176,10 +177,6 @@ public class StagesController {
     }
 
     public void back(){
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to go back", e);
-        }
+        Helper.backToMainPageCondition();
     }
 }

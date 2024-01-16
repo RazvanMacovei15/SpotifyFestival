@@ -5,7 +5,8 @@ import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
 import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.GenreDAO;
 import com.example.spotifyfestival.Services.DAOServices.GenresDAOService;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -161,10 +162,6 @@ public class GenresController extends GenericObservableList<Genre> {
     }
 
     public void back(){
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to go back", e);
-        }
+        Helper.backToMainPageCondition();
     }
 }

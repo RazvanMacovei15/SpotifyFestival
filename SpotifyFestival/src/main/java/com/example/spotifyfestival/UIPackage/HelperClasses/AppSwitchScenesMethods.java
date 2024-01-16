@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UIPackage;
+package com.example.spotifyfestival.UIPackage.HelperClasses;
 
 import com.example.spotifyfestival.MainPackage.App;
 import javafx.event.ActionEvent;

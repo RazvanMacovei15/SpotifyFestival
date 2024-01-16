@@ -4,7 +4,7 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.GenericsPackage.MapValueSorter;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.FXCollections;
@@ -36,7 +36,7 @@ public class TopGenresController {
     public void onGetBackButtonClicked() {
         try {
             // Switch scene to adminMainScreen.fxml
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
+            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
         } catch (IOException e) {
             throw new RuntimeException("Unable to go back", e);
         }

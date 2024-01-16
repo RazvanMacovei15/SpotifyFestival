@@ -22,12 +22,6 @@
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-        <image>
-<!--            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>-->
-        </image>
-    </ImageView>
-
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" spacing="10" alignment="CENTER">
         <Button
                 text="Top Artists"

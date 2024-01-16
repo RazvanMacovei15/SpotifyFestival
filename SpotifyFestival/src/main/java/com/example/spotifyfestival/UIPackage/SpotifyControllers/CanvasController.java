@@ -8,7 +8,9 @@ import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
+import com.example.spotifyfestival.UIPackage.HelperClasses.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -158,12 +160,10 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     public void onBackButtonClicked() {
-        try {
-            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
-        } catch (IOException event) {
-            throw new RuntimeException("Unable to move forward", event);
-        }
+        Helper.backToMainPageCondition();
     }
+
+
 
     public RapidAPIParameters processSelection() {
         LocalDate startDateArea = startDatePicker.getValue();

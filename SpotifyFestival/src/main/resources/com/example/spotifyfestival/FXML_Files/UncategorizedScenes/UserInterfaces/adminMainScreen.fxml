@@ -8,33 +8,28 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainController"
-          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20">
+          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20"
+          fx:id="mainGridPane">
 
     <rowConstraints>
         <RowConstraints percentHeight="20"/>
         <RowConstraints percentHeight="80"/>
     </rowConstraints>
 
-<!--    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">-->
-<!--        <image>-->
-<!--            <Image url="@SpotifyLogo.png"/>-->
-<!--        </image>-->
-<!--    </ImageView>-->
-
-    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">
-        <Button GridPane.halignment="CENTER"
-                text="See Top Lists"
-                minWidth="300"
+    <VBox fx:id="vBox" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">
+        <Button fx:id="topLists" GridPane.halignment="CENTER"
+                text="USER TOP LISTS"
+                minWidth="250"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onTopListsButtonClicked"/>
-        <Button GridPane.halignment="CENTER"
-                text="Show me the way..."
-                minWidth="300"
+        <Button fx:id="festivals" GridPane.halignment="CENTER"
+                text="THIS IS THE WAY"
+                minWidth="250"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onGetFestivalSuggestionButtonClicked"/>
-        <Button fx:id="DBButton" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
-                text="DATABASE"
-                minWidth="300"
+        <Button fx:id="admin" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
+                text="ADMIN"
+                minWidth="250"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#handleDBButton"/>
     </VBox>

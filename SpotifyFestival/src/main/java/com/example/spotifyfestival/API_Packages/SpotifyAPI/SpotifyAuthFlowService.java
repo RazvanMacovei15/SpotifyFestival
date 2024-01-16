@@ -2,7 +2,8 @@ package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
 import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
-import com.example.spotifyfestival.UIPackage.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.UserManager;
 import javafx.application.Platform;
 import org.json.JSONObject;
 import spark.Spark;
@@ -156,6 +157,7 @@ public class SpotifyAuthFlowService {
             for (User user : users) {
                 if (user.getEmail().equals(email)) {
                     if (user.getRole().equals("admin")) {
+                        UserManager.setAdmin(true);
                         Platform.runLater(() -> {
                             try {
                                 AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
@@ -164,6 +166,7 @@ public class SpotifyAuthFlowService {
                             }
                         });
                     } else {
+                        UserManager.setAdmin(false);
                         Platform.runLater(() -> {
                             try {
                                 AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
