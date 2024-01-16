@@ -20,12 +20,8 @@ public class ShowFestivalsController {
     @FXML
     public GridPane mainGridPane;
 
-    public void onGenerateSuggestionList(ActionEvent actionEvent) {
-        try {
-            AppSwitchScenesMethods.switchSceneForCanvas(actionEvent, "/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void onGenerateSuggestionList() {
+        AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
     }
 
     public void onGetBackButtonClicked(ActionEvent event) {

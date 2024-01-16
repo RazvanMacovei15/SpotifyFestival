@@ -55,53 +55,25 @@ public class DatabaseController {
         // Depending on the selected radio button, navigate to the corresponding page
         if ("Artists Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 1...");
-            try {
-                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsDB.fxml");
-            } catch (IOException e) {
-                e.printStackTrace(); // Add better logging or handling based on your needs
-            }
+            AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsDB.fxml");
         } else if ("ArtistGenre Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 2...");
-            try {
-                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsGenresDB.fxml");
-            } catch (IOException e) {
-                e.printStackTrace(); // Add better logging or handling based on your needs
-            }
+            AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ArtistsGenresDB.fxml");
         }else if ("Venues Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 3...");
-            try {
-                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/VenuesDB.fxml");
-            } catch (IOException e) {
-                e.printStackTrace(); // Add better logging or handling based on your needs
-            }
+            AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/VenuesDB.fxml");
         }else if ("Concerts Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 4...");
-            try {
-                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ConcertsDB.fxml");
-            } catch (IOException e) {
-                e.printStackTrace(); // Add better logging or handling based on your needs
-            }
+            AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/ConcertsDB.fxml");
         } else if ("Genres Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 5...");
-            try {
-                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/GenresDB.fxml");
-            } catch (IOException e) {
-                e.printStackTrace(); // Add better logging or handling based on your needs
-            }
+            AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/GenresDB.fxml");
         }else if ("Festivals Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 6...");
-            try {
-                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/FestivalsDB.fxml");
-            } catch (IOException e) {
-                e.printStackTrace(); // Add better logging or handling based on your needs
-            }
+            AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/FestivalsDB.fxml");
         }else if ("Stages Table".equals(selectedButtonText)) {
             System.out.println("Loading Page 7...");
-            try {
-                AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/StagesDB.fxml");
-            } catch (IOException e) {
-                e.printStackTrace(); // Add better logging or handling based on your needs
-            }
+            AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/StagesDB.fxml");
         }
     }
 }

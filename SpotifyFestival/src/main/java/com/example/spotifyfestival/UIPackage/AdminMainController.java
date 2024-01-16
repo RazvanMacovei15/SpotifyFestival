@@ -8,8 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-
 public class AdminMainController {
     @FXML
     GridPane mainGridPane;
@@ -27,7 +25,6 @@ public class AdminMainController {
     public void initialize() {
 
         Helper.loadCover(imageView);
-
         Helper.mouseHoverUpOnButton(admin);
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);
@@ -36,6 +33,7 @@ public class AdminMainController {
 
     public void handleDBButton() {
         AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
+//        SceneController.loadScene300X600("com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
     public void onTopListsButtonClicked() {
@@ -43,10 +41,6 @@ public class AdminMainController {
     }
 
     public void onGetFestivalSuggestionButtonClicked() {
-        try {
-            AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
     }
 }

@@ -8,8 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
-import java.io.IOException;
-
 public class UserMainController {
     @FXML
     GridPane mainGridPane;
@@ -26,26 +24,17 @@ public class UserMainController {
     public void initialize() {
 
         Helper.loadCover(imageView);
-
-
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);
 
     }
 
-    public void handleDBButton() {
-        AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
-    }
 
     public void onTopListsButtonClicked() {
         AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
     }
 
     public void onGetFestivalSuggestionButtonClicked() {
-        try {
-            AppSwitchScenesMethods.switchSceneTwoForDatabase("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
     }
 }

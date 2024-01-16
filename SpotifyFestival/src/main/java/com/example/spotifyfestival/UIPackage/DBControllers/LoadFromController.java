@@ -7,7 +7,6 @@ import com.example.spotifyfestival.Services.UniServices.ArtistGenreFileService;
 import com.example.spotifyfestival.Services.UniServices.GenreFileService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Settings;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 
@@ -52,11 +51,7 @@ public class LoadFromController {
     public void onLoadFromTextFileButtonClicked(){
 
     }
-    public void onLoadFromSqLiteButtonClicked(ActionEvent event){
-        try {
-            AppSwitchScenesMethods.switchSceneForDatabase(event, "/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public void onLoadFromSqLiteButtonClicked(){
+        AppSwitchScenesMethods.switchSceneDatabase( "/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 }

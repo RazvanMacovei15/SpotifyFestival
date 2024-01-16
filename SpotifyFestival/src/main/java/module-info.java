@@ -28,8 +28,6 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.GenericsPackage to javafx.fxml;
     exports com.example.spotifyfestival.LabFacultate.FileSavingStuff;
     opens com.example.spotifyfestival.LabFacultate.FileSavingStuff to javafx.fxml;
-    exports com.example.spotifyfestival.LabFacultate.Utils;
-    opens com.example.spotifyfestival.LabFacultate.Utils to javafx.fxml;
     exports com.example.spotifyfestival.MainPackage;
     opens com.example.spotifyfestival.MainPackage to javafx.fxml;
     exports com.example.spotifyfestival.Tree;

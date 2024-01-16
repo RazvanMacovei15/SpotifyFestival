@@ -20,7 +20,7 @@ import java.util.*;
 public class SpotifyAuthFlowService {
     public void run() {
         Spark.port(8888);
-        login();
+//        login();
         defineCallbackPath();
     }
 
@@ -159,20 +159,12 @@ public class SpotifyAuthFlowService {
                     if (user.getRole().equals("admin")) {
                         UserManager.setAdmin(true);
                         Platform.runLater(() -> {
-                            try {
-                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/adminMainScreen.fxml");
                         });
                     } else {
                         UserManager.setAdmin(false);
                         Platform.runLater(() -> {
-                            try {
-                                AppSwitchScenesMethods.switchSceneTwo("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                            AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
                         });
                     }
                 }

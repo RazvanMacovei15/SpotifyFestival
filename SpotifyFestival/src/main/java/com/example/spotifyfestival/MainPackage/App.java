@@ -19,13 +19,21 @@ public class App extends Application {
     public static Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         App.primaryStage = primaryStage;
+
         URL fxmlLocation = getClass().getResource("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/MainScreen.fxml");
         assert fxmlLocation != null;
-        Parent root = FXMLLoader.load(fxmlLocation);
+        Parent root = null;
+        try {
+            root = FXMLLoader.load(fxmlLocation);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         double sceneWidth = 300; // Set your desired width
         double sceneHeight = 600; // Set your desired height
+
         primaryStage.setScene(new Scene(root, sceneWidth, sceneHeight));
         primaryStage.show();
     }
@@ -34,7 +42,6 @@ public class App extends Application {
     public void init() {
         SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
         authFlowService.run();
-
     }
 
     public static void main(String[] args) throws Exception {
