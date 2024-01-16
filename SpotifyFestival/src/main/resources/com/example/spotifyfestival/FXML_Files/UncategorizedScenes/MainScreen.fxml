@@ -6,15 +6,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
 <GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainPageController"
-          xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="20" vgap="20"
-          style="-fx-border-color: black; -fx-border-width: 2px;">
+          xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="20" vgap="20" gridLinesVisible="false">
 
-    <ImageView fx:id="image" preserveRatio="true"
-               GridPane.rowIndex="0"
-               GridPane.columnIndex="0"
-               GridPane.halignment="CENTER"/>
+<!--    <Text text="lala"/>-->
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="image">
 
+    </ImageView>
     <rowConstraints>
         <RowConstraints percentHeight="20"/>
         <RowConstraints percentHeight="75"/>

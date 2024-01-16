@@ -12,6 +12,11 @@ public class MainPageController {
     @FXML
     public ImageView image;
     public void initialize(){
+        // Load the image from resources
+        Image imageS = new Image(getClass().getResource("/com/example/spotifyfestival/PNGs/SpotifyLogo.png").toExternalForm());
+
+        // Set the image to the ImageView
+        image.setImage(imageS);
     }
     @FXML
     private void handleLoginButtonClick() {

@@ -16,7 +16,6 @@
           xmlns:fx="http://javafx.com/fxml"
           fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.CanvasController"
           alignment="CENTER"
-
           fx:id="mainGridPane">
 
 

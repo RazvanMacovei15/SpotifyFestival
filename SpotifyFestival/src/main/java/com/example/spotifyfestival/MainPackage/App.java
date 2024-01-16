@@ -24,8 +24,8 @@ public class App extends Application {
         URL fxmlLocation = getClass().getResource("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/MainScreen.fxml");
         assert fxmlLocation != null;
         Parent root = FXMLLoader.load(fxmlLocation);
-        double sceneWidth = 360; // Set your desired width
-        double sceneHeight = 720; // Set your desired height
+        double sceneWidth = 300; // Set your desired width
+        double sceneHeight = 600; // Set your desired height
         primaryStage.setScene(new Scene(root, sceneWidth, sceneHeight));
         primaryStage.show();
     }
