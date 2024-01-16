@@ -331,8 +331,8 @@ public class SpotifyService {
                 if (artistDAO.checkIfArtistInDB(name)) {
                     artistId = artistDAO.getArtistByName(name).getId();
                     Artist artist = artistDAO.getItem(artistId);
-                    if(artist.getGenres().isEmpty()){
-                        for(Genre genre : artistGenres){
+                    if (artist.getGenres().isEmpty()) {
+                        for (Genre genre : artistGenres) {
                             artist.addGenre(genre);
                         }
                     }

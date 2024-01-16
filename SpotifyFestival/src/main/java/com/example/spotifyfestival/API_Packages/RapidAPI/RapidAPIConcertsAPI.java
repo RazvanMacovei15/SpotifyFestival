@@ -169,10 +169,7 @@ public class RapidAPIConcertsAPI {
         String encodedEnd = URLEncoder.encode(end);
         String encodedLocation = URLEncoder.encode(location);
 
-        return "https://concerts-artists-events-tracker.p.rapidapi.com/location?name=" + encodedLocation +
-                "&minDate=" + encodedStart +
-                "&maxDate=" + encodedEnd +
-                "&page=1";
+        return "https://concerts-artists-events-tracker.p.rapidapi.com/location?name=" + encodedLocation + "&minDate=" + encodedStart + "&maxDate=" + encodedEnd + "&page=1";
 
     }
 
@@ -208,12 +205,7 @@ public class RapidAPIConcertsAPI {
     }
 
     private String httpRequest() {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(URIBuilder()))
-                .header("X-RapidAPI-Key", getXRapidAPIKey())
-                .header("X-RapidAPI-Host", "concerts-artists-events-tracker.p.rapidapi.com")
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(URIBuilder())).header("X-RapidAPI-Key", getXRapidAPIKey()).header("X-RapidAPI-Host", "concerts-artists-events-tracker.p.rapidapi.com").method("GET", HttpRequest.BodyPublishers.noBody()).build();
         HttpResponse<String> response = null;
         try {
             response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
@@ -236,11 +228,8 @@ public class RapidAPIConcertsAPI {
 
         HttpClient httpClient = HttpClient.newHttpClient();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://ipinfo.io"))
-                .header("Authorization", "Bearer " + geoLocationToken) // Add the token as an "Authorization" header
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://ipinfo.io")).header("Authorization", "Bearer " + geoLocationToken) // Add the token as an "Authorization" header
+                .GET().build();
         try {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {
@@ -258,10 +247,7 @@ public class RapidAPIConcertsAPI {
 
         HttpClient httpClient = HttpClient.newHttpClient();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://ip-api.com/json/" + ipAddress))
-                .GET()
-                .build();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create("http://ip-api.com/json/" + ipAddress)).GET().build();
         try {
             response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 200) {

@@ -4,6 +4,7 @@ public class JSONConstant {
     public static String getConstant() {
         return constant;
     }
+
     public static String getConstant2() {
         return constant2;
     }
