@@ -188,7 +188,7 @@ public class RapidAPIConcertsAPI {
 
             writeCountAndDateToFile(countNumberAttempts, lastUpdatedDate);
 
-            return httpRequest().toString();
+            return httpRequest();
         } else if (countNumberAttempts < 10 && !checkIf24hHavePassed(date)) {
             countNumberAttempts++;
 
@@ -196,7 +196,7 @@ public class RapidAPIConcertsAPI {
 
             writeCountAndDateToFile(countNumberAttempts, lastUpdatedDate);
 
-            return httpRequest().toString();
+            return httpRequest();
         } else {
             return "You have to wait " + (24 - formattedDiff) + " more hours until you are able to reuse this API! Have a nice day!";
         }
@@ -310,19 +310,5 @@ public class RapidAPIConcertsAPI {
         } else {
             System.out.println("You parsed the wrong attribute!");
         }
-    }
-
-    public static void main(String[] args) {
-        RapidAPIConcertsAPI rapidAPIConcertsAPI = RapidAPIConcertsAPI.getInstance();
-        HttpResponse<String> response = rapidAPIConcertsAPI.handleIpInfoHttpResponse();
-
-        String city = rapidAPIConcertsAPI.getAttribute(response, "city");
-        String location = rapidAPIConcertsAPI.getAttribute(response, "loc");
-        System.out.println(city);
-        System.out.println(location);
-        rapidAPIConcertsAPI.getCoordinates(location);
-        rapidAPIConcertsAPI.getPublicIPAddress();
-        System.out.println(rapidAPIConcertsAPI.handleIPAPIHttpResponse(rapidAPIConcertsAPI.getPublicIPAddress()).body());
-        System.out.println(rapidAPIConcertsAPI.getAttribute(getInstance().handleIPAPIHttpResponse(rapidAPIConcertsAPI.getPublicIPAddress()), "city"));
     }
 }
