@@ -16,8 +16,8 @@
 
     </ImageView>
     <rowConstraints>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="75"/>
+        <RowConstraints percentHeight="25"/>
+        <RowConstraints percentHeight="70"/>
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
 

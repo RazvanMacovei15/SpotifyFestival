@@ -2,6 +2,8 @@ package com.example.spotifyfestival.UIPackage.HelperClasses;
 
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -13,6 +15,21 @@ public class Helper {
         }else{
             AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
         }
+    }
+
+    public static void loadCover(ImageView image) {
+        // Load the image from resources
+        Image imageS = new Image(Helper.class.getResource("/com/example/spotifyfestival/PNGs/coperta.jpeg").toExternalForm());
+
+        // Set the desired width and height to scale down the image
+        double scaledWidth = 300;
+        double scaledHeight = 150;
+
+        // Set the fitWidth and fitHeight properties to scale the image
+        image.setFitWidth(scaledWidth);
+        image.setFitHeight(scaledHeight);
+        // Set the image to the ImageView
+        image.setImage(imageS);
     }
 
     public static void mouseHoverUpOnButton(Button button) {

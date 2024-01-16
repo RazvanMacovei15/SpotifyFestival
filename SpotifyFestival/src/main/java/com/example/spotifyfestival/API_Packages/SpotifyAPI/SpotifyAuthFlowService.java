@@ -20,7 +20,7 @@ import java.util.*;
 public class SpotifyAuthFlowService {
     public void run() {
         Spark.port(8888);
-//        login();
+        login();
         defineCallbackPath();
     }
 

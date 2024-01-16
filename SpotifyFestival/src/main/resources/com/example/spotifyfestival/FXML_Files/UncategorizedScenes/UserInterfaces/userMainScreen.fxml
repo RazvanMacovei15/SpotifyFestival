@@ -7,29 +7,28 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainController"
-          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20">
+<GridPane fx:controller="com.example.spotifyfestival.UIPackage.UserMainController"
+          xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20" fx:id="mainGridPane">
 
-    <rowConstraints>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="80"/>
-    </rowConstraints>
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView">
 
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-        <image>
-<!--            <Image url="@SpotifyLogo.png"/>-->
-        </image>
     </ImageView>
 
-    <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">
+
+    <rowConstraints>
+        <RowConstraints percentHeight="25"/>
+        <RowConstraints percentHeight="75"/>
+    </rowConstraints>
+
+    <VBox fx:id="vBox" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">
         <Button GridPane.halignment="CENTER"
                 text="See Top Lists"
-                minWidth="300"
+                fx:id="topLists" minWidth="300"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onTopListsButtonClicked"/>
         <Button GridPane.halignment="CENTER"
                 text="Show me the way..."
-                minWidth="300"
+                fx:id="festivals" minWidth="300"
                 style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
                 onAction="#onGetFestivalSuggestionButtonClicked"/>
     </VBox>

@@ -7,13 +7,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainController"
+<GridPane fx:controller="com.example.spotifyfestival.UIPackage.AdminMainController"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_CENTER" hgap="20" vgap="20"
           fx:id="mainGridPane">
 
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView">
+
+    </ImageView>
     <rowConstraints>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="80"/>
+        <RowConstraints percentHeight="25"/>
+        <RowConstraints percentHeight="75"/>
     </rowConstraints>
 
     <VBox fx:id="vBox" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">

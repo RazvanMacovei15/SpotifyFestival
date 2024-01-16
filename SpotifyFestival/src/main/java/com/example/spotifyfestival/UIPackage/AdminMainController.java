@@ -1,22 +1,16 @@
 package com.example.spotifyfestival.UIPackage;
 
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
-import javafx.animation.ScaleTransition;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 
-import java.io.File;
 import java.io.IOException;
 
-public class MainController {
+public class AdminMainController {
     @FXML
     GridPane mainGridPane;
     @FXML
@@ -27,8 +21,12 @@ public class MainController {
     Button topLists;
     @FXML
     VBox vBox;
+    @FXML
+    ImageView imageView;
 
     public void initialize() {
+
+        Helper.loadCover(imageView);
 
         Helper.mouseHoverUpOnButton(admin);
         Helper.mouseHoverUpOnButton(festivals);

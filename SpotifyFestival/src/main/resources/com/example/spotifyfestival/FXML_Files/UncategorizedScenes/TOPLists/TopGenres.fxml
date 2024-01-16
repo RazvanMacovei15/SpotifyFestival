@@ -25,12 +25,6 @@
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
-    <ImageView GridPane.rowIndex="0">
-        <image>
-<!--            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>-->
-        </image>
-    </ImageView>
-
     <Label text="Top Genres" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="300"
            style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 25px"/>
 
@@ -62,20 +56,10 @@
             </Button>
         </HBox>
     </GridPane>
-    <GridPane GridPane.rowIndex="3">
-        <columnConstraints>
-            <ColumnConstraints percentWidth="80"/>
-            <ColumnConstraints percentWidth="20"/>
-        </columnConstraints>
 
-        <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.halignment="CENTER">
+    <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
 
-        </ListView>
-
-        <ListView fx:id="countListView" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="CENTER">
-
-        </ListView>
-    </GridPane>
+    </ListView>
     <Button alignment="CENTER"
             GridPane.halignment="CENTER"
             GridPane.rowIndex="4"

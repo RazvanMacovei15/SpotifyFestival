@@ -34,6 +34,7 @@ public class App extends Application {
     public void init() {
         SpotifyAuthFlowService authFlowService = SpotifyAuthFlowService.getInstance();
         authFlowService.run();
+
     }
 
     public static void main(String[] args) throws Exception {
