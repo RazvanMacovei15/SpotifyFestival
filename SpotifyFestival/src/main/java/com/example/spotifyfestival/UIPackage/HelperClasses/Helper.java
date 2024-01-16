@@ -19,7 +19,7 @@ public class Helper {
 
     public static void loadCover(ImageView image) {
         // Load the image from resources
-        Image imageS = new Image(Helper.class.getResource("/com/example/spotifyfestival/PNGs/coperta.jpeg").toExternalForm());
+        Image imageS = new Image(Helper.class.getResource("/com/example/spotifyfestival/PNGs/coperta_2.jpeg").toExternalForm());
 
         // Set the desired width and height to scale down the image
         double scaledWidth = 300;

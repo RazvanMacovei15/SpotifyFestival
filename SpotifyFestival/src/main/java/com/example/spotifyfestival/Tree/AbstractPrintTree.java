@@ -343,4 +343,72 @@ public abstract class AbstractPrintTree {
         circleToReturn.setUserData(userData);
         return circleToReturn;
     }
+
+
+    //to be reviewed later on
+    /*
+    public void displayCirclesOneAtATime(BorderPane canvasBorderPane, GraphicsContext gc, Circle currentUserCircle, Circle currentFestivalOrVenueCircle, Circle currentStage) {
+    List<Circle> circles = getAllCircles();
+    int currentIndex = 0;
+
+    Timeline timeline = new Timeline();
+
+    for (int i = 0; i < circles.size() - 1; i++) {
+        Circle firstCircle = circles.get(i);
+        Circle nextCircle = circles.get(i + 1);
+
+        KeyFrame keyFrame = createCircleKeyFrame(canvasBorderPane, firstCircle, currentIndex * 300);
+        timeline.getKeyFrames().add(keyFrame);
+
+        if (shouldDrawEdgeBetweenCircles(firstCircle, nextCircle)) {
+            Circle circleForLambda = getCircleDetails(firstCircle);
+            KeyFrame lineKeyFrame = createLineKeyFrame(gc, circleForLambda, nextCircle, currentIndex * 300);
+            timeline.getKeyFrames().add(lineKeyFrame);
+            currentIndex++;
+        }
+        currentIndex++;
+    }
+
+    if (!circles.isEmpty()) {
+        Circle lastCircle = circles.get(circles.size() - 1);
+        KeyFrame lastKeyFrame = createCircleKeyFrame(canvasBorderPane, lastCircle, currentIndex * 300);
+        timeline.getKeyFrames().add(lastKeyFrame);
+    }
+
+    timeline.play();
+}
+
+private KeyFrame createCircleKeyFrame(BorderPane canvasBorderPane, Circle circle, double millis) {
+    return new KeyFrame(
+            Duration.millis(millis),
+            event -> canvasBorderPane.getChildren().add(circle)
+    );
+}
+
+private KeyFrame createLineKeyFrame(GraphicsContext gc, Circle startCircle, Circle endCircle, double millis) {
+    return new KeyFrame(
+            Duration.millis(millis),
+            event -> drawEdgeBetweenTwoPoints(startCircle.getCenterX(), startCircle.getCenterY(), endCircle.getCenterX(), endCircle.getCenterY(), gc)
+    );
+}
+
+private boolean shouldDrawEdgeBetweenCircles(Circle firstCircle, Circle nextCircle) {
+    Object firstUserData = firstCircle.getUserData();
+    Object nextUserData = nextCircle.getUserData();
+
+    if (firstUserData instanceof UserLocation && nextUserData instanceof UserLocation) {
+        return true;
+    } else if (firstUserData instanceof Venue && nextUserData instanceof Concert) {
+        return true;
+    } else if (firstUserData instanceof Festival && nextUserData instanceof FestivalStage) {
+        return true;
+    } else if (firstUserData instanceof FestivalStage && nextUserData instanceof Concert) {
+        return true;
+    } else if (firstUserData instanceof Concert && (nextUserData instanceof Venue || nextUserData instanceof Festival || nextUserData instanceof FestivalStage)) {
+        return true;
+    }
+
+    return false;
+}
+*/
 }

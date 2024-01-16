@@ -23,7 +23,7 @@
 
     <ImageView GridPane.rowIndex="0">
         <image>
-<!--            <Image url="/G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\SpotifyLogo.png"/>-->
+<!--            <Image url="/G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\copertaSpotify.png"/>-->
         </image>
     </ImageView>
 

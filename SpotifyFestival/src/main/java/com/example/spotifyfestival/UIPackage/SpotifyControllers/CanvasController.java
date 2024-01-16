@@ -7,6 +7,7 @@ import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
+import com.example.spotifyfestival.MainPackage.App;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
@@ -14,6 +15,7 @@ import com.example.spotifyfestival.UIPackage.HelperClasses.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -21,8 +23,11 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 
 import java.io.IOException;
@@ -219,6 +224,50 @@ public class CanvasController extends AbstractPrintTree {
             userDetails.add(longitude);
             detailsListView.setItems(userDetails);
         });
+
+        // Create a Tooltip for the circle
+        Tooltip tooltip = new Tooltip("Circle Information\nRadius: " + userLocationRadius);
+
+        // Add a mouse entered event handler to show the tooltip
+        userLocationCircle.setOnMouseEntered(event -> {
+            Tooltip.install(userLocationCircle, tooltip);
+        });
+
+        // Add a mouse exited event handler to hide the tooltip
+        userLocationCircle.setOnMouseExited(event -> {
+            Tooltip.uninstall(userLocationCircle, tooltip);
+        });
+
+//        // Create a Stage for the circle information
+//        Stage infoStage = new Stage();
+//        infoStage.setTitle("Circle Information");
+//        Label label = new Label("Radius: " + userLocationRadius);
+//        StackPane infoPane = new StackPane(label);
+//        Scene infoScene = new Scene(infoPane, 200, 100);
+//        infoStage.setScene(infoScene);
+//
+//        // Add a mouse clicked event handler to show/hide the stage
+//        userLocationCircle.setOnMouseClicked(event -> {
+//            if (infoStage.isShowing()) {
+//                infoStage.hide();
+//            } else {
+//                infoStage.show();
+//            }
+//        });
+
+//        // Create a label for tooltip content
+//        Label tooltipLabel = new Label("Circle Information\nRadius: " + userLocationRadius);
+//        tooltipLabel.setStyle("-fx-background-color: white; -fx-border-color: black;");
+//
+//        // Create a Popup for the tooltip
+//        Popup tooltipPopup = new Popup();
+//        tooltipPopup.getContent().add(tooltipLabel);
+//
+//        Stage primaryStage = App.getPrimaryStage();
+//        // Show the tooltip popup when the scene is shown
+//        primaryStage.setOnShown(event -> {
+//            tooltipPopup.show(primaryStage);
+//        });
 
         return userLocationCircle;
     }
