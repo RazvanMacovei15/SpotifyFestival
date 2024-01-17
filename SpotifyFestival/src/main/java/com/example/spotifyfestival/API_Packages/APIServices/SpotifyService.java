@@ -79,9 +79,7 @@ public class SpotifyService {
             for (int i = 0; i < itemsArray.length(); i++) {
                 JSONObject itemObject = itemsArray.getJSONObject(i);
                 name = itemObject.getString("name");
-                System.out.println(name);
                 spotifyID = itemObject.getString("id");
-                System.out.println(spotifyID);
             }
         } catch (Exception e) {
             e.printStackTrace();

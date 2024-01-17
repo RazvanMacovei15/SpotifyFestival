@@ -1,36 +1,27 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
+import com.example.spotifyfestival.API_Packages.APIServices.JSONConstant;
+import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
-import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
-import com.example.spotifyfestival.MainPackage.App;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
-import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
-import com.example.spotifyfestival.UIPackage.HelperClasses.UserManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
 import org.controlsfx.control.CheckComboBox;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.Map;
@@ -72,6 +63,7 @@ public class CanvasController extends AbstractPrintTree {
     protected double userLocationRadius;
     protected double venueCircleRadius;
     protected double concertCircleRadius;
+    protected double concertLocationRadius;
     protected double x;
 
     protected double y;
@@ -86,6 +78,7 @@ public class CanvasController extends AbstractPrintTree {
     private Map<Genre, Integer> retrieveGenreCount() {
         TopGenresController controller = new TopGenresController();
         HttpResponse<String> response = SpotifyService.getUserTopArtists();
+        assert response != null;
         String jsonResponse = response.body();
         ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
         Map<Genre, Integer> genreCount = controller.getGenreCountFromResponse(allArtists);
@@ -109,8 +102,6 @@ public class CanvasController extends AbstractPrintTree {
             String name = genre.getName();
             genreNames.add(name);
         }
-//        System.out.println(genreNames);
-
         return genreNames;
     }
 
@@ -130,6 +121,7 @@ public class CanvasController extends AbstractPrintTree {
         userLocationRadius = 10;
         venueCircleRadius = 10;
         concertCircleRadius = 5;
+        concertLocationRadius = 5;
 
         gc = canvas.getGraphicsContext2D();
 
@@ -141,27 +133,6 @@ public class CanvasController extends AbstractPrintTree {
         genreComboBox.setDisable(true);
         venueComboBox.setDisable(true);
         radiusField.setDisable(true);
-
-        //exercising with images
-
-        // Load an image
-        Image image = new Image("https://i.scdn.co/image/ab6761610000f178ee07b5820dd91d15d397e29c");
-
-        // Create an ImageView with the image
-        ImageView imageView = new ImageView(image);
-
-        // Draw the image on the canvas
-//        gc.drawImage(image, 0, 0);
-
-        // Set the desired width and height to scale down the image
-        double scaledWidth = 50;
-        double scaledHeight = 50;
-
-        // Set the fitWidth and fitHeight properties to scale the image
-        imageView.setFitWidth(scaledWidth);
-        imageView.setFitHeight(scaledHeight);
-
-        mainGridPane.add(imageView, 0, 0);
     }
 
     public void onBackButtonClicked() {
@@ -194,14 +165,14 @@ public class CanvasController extends AbstractPrintTree {
         RapidAPIParameters parameters = processSelection();
         RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
         api.addParameters(parameters);
-        String json = api.getConcertsInYourArea();
+//        String json = api.getConcertsInYourArea();
 
-        createTree(festivalStageDAO, festivalDAO, concertDAO, json, canvasBorderPane, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius, gc);
+        createTree(festivalStageDAO, festivalDAO, concertDAO, JSONConstant.getJsonData(), canvas, userLocationRadius, venueCircleRadius, concertCircleRadius);
         displayCirclesOneAtATime(canvasBorderPane, gc, null, null, null);
     }
 
     @Override
-    public Circle drawUserLocationCircle(double userLocationRadius, Canvas canvas, UserLocation userLocation) {
+    public Circle drawUserLocationCircle(Canvas canvas, UserLocation userLocation) {
         //create circle that stores the user location info
 
         Circle userLocationCircle = new Circle();
@@ -238,42 +209,11 @@ public class CanvasController extends AbstractPrintTree {
             Tooltip.uninstall(userLocationCircle, tooltip);
         });
 
-//        // Create a Stage for the circle information
-//        Stage infoStage = new Stage();
-//        infoStage.setTitle("Circle Information");
-//        Label label = new Label("Radius: " + userLocationRadius);
-//        StackPane infoPane = new StackPane(label);
-//        Scene infoScene = new Scene(infoPane, 200, 100);
-//        infoStage.setScene(infoScene);
-//
-//        // Add a mouse clicked event handler to show/hide the stage
-//        userLocationCircle.setOnMouseClicked(event -> {
-//            if (infoStage.isShowing()) {
-//                infoStage.hide();
-//            } else {
-//                infoStage.show();
-//            }
-//        });
-
-//        // Create a label for tooltip content
-//        Label tooltipLabel = new Label("Circle Information\nRadius: " + userLocationRadius);
-//        tooltipLabel.setStyle("-fx-background-color: white; -fx-border-color: black;");
-//
-//        // Create a Popup for the tooltip
-//        Popup tooltipPopup = new Popup();
-//        tooltipPopup.getContent().add(tooltipLabel);
-//
-//        Stage primaryStage = App.getPrimaryStage();
-//        // Show the tooltip popup when the scene is shown
-//        primaryStage.setOnShown(event -> {
-//            tooltipPopup.show(primaryStage);
-//        });
-
         return userLocationCircle;
     }
 
     @Override
-    public Circle drawVenueCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity, UserLocation userLocation) {
+    public Circle drawVenueCircle(int i, int numberOfVenueCircles, Entity entity, UserLocation userLocation) {
         double venueCenterX = x;
         double venueCenterY = y;
         double radiusFromUserLocation = 130;
@@ -324,7 +264,7 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     @Override
-    public Circle drawConcertCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
+    public Circle drawConcertCircle(int i, int numberOfConcertCircles, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
         double radiusFromVenueLocation = 20;
         Circle concertLocationCircle = null;
         if(venueIndex < numberOfVenueCircles/4){
@@ -343,12 +283,18 @@ public class CanvasController extends AbstractPrintTree {
             concertLocationCircle.setOnMouseClicked(event -> {
                 System.out.println(concert);
                 ObservableList<String> concertToListView = FXCollections.observableArrayList();
+                String info = null;
+                if(concert.getListOfArtists().isEmpty()){
+                    info = "INFORMATION UNAVAILABLE!";
+                }else{
+                    info = concert.listOfArtistToString(concert.getListOfArtists());
+                }
 
                 concertToListView.addAll(
                         "Description: " +
                                 concert.getDescription(),
                                 "Venue: " + concert.getVenue().getVenueName(),
-                                concert.listOfArtistToString(concert.getListOfArtists()),
+                                "Artists: " + info,
                                 "Date: " + concert.getStartOfTheConcert(),
                                 "Time: " + concert.getTime());
                 detailsListView.setItems(concertToListView);
@@ -358,7 +304,7 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     @Override
-    public Circle drawFestivalCircle(int i, int numberOfVenueCircles, double venueCircleRadius, Entity entity) {
+    public Circle drawFestivalCircle(int i, int numberOfVenueCircles, Entity entity) {
         double venueCenterX = x;
         double venueCenterY = y;
         double radiusFromUserLocation = 240;
@@ -380,7 +326,7 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     @Override
-    public Circle drawStageCircle(int i, int numberOfConcertCircles, double concertLocationRadius, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
+    public Circle drawStageCircle(int i, int numberOfConcertCircles, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
         double radiusFromVenueLocation = 50;
         Circle concertLocationCircle = null;
         if(venueIndex < numberOfVenueCircles/4){
@@ -391,7 +337,7 @@ public class CanvasController extends AbstractPrintTree {
         }
 
         concertLocationCircle.setFill(Color.GREENYELLOW);
-        Circle circleForLambda = getCircleDetails(concertLocationCircle);
+//        Circle circleForLambda = getCircleDetails(concertLocationCircle);
 
         if(entity instanceof FestivalStage stage){
             concertLocationCircle.setUserData(stage);

@@ -18,8 +18,6 @@ public class UserLocation extends Entity{
         HttpResponse<String> locationResponse = api.handleIpInfoHttpResponse();
         String locationCoordinates = api.getAttribute(locationResponse, "loc");
         getCoordinates(locationCoordinates);
-        System.out.println("User is located at coordinates latitude " + latitude + " and longitude " + longitude);
-        System.out.println();
     }
 
     public void getCoordinates(String str) {
