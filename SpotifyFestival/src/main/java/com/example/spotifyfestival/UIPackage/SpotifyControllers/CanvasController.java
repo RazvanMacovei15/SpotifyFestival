@@ -65,12 +65,10 @@ public class CanvasController extends AbstractPrintTree {
     protected double concertCircleRadius;
     protected double concertLocationRadius;
     protected double x;
-
     protected double y;
     protected ConcertDAO concertDAO;
     protected FestivalDAO festivalDAO;
     protected FestivalStageDAO festivalStageDAO;
-
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
 
     protected GraphicsContext gc;
@@ -140,7 +138,6 @@ public class CanvasController extends AbstractPrintTree {
     }
 
 
-
     public RapidAPIParameters processSelection() {
         LocalDate startDateArea = startDatePicker.getValue();
         LocalDate endDateArea = endDatePicker.getValue();
@@ -179,7 +176,7 @@ public class CanvasController extends AbstractPrintTree {
         userLocationCircle.setRadius(userLocationRadius);
 
         x = canvas.getWidth() / 2;
-        y = canvas.getHeight() * ((double) 3 /4) - 40;
+        y = canvas.getHeight() * ((double) 3 / 4) - 40;
 
         userLocationCircle.setCenterX(x);
         userLocationCircle.setCenterY(y);
@@ -220,15 +217,15 @@ public class CanvasController extends AbstractPrintTree {
         Circle venueLocationCircle = drawCircleOnTheRightSide(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         venueLocationCircle.setFill(Color.RED);
 
-        if(entity instanceof Venue venue){
+        if (entity instanceof Venue venue) {
             venueLocationCircle.setUserData(venue);
 
             venueLocationCircle.setOnMouseClicked(event -> {
                 Venue venueToCheck = (Venue) venueLocationCircle.getUserData();
                 ObservableList<String> venueDetails = FXCollections.observableArrayList();
-                String x = "Venue NAME: "+venueToCheck.getVenueName();
-                String y = "City: "+venueToCheck.getCity();
-                String z = "Street Address: "+venueToCheck.getStreetAddress();
+                String x = "Venue NAME: " + venueToCheck.getVenueName();
+                String y = "City: " + venueToCheck.getCity();
+                String z = "Street Address: " + venueToCheck.getStreetAddress();
                 String w = venueToCheck.getLocationLatitude() + "\n" + venueToCheck.getLocationLongitude();
                 String u = "Distance From User: " + calculateDistance(userLocation.getLatitude(), userLocation.getLongitude(), Double.parseDouble(venueToCheck.getLocationLatitude()), Double.parseDouble(venueToCheck.getLocationLongitude())) + "km!";
                 venueDetails.addAll(x, y, z, u);
@@ -267,9 +264,9 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawConcertCircle(int i, int numberOfConcertCircles, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
         double radiusFromVenueLocation = 20;
         Circle concertLocationCircle = null;
-        if(venueIndex < numberOfVenueCircles/4){
+        if (venueIndex < numberOfVenueCircles / 4) {
             concertLocationCircle = drawCircleOnTheRightSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
-        }else{
+        } else {
             concertLocationCircle = drawCircleOnTheLeftSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
 
         }
@@ -277,26 +274,26 @@ public class CanvasController extends AbstractPrintTree {
         concertLocationCircle.setFill(Color.GREEN);
         Circle circleForLambda = getCircleDetails(concertLocationCircle);
 
-        if(entity instanceof Concert concert){
+        if (entity instanceof Concert concert) {
             concertLocationCircle.setUserData(concert);
 
             concertLocationCircle.setOnMouseClicked(event -> {
                 System.out.println(concert);
                 ObservableList<String> concertToListView = FXCollections.observableArrayList();
                 String info = null;
-                if(concert.getListOfArtists().isEmpty()){
+                if (concert.getListOfArtists().isEmpty()) {
                     info = "INFORMATION UNAVAILABLE!";
-                }else{
+                } else {
                     info = concert.listOfArtistToString(concert.getListOfArtists());
                 }
 
                 concertToListView.addAll(
                         "Description: " +
                                 concert.getDescription(),
-                                "Venue: " + concert.getVenue().getVenueName(),
-                                "Artists: " + info,
-                                "Date: " + concert.getStartOfTheConcert(),
-                                "Time: " + concert.getTime());
+                        "Venue: " + concert.getVenue().getVenueName(),
+                        "Artists: " + info,
+                        "Date: " + concert.getStartOfTheConcert(),
+                        "Time: " + concert.getTime());
                 detailsListView.setItems(concertToListView);
             });
         }
@@ -312,7 +309,7 @@ public class CanvasController extends AbstractPrintTree {
         Circle festivalLocationCircle = drawCircleOnTheRightSide(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         festivalLocationCircle.setFill(Color.DARKMAGENTA);
 
-        if(entity instanceof Festival festival){
+        if (entity instanceof Festival festival) {
             festivalLocationCircle.setUserData(festival);
 
             festivalLocationCircle.setOnMouseClicked(event -> {
@@ -329,9 +326,9 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawStageCircle(int i, int numberOfConcertCircles, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex) {
         double radiusFromVenueLocation = 50;
         Circle concertLocationCircle = null;
-        if(venueIndex < numberOfVenueCircles/4){
+        if (venueIndex < numberOfVenueCircles / 4) {
             concertLocationCircle = drawCircleOnTheRightSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
-        }else{
+        } else {
             concertLocationCircle = drawCircleOnTheLeftSide(i, numberOfConcertCircles, centerX, centerY, radiusFromVenueLocation, concertLocationRadius);
 
         }
@@ -339,7 +336,7 @@ public class CanvasController extends AbstractPrintTree {
         concertLocationCircle.setFill(Color.GREENYELLOW);
 //        Circle circleForLambda = getCircleDetails(concertLocationCircle);
 
-        if(entity instanceof FestivalStage stage){
+        if (entity instanceof FestivalStage stage) {
             concertLocationCircle.setUserData(stage);
 
             concertLocationCircle.setOnMouseClicked(event -> {

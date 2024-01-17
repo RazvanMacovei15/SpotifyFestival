@@ -96,7 +96,6 @@ public class TopGenresController {
 
         // Set the data in the ListView UI elements
         listView.setItems(genreNames);
-//        countListView.setItems(genresCount);
     }
 
     // Method to count the occurrences of each genre in the list of artists
