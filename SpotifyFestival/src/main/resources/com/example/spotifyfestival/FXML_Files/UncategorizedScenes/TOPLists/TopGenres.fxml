@@ -11,29 +11,34 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <GridPane fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController"
-          xmlns:fx="http://javafx.com/fxml" alignment="CENTER" gridLinesVisible="true">
-
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
+          xmlns:fx="http://javafx.com/fxml" alignment="CENTER" gridLinesVisible="false">
 
     <rowConstraints>
-        <RowConstraints percentHeight="20" maxHeight="25"/>
-        <RowConstraints percentHeight="10" minHeight="15"/>
-        <RowConstraints percentHeight="5" maxHeight="10"/>
-        <RowConstraints percentHeight="70"/>
+        <RowConstraints percentHeight="25" />
+        <RowConstraints percentHeight="8"/>
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="57"/>
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
-    <Label text="Top Genres" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="300" minHeight="15"
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
+
+    <Label text="Top Genres"
+           GridPane.halignment="CENTER"
+           alignment="CENTER"
+           GridPane.rowIndex="1"
+           minWidth="300"
+           minHeight="48"
            style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 25px"/>
 
     <GridPane
-            GridPane.rowIndex="2" maxWidth="300" alignment="CENTER">
+            GridPane.rowIndex="2" maxWidth="300" alignment="CENTER" minHeight="30">
 
         <fx:define>
             <ToggleGroup fx:id="ToggleGroup2"/>
         </fx:define>
 
-        <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
+        <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" >
             <Button fx:id="fourWeeksButton" text="4 weeks" alignment="CENTER" onAction="#on4WeeksButtonClicked">
                 <minWidth>100</minWidth>
                 <prefWidth>100</prefWidth>
@@ -62,6 +67,7 @@
             GridPane.halignment="CENTER"
             GridPane.rowIndex="4"
             text="Get back to main screen"
+            minWidth="300"
             style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px"
             onAction="#onGetBackButtonClicked"/>
 </GridPane>

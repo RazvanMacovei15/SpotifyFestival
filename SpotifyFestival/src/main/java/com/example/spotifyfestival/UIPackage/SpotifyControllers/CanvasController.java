@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.util.Map;
 
 public class CanvasController extends AbstractPrintTree {
-
     // Radius of the Earth in kilometers
     private static final double EARTH_RADIUS = 6371.0;
     @FXML
@@ -70,7 +69,6 @@ public class CanvasController extends AbstractPrintTree {
     protected FestivalDAO festivalDAO;
     protected FestivalStageDAO festivalStageDAO;
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
-
     protected GraphicsContext gc;
 
     private Map<Genre, Integer> retrieveGenreCount() {

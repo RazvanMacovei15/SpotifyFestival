@@ -14,22 +14,17 @@
 
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
 
+
     <rowConstraints>
-        <RowConstraints percentHeight="20"/>
-        <RowConstraints percentHeight="10"/>
-        <RowConstraints percentHeight="5"/>
-        <RowConstraints percentHeight="70"/>
+        <RowConstraints percentHeight="25" />
+        <RowConstraints percentHeight="8"/>
+        <RowConstraints percentHeight="5" />
+        <RowConstraints percentHeight="57"/>
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
-    <ImageView GridPane.rowIndex="0">
-        <image>
-<!--            <Image url="/G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\copertaSpotify.png"/>-->
-        </image>
-    </ImageView>
-
     <Label text="Top Artists" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="300"
-           style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 25px"/>
+           minHeight="48" style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 25px"/>
 
     <GridPane
             GridPane.rowIndex="2" GridPane.halignment="CENTER" alignment="TOP_CENTER">
