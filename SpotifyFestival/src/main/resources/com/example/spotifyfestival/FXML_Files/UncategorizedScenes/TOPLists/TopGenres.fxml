@@ -11,25 +11,23 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <GridPane fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController"
-          xmlns:fx="http://javafx.com/fxml" alignment="CENTER">
+          xmlns:fx="http://javafx.com/fxml" alignment="CENTER" gridLinesVisible="true">
 
-    <padding>
-        <Insets top="5" bottom="5"/>
-    </padding>
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
 
     <rowConstraints>
         <RowConstraints percentHeight="20" maxHeight="25"/>
-        <RowConstraints percentHeight="10" maxHeight="5"/>
+        <RowConstraints percentHeight="10" minHeight="15"/>
         <RowConstraints percentHeight="5" maxHeight="10"/>
         <RowConstraints percentHeight="70"/>
         <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
-    <Label text="Top Genres" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="300"
+    <Label text="Top Genres" GridPane.halignment="CENTER" alignment="CENTER" GridPane.rowIndex="1" minWidth="300" minHeight="15"
            style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 25px"/>
 
     <GridPane
-            GridPane.rowIndex="2" GridPane.halignment="CENTER" alignment="TOP_CENTER">
+            GridPane.rowIndex="2" maxWidth="300" alignment="CENTER">
 
         <fx:define>
             <ToggleGroup fx:id="ToggleGroup2"/>
@@ -57,7 +55,7 @@
         </HBox>
     </GridPane>
 
-    <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.halignment="CENTER">
+    <ListView fx:id="listView" GridPane.columnIndex="0" GridPane.rowIndex="3" minWidth="300">
 
     </ListView>
     <Button alignment="CENTER"

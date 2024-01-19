@@ -4,8 +4,12 @@ import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethod
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
 public class TopListsController {
+    private final String imageURL = "/com/example/spotifyfestival/PNGs/copertaSpotify.png";
+    @FXML
+    ImageView imageView;
     @FXML
     Button artists;
     @FXML
@@ -13,6 +17,7 @@ public class TopListsController {
     @FXML
     Button genres;
     public void initialize(){
+        Helper.loadSpotifyCover(imageView, imageURL);
         Helper.mouseHoverUpOnButton(artists);
         Helper.mouseHoverUpOnButton(tracks);
         Helper.mouseHoverUpOnButton(genres);

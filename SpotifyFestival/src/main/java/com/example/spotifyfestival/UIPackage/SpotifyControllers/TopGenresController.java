@@ -6,13 +6,14 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.GenericsPackage.MapValueSorter;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,10 @@ import java.util.Map;
 
 // Controller class for the TopGenres FXML file
 public class TopGenresController {
+    @FXML
+    ImageView imageView;
+
+    private final String imageURL = "/com/example/spotifyfestival/PNGs/copertaSpotify.png";
 
     // FXML annotations to inject UI elements
     @FXML
@@ -28,6 +33,7 @@ public class TopGenresController {
     // Initialize method, automatically triggered when the scene is shown
     @FXML
     public void initialize() throws JsonProcessingException {
+        Helper.loadSpotifyCover(imageView, imageURL);
         // Automatically trigger the "4 weeks" button when the scene is shown
         on4WeeksButtonClicked();
     }

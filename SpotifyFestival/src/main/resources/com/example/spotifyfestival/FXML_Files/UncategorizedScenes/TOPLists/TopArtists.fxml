@@ -12,6 +12,7 @@
 <GridPane fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.TopArtistsController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER" fx:id="mainGridPane">
 
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
 
     <rowConstraints>
         <RowConstraints percentHeight="20"/>

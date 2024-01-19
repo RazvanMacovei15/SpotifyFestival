@@ -9,6 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 
 public class AdminMainController {
+    private final String imageURL = "/com/example/spotifyfestival/PNGs/coperta_3.jpeg";
     @FXML
     GridPane mainGridPane;
     @FXML
@@ -24,7 +25,7 @@ public class AdminMainController {
 
     public void initialize() {
 
-        Helper.loadCover(imageView);
+        Helper.loadCover(imageView, imageURL);
         Helper.mouseHoverUpOnButton(admin);
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);

@@ -19,21 +19,21 @@
         <RowConstraints percentHeight="75"/>
     </rowConstraints>
 
-    <VBox fx:id="vBox" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="20">
+    <VBox fx:id="vBox" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="10">
         <Button fx:id="topLists" GridPane.halignment="CENTER"
                 text="USER TOP LISTS"
                 minWidth="250"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px;-fx-background-radius: 15"
                 onAction="#onTopListsButtonClicked"/>
         <Button fx:id="festivals" GridPane.halignment="CENTER"
                 text="THIS IS THE WAY"
                 minWidth="250"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px;-fx-background-radius: 15"
                 onAction="#onGetFestivalSuggestionButtonClicked"/>
         <Button fx:id="admin" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.halignment="CENTER"
                 text="ADMIN"
                 minWidth="250"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px;-fx-background-radius: 15"
                 onAction="#handleDBButton"/>
     </VBox>
 </GridPane>

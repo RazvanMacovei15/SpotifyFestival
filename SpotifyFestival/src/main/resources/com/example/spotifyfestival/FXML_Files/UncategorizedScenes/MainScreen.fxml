@@ -12,7 +12,7 @@
 <GridPane fx:controller="com.example.spotifyfestival.UIPackage.MainPageController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER" hgap="20" vgap="20" gridLinesVisible="false">
 
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="image">
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView">
 
     </ImageView>
     <rowConstraints>
@@ -23,7 +23,7 @@
 
     <Button fx:id="loginButton" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER"
             text="Log in with Spotify"
-            style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+            style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px; -fx-background-radius: 15"
             onAction="#handleLoginButtonClick"/>
     <Label fx:id="label" text="Status: NOT LOGGED IN"
            GridPane.rowIndex="2"

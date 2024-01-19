@@ -15,6 +15,8 @@
           alignment="TOP_CENTER"
           hgap="20"
           vgap="20">
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
+
 
     <rowConstraints>
         <RowConstraints percentHeight="20"/>
@@ -25,15 +27,15 @@
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" spacing="10" alignment="CENTER">
         <Button fx:id="artists"
                 text="Top Artists"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px; -fx-background-radius: 15"
                 onAction="#onTopArtistsButtonClicked"/>
         <Button fx:id="tracks"
                 text="Top Tracks"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px; -fx-background-radius: 15"
                 onAction="#onTopTracksButtonClicked"/>
         <Button fx:id="genres"
                 text="Top Genres"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px; -fx-background-radius: 15"
                 onAction="#onTopGenresButtonClicked"/>
     </VBox>
 

@@ -24,12 +24,12 @@
         <Button GridPane.halignment="CENTER"
                 text="See Top Lists"
                 fx:id="topLists" minWidth="300"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px; -fx-background-radius: 15"
                 onAction="#onTopListsButtonClicked"/>
         <Button GridPane.halignment="CENTER"
                 text="Show me the way..."
                 fx:id="festivals" minWidth="300"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 26px; -fx-background-radius: 15"
                 onAction="#onGetFestivalSuggestionButtonClicked"/>
     </VBox>
 </GridPane>

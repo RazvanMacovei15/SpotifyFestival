@@ -3,6 +3,7 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
+import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -25,10 +26,14 @@ public class TopArtistsController {
 
     @FXML
     public ScrollPane scrollPane;
+    @FXML
+    ImageView imageView;
+    private final String imageURL ="/com/example/spotifyfestival/PNGs/copertaSpotify.png";
 
     @FXML
     public void initialize() throws JsonProcessingException {
         service = new SpotifyService();
+        Helper.loadSpotifyCover(imageView, imageURL);
 
         // Automatically trigger the "4 weeks" button when the scene is shown
         on4WeeksButtonClicked();

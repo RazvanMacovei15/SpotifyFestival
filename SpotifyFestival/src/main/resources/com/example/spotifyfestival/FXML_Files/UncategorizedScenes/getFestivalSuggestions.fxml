@@ -28,12 +28,6 @@
         <RowConstraints percentHeight="10"/>
     </rowConstraints>
 
-    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.halignment="CENTER">
-        <image>
-            <!--            <Image url="G:\CS\Summer Projects\SpotifyFestival\SpotifyFestival\src\main\resources\copertaSpotify.png"/>-->
-        </image>
-    </ImageView>
-
     <VBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER" spacing="10">
 
         <Label text=" ---Choose the festival--- "
