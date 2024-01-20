@@ -1,6 +1,8 @@
 package com.example.spotifyfestival.Tree;
 
 import com.example.spotifyfestival.API_Packages.APIServices.ConcertAPIService;
+import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
@@ -32,9 +34,74 @@ public abstract class AbstractPrintTree {
     public abstract Circle drawStageCircle(int i, int numberOfConcertCircles, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex);
 
     protected List<Circle> allCircles = new ArrayList<>();
+    protected List<Circle> allConcertCircles = new ArrayList<>();
     protected HashSet<Artist> allGenres = new HashSet<>();
 
     protected Tree<Entity> concertTree = null;
+
+    public abstract void highlightCircle(Circle circle);
+
+    public void searchGenreThroughTree(Genre genre) {
+        TreeNode<Entity> root = concertTree.getRoot();
+        List<TreeNode<Entity>> rootChildren = root.getChildren();
+        for (TreeNode<Entity> node : rootChildren) {
+            if (node.getData() instanceof Venue venue) {
+                List<Concert> entityConcerts = venue.getListOfAllConcertsAtThatVenue();
+                for (Concert concert : entityConcerts) {
+                    lookThroughTheConcertGenres(genre, concert);
+                }
+            } else if (node.getData() instanceof Festival festival) {
+                List<TreeNode<Entity>> concertEntities = node.getChildren();
+                for (TreeNode<Entity> concertChild : concertEntities) {
+                    if (concertChild.getData() instanceof Concert concert) {
+                        lookThroughTheConcertGenres(genre, concert);
+                    }
+                }
+            }
+        }
+    }
+
+    private void lookThroughTheConcertGenres(Genre genre, Concert concert) {
+        List<Artist> artists = concert.getListOfArtists();
+        for (Artist artist : artists) {
+            String id = artist.getSpotifyId();
+            SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+            String token = auth.getAccessToken();
+
+            List<Genre> genres = SpotifyService.returnArtistGenresFromSpotifyID(id, token);
+
+            for (Genre genreToCheck : genres) {
+                if (genreToCheck.getName().equals(genre.getName())) {
+                    int concertId = concert.getId();
+                    for (Circle circle : allConcertCircles) {
+                        if (circle.getUserData() instanceof Concert concertToHighlight) {
+                            if (concertToHighlight.getId() == concertId) {
+                                highlightCircle(circle);
+                                System.out.println(concertId + "it works maybe");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private List<FestivalStage> getListOfStages(Festival festival) {
+        List<FestivalStage> stagesAtFestival = new ArrayList<>();
+        FestivalDAO festivalDAO = FestivalDAO.getInstance();
+        for (Festival festivalToCheck : festivalDAO.getFestivalList()) {
+            if (festivalToCheck.getId().equals(festival.getId())) {
+                FestivalStageDAO festivalStageDAO = FestivalStageDAO.getInstance();
+                Venue venue = festival.getVenue();
+                for (FestivalStage stage : festivalStageDAO.getAll()) {
+                    if (venue.getId().equals(stage.getVenueId())) {
+                        stagesAtFestival.add(stage);
+                    }
+                }
+            }
+        }
+        return stagesAtFestival;
+    }
 
     public void createTree(FestivalStageDAO festivalStageDAO, FestivalDAO festivalDAO, ConcertDAO concertDAO, String str, Canvas canvas, double userLocationRadius, double venueCircleRadius, double concertLocationRadius) {
 
@@ -77,6 +144,7 @@ public abstract class AbstractPrintTree {
                 for (int j = 0; j < concertsOrStagesAtEntityVenue.size(); j++) {
                     Entity concertEntity = concertsOrStagesAtEntityVenue.get(j);
 
+
                     TreeNode<Entity> venueChild = new TreeNode<>(concertEntity);
                     rootChild.addChild(venueChild);
 
@@ -86,6 +154,7 @@ public abstract class AbstractPrintTree {
 
                     Circle concertCircle = drawConcertCircle(j, numberOfConcertCircles, concertEntity, concertCircleX, concertCircleY, numberOfVenueCircles, i);
 
+                    allConcertCircles.add(concertCircle);
                     allCircles.add(concertCircle);
                 }
             } else if (entity instanceof Festival festival) {
@@ -131,6 +200,8 @@ public abstract class AbstractPrintTree {
                         double concertCircleY = stageCircle.getCenterY();
 
                         Circle concertCircle = drawConcertCircle(k, numberOfConcertCircles, concertEntity, concertCircleX, concertCircleY, numberOfStagesCircles, j);
+
+                        allConcertCircles.add(concertCircle);
                         allCircles.add(concertCircle);
                     }
                 }

@@ -9,6 +9,7 @@ import com.example.spotifyfestival.DatabasePackage.DAO.GenreDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
+import com.example.spotifyfestival.GenericsPackage.MapValueSorter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
@@ -19,8 +20,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SpotifyService {
 
@@ -28,7 +28,118 @@ public class SpotifyService {
 
     }
 
-    public static String getEmailResponse(String accessToken){
+    public static Map<Genre, Integer> getGenreCountFromResponse(ObservableList<Artist> artists) {
+        HashMap<Genre, Integer> genreCount = new HashMap<>();
+        for (Artist artist : artists) {
+            ObservableList<Genre> genres = (ObservableList<Genre>) artist.getGenres();
+            for (int i = 0; i < genres.size(); i++) {
+                Genre genre = genres.get(i);
+                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
+            }
+        }
+
+        // Sort and return the genre count map
+        Map<Genre, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
+//        for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
+//            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
+//        }
+        return sortedGenreMap;
+    }
+
+    public static Map<Genre, Integer> getTopMostGenresListened() {
+        HttpResponse<String> response = SpotifyService.getUserTopArtists();
+
+        // Extract relevant information from the API response
+        String jsonResponse = response.body();
+        ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
+        Map<Genre, Integer> genreCount = getGenreCountFromResponse(allArtists);
+        System.out.println(genreCount);
+        // Create a new map to store the highest three values
+        Map<Genre, Integer> topMostGenres = new HashMap<>();
+
+        int count = 0;
+        int maxCount = 3;
+
+        // Iterate through the highest three values and save corresponding elements
+        int previousValue = 0;
+
+
+        for (Map.Entry<Genre, Integer> entry : genreCount.entrySet()) {
+            while (count < maxCount) {
+                Genre key = entry.getKey();
+                Integer value = entry.getValue();
+
+                if (count == 0) {
+                    topMostGenres.put(key, value);
+                    count++;
+                    previousValue = value;
+                    break;
+                } else {
+                    if (!value.equals(previousValue)) {
+                        topMostGenres.put(key, value);
+                        previousValue = value;
+                        break;
+                    }
+                }
+                count++;
+            }
+
+        }
+        System.out.println(topMostGenres);
+
+        return topMostGenres;
+    }
+
+    // Helper method to get the previous entry in the map
+    private static <K, V> Map.Entry<K, V> getPreviousEntry(Map<K, V> map, K key) {
+        for (Map.Entry<K, V> entry : map.entrySet()) {
+            if (entry.getKey().equals(key)) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
+    public static List<Genre> returnArtistGenresFromSpotifyID(String id, String accessToken) {
+        String apiUrl = SearchAPI.searchByIDURL(id);
+        // Create HttpRequest
+        HttpRequest emailRequest = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(apiUrl))
+                .headers("Authorization", "Bearer " + accessToken)
+                .build();
+        // Send the request and get the response
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> response = null;
+        try {
+            response = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        List<Genre> genres = new ArrayList<>();
+
+        try {
+            // Parse the JSON response
+            JSONObject responseJson = new JSONObject(response.body());
+
+
+            JSONArray genresArray = responseJson.getJSONArray("genres");
+
+            // Iterate through the items and extract the specified attribute
+            for (int i = 0; i < genresArray.length(); i++) {
+                String name = (String) genresArray.get(i);
+                Genre genre = new Genre(i, name);
+                genres.add(genre);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return genres;
+    }
+
+    public static String getEmailResponse(String accessToken) {
         String apiUrl = "https://api.spotify.com/v1/me";
         // Create HttpRequest
         HttpRequest emailRequest = HttpRequest.newBuilder()
