@@ -85,6 +85,10 @@ public class SpotifyService {
             }
 
         }
+
+        Genre genre = new Genre(55, "dutch pop");
+        topMostGenres.put(genre, 90);
+
         System.out.println(topMostGenres);
 
         return topMostGenres;

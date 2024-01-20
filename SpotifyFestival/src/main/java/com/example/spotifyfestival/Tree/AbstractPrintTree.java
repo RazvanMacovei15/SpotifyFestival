@@ -45,9 +45,13 @@ public abstract class AbstractPrintTree {
         TreeNode<Entity> root = concertTree.getRoot();
         List<TreeNode<Entity>> rootChildren = root.getChildren();
         for (TreeNode<Entity> node : rootChildren) {
+
             if (node.getData() instanceof Venue venue) {
+
                 List<Concert> entityConcerts = venue.getListOfAllConcertsAtThatVenue();
+
                 for (Concert concert : entityConcerts) {
+
                     lookThroughTheConcertGenres(genre, concert);
                 }
             } else if (node.getData() instanceof Festival festival) {
@@ -64,18 +68,22 @@ public abstract class AbstractPrintTree {
     private void lookThroughTheConcertGenres(Genre genre, Concert concert) {
         List<Artist> artists = concert.getListOfArtists();
         for (Artist artist : artists) {
+
             String id = artist.getSpotifyId();
             SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
             String token = auth.getAccessToken();
 
             List<Genre> genres = SpotifyService.returnArtistGenresFromSpotifyID(id, token);
 
+
             for (Genre genreToCheck : genres) {
                 if (genreToCheck.getName().equals(genre.getName())) {
                     int concertId = concert.getId();
+                    String desc = concert.getDescription();
                     for (Circle circle : allConcertCircles) {
                         if (circle.getUserData() instanceof Concert concertToHighlight) {
-                            if (concertToHighlight.getId() == concertId) {
+
+                            if (concertToHighlight.getDescription().equals(desc)) {
                                 highlightCircle(circle);
                                 System.out.println(concertId + "it works maybe");
                             }

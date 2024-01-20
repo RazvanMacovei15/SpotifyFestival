@@ -355,7 +355,7 @@ public class CanvasController extends AbstractPrintTree {
 
         }
 
-        concertLocationCircle.setFill(Color.GREENYELLOW);
+        concertLocationCircle.setFill(Color.BROWN);
 //        Circle circleForLambda = getCircleDetails(concertLocationCircle);
 
         if (entity instanceof FestivalStage stage) {
@@ -375,7 +375,9 @@ public class CanvasController extends AbstractPrintTree {
             if(node instanceof Circle circleToCheck){
                 if(circleToCheck.getUserData() instanceof Concert concert && circle.getUserData() instanceof Concert secondConcert){
                     if(concert.getDescription().equals(secondConcert.getDescription())){
-                        circleToCheck.setFill(Color.YELLOWGREEN);
+                        circleToCheck.setFill(Color.LIMEGREEN);
+                    } else {
+                        circleToCheck.setFill(Color.GREY);
                     }
                 }
             }
