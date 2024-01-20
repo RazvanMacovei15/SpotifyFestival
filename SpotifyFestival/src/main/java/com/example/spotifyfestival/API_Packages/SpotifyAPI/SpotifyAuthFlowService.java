@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
+import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
 import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
@@ -151,7 +152,7 @@ public class SpotifyAuthFlowService {
                     // Return an error response
                 }
             }
-            String email = getUserEmail(getEmailResponse());
+            String email = getUserEmail(SpotifyService.getEmailResponse(accessToken));
             UserDAO userDAO = UserDAO.getInstance();
             Iterable<User> users = userDAO.getAll();
             for (User user : users) {
@@ -174,19 +175,19 @@ public class SpotifyAuthFlowService {
         });
     }
 
-    public String getEmailResponse() throws IOException, InterruptedException {
-        String apiUrl = "https://api.spotify.com/v1/me";
-        // Create HttpRequest
-        HttpRequest emailRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(apiUrl))
-                .headers("Authorization", "Bearer " + accessToken)
-                .build();
-        // Send the request and get the response
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
-        return emailResponse.body();
-    }
+//    public String getEmailResponse() throws IOException, InterruptedException {
+//        String apiUrl = "https://api.spotify.com/v1/me";
+//        // Create HttpRequest
+//        HttpRequest emailRequest = HttpRequest.newBuilder()
+//                .GET()
+//                .uri(URI.create(apiUrl))
+//                .headers("Authorization", "Bearer " + accessToken)
+//                .build();
+//        // Send the request and get the response
+//        HttpClient httpClient = HttpClient.newHttpClient();
+//        HttpResponse<String> emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
+//        return emailResponse.body();
+//    }
 
     public String refreshTheToken(String jsonResponse) {
         refreshToken = getRefreshToken(jsonResponse);

@@ -162,6 +162,6 @@ public class GenresController extends GenericObservableList<Genre> {
     }
 
     public void back(){
-        Helper.backToMainPageCondition();
+        Helper.getBackToDBList();
     }
 }

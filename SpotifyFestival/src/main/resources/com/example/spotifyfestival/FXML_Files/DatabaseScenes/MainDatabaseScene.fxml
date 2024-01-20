@@ -6,36 +6,88 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.spotifyfestival.UIPackage.DatabaseControllers.DatabaseController">
+<?import javafx.scene.image.ImageView?>
+<GridPane xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.spotifyfestival.UIPackage.DatabaseControllers.DatabaseController">
 
+    <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
 
-    <RadioButton text="Artists Table" fx:id="artistsButton">
-
-    </RadioButton>
-    <RadioButton text="Venues Table" fx:id="venuesButton">
-
-    </RadioButton>
-    <RadioButton text="Concerts Table" fx:id="concertButton">
-
-    </RadioButton>
-    <RadioButton text="ArtistGenre Table" fx:id="artistGenreButton">
-
-    </RadioButton>
-    <RadioButton text="Genres Table" fx:id="genresButton">
-
-    </RadioButton>
-    <RadioButton text="Festivals Table" fx:id="festivalsButton">
-
-    </RadioButton>
-    <RadioButton text="Stages Table" fx:id="stagesButton">
-
-    </RadioButton>
-    <Button text="LOAD" fx:id="loadButton" onAction="#loadPage">
+    <rowConstraints>
+        <RowConstraints percentHeight="25"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="10"/>
+        <RowConstraints percentHeight="5"/>
+    </rowConstraints>
+    <Button text="Artists"
+            fx:id="artistsButton"
+            minHeight="60"
+            GridPane.rowIndex="1"
+            onAction="#onArtistButtonClicked"
+            minWidth="300">
 
     </Button>
-    <Button text="BACK" fx:id="backButton" onAction="#back">
+    <Button text="Venues"
+            fx:id="venuesButton"
+            minHeight="60"
+            GridPane.rowIndex="2"
+            onAction="#onVenues"
+            minWidth="300">
 
     </Button>
-</VBox>
+    <Button text="Concerts"
+            fx:id="concertButton"
+            minHeight="60"
+            GridPane.rowIndex="3"
+            onAction="#onConcerts"
+            minWidth="300">
+
+    </Button>
+    <Button text="ArtistGenre"
+            fx:id="artistGenreButton"
+            minHeight="60"
+            GridPane.rowIndex="4"
+            onAction="#onArtistGenres"
+            minWidth="300">
+
+    </Button>
+    <Button text="Genres"
+            fx:id="genresButton"
+            minHeight="60"
+            GridPane.rowIndex="5"
+            onAction="#onGenres"
+            minWidth="300">
+
+    </Button>
+    <Button text="Festivals"
+            fx:id="festivalsButton"
+            minHeight="60"
+            GridPane.rowIndex="6"
+            onAction="#onFestivals"
+            minWidth="300">
+
+    </Button>
+    <Button text="Stages"
+            fx:id="stagesButton"
+            minHeight="60"
+            GridPane.rowIndex="7"
+            onAction="#onStages"
+            minWidth="300">
+
+    </Button>
+
+    <Button text="BACK"
+            fx:id="backButton"
+            onAction="#back"
+            minHeight="30"
+            style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px"
+            GridPane.rowIndex="8"
+            minWidth="300">
+
+    </Button>
+</GridPane>

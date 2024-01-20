@@ -43,6 +43,7 @@
             GridPane.halignment="CENTER"
             GridPane.rowIndex="2"
             text="Get back to main screen"
+            minWidth="300"
             style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px"
             onAction="#onGetBackButtonClicked"/>
 

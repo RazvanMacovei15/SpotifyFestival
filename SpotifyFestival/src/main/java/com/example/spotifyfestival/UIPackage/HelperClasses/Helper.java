@@ -16,6 +16,9 @@ public class Helper {
             AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/UserInterfaces/userMainScreen.fxml");
         }
     }
+    public static void getBackToDBList(){
+        AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
+    }
 
     public static void loadCover(ImageView image, String imageURL) {
         // Load the image from resources

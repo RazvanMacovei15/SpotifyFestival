@@ -17,6 +17,7 @@ import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public abstract class AbstractPrintTree {
@@ -31,6 +32,7 @@ public abstract class AbstractPrintTree {
     public abstract Circle drawStageCircle(int i, int numberOfConcertCircles, Entity entity, double centerX, double centerY, int numberOfVenueCircles, int venueIndex);
 
     protected List<Circle> allCircles = new ArrayList<>();
+    protected HashSet<Artist> allGenres = new HashSet<>();
 
     protected Tree<Entity> concertTree = null;
 

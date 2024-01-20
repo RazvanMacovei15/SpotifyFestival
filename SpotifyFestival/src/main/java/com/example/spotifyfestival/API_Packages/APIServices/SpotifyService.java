@@ -28,6 +28,25 @@ public class SpotifyService {
 
     }
 
+    public static String getEmailResponse(String accessToken){
+        String apiUrl = "https://api.spotify.com/v1/me";
+        // Create HttpRequest
+        HttpRequest emailRequest = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(apiUrl))
+                .headers("Authorization", "Bearer " + accessToken)
+                .build();
+        // Send the request and get the response
+        HttpClient httpClient = HttpClient.newHttpClient();
+        HttpResponse<String> emailResponse = null;
+        try {
+            emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return emailResponse.body();
+    }
+
     public static HttpResponse<String> getHttpResponse(String accessToken, String apiUrl) {
 
         HttpClient client = HttpClient.newBuilder().build();
@@ -151,20 +170,6 @@ public class SpotifyService {
                 }
             }
         }
-    }
-
-    public String getEmailResponse(String accessToken) throws IOException, InterruptedException {
-        String apiUrl = "https://api.spotify.com/v1/me";
-        // Create HttpRequest
-        HttpRequest emailRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(apiUrl))
-                .headers("Authorization", "Bearer " + accessToken)
-                .build();
-        // Send the request and get the response
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
-        return emailResponse.body();
     }
 
     //TOP ARTISTS RETRIEVAL METHODS

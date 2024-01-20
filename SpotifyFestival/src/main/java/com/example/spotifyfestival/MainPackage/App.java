@@ -44,6 +44,11 @@ public class App extends Application {
         authFlowService.run();
     }
 
+    @Override
+    public void stop(){
+        System.exit(0);
+    }
+
     public static void main(String[] args) throws Exception {
         launch();
     }

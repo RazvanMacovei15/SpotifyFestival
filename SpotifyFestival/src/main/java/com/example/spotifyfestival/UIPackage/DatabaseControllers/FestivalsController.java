@@ -177,6 +177,6 @@ public class FestivalsController {
     }
 
     public void back(){
-        Helper.backToMainPageCondition();
+        Helper.getBackToDBList();
     }
 }

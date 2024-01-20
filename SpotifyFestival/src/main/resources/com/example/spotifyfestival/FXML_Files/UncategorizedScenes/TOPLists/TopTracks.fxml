@@ -33,27 +33,26 @@
         </fx:define>
 
         <HBox GridPane.columnIndex="0" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button fx:id="fourWeeksButton" text="4 weeks" alignment="CENTER" onAction="#on4WeeksButtonClicked">
+            <Button fx:id="fourWeeksButton" text="4 weeks" alignment="CENTER" onAction="#on4WeeksButtonClicked" minHeight="30">
                 <minWidth>100</minWidth>
                 <prefWidth>100</prefWidth>
             </Button>
         </HBox>
 
         <HBox GridPane.columnIndex="1" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button fx:id="sixMonthsButton" text="6 months" alignment="CENTER" onAction="#on6MonthsButtonClicked">
+            <Button fx:id="sixMonthsButton" text="6 months" alignment="CENTER" onAction="#on6MonthsButtonClicked" minHeight="30">
                 <minWidth>100</minWidth>
                 <prefWidth>100</prefWidth>
             </Button>
         </HBox>
 
         <HBox GridPane.columnIndex="2" GridPane.halignment="CENTER" alignment="CENTER">
-            <Button fx:id="allTimeButton" text="All Time" alignment="CENTER" onAction="#onAllTimeButtonClicked">
+            <Button fx:id="allTimeButton" text="All Time" alignment="CENTER" onAction="#onAllTimeButtonClicked" minHeight="30">
                 <minWidth>100</minWidth>
                 <prefWidth>100</prefWidth>
             </Button>
         </HBox>
     </GridPane>
-
     <ScrollPane fx:id="scrollPane" GridPane.rowIndex="3">
 
     </ScrollPane>
@@ -62,6 +61,7 @@
             GridPane.halignment="CENTER"
             GridPane.rowIndex="4"
             text="Get back to main screen"
+            minWidth="300"
             style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 15px"
             onAction="#getBackToTopLists"/>
 </GridPane>

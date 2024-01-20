@@ -174,7 +174,7 @@ public class CanvasController extends AbstractPrintTree {
         userLocationCircle.setRadius(userLocationRadius);
 
         x = canvas.getWidth() / 2;
-        y = canvas.getHeight() * ((double) 3 / 4) - 40;
+        y = canvas.getHeight() * ((double) 2 / 4) - 40;
 
         userLocationCircle.setCenterX(x);
         userLocationCircle.setCenterY(y);
@@ -192,7 +192,7 @@ public class CanvasController extends AbstractPrintTree {
         });
 
         // Create a Tooltip for the circle
-        Tooltip tooltip = new Tooltip("Circle Information\nRadius: " + userLocationRadius);
+        Tooltip tooltip = new Tooltip("This is the USER's LOCATION");
 
         // Add a mouse entered event handler to show the tooltip
         userLocationCircle.setOnMouseEntered(event -> {
@@ -211,7 +211,7 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawVenueCircle(int i, int numberOfVenueCircles, Entity entity, UserLocation userLocation) {
         double venueCenterX = x;
         double venueCenterY = y;
-        double radiusFromUserLocation = 130;
+        double radiusFromUserLocation = 200;
         Circle venueLocationCircle = drawCircleOnTheRightSide(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         venueLocationCircle.setFill(Color.RED);
 
@@ -228,6 +228,18 @@ public class CanvasController extends AbstractPrintTree {
                 String u = "Distance From User: " + calculateDistance(userLocation.getLatitude(), userLocation.getLongitude(), Double.parseDouble(venueToCheck.getLocationLatitude()), Double.parseDouble(venueToCheck.getLocationLongitude())) + "km!";
                 venueDetails.addAll(x, y, z, u);
                 detailsListView.setItems(venueDetails);
+            });
+            // Create a Tooltip for the circle
+            Tooltip tooltip = new Tooltip("This is " +venue.getVenueName() + "'s LOCATION");
+
+            // Add a mouse entered event handler to show the tooltip
+            venueLocationCircle.setOnMouseEntered(event -> {
+                Tooltip.install(venueLocationCircle, tooltip);
+            });
+
+            // Add a mouse exited event handler to hide the tooltip
+            venueLocationCircle.setOnMouseExited(event -> {
+                Tooltip.uninstall(venueLocationCircle, tooltip);
             });
         }
         return venueLocationCircle;
@@ -270,10 +282,11 @@ public class CanvasController extends AbstractPrintTree {
         }
 
         concertLocationCircle.setFill(Color.GREEN);
-        Circle circleForLambda = getCircleDetails(concertLocationCircle);
+
 
         if (entity instanceof Concert concert) {
             concertLocationCircle.setUserData(concert);
+
 
             concertLocationCircle.setOnMouseClicked(event -> {
                 System.out.println(concert);

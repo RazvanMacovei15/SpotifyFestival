@@ -39,8 +39,6 @@ module com.example.spotifyfestival {
     exports com.example.spotifyfestival.DatabasePackage.DAO;
     opens com.example.spotifyfestival.DatabasePackage.DAO to javafx.fxml;
     opens com.example.spotifyfestival.FXML_Files.UncategorizedScenes.UserInterfaces to javafx.fxml;
-    exports com.example.spotifyfestival.UIPackage.DBControllers;
-    opens com.example.spotifyfestival.UIPackage.DBControllers to javafx.fxml;
     exports com.example.spotifyfestival.API_Packages.APIServices;
     opens com.example.spotifyfestival.API_Packages.APIServices to javafx.fxml, javafx.graphics;
     exports com.example.spotifyfestival.UIPackage.HelperClasses;

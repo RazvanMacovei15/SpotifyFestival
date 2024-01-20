@@ -34,7 +34,6 @@ public class AdminMainController {
 
     public void handleDBButton() {
         AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
-//        SceneController.loadScene300X600("com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
     public void onTopListsButtonClicked() {

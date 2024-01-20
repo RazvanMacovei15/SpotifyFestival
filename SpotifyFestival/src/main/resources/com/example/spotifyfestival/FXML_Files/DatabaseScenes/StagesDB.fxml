@@ -11,13 +11,13 @@
             fx:controller="com.example.spotifyfestival.UIPackage.DatabaseControllers.StagesController">
 
     <rowConstraints>
-        <RowConstraints percentHeight="80"/>
-        <RowConstraints percentHeight="20"/>
+        <RowConstraints percentHeight="95"/>
+        <RowConstraints percentHeight="5"/>
     </rowConstraints>
 
-    <TableView fx:id="festivalStageTableView" GridPane.columnIndex="0" GridPane.rowIndex="0" prefWidth="600">
+    <TableView fx:id="festivalStageTableView" GridPane.columnIndex="0" GridPane.rowIndex="0" minWidth="1000">
         <columns>
-            <TableColumn fx:id="idColumn" editable="false" text="ID" />
+            <TableColumn fx:id="idColumn" editable="false" text="ID" minWidth="30" maxWidth="30"  />
             <TableColumn fx:id="nameColumn" editable="false" text="NAME" />
             <TableColumn fx:id="venueIdColumn" editable="false" text="VENUE ID" />
         </columns>
@@ -26,20 +26,11 @@
         </columnResizePolicy>
     </TableView>
 
-    <GridPane GridPane.columnIndex="0" GridPane.rowIndex="1" prefWidth="600">
-        <columnConstraints>
-            <ColumnConstraints percentWidth="20"/>
-            <ColumnConstraints percentWidth="20"/>
-            <ColumnConstraints percentWidth="20"/>
-            <ColumnConstraints percentWidth="20"/>
-            <ColumnConstraints percentWidth="20"/>
-        </columnConstraints>
-<!--        <Button text="LOAD" GridPane.rowIndex="0" GridPane.columnIndex="0"/>-->
-        <Button text="ADD" GridPane.rowIndex="0" GridPane.columnIndex="0" onAction="#add"/>
-        <Button text="UPDATE" GridPane.rowIndex="0" GridPane.columnIndex="2" onAction="#update"/>
-        <Button text="DELETE" GridPane.rowIndex="0" GridPane.columnIndex="3" onAction="#delete"/>
-        <Button text="LIST" GridPane.rowIndex="0" GridPane.columnIndex="4" onAction="#list"/>
-        <Button text="BACK" GridPane.rowIndex="0" GridPane.columnIndex="5" onAction="#back"/>
-
-    </GridPane>
+    <HBox GridPane.rowIndex="1" minHeight="30" alignment="BOTTOM_RIGHT" spacing="10" GridPane.columnIndex="0">
+        <Button text="ADD" onAction="#add" minHeight="30"/>
+        <Button text="UPDATE" onAction="#update" minHeight="30"/>
+        <Button text="DELETE" onAction="#delete" minHeight="30"/>
+        <Button text="LIST" onAction="#list" minHeight="30"/>
+        <Button text="BACK" onAction="#back"  minHeight="30"/>
+    </HBox>
 </GridPane>
