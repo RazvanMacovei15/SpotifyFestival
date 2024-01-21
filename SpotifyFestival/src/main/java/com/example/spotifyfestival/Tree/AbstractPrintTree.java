@@ -54,11 +54,15 @@ public abstract class AbstractPrintTree {
 
                     lookThroughTheConcertGenres(genre, concert);
                 }
-            } else if (node.getData() instanceof Festival festival) {
-                List<TreeNode<Entity>> concertEntities = node.getChildren();
-                for (TreeNode<Entity> concertChild : concertEntities) {
-                    if (concertChild.getData() instanceof Concert concert) {
-                        lookThroughTheConcertGenres(genre, concert);
+            } else if (node.getData() instanceof Festival) {
+                List<TreeNode<Entity>> stageEntities = node.getChildren();
+                for (TreeNode<Entity> stage : stageEntities) {
+                    if (stage.getData() instanceof FestivalStage stageToSearchIn) {
+                        ConcertDAO dao = ConcertDAO.getInstance();
+                        List<Concert> concertList = dao.getAllConcertsForAStage(stageToSearchIn);
+                        for (Concert concert : concertList) {
+                            lookThroughTheConcertGenres(genre, concert);
+                        }
                     }
                 }
             }
@@ -74,7 +78,9 @@ public abstract class AbstractPrintTree {
             String token = auth.getAccessToken();
 
             List<Genre> genres = SpotifyService.returnArtistGenresFromSpotifyID(id, token);
-
+            if(genres.isEmpty()){
+                break;
+            }
 
             for (Genre genreToCheck : genres) {
                 if (genreToCheck.getName().equals(genre.getName())) {

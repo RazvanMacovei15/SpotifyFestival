@@ -149,8 +149,9 @@ public class CanvasController extends AbstractPrintTree {
 
     public void onGenerateSuggestionsButtonClicked() {
         Map<Genre, Integer> topGenres = SpotifyService.getTopMostGenresListened();
+//        System.out.println(topGenres);
         for(Genre genre : topGenres.keySet()){
-            System.out.println(genre);
+            System.out.println("looking for: "+genre+" in the map!");
             searchGenreThroughTree(genre);
         }
         System.out.println("WIP!!!");
@@ -377,7 +378,10 @@ public class CanvasController extends AbstractPrintTree {
                     if(concert.getDescription().equals(secondConcert.getDescription())){
                         circleToCheck.setFill(Color.LIMEGREEN);
                     } else {
-                        circleToCheck.setFill(Color.GREY);
+                        if(!circleToCheck.getFill().equals(Color.LIMEGREEN)){
+                            circleToCheck.setFill(Color.GREY);
+                        }
+
                     }
                 }
             }

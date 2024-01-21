@@ -87,9 +87,13 @@ public class SpotifyService {
         }
 
         Genre genre = new Genre(55, "dutch pop");
+        Genre pop = new Genre(55, "romanian pop");
+        Genre rock = new Genre(55, "romanian rock");
         topMostGenres.put(genre, 90);
+        topMostGenres.put(pop,65);
+        topMostGenres.put(rock, 70);
 
-        System.out.println(topMostGenres);
+        System.out.println(topMostGenres + "spotify service");
 
         return topMostGenres;
     }
@@ -129,7 +133,7 @@ public class SpotifyService {
             JSONObject responseJson = new JSONObject(response.body());
 
 
-            JSONArray genresArray = responseJson.getJSONArray("genres");
+            JSONArray genresArray = responseJson.optJSONArray("genres");
 
             // Iterate through the items and extract the specified attribute
             for (int i = 0; i < genresArray.length(); i++) {
