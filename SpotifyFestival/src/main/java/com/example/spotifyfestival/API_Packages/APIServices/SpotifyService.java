@@ -91,7 +91,7 @@ public class SpotifyService {
         Genre rock = new Genre(55, "romanian rock");
         topMostGenres.put(genre, 90);
         topMostGenres.put(pop,65);
-        topMostGenres.put(rock, 70);
+//        topMostGenres.put(rock, 70);
 
         System.out.println(topMostGenres + "spotify service");
 
@@ -134,7 +134,9 @@ public class SpotifyService {
 
 
             JSONArray genresArray = responseJson.optJSONArray("genres");
-
+            if(genresArray.length() == 0){
+                return genres;
+            }
             // Iterate through the items and extract the specified attribute
             for (int i = 0; i < genresArray.length(); i++) {
                 String name = (String) genresArray.get(i);
