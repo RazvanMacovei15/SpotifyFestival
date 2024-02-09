@@ -45,6 +45,8 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.API_Packages.APIServices to javafx.fxml, javafx.graphics;
     exports com.example.spotifyfestival.UIPackage.HelperClasses;
     opens com.example.spotifyfestival.UIPackage.HelperClasses;
+    exports com.example.spotifyfestival.NewFeatures;
+    opens com.example.spotifyfestival.NewFeatures to javafx.fxml;
 
     // Export your application package to javafx.graphics module
 

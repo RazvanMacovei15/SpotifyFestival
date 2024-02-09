@@ -348,6 +348,7 @@ public class CanvasController extends AbstractPrintTree {
 
     public Circle drawCircleOnTheRightSide(int i, int numberOfCircles, double circleCenterX, double circleCenterY, double radius, double circleRadius) {
         double angle = 2 * Math.PI * i / numberOfCircles;
+
         double circleX = circleCenterX + radius * Math.cos(angle);
         double circleY = circleCenterY + radius * Math.sin(angle);
         Circle circleToAdd = new Circle();
