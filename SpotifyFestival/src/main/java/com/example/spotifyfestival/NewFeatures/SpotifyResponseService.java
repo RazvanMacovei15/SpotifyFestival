@@ -11,8 +11,11 @@ import java.util.List;
 public class SpotifyResponseService {
     private final String accessToken;
 
+    private final APIEndpoints apiEndpoints;
+
     public SpotifyResponseService(String accessToken) {
         this.accessToken = accessToken;
+        this.apiEndpoints = new APIEndpoints();
     }
 
     public HttpResponse<String> getNewAccessToken(String refreshToken, String originalInput ) {
@@ -49,42 +52,42 @@ public class SpotifyResponseService {
     }
 
     public HttpResponse<String> getTopArtists(int limit, String timeRange, int offset) {
-        String apiUrl = APIEndpoints.generateTopArtistsURL(limit, timeRange, offset);
+        String apiUrl = apiEndpoints.generateTopArtistsURL(limit, timeRange, offset);
         return getHttpResponse(apiUrl);
     }
 
     public HttpResponse<String> getArtistById(String artistId) {
-        String apiUrl = APIEndpoints.generateArtistURL(artistId);
+        String apiUrl = apiEndpoints.generateArtistURL(artistId);
         return getHttpResponse(apiUrl);
     }
 
     public HttpResponse<String> getMultipleArtists(List<String> artistIds) {
-        String apiUrl = APIEndpoints.generateMultipleArtistsURL(artistIds);
+        String apiUrl = apiEndpoints.generateMultipleArtistsURL(artistIds);
         return getHttpResponse(apiUrl);
     }
 
     public HttpResponse<String> getTopTracks(int limit, String timeRange, int offset) {
-        String apiUrl = APIEndpoints.generateTopTracksURL(limit, timeRange, offset);
+        String apiUrl = apiEndpoints.generateTopTracksURL(limit, timeRange, offset);
         return getHttpResponse(apiUrl);
     }
 
     public HttpResponse<String> getTrackById(String trackId) {
-        String apiUrl = APIEndpoints.generateTrackURL(trackId);
+        String apiUrl = apiEndpoints.generateTrackURL(trackId);
         return getHttpResponse(apiUrl);
     }
 
     public HttpResponse<String> getMultipleTracks(List<String> trackIds) {
-        String apiUrl = APIEndpoints.generateMultipleTracksURL(trackIds);
+        String apiUrl = apiEndpoints.generateMultipleTracksURL(trackIds);
         return getHttpResponse(apiUrl);
     }
 
     public HttpResponse<String> getUserProfile() {
-        String apiUrl = APIEndpoints.USER_PROFILE;
+        String apiUrl = apiEndpoints.USER_PROFILE;
         return getHttpResponse(apiUrl);
     }
 
     public HttpResponse<String> search(String name, String type, String market, int limit, int offset) {
-        String apiUrl = APIEndpoints.search(name, type, market, limit, offset);
+        String apiUrl = apiEndpoints.search(name, type, market, limit, offset);
         return getHttpResponse(apiUrl);
     }
 }

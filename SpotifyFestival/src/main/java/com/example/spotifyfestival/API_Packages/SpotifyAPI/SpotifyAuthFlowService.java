@@ -1,8 +1,10 @@
 package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
 import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
+import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserManager;
@@ -212,6 +214,7 @@ public class SpotifyAuthFlowService {
                 // handle error responses here
                 System.err.println("Error: " + statusCode);
             }
+//
         } catch (IOException | InterruptedException exception) {
             // Handle exceptions
             exception.printStackTrace();
