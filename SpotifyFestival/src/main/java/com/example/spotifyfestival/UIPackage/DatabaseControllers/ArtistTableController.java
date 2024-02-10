@@ -28,7 +28,6 @@ import java.util.function.UnaryOperator;
 
 public class ArtistTableController extends GenericObservableList<Artist> {
     private ArtistDAOService artistDAOService;
-    private ArtistFileService artistFileService;
     @FXML
     protected TableView<Artist> artistsTable;
     @FXML
@@ -42,18 +41,9 @@ public class ArtistTableController extends GenericObservableList<Artist> {
     public ArtistTableController() {}
 
     public void initialize(){
-        Settings settings = new Settings();
-
-        String artistBinarySetting = settings.getProperty("artistsBinaryRepo");
-        String artistTextSetting = settings.getProperty("artistsTextRepo");
-
-        ArtistTextRepo artistTextRepo = new ArtistTextRepo(artistTextSetting);
-        ArtistBinaryRepo artistBinaryRepo = new ArtistBinaryRepo(artistBinarySetting);
-
-        artistDAOService = new ArtistDAOService();
-        artistFileService = new ArtistFileService(artistTextRepo, artistBinaryRepo);
 
         artistList = FXCollections.observableArrayList();
+        artistDAOService = new ArtistDAOService();
         artistList = artistDAOService.getArtistList();
 
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -134,7 +124,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         return dialog;
     }
 
-    public void addArtist(ActionEvent event) {
+    public void add(ActionEvent event) {
         Dialog<Artist> addArtistDialog = createArtistDialog(null);
         Optional<Artist> result = addArtistDialog.showAndWait();
 
@@ -146,7 +136,6 @@ public class ArtistTableController extends GenericObservableList<Artist> {
                         artist.getSpotifyId()
                 );
                 artistDAOService.add(artistToADD);
-                artistFileService.add(artistToADD);
                 artistList.add(artistToADD);
             } catch (DuplicateEntityException e) {
                 throw new RuntimeException(e);
@@ -156,7 +145,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         event.consume();
     }
 
-    public void updateArtist(ActionEvent event) {
+    public void update(ActionEvent event) {
         if (artistsTable.getSelectionModel().getSelectedItems().size() != 1) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -181,7 +170,7 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         }
         event.consume();
     }
-    public void deleteArtist(ActionEvent event){
+    public void delete(ActionEvent event){
         for (Artist artist : artistsTable.getSelectionModel().getSelectedItems()) {
             artistDAOService.delete(artist.getId());
             artistList.remove(artist);
@@ -189,11 +178,11 @@ public class ArtistTableController extends GenericObservableList<Artist> {
         event.consume();
     }
 
-    public void list(){
+    public void print(){
         artistDAOService.list();
     }
 
     public void back(){
-        Helper.backToMainPageCondition();
+        Helper.getBackToDBList();
     }
 }

@@ -4,6 +4,7 @@ import com.example.spotifyfestival.API_Packages.APIServices.JSONConstant;
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
@@ -13,6 +14,7 @@ import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
@@ -27,7 +29,6 @@ import java.time.LocalDate;
 import java.util.Map;
 
 public class CanvasController extends AbstractPrintTree {
-
     // Radius of the Earth in kilometers
     private static final double EARTH_RADIUS = 6371.0;
     @FXML
@@ -70,16 +71,14 @@ public class CanvasController extends AbstractPrintTree {
     protected FestivalDAO festivalDAO;
     protected FestivalStageDAO festivalStageDAO;
     protected RapidAPIConcertsAPI rapidAPIConcertsAPI;
-
     protected GraphicsContext gc;
 
     private Map<Genre, Integer> retrieveGenreCount() {
-        TopGenresController controller = new TopGenresController();
         HttpResponse<String> response = SpotifyService.getUserTopArtists();
         assert response != null;
         String jsonResponse = response.body();
         ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
-        Map<Genre, Integer> genreCount = controller.getGenreCountFromResponse(allArtists);
+        Map<Genre, Integer> genreCount = SpotifyService.getGenreCountFromResponse(allArtists);
         return genreCount;
     }
 
@@ -149,6 +148,12 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     public void onGenerateSuggestionsButtonClicked() {
+        Map<Genre, Integer> topGenres = SpotifyService.getTopMostGenresListened();
+//        System.out.println(topGenres);
+        for(Genre genre : topGenres.keySet()){
+            System.out.println("looking for: "+genre+" in the map!");
+            searchGenreThroughTree(genre);
+        }
         System.out.println("WIP!!!");
     }
 
@@ -194,7 +199,7 @@ public class CanvasController extends AbstractPrintTree {
         });
 
         // Create a Tooltip for the circle
-        Tooltip tooltip = new Tooltip("Circle Information\nRadius: " + userLocationRadius);
+        Tooltip tooltip = new Tooltip("This is the USER's LOCATION");
 
         // Add a mouse entered event handler to show the tooltip
         userLocationCircle.setOnMouseEntered(event -> {
@@ -213,7 +218,7 @@ public class CanvasController extends AbstractPrintTree {
     public Circle drawVenueCircle(int i, int numberOfVenueCircles, Entity entity, UserLocation userLocation) {
         double venueCenterX = x;
         double venueCenterY = y;
-        double radiusFromUserLocation = 130;
+        double radiusFromUserLocation = 140;
         Circle venueLocationCircle = drawCircleOnTheRightSide(i, numberOfVenueCircles, venueCenterX, venueCenterY, radiusFromUserLocation, venueCircleRadius);
         venueLocationCircle.setFill(Color.RED);
 
@@ -230,6 +235,18 @@ public class CanvasController extends AbstractPrintTree {
                 String u = "Distance From User: " + calculateDistance(userLocation.getLatitude(), userLocation.getLongitude(), Double.parseDouble(venueToCheck.getLocationLatitude()), Double.parseDouble(venueToCheck.getLocationLongitude())) + "km!";
                 venueDetails.addAll(x, y, z, u);
                 detailsListView.setItems(venueDetails);
+            });
+            // Create a Tooltip for the circle
+            Tooltip tooltip = new Tooltip("This is " +venue.getVenueName() + "'s LOCATION");
+
+            // Add a mouse entered event handler to show the tooltip
+            venueLocationCircle.setOnMouseEntered(event -> {
+                Tooltip.install(venueLocationCircle, tooltip);
+            });
+
+            // Add a mouse exited event handler to hide the tooltip
+            venueLocationCircle.setOnMouseExited(event -> {
+                Tooltip.uninstall(venueLocationCircle, tooltip);
             });
         }
         return venueLocationCircle;
@@ -272,19 +289,25 @@ public class CanvasController extends AbstractPrintTree {
         }
 
         concertLocationCircle.setFill(Color.GREEN);
-        Circle circleForLambda = getCircleDetails(concertLocationCircle);
+
 
         if (entity instanceof Concert concert) {
             concertLocationCircle.setUserData(concert);
+
 
             concertLocationCircle.setOnMouseClicked(event -> {
                 System.out.println(concert);
                 ObservableList<String> concertToListView = FXCollections.observableArrayList();
                 String info = null;
+
+                SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
                 if (concert.getListOfArtists().isEmpty()) {
                     info = "INFORMATION UNAVAILABLE!";
                 } else {
                     info = concert.listOfArtistToString(concert.getListOfArtists());
+                }
+                for(Artist artist : concert.getListOfArtists()){
+                    System.out.println(SpotifyService.returnArtistGenresFromSpotifyID(artist.getSpotifyId(), auth.getAccessToken()));
                 }
 
                 concertToListView.addAll(
@@ -333,7 +356,7 @@ public class CanvasController extends AbstractPrintTree {
 
         }
 
-        concertLocationCircle.setFill(Color.GREENYELLOW);
+        concertLocationCircle.setFill(Color.BROWN);
 //        Circle circleForLambda = getCircleDetails(concertLocationCircle);
 
         if (entity instanceof FestivalStage stage) {
@@ -344,6 +367,25 @@ public class CanvasController extends AbstractPrintTree {
             });
         }
         return concertLocationCircle;
+    }
+
+    @Override
+    public void highlightCircle(Circle circle) {
+        System.out.println(canvasBorderPane.getChildren());
+        for(Node node : canvasBorderPane.getChildren()){
+            if(node instanceof Circle circleToCheck){
+                if(circleToCheck.getUserData() instanceof Concert concert && circle.getUserData() instanceof Concert secondConcert){
+                    if(concert.getDescription().equals(secondConcert.getDescription())){
+                        circleToCheck.setFill(Color.LIMEGREEN);
+                    } else {
+                        if(!circleToCheck.getFill().equals(Color.LIMEGREEN)){
+                            circleToCheck.setFill(Color.GREY);
+                        }
+
+                    }
+                }
+            }
+        }
     }
 
     public Circle drawCircleOnTheRightSide(int i, int numberOfCircles, double circleCenterX, double circleCenterY, double radius, double circleRadius) {

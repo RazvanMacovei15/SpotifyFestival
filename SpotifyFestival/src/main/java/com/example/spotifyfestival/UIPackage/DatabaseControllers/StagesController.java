@@ -177,6 +177,6 @@ public class StagesController {
     }
 
     public void back(){
-        Helper.backToMainPageCondition();
+        Helper.getBackToDBList();
     }
 }

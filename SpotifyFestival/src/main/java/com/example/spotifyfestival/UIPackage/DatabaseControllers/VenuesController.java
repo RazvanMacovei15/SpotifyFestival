@@ -198,6 +198,6 @@ public class VenuesController {
     }
 
     public void back(){
-        Helper.backToMainPageCondition();
+        Helper.getBackToDBList();
     }
 }

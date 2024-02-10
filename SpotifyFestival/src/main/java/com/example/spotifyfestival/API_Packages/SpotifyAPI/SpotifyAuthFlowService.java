@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
+import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
 import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
@@ -162,6 +163,7 @@ public class SpotifyAuthFlowService {
             //check if user is admin or not
             checkUserAuthorization();
             bool = true;//set bool to true
+
             return HtmlCONSTANTS.HTML_PAGE;
         });
     }

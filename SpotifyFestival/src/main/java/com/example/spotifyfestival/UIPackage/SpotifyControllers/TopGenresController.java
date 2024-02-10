@@ -83,7 +83,7 @@ public class TopGenresController {
         // Extract relevant information from the API response
         String jsonResponse = response.body();
         ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
-        Map<Genre, Integer> genreCount = getGenreCountFromResponse(allArtists);
+        Map<Genre, Integer> genreCount = SpotifyService.getGenreCountFromResponse(allArtists);
         // Prepare data for UI display
         ObservableList<Genre> genres = FXCollections.observableArrayList();
         ObservableList<String> genresCount = FXCollections.observableArrayList();
@@ -102,24 +102,25 @@ public class TopGenresController {
 
         // Set the data in the ListView UI elements
         listView.setItems(genreNames);
+        System.out.println(genreCount);
     }
 
     // Method to count the occurrences of each genre in the list of artists
-    public Map<Genre, Integer> getGenreCountFromResponse(ObservableList<Artist> artists) {
-        HashMap<Genre, Integer> genreCount = new HashMap<>();
-        for (Artist artist : artists) {
-            ObservableList<Genre> genres = (ObservableList<Genre>) artist.getGenres();
-            for (int i = 0; i < genres.size(); i++) {
-                Genre genre = genres.get(i);
-                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
-            }
-        }
-
-        // Sort and return the genre count map
-        Map<Genre, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
-//        for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
-//            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
+//    public Map<Genre, Integer> getGenreCountFromResponse(ObservableList<Artist> artists) {
+//        HashMap<Genre, Integer> genreCount = new HashMap<>();
+//        for (Artist artist : artists) {
+//            ObservableList<Genre> genres = (ObservableList<Genre>) artist.getGenres();
+//            for (int i = 0; i < genres.size(); i++) {
+//                Genre genre = genres.get(i);
+//                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
+//            }
 //        }
-        return sortedGenreMap;
-    }
+//
+//        // Sort and return the genre count map
+//        Map<Genre, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
+////        for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
+////            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
+////        }
+//        return sortedGenreMap;
+//    }
 }

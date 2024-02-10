@@ -69,6 +69,7 @@
                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 18px"
                minWidth="300">
         </Label>
+
         <DatePicker fx:id="startDatePicker" promptText="choose a start Date" GridPane.rowIndex="1" minWidth="300"/>
 
         <DatePicker fx:id="endDatePicker" promptText="choose a start Date" GridPane.rowIndex="2" minWidth="300"/>
@@ -91,18 +92,14 @@
                 onAction="#onGetLocationButtonClicked"
                 minWidth="300"
                 alignment="CENTER"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-border-color: black;
-                -fx-border-width: 0.5px; -fx-background-radius: 15">
-
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 15">
         </Button>
         <Button fx:id="showConcertsInArea"
                 text="SHOW CONCERTS IN MY AREA"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-border-color: black;
-                -fx-border-width: 0.5px; -fx-background-radius: 15"
+                style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 15"
                 GridPane.rowIndex="6"
                 minWidth="300"
                 onAction="#onShowConcertsButtonClicked">
-
         </Button>
         <Label text="---Advanced Search Parameters(WIP)---"
                GridPane.rowIndex="8"
@@ -139,8 +136,7 @@
         <Button fx:id="generateSuggestions"
                 GridPane.rowIndex="18"
                 text="THIS IS THE WAY"
-                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-border-color: black;
-                -fx-border-width: 0.5px; -fx-background-radius: 15"
+                style="-fx-background-color: rgba(29, 185, 84, 1.0); -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 15"
                 minWidth="300"
                 onAction="#onGenerateSuggestionsButtonClicked">
             <style>
@@ -154,7 +150,6 @@
                 minWidth="300"
                 style="-fx-background-color: black; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 15"
                 onAction="#onBackButtonClicked">
-
         </Button>
     </GridPane>
 </GridPane>

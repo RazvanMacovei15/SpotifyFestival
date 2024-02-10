@@ -224,6 +224,6 @@ public class ConcertsController {
     }
 
     public void back(){
-        Helper.backToMainPageCondition();
+        Helper.getBackToDBList();
     }
 }

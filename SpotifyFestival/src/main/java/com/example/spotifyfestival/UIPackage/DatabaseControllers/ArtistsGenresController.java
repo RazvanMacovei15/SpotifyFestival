@@ -166,13 +166,13 @@ public class ArtistsGenresController extends GenericObservableList<ArtistGenre> 
         event.consume();
     }
 
-    public void list(){
+    public void print(){
         service.list();
     }
 
 
     public void back(){
-        Helper.backToMainPageCondition();
+        Helper.getBackToDBList();
     }
 
 }
