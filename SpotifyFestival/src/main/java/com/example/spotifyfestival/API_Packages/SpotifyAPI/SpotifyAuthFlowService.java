@@ -38,6 +38,10 @@ public class SpotifyAuthFlowService {
     private volatile boolean bool = false;
     private long startTime = 0;
 
+    public long getStartTime() {
+        return startTime;
+    }
+
     private SpotifyAuthFlowService() {
         spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
         originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
@@ -63,7 +67,7 @@ public class SpotifyAuthFlowService {
 
         // Schedule a task to check and regenerate the access token every hour
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::checkAndRegenerateToken, 0, 1, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(this::checkAndRegenerateToken, 10, 10, TimeUnit.SECONDS);
     }
 
     public void login() {
@@ -84,10 +88,11 @@ public class SpotifyAuthFlowService {
         long currentTime = System.currentTimeMillis();
         long elapsedTime = currentTime - startTime;
         long oneHourInMillis = 60 * 60 * 1000; // 1 hour in milliseconds
-
+        long tenSecondsInMillis = 10 * 1000; // 10 seconds in milliseconds
         if (elapsedTime >= oneHourInMillis) {
             // Regenerate the access token
             generateNewAccessToken();
+            System.out.println("Access token regenerated");
 
             // Update the start time for the next hour
             startTime = System.currentTimeMillis();

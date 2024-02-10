@@ -40,14 +40,19 @@ public class AdminMainController {
     }
 
     public void handleDBButton() {
+        //for testing purposes
         String accessToken = SpotifyAuthFlowService.getInstance().getAccessToken();
         SpotifyResponseService spotifyResponseService = new SpotifyResponseService(accessToken);
         SpotifyAPIJsonParser spotifyAPIJsonParser = new SpotifyAPIJsonParser();
-        HttpResponse<String> topArtists = spotifyResponseService.getTopArtists(50, "long_term", 0);
-        List<Artist> artists = spotifyAPIJsonParser.getTopArtists(topArtists);
-        for (Artist artist : artists) {
-            System.out.println(artist.toString());
+        HttpResponse<String> response = spotifyResponseService.getTopArtists(10, "short_term", 0);
+        List<Artist> topArtists = spotifyAPIJsonParser.getTopArtists(response);
+        for (Artist artist : topArtists) {
+            System.out.println(artist);
         }
+        System.out.println("Access token: " + accessToken);
+        long startTime = SpotifyAuthFlowService.getInstance().getStartTime();
+        long endTime = System.currentTimeMillis();
+        System.out.println("App started " + ((endTime - startTime) / 1000) + " seconds ago");
         AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
