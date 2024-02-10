@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.UIPackage.HelperClasses;
+package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
 public class UserManager {
     public static boolean isAdmin = false;

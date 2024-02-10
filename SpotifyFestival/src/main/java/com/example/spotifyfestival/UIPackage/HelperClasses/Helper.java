@@ -1,12 +1,11 @@
 package com.example.spotifyfestival.UIPackage.HelperClasses;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserManager;
 import javafx.animation.ScaleTransition;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-
-import java.io.IOException;
 
 public class Helper {
     public static void backToMainPageCondition() {

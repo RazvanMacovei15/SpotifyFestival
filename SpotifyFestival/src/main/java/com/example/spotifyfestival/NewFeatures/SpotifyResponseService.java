@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
+import java.util.List;
 
 public class SpotifyResponseService {
     private final String accessToken;
@@ -14,46 +15,24 @@ public class SpotifyResponseService {
         this.accessToken = accessToken;
     }
 
-    public HttpResponse<String> getAccessTokenResponse(String code, String originalInput, String redirectUri) {
-
-        String requestBody = "grant_type=authorization_code&code=" + code + "&redirect_uri=" + redirectUri;
-        try {
-            HttpClient client = HttpClient.newBuilder().build();
-
-            HttpRequest tokenRequest = HttpRequest.newBuilder()
-                    .uri(URI.create("https://accounts.spotify.com/api/token"))
-                    .header("Authorization",
-                            "Basic " + Base64.getEncoder().encodeToString(originalInput.getBytes()))
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .build();
-            HttpResponse<String> httpResponse = client.send(tokenRequest, HttpResponse.BodyHandlers.ofString());
-
-            return httpResponse;
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public HttpResponse<String> getEmailResponse() {
-        String apiUrl = "https://api.spotify.com/v1/me";
-        // Create HttpRequest
-        HttpRequest emailRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(apiUrl))
-                .headers("Authorization", "Bearer " + accessToken)
+    public HttpResponse<String> getNewAccessToken(String refreshToken, String originalInput ) {
+        HttpClient client = HttpClient.newBuilder().build();
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+                .uri(URI.create("https://accounts.spotify.com/api/token"))
+                .header("Authorization", "Basic " + Base64.getEncoder().encodeToString(originalInput.getBytes()))
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .POST(HttpRequest.BodyPublishers.ofString("grant_type=refresh_token&refresh_token=" + refreshToken))
                 .build();
-        // Send the request and get the response
-        HttpClient httpClient = HttpClient.newHttpClient();
-
+        HttpResponse<String> refreshResponse = null;
         try {
-            return httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
+            refreshResponse = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        return refreshResponse;
     }
 
-    public static HttpResponse<String> getGenericHttpResponse(String accessToken, String apiUrl) {
+    public HttpResponse<String> getHttpResponse(String apiUrl) {
         HttpClient client = HttpClient.newBuilder().build();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
@@ -67,5 +46,45 @@ public class SpotifyResponseService {
             throw new RuntimeException(e);
         }
         return response;
+    }
+
+    public HttpResponse<String> getTopArtists(int limit, String timeRange, int offset) {
+        String apiUrl = APIEndpoints.generateTopArtistsURL(limit, timeRange, offset);
+        return getHttpResponse(apiUrl);
+    }
+
+    public HttpResponse<String> getArtistById(String artistId) {
+        String apiUrl = APIEndpoints.generateArtistURL(artistId);
+        return getHttpResponse(apiUrl);
+    }
+
+    public HttpResponse<String> getMultipleArtists(List<String> artistIds) {
+        String apiUrl = APIEndpoints.generateMultipleArtistsURL(artistIds);
+        return getHttpResponse(apiUrl);
+    }
+
+    public HttpResponse<String> getTopTracks(int limit, String timeRange, int offset) {
+        String apiUrl = APIEndpoints.generateTopTracksURL(limit, timeRange, offset);
+        return getHttpResponse(apiUrl);
+    }
+
+    public HttpResponse<String> getTrackById(String trackId) {
+        String apiUrl = APIEndpoints.generateTrackURL(trackId);
+        return getHttpResponse(apiUrl);
+    }
+
+    public HttpResponse<String> getMultipleTracks(List<String> trackIds) {
+        String apiUrl = APIEndpoints.generateMultipleTracksURL(trackIds);
+        return getHttpResponse(apiUrl);
+    }
+
+    public HttpResponse<String> getUserProfile() {
+        String apiUrl = APIEndpoints.USER_PROFILE;
+        return getHttpResponse(apiUrl);
+    }
+
+    public HttpResponse<String> search(String name, String type, String market, int limit, int offset) {
+        String apiUrl = APIEndpoints.search(name, type, market, limit, offset);
+        return getHttpResponse(apiUrl);
     }
 }

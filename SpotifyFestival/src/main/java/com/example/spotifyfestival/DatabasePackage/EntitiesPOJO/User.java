@@ -8,14 +8,6 @@ public class User extends Entity {
     protected String password;
     protected String role;
     protected String spotifyId;
-    public User(int id, String email, String username, String password, String role, String spotifyId) {
-        super(id);
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.spotifyId = spotifyId;
-    }
 
     public User(int id, String email, String username, String role, String spotifyId) {
         super(id);
