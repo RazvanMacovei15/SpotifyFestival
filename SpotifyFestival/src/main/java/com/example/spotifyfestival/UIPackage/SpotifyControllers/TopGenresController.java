@@ -1,13 +1,19 @@
 // Import statements for necessary packages and classes
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
 import com.example.spotifyfestival.GenericsPackage.MapValueSorter;
+import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
+import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
+import com.example.spotifyfestival.NewFeatures.Utils;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -45,45 +51,44 @@ public class TopGenresController {
     }
 
     // Event handler for the "All Time" button
-    public void onAllTimeButtonClicked() throws JsonProcessingException {
-        // Delegate to the common method with the specified time range
-        onTimeRangeButtonClicked("all time");
+    public void onAllTimeButtonClicked(){
+        listView.setItems(null);
+        new Thread(()->{
+            newService(50, "long_term", 0);
+        }).start();
     }
 
     // Event handler for the "6 Months" button
     public void on6MonthsButtonClicked() throws JsonProcessingException {
-        // Delegate to the common method with the specified time range
-        onTimeRangeButtonClicked("6 months");
+        listView.setItems(null);
+        new Thread(()->{
+            newService(50, "medium_term", 0);
+        }).start();
     }
 
     // Event handler for the "4 Weeks" button
     public void on4WeeksButtonClicked() throws JsonProcessingException {
-        // Delegate to the common method with the specified time range
-        onTimeRangeButtonClicked("4 weeks");
+        listView.setItems(null);
+        new Thread(()->{
+            newService(50, "short_term", 0);
+        }).start();
+
     }
 
-    // Common method for handling time range button clicks
-    public void onTimeRangeButtonClicked(String timeRange) throws JsonProcessingException {
-        // Get user's top artists based on the specified time range
-        HttpResponse<String> response;
-        switch (timeRange) {
-            case "all time":
-                response = SpotifyService.getUserTopArtists();
-                break;
-            case "6 months":
-                response = SpotifyService.getUserTopArtistsOver6Months();
-                break;
-            case "4 weeks":
-                response = SpotifyService.getUserTopArtistsOver4Weeks();
-                break;
-            default:
-                // Handle the case when an unsupported time range is provided
-                return;
-        }
-        // Extract relevant information from the API response
-        String jsonResponse = response.body();
-        ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
-        Map<Genre, Integer> genreCount = SpotifyService.getGenreCountFromResponse(allArtists);
+    public void newService(int limit, String timeRange, int offset) {
+        // Get the access token from the SpotifyAuthFlowService
+        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+        String accessToken = auth.getAccessToken();
+        // Create a new SpotifyResponseService and SpotifyAPIJsonParser
+        SpotifyResponseService service = new SpotifyResponseService(accessToken);
+        SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
+
+        // Get the top artists from the Spotify API
+        HttpResponse<String> topArtists = service.getTopArtists(limit, timeRange, offset);
+        ObservableList<Artist> artists = parser.getTopArtists(topArtists);
+
+        Map<Genre, Integer> genreCount = SpotifyService.getGenreCountFromResponse(artists);
+
         // Prepare data for UI display
         ObservableList<Genre> genres = FXCollections.observableArrayList();
         ObservableList<String> genresCount = FXCollections.observableArrayList();
@@ -101,26 +106,8 @@ public class TopGenresController {
         }
 
         // Set the data in the ListView UI elements
-        listView.setItems(genreNames);
-        System.out.println(genreCount);
+        Platform.runLater(()->{
+            listView.setItems(genreNames);
+        });
     }
-
-    // Method to count the occurrences of each genre in the list of artists
-//    public Map<Genre, Integer> getGenreCountFromResponse(ObservableList<Artist> artists) {
-//        HashMap<Genre, Integer> genreCount = new HashMap<>();
-//        for (Artist artist : artists) {
-//            ObservableList<Genre> genres = (ObservableList<Genre>) artist.getGenres();
-//            for (int i = 0; i < genres.size(); i++) {
-//                Genre genre = genres.get(i);
-//                genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
-//            }
-//        }
-//
-//        // Sort and return the genre count map
-//        Map<Genre, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
-////        for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
-////            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
-////        }
-//        return sortedGenreMap;
-//    }
 }

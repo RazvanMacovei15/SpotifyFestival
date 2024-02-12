@@ -1,11 +1,17 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
+import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
+import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
+import com.example.spotifyfestival.NewFeatures.Utils;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -22,129 +28,54 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class TopArtistsController {
-    protected SpotifyService service;
     @FXML
     public ScrollPane scrollPane;
     @FXML
-    ImageView imageView;
+    private ImageView imageView;
     private final String imageURL ="/com/example/spotifyfestival/PNGs/copertaSpotify.png";
 
     @FXML
     public void initialize() throws JsonProcessingException {
-        service = new SpotifyService();
         Helper.loadSpotifyCover(imageView, imageURL);
 
         // Automatically trigger the "4 weeks" button when the scene is shown
-        new Thread(this::on4WeeksButtonClicked).start();
-    }
-
-    public void populateScrollPaneWithArtists(ScrollPane scrollPane, String response) {
-        scrollPane.setContent(null);
-        GridPane gridPane = new GridPane();
-
-        service = new SpotifyService();
-        scrollPane.setContent(gridPane);
-
-        gridPane.setGridLinesVisible(false);
-        gridPane.setAlignment(Pos.CENTER);
-
-        // Ensure scroll bars are displayed only if needed
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-        for (int i = 0; i < 3; i++) {
-            gridPane.getColumnConstraints().add(new ColumnConstraints(100));
-        }
-
-        List<Artist> artists = service.getTopArtists(response);
-
-        int row = 0;
-        int col = 0;
-        for (Artist artist : artists) {
-
-            String url = artist.getImageUrl();
-
-            // Load an image
-            Image originalImage = new Image(url);
-
-            // Create an ImageView with the image
-            ImageView imageView = new ImageView(originalImage);
-
-            // Set the desired width and height to scale down the image
-            double scaledWidth = 50;
-            double scaledHeight = 50;
-
-            // Set the fitWidth and fitHeight properties to scale the image
-            imageView.setFitWidth(scaledWidth);
-            imageView.setFitHeight(scaledHeight);
-
-            Text text = new Text(artist.getId() + ". " + artist.getName());
-
-            VBox vBox = new VBox();
-
-            text.setWrappingWidth(100);
-            vBox.minWidth(100);
-            vBox.minHeight(100);
-            imageView.setOnMouseClicked(event -> {
-                service.openURL2(artist.getSpotifyLink());
-            });
-
-            vBox.getChildren().add(imageView);
-            text.setTextAlignment(TextAlignment.CENTER); // Center-align the text
-
-            vBox.getChildren().add(text);
-            vBox.setAlignment(Pos.CENTER);
-            int finalCol = col;
-            int finalRow = row;
-            Platform.runLater(() -> {
-                gridPane.add(vBox, finalCol, finalRow);
-            });
-
-            col++;
-
-            if (col == 3) {
-                col = 0;
-                gridPane.getRowConstraints().add(new RowConstraints(100));
-                row++;
-            }
-        }
-
+        on4WeeksButtonClicked();
     }
 
     public void onAllTimeButtonClicked() {
-        onTimeRangeButtonClicked("all time");
+        scrollPane.setContent(null);
+        new Thread(()->{
+            newService(50, "long_term", 0);
+        }).start();
     }
 
     public void on6MonthsButtonClicked() {
-        onTimeRangeButtonClicked("6 months");
+        scrollPane.setContent(null);
+        new Thread(()->{
+            newService(50, "medium_term", 0);
+        }).start();
     }
 
     public void on4WeeksButtonClicked() {
-        onTimeRangeButtonClicked("4 weeks");
+        scrollPane.setContent(null);
+        new Thread(()->{
+            newService(50, "short_term", 0);
+        }).start();
+
     }
 
-    public void onTimeRangeButtonClicked(String timeRange) {
-        HttpResponse<String> response;
-
-        switch (timeRange) {
-            case "all time":
-                response = SpotifyService.getUserTopArtists();
-                break;
-            case "6 months":
-                response = SpotifyService.getUserTopArtistsOver6Months();
-                break;
-            case "4 weeks":
-                response = SpotifyService.getUserTopArtistsOver4Weeks();
-                break;
-            default:
-                // Handle the case when an unsupported time range is provided
-                return;
-        }
-
-        assert response != null;
-        String jsonResponse = response.body();
-
-        populateScrollPaneWithArtists(scrollPane, jsonResponse);
+    public void newService(int limit, String timeRange, int offset) {
+        // Get the access token from the SpotifyAuthFlowService
+        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+        String accessToken = auth.getAccessToken();
+        // Create a new SpotifyResponseService and SpotifyAPIJsonParser
+        SpotifyResponseService service = new SpotifyResponseService(accessToken);
+        SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
+        // Get the top tracks from the Spotify API
+        HttpResponse<String> topArtists = service.getTopArtists(limit, timeRange, offset);
+        ObservableList<Artist> artists = parser.getTopArtists(topArtists);
+        // Populate the scroll pane with the top tracks
+        Utils.populateScrollPaneWithArtists(scrollPane, artists);
     }
 
     public void getBackToTopLists() {

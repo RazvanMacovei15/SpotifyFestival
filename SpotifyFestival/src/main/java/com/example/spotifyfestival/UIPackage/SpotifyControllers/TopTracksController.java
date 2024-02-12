@@ -26,12 +26,8 @@ import java.util.List;
 
 public class TopTracksController {
     private final String imageURL = "/com/example/spotifyfestival/PNGs/copertaSpotify.png";
-
     @FXML
     ImageView imageView;
-
-    protected SpotifyService service;
-
     @FXML
     protected ScrollPane scrollPane;
 
@@ -41,113 +37,47 @@ public class TopTracksController {
     @FXML
     public void initialize() {
         Helper.loadSpotifyCover(imageView, imageURL);
-        service = new SpotifyService();
         // Automatically trigger the "4 weeks" button when the scene is shown
-        new Thread(this::newService).start();
+        on4WeeksButtonClicked();
     }
 
-    public void newService() {
+    public void newService(int limit, String timeRange, int offset) {
+        // Get the access token from the SpotifyAuthFlowService
         SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
         String accessToken = auth.getAccessToken();
+        // Create a new SpotifyResponseService and SpotifyAPIJsonParser
         SpotifyResponseService service = new SpotifyResponseService(accessToken);
-        HttpResponse<String> topTracks = service.getTopTracks(50, "short_term", 0);
         SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
+        // Get the top tracks from the Spotify API
+        HttpResponse<String> topTracks = service.getTopTracks(limit, timeRange, offset);
         ObservableList<Track> tracks = parser.getTopTracks(topTracks);
+        // Populate the scroll pane with the top tracks
         Utils.populateScrollPaneWithTracks(scrollPane, tracks);
     }
 
-    public void populateScrollPaneWithTracks(ScrollPane scrollPane, String response) {
-        scrollPane.setContent(null);
-        GridPane gridPane = new GridPane();
-
-        service = new SpotifyService();
-        scrollPane.setContent(gridPane);
-
-        gridPane.setGridLinesVisible(false);
-        gridPane.setAlignment(Pos.CENTER);
-
-        // Ensure scroll bars are displayed only if needed
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-
-        List<Track> tracks = SpotifyService.getTopTracks(response);
-
-        int row = 0;
-        int col = 0;
-        for (Track track : tracks) {
-
-            String url = track.getImageURL();
-
-            // Load an image
-            Image originalImage = new Image(url);
-
-            // Create an ImageView with the image
-            ImageView imageView = new ImageView(originalImage);
-
-            // Set the desired width and height to scale down the image
-            double scaledWidth = 50;
-            double scaledHeight = 50;
-
-            // Set the fitWidth and fitHeight properties to scale the image
-            imageView.setFitWidth(scaledWidth);
-            imageView.setFitHeight(scaledHeight);
-
-            Text textID = new Text(track.getId().toString() + ".");
-            Text textName = new Text(track.toString());
-
-            HBox hBox = new HBox();
-
-            textID.setWrappingWidth(50);
-            textName.setWrappingWidth(200);
-            hBox.minWidth(300);
-            hBox.minHeight(100);
-            imageView.setOnMouseClicked(event -> {
-                service.openURL2(track.getSpotifyLink());
-            });
-
-            textID.setTextAlignment(TextAlignment.CENTER); // Center-align the text
-            textName.setTextAlignment(TextAlignment.CENTER); // Center-align the text
-
-            hBox.getChildren().addAll(textID, imageView, textName);
-            hBox.setAlignment(Pos.CENTER);
-            gridPane.add(hBox, col, row);
-            gridPane.getRowConstraints().add(new RowConstraints(70));
-            row++;
-        }
-
-    }
-
-    public void getBackToTopLists(ActionEvent event) {
+    public void getBackToTopLists() {
         AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/TOPLists/TopLists.fxml");
     }
 
     public void onAllTimeButtonClicked() {
-        HttpResponse<String> response = SpotifyService.getUserTopTracksOfAllTime();
-
-        assert response != null;
-        String jsonResponse = response.body();
-
-        populateScrollPaneWithTracks(scrollPane, jsonResponse);
+        scrollPane.setContent(null);
+        new Thread(()->{
+            newService(50, "long_term", 0);
+        }).start();
     }
 
     public void on6MonthsButtonClicked() {
-        HttpResponse<String> response = SpotifyService.getUserTopTracksOver6Months();
-
-        assert response != null;
-        String jsonResponse = response.body();
-
-//        populateScrollPaneWithTracks(scrollPane, jsonResponse);
-
+        scrollPane.setContent(null);
+        new Thread(()->{
+            newService(50, "medium_term", 0);
+        }).start();
     }
 
     public void on4WeeksButtonClicked() {
-        HttpResponse<String> response = SpotifyService.getUserTopTracksOver4Weeks();
-
-        assert response != null;
-        String jsonResponse = response.body();
-
-//        populateScrollPaneWithTracks(scrollPane, jsonResponse);
-        newService();
+        scrollPane.setContent(null);
+        new Thread(()->{
+            newService(50, "short_term", 0);
+        }).start();
     }
 
 }

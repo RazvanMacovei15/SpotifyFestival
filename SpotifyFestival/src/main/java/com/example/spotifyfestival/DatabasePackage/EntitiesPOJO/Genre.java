@@ -24,11 +24,15 @@ public class Genre extends Entity {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Genre genre = (Genre) o;
+        return Objects.equals(name, genre.name);
+    }
 
-        Genre artist = (Genre) obj;
-        return Objects.equals(getId(), artist.getId());
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

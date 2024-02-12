@@ -10,6 +10,7 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
 import com.example.spotifyfestival.GenericsPackage.MapValueSorter;
+import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
@@ -25,9 +26,8 @@ import java.util.*;
 public class SpotifyService {
 
     public SpotifyService() {
-
     }
-
+    //TODO - REVIEW THIS METHOD
     public static Map<Genre, Integer> getGenreCountFromResponse(ObservableList<Artist> artists) {
         HashMap<Genre, Integer> genreCount = new HashMap<>();
         for (Artist artist : artists) {
@@ -37,17 +37,29 @@ public class SpotifyService {
                 genreCount.put(genre, genreCount.getOrDefault(genre, 0) + 1);
             }
         }
+        System.out.println("--------------------");
+        System.out.println("----> debug genreCount");
+        for(Map.Entry<Genre, Integer> entry : genreCount.entrySet()){
+            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
+        }
 
         // Sort and return the genre count map
         Map<Genre, Integer> sortedGenreMap = MapValueSorter.sortByValuesDescendingWithAlphabetical(genreCount);
-//        for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
-//            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
-//        }
+
+        System.out.println("--------------------");
+        System.out.println("----> debug sorted count");
+        for (Map.Entry<Genre, Integer> entry : sortedGenreMap.entrySet()) {
+            System.out.println(entry.getKey() + " is found " + entry.getValue() + " times in your listening history!");
+        }
         return sortedGenreMap;
     }
-
+    //TODO - REVIEW THIS METHOD
     public static Map<Genre, Integer> getTopMostGenresListened() {
-        HttpResponse<String> response = SpotifyService.getUserTopArtists();
+        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+        String accessToken = auth.getAccessToken();
+        SpotifyResponseService service = new SpotifyResponseService(accessToken);
+
+        HttpResponse<String> response = service.getTopArtists(50, "long_term", 0);
 
         // Extract relevant information from the API response
         String jsonResponse = response.body();
@@ -97,17 +109,7 @@ public class SpotifyService {
 
         return topMostGenres;
     }
-
-    // Helper method to get the previous entry in the map
-    private static <K, V> Map.Entry<K, V> getPreviousEntry(Map<K, V> map, K key) {
-        for (Map.Entry<K, V> entry : map.entrySet()) {
-            if (entry.getKey().equals(key)) {
-                return entry;
-            }
-        }
-        return null;
-    }
-
+    //TODO - REVIEW THIS METHOD
     public static List<Genre> returnArtistGenresFromSpotifyID(String id, String accessToken) {
         String apiUrl = SearchAPI.searchByIDURL(id);
         // Create HttpRequest
@@ -148,44 +150,7 @@ public class SpotifyService {
         }
         return genres;
     }
-
-    public static String getEmailResponse(String accessToken) {
-        String apiUrl = "https://api.spotify.com/v1/me";
-        // Create HttpRequest
-        HttpRequest emailRequest = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(apiUrl))
-                .headers("Authorization", "Bearer " + accessToken)
-                .build();
-        // Send the request and get the response
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpResponse<String> emailResponse = null;
-        try {
-            emailResponse = httpClient.send(emailRequest, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return emailResponse.body();
-    }
-
-    public static HttpResponse<String> getHttpResponse(String accessToken, String apiUrl) {
-
-        HttpClient client = HttpClient.newBuilder().build();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
-                .header("Authorization", "Bearer " + accessToken)
-                .GET()
-                .build();
-
-        HttpResponse<String> response = null;
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        return response;
-    }
-
+    //TODO - REVIEW THIS METHOD
     public static String getArtistByNameHttpResponse(String name, String accessToken) {
         String API_URL = SearchAPI.searchForArtist(name);
         HttpClient client = HttpClient.newBuilder().build();
@@ -203,10 +168,9 @@ public class SpotifyService {
 
         return response.body();
     }
-
+    //TODO - REVIEW THIS METHOD
     public static Artist createArtistFromSearchResultForConcertRetrieval(String json, int id) {
         // Create an empty ObservableList to store the attribute values
-        ObservableList<String> attributeValues = FXCollections.observableArrayList();
         String name = null;
         String spotifyID = null;
         try {
@@ -226,204 +190,10 @@ public class SpotifyService {
         }
         return new Artist(id, name, spotifyID);
     }
-
-    //method to retrieve a list of all the user top artists
-    //based on the timeline in HttpResponse
-    public static List<Artist> getTopArtists(String jsonResponse) {
-        List<Artist> artists = new ArrayList<>();
-        int id = 0;
-        String name = null;
-        ObservableList<Genre> genres = FXCollections.observableArrayList();
-        String spotifyID = null;
-        String spotifyLink = null;
-        String imageURL = null;
-        int popularity = 0;
-
-        try {
-            // Parse the JSON response
-            JSONObject responseObject = new JSONObject(jsonResponse);
-            int limit = responseObject.getInt("limit");
-
-            JSONArray itemsArray = responseObject.getJSONArray("items");
-
-            // Iterate through the items and extract the specified attribute
-            for (int i = 1; i < limit + 1; i++) {
-
-                JSONObject itemObject = itemsArray.getJSONObject(i - 1);
-
-                name = itemObject.getString("name");
-                JSONArray genresArray = itemObject.getJSONArray("genres");
-
-                for (int j = 1; j < genresArray.length() + 1; j++) {
-
-                    int genreId = j;
-                    String genreName = (String) genresArray.get(j - 1);
-                    Genre genre = new Genre(genreId, genreName);
-
-                    genres.add(genre);
-                }
-                spotifyID = itemObject.getString("id");
-                spotifyLink = itemObject.getString("uri");
-
-                JSONArray urlList = itemObject.getJSONArray("images");
-                imageURL = urlList.getJSONObject(2).getString("url");
-
-                popularity = itemObject.getInt("popularity");
-                Artist artist = new Artist(i, name, spotifyID, genres, imageURL, spotifyLink, popularity);
-                System.out.println(artist);
-                artists.add(artist);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return artists;
-    }
-
-    public static void openURL2(String url) {
-        if (java.awt.Desktop.isDesktopSupported()) {
-            java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-            if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
-                try {
-                    java.net.URI uri = new java.net.URI(url);
-                    desktop.browse(uri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    //TOP ARTISTS RETRIEVAL METHODS
-    public static HttpResponse<String> getUserTopArtists() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            return getHttpResponse(token, Artists_API_URLS.getUserTopArtistsAllTimeURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static HttpResponse<String> getUserTopArtistsOver6Months() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            return getHttpResponse(token, Artists_API_URLS.getUserTopArtists6MonthsURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static HttpResponse<String> getUserTopArtistsOver4Weeks() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            return getHttpResponse(token, Artists_API_URLS.getUserTopArtistsOver4WeeksURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    //TOP TRACKS RETRIEVAL METHODS
-    public static List<Track> getTopTracks(String jsonResponse) {
-        List<Track> tracks = new ArrayList<>();
-
-        String token = SpotifyAuthFlowService.getInstance().getAccessToken();
-
-        int id = 0;
-        String name = null;
-        String spotifyID = null;
-        String spotifyLink = null;
-        String imageURL = null;
-        List<Artist> artists = null;
-
-
-        try {
-            // Parse the JSON response
-            JSONObject responseObject = new JSONObject(jsonResponse);
-            int limit = responseObject.getInt("limit");
-
-            JSONArray itemsArray = responseObject.getJSONArray("items");
-
-            // Iterate through the items and extract the specified attribute
-            for (int i = 1; i < limit + 1; i++) {
-
-                JSONObject itemObject = itemsArray.getJSONObject(i - 1);
-
-                name = itemObject.getString("name");
-                JSONArray artistsArray = itemObject.getJSONArray("artists");
-                System.out.println(artistsArray.toString());
-                artists = new ArrayList<>();
-                for (int j = 1; j < artistsArray.length() + 1; j++) {
-
-
-                    JSONObject artistObject = artistsArray.getJSONObject(j - 1);
-                    String artistName = artistObject.getString("name");
-
-                    //get artists http response from search
-                    String response = getArtistByNameHttpResponse(artistName, token);
-
-                    Artist artist = createArtistFromSearchResultForConcertRetrieval(response, j);
-
-                    artists.add(artist);
-                }
-                spotifyID = itemObject.getString("id");
-                spotifyLink = itemObject.getString("uri");
-
-                JSONObject albumObject = itemObject.getJSONObject("album");
-                JSONArray urlList = albumObject.getJSONArray("images");
-                imageURL = urlList.getJSONObject(2).getString("url");
-
-                Track track = new Track(i, name, spotifyID, spotifyLink, imageURL, artists);
-                tracks.add(track);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return tracks;
-    }
-
-    public static HttpResponse<String> getUserTopTracksOfAllTime() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            return getHttpResponse(token, Tracks_API_URLS.getUserTopTracksAllTimeURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static HttpResponse<String> getUserTopTracksOver6Months() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            return getHttpResponse(token, Tracks_API_URLS.getUserTopTracks6MonthsURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    public static HttpResponse<String> getUserTopTracksOver4Weeks() {
-        try {
-            SpotifyAuthFlowService spotifyAuthFlowService = SpotifyAuthFlowService.getInstance();
-            String token = spotifyAuthFlowService.getAccessToken();
-            return getHttpResponse(token, Tracks_API_URLS.getUserTopTracksOver4WeeksURI());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    //top genres helpers spotify service methods
-
+    //TODO - REVIEW THIS METHOD
     // Method to extract artists and their genres from JSON response
     public static ObservableList<Artist> extractArtists(String jsonResponse) {
-        ObservableList<ObservableList<String>> allGenresExtracted = FXCollections.observableArrayList();
+
         ObservableList<Artist> listOfArtistsInResponse = FXCollections.observableArrayList();
         try {
             JSONObject jsonObject = new JSONObject(jsonResponse);

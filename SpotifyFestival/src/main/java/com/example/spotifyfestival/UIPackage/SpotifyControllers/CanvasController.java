@@ -9,6 +9,7 @@ import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
+import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.collections.FXCollections;
@@ -74,7 +75,12 @@ public class CanvasController extends AbstractPrintTree {
     protected GraphicsContext gc;
 
     private Map<Genre, Integer> retrieveGenreCount() {
-        HttpResponse<String> response = SpotifyService.getUserTopArtists();
+        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+        String accessToken = auth.getAccessToken();
+        SpotifyResponseService service = new SpotifyResponseService(accessToken);
+
+        HttpResponse<String> response = service.getTopArtists(50, "long_term", 0);
+
         assert response != null;
         String jsonResponse = response.body();
         ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
