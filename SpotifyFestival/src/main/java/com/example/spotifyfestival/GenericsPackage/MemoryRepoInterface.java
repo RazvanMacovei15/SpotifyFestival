@@ -5,7 +5,7 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityE
 
 import java.sql.SQLException;
 
-public interface RepoInterface<K, V extends Identifiable<K>> {
+public interface MemoryRepoInterface<K, V extends Identifiable<K>> {
     Iterable<V> getAll();
     void add(K key, V value) throws DuplicateEntityException, SQLException;
     void update(K key, V value);

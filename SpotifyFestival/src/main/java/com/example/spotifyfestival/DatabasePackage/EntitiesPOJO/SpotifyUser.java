@@ -1,5 +1,7 @@
 package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
+import java.util.Objects;
+
 public class SpotifyUser {
     private String country;
     private String displayName;
@@ -75,5 +77,18 @@ public class SpotifyUser {
                 ", uri='" + uri + '\'' +
                 ", followers=" + followers +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SpotifyUser that = (SpotifyUser) o;
+        return Objects.equals(spotifyId, that.spotifyId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(spotifyId);
     }
 }

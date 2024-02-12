@@ -1,5 +1,7 @@
 package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
+import java.util.Objects;
+
 public class FestivalStage extends Entity {
 
     protected String name;
@@ -45,5 +47,17 @@ public class FestivalStage extends Entity {
                 ", venue=" + venue +
                 ", id=" + id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof FestivalStage stage)) return false;
+        return Objects.equals(id, stage.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

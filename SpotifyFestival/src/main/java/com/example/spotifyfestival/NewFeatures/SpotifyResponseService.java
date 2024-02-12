@@ -52,7 +52,6 @@ public class SpotifyResponseService {
             System.out.println("ERROR 503 --> Service Unavailable");
             return null;
         }
-
         return response;
     }
 

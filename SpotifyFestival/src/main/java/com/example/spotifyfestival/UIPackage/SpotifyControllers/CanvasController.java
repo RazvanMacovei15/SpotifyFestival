@@ -81,7 +81,6 @@ public class CanvasController extends AbstractPrintTree {
         SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
 
         HttpResponse<String> response = service.getTopArtists(50, "long_term", 0);
-        System.out.println(response.body());
 
         ObservableList<Artist> allArtists = parser.getTopArtists(response);
         return Utils.getGenreCountFromResponse(allArtists);

@@ -2,6 +2,7 @@ package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Venue extends Entity {
     private String city;
@@ -91,5 +92,18 @@ public class Venue extends Entity {
                 ", locationLatitude='" + locationLatitude + '\'' +
                 ", locationLongitude='" + locationLongitude + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Venue venue = (Venue) o;
+        return Objects.equals(venueName, venue.venueName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(venueName);
     }
 }

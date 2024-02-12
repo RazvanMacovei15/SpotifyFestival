@@ -21,7 +21,6 @@ public class SpotifyAPIJsonParser {
         }
         ObservableList<Artist> topArtists = FXCollections.observableArrayList();
         JSONObject topArtistsJSON = new JSONObject(response.body());
-        System.out.println(response.body());
         int artistIndex = 1;
         JSONArray items = topArtistsJSON.optJSONArray("items");
         for (int i = 0; i < items.length(); i++) {
@@ -129,7 +128,6 @@ public class SpotifyAPIJsonParser {
 
     // USER
     public SpotifyUser getUserProfile(HttpResponse<String> response) {
-        //TODO
         JSONObject userProfileJSON = new JSONObject(response.body());
         String country = userProfileJSON.optString("country");
         String displayName = userProfileJSON.optString("display_name");
@@ -143,7 +141,7 @@ public class SpotifyAPIJsonParser {
 
     // SEARCH
     public ObservableList<Object> search(HttpResponse<String> response) {
-        //TODO
+
         JSONObject searchJSON = new JSONObject(response.body());
         if(searchJSON.has("artists")){
             JSONObject artistSearch = searchJSON.optJSONObject("artists");

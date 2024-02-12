@@ -113,11 +113,15 @@ public class Artist extends Entity implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Artist artist = (Artist) o;
+        return Objects.equals(name, artist.name);
+    }
 
-        Artist artist = (Artist) obj;
-        return Objects.equals(getId(), artist.getId());
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

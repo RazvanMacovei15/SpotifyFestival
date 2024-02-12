@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class MemoryRepository<K, V extends Identifiable<K>> implements RepoInterface<K,V> {
+public class MemoryRepository<K, V extends Identifiable<K>> implements MemoryRepoInterface<K,V> {
     protected Map<K, V> dataStore;
 
     public Map<K, V> getDataStore() {

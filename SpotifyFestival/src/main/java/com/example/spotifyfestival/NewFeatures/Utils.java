@@ -164,7 +164,7 @@ public class Utils {
         // Extract relevant information from the API response
         ObservableList<Artist> allArtists = parser.getTopArtists(response);
         Map<Genre, Integer> genreCount = Utils.getGenreCountFromResponse(allArtists);
-        System.out.println(genreCount);
+
         // Create a new map to store the highest three values
         Map<Genre, Integer> topMostGenres = new HashMap<>();
 
