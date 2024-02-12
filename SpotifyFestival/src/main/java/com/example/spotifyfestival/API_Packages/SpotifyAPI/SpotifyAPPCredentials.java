@@ -64,7 +64,7 @@ public final class SpotifyAPPCredentials {
 
     // Private inner static class to hold the instance of SpotifyAPPCredentials
     private static class SingletonHelper {
-        private static final SpotifyAPPCredentials INSTANCE = new SpotifyAPPCredentials("/Users/razvanmc15/Desktop/SpotifyAppStuff/spotifyCredentials.txt");
+        private static final SpotifyAPPCredentials INSTANCE = new SpotifyAPPCredentials("/C:\\Users\\maco_4togx70\\Desktop\\spotifyCredentials.txt");
     }
 
     // Public method to access the single instance

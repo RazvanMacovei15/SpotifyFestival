@@ -1,18 +1,28 @@
 package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
 public class SpotifyUser {
+    private String country;
     private String displayName;
     private String email;
     private String spotifyId;
     private String uri;
     private int followers;
 
-    public SpotifyUser(String displayName, String email, String spotifyId, String uri, int followers) {
+    public SpotifyUser(String displayName, String email, String spotifyId, String country, String uri, int followers) {
         this.displayName = displayName;
         this.email = email;
         this.spotifyId = spotifyId;
         this.uri = uri;
         this.followers = followers;
+        this.country = country;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     public String getDisplayName() {
@@ -58,10 +68,12 @@ public class SpotifyUser {
     @Override
     public String toString() {
         return "SpotifyUser{" +
-                "displayName='" + displayName + '\'' +
+                "country='" + country + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", email='" + email + '\'' +
                 ", spotifyId='" + spotifyId + '\'' +
+                ", uri='" + uri + '\'' +
+                ", followers=" + followers +
                 '}';
     }
-
-
 }
