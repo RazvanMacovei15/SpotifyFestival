@@ -279,7 +279,7 @@ public class SpotifyService {
         return artists;
     }
 
-    public void openURL2(String url) {
+    public static void openURL2(String url) {
         if (java.awt.Desktop.isDesktopSupported()) {
             java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
             if (desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {

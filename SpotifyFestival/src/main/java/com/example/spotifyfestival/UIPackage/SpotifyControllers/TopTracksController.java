@@ -1,9 +1,14 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
 import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
+import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
+import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
+import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
+import com.example.spotifyfestival.NewFeatures.Utils;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -16,7 +21,6 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
 
@@ -39,7 +43,17 @@ public class TopTracksController {
         Helper.loadSpotifyCover(imageView, imageURL);
         service = new SpotifyService();
         // Automatically trigger the "4 weeks" button when the scene is shown
-        on4WeeksButtonClicked();
+        new Thread(this::newService).start();
+    }
+
+    public void newService() {
+        SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
+        String accessToken = auth.getAccessToken();
+        SpotifyResponseService service = new SpotifyResponseService(accessToken);
+        HttpResponse<String> topTracks = service.getTopTracks(50, "short_term", 0);
+        SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
+        ObservableList<Track> tracks = parser.getTopTracks(topTracks);
+        Utils.populateScrollPaneWithTracks(scrollPane, tracks);
     }
 
     public void populateScrollPaneWithTracks(ScrollPane scrollPane, String response) {
@@ -122,7 +136,8 @@ public class TopTracksController {
         assert response != null;
         String jsonResponse = response.body();
 
-        populateScrollPaneWithTracks(scrollPane, jsonResponse);
+//        populateScrollPaneWithTracks(scrollPane, jsonResponse);
+
     }
 
     public void on4WeeksButtonClicked() {
@@ -131,8 +146,8 @@ public class TopTracksController {
         assert response != null;
         String jsonResponse = response.body();
 
-        populateScrollPaneWithTracks(scrollPane, jsonResponse);
-
+//        populateScrollPaneWithTracks(scrollPane, jsonResponse);
+        newService();
     }
 
 }

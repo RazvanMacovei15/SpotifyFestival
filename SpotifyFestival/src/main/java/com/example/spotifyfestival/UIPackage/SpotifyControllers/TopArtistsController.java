@@ -5,6 +5,7 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
@@ -17,13 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.util.List;
 
 public class TopArtistsController {
     protected SpotifyService service;
-
     @FXML
     public ScrollPane scrollPane;
     @FXML
@@ -36,7 +35,7 @@ public class TopArtistsController {
         Helper.loadSpotifyCover(imageView, imageURL);
 
         // Automatically trigger the "4 weeks" button when the scene is shown
-        on4WeeksButtonClicked();
+        new Thread(this::on4WeeksButtonClicked).start();
     }
 
     public void populateScrollPaneWithArtists(ScrollPane scrollPane, String response) {
@@ -95,7 +94,12 @@ public class TopArtistsController {
 
             vBox.getChildren().add(text);
             vBox.setAlignment(Pos.CENTER);
-            gridPane.add(vBox, col, row);
+            int finalCol = col;
+            int finalRow = row;
+            Platform.runLater(() -> {
+                gridPane.add(vBox, finalCol, finalRow);
+            });
+
             col++;
 
             if (col == 3) {
