@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.GenericsPackage;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
-import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
 
 public interface CRUDInterface<T extends Entity> {
     void add(T item) throws DuplicateEntityException;

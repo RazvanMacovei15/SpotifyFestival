@@ -4,13 +4,10 @@ package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
-import com.example.spotifyfestival.GenericsPackage.MapValueSorter;
 import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
 import com.example.spotifyfestival.NewFeatures.Utils;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
-import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
@@ -21,7 +18,6 @@ import javafx.scene.control.ListView;
 import javafx.scene.image.ImageView;
 
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -87,7 +83,7 @@ public class TopGenresController {
         HttpResponse<String> topArtists = service.getTopArtists(limit, timeRange, offset);
         ObservableList<Artist> artists = parser.getTopArtists(topArtists);
 
-        Map<Genre, Integer> genreCount = SpotifyService.getGenreCountFromResponse(artists);
+        Map<Genre, Integer> genreCount = Utils.getGenreCountFromResponse(artists);
 
         // Prepare data for UI display
         ObservableList<Genre> genres = FXCollections.observableArrayList();

@@ -2,11 +2,15 @@ package com.example.spotifyfestival.API_Packages.APIServices;
 
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
+import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
+import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
+import com.example.spotifyfestival.NewFeatures.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.http.HttpResponse;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -83,10 +87,9 @@ public class ConcertAPIService {
                     SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
                     String token = auth.getAccessToken();
 
-                    String json = SpotifyService.getArtistByNameHttpResponse(artistName, token);
 
-                    Artist artist = SpotifyService.createArtistFromSearchResultForConcertRetrieval(json, 3);
-
+                    String json = Utils.getArtistByNameHttpResponse(artistName, token);
+                    Artist artist = Utils.createArtistFromSearchResultForConcertRetrieval(json, 3);
                     artistList.add(artist);
                 }
 

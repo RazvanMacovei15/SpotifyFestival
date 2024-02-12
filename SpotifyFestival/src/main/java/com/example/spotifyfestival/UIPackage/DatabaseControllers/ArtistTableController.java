@@ -2,15 +2,10 @@ package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
-import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
-import com.example.spotifyfestival.RepositoryPackage.BinFileRepos.ArtistBinaryRepo;
-import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRepo;
-import com.example.spotifyfestival.Services.DAOServices.ArtistDAOService;
-import com.example.spotifyfestival.Services.UniServices.ArtistFileService;
+import com.example.spotifyfestival.DatabaseServices.ArtistDAOService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
-import com.example.spotifyfestival.UIPackage.HelperClasses.Settings;
-import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,7 +17,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 

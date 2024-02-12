@@ -14,18 +14,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpotifyAPIJsonParser {
-    //TODO - parse JSON responses from Spotify API
-
-
     // ARTISTS
     public ObservableList<Artist> getTopArtists(HttpResponse<String> response) {
+        if(response == null){
+            return null;
+        }
         ObservableList<Artist> topArtists = FXCollections.observableArrayList();
         JSONObject topArtistsJSON = new JSONObject(response.body());
-        int limit = topArtistsJSON.optInt("limit");
-        System.out.println("Limit: " + limit);
+        System.out.println(response.body());
         int artistIndex = 1;
         JSONArray items = topArtistsJSON.optJSONArray("items");
-        System.out.println("Items: " + items.length());
         for (int i = 0; i < items.length(); i++) {
             JSONObject artistObject = items.optJSONObject(i);
             Artist artist = createArtist(artistObject, artistIndex);

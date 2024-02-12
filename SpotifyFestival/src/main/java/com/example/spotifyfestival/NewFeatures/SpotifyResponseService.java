@@ -48,6 +48,11 @@ public class SpotifyResponseService {
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
+        if(response.statusCode() == 503){
+            System.out.println("ERROR 503 --> Service Unavailable");
+            return null;
+        }
+
         return response;
     }
 

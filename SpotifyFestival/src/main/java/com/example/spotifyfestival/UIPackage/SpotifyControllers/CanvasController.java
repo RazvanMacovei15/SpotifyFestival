@@ -1,7 +1,5 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
-import com.example.spotifyfestival.API_Packages.APIServices.JSONConstant;
-import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.API_Packages.RapidAPI.RapidAPIParameters;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
@@ -9,7 +7,9 @@ import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
+import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
+import com.example.spotifyfestival.NewFeatures.Utils;
 import com.example.spotifyfestival.Tree.AbstractPrintTree;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.collections.FXCollections;
@@ -78,14 +78,13 @@ public class CanvasController extends AbstractPrintTree {
         SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
         String accessToken = auth.getAccessToken();
         SpotifyResponseService service = new SpotifyResponseService(accessToken);
+        SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
 
         HttpResponse<String> response = service.getTopArtists(50, "long_term", 0);
+        System.out.println(response.body());
 
-        assert response != null;
-        String jsonResponse = response.body();
-        ObservableList<Artist> allArtists = SpotifyService.extractArtists(jsonResponse);
-        Map<Genre, Integer> genreCount = SpotifyService.getGenreCountFromResponse(allArtists);
-        return genreCount;
+        ObservableList<Artist> allArtists = parser.getTopArtists(response);
+        return Utils.getGenreCountFromResponse(allArtists);
     }
 
     public ObservableList<String> retrieveUserGenreHistory() {
@@ -142,7 +141,6 @@ public class CanvasController extends AbstractPrintTree {
         Helper.backToMainPageCondition();
     }
 
-
     public RapidAPIParameters processSelection() {
         LocalDate startDateArea = startDatePicker.getValue();
         LocalDate endDateArea = endDatePicker.getValue();
@@ -154,7 +152,7 @@ public class CanvasController extends AbstractPrintTree {
     }
 
     public void onGenerateSuggestionsButtonClicked() {
-        Map<Genre, Integer> topGenres = SpotifyService.getTopMostGenresListened();
+        Map<Genre, Integer> topGenres = Utils.getTopMostGenresListened("long_term");
 //        System.out.println(topGenres);
         for(Genre genre : topGenres.keySet()){
             System.out.println("looking for: "+genre+" in the map!");
@@ -173,9 +171,9 @@ public class CanvasController extends AbstractPrintTree {
         RapidAPIParameters parameters = processSelection();
         RapidAPIConcertsAPI api = RapidAPIConcertsAPI.getInstance();
         api.addParameters(parameters);
-//        String json = api.getConcertsInYourArea();
+        String json = api.getConcertsInYourArea();
 
-        createTree(festivalStageDAO, festivalDAO, concertDAO, JSONConstant.getJsonData(), canvas, userLocationRadius, venueCircleRadius, concertCircleRadius);
+        createTree(festivalStageDAO, festivalDAO, concertDAO, json, canvas, userLocationRadius, venueCircleRadius, concertCircleRadius);
         displayCirclesOneAtATime(canvasBorderPane, gc, null, null, null);
     }
 
@@ -313,7 +311,7 @@ public class CanvasController extends AbstractPrintTree {
                     info = concert.listOfArtistToString(concert.getListOfArtists());
                 }
                 for(Artist artist : concert.getListOfArtists()){
-                    System.out.println(SpotifyService.returnArtistGenresFromSpotifyID(artist.getSpotifyId(), auth.getAccessToken()));
+                    System.out.println(Utils.returnArtistGenresFromSpotifyID(artist.getSpotifyId(), auth.getAccessToken()));
                 }
 
                 concertToListView.addAll(

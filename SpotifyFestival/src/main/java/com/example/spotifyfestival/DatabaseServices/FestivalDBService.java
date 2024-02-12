@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.Services.DAOServices;
+package com.example.spotifyfestival.DatabaseServices;
 
 import com.example.spotifyfestival.DatabasePackage.DAO.EntireDB_Repo;
 

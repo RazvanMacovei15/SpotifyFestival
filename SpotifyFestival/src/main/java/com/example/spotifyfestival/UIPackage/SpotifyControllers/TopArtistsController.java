@@ -1,31 +1,19 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
-import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
 import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
 import com.example.spotifyfestival.NewFeatures.Utils;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.net.http.HttpResponse;
-import java.util.List;
 
 public class TopArtistsController {
     @FXML
@@ -73,6 +61,9 @@ public class TopArtistsController {
         SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
         // Get the top tracks from the Spotify API
         HttpResponse<String> topArtists = service.getTopArtists(limit, timeRange, offset);
+        if(topArtists == null){
+            return;
+        }
         ObservableList<Artist> artists = parser.getTopArtists(topArtists);
         // Populate the scroll pane with the top tracks
         Utils.populateScrollPaneWithArtists(scrollPane, artists);

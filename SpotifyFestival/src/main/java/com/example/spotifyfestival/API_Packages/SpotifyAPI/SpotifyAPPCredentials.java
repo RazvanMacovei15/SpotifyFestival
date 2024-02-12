@@ -14,25 +14,19 @@ public final class SpotifyAPPCredentials {
     private String userReadRecentlyPlayed;
     private final String stringToEncode;
 
-
-    public SpotifyAPPCredentials(String filePath) {
+    private SpotifyAPPCredentials(String filePath) {
         readCredentialsFromFile(filePath);
         this.stringToEncode = clientId + ":" + clientSecret;
     }
-    private void readCredentialsFromFile(String filePath) {
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                String[] parts = line.split("=", 2);
-                if (parts.length == 2) {
-                    String key = parts[0].trim();
-                    String value = parts[1].trim();
-                    setCredential(key, value);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+    private static SpotifyAPPCredentials instance;
+
+    // Public method to access the single instance
+    public static SpotifyAPPCredentials getInstance() {
+        if(instance == null){
+            instance = new SpotifyAPPCredentials("/Users/razvanmc15/Desktop/SpotifyAppStuff/spotifyCredentials.txt");
         }
+        return instance;
     }
 
     private void setCredential(String key, String value) {
@@ -61,15 +55,20 @@ public final class SpotifyAPPCredentials {
         }
     }
 
-
-    // Private inner static class to hold the instance of SpotifyAPPCredentials
-    private static class SingletonHelper {
-        private static final SpotifyAPPCredentials INSTANCE = new SpotifyAPPCredentials("/Users/razvanmc15/Desktop/SpotifyAppStuff/spotifyCredentials.txt");
-    }
-
-    // Public method to access the single instance
-    public static SpotifyAPPCredentials getInstance() {
-        return SingletonHelper.INSTANCE;
+    private void readCredentialsFromFile(String filePath) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("=", 2);
+                if (parts.length == 2) {
+                    String key = parts[0].trim();
+                    String value = parts[1].trim();
+                    setCredential(key, value);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getClientId() {

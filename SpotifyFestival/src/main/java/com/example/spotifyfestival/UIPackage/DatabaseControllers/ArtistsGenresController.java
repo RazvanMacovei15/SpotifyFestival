@@ -2,9 +2,9 @@ package com.example.spotifyfestival.UIPackage.DatabaseControllers;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.ArtistGenre;
 import com.example.spotifyfestival.GenericsPackage.GenericObservableList;
-import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
 import com.example.spotifyfestival.DatabasePackage.DAO.ArtistGenreDAO;
-import com.example.spotifyfestival.Services.DAOServices.ArtistsGenresDAOService;
+import com.example.spotifyfestival.DatabaseServices.ArtistsGenresDAOService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;

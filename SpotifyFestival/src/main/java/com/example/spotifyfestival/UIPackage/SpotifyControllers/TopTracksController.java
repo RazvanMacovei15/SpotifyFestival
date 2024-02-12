@@ -1,6 +1,5 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
-import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
 import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
@@ -9,20 +8,11 @@ import com.example.spotifyfestival.NewFeatures.Utils;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.RowConstraints;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 import java.net.http.HttpResponse;
-import java.util.List;
 
 public class TopTracksController {
     private final String imageURL = "/com/example/spotifyfestival/PNGs/copertaSpotify.png";

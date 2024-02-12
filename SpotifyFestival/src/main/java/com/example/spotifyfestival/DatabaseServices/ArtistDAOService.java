@@ -1,9 +1,9 @@
-package com.example.spotifyfestival.Services.DAOServices;
+package com.example.spotifyfestival.DatabaseServices;
 
 import com.example.spotifyfestival.DatabasePackage.DAO.ArtistDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.GenericsPackage.CRUDInterface;
-import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
 import javafx.collections.ObservableList;
 
 public class ArtistDAOService implements CRUDInterface<Artist> {

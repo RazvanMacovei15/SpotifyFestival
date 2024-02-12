@@ -6,7 +6,7 @@ import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBUtils;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Festival;
 import com.example.spotifyfestival.DatabasePackage.DBHelpers.DBGenericRepository;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Venue;
-import com.example.spotifyfestival.LabFacultate.DuplicateEntityException;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

@@ -1,12 +1,14 @@
 package com.example.spotifyfestival.Tree;
 
 import com.example.spotifyfestival.API_Packages.APIServices.ConcertAPIService;
-import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.DAO.ConcertDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalDAO;
 import com.example.spotifyfestival.DatabasePackage.DAO.FestivalStageDAO;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.*;
+import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
+import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
+import com.example.spotifyfestival.NewFeatures.Utils;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -77,7 +79,10 @@ public abstract class AbstractPrintTree {
             SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
             String token = auth.getAccessToken();
 
-            List<Genre> genres = SpotifyService.returnArtistGenresFromSpotifyID(id, token);
+            SpotifyResponseService service = new SpotifyResponseService(token);
+            SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
+
+            List<Genre> genres = Utils.returnArtistGenresFromSpotifyID(id, token);
             if(genres.isEmpty()){
                 break;
             }

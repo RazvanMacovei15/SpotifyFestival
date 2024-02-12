@@ -1,10 +1,7 @@
 package com.example.spotifyfestival.API_Packages.SpotifyAPI;
 
-import com.example.spotifyfestival.API_Packages.APIServices.SpotifyService;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.User;
 import com.example.spotifyfestival.DatabasePackage.DAO.UserDAO;
-import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.UserManager;
@@ -31,27 +28,25 @@ public class SpotifyAuthFlowService {
     private String accessTokenResponse = null;
     private String accessToken = null;
     private String myState = null;
-    private static SpotifyAuthFlowService instance;
     private SpotifyResponseService spotifyResponseService;
     private String refreshToken = null;
     private String originalInput = null;
     private volatile boolean bool = false;
+
     private long startTime = 0;
 
-    public long getStartTime() {
-        return startTime;
-    }
-
-    private SpotifyAuthFlowService() {
-        spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
-        originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
-    }
+    private static SpotifyAuthFlowService instance;
 
     public static SpotifyAuthFlowService getInstance() {
         if (instance == null) {
             instance = new SpotifyAuthFlowService();
         }
         return instance;
+    }
+
+    private SpotifyAuthFlowService() {
+        spotifyAPPCredentials = SpotifyAPPCredentials.getInstance();
+        originalInput = spotifyAPPCredentials.getClientId() + ":" + spotifyAPPCredentials.getClientSecret();
     }
 
     public String getAccessToken() {
@@ -252,5 +247,9 @@ public class SpotifyAuthFlowService {
     public String getRefreshToken(String jsonResponse) {
         JSONObject jsonObject = new JSONObject(jsonResponse);
         return jsonObject.getString("refresh_token");
+    }
+
+    public long getStartTime() {
+        return startTime;
     }
 }

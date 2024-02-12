@@ -25,8 +25,6 @@ module com.example.spotifyfestival {
     exports com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
     exports com.example.spotifyfestival.GenericsPackage;
     opens com.example.spotifyfestival.GenericsPackage to javafx.fxml;
-    exports com.example.spotifyfestival.LabFacultate.FileSavingStuff;
-    opens com.example.spotifyfestival.LabFacultate.FileSavingStuff to javafx.fxml;
     exports com.example.spotifyfestival.MainPackage;
     opens com.example.spotifyfestival.MainPackage to javafx.fxml;
     exports com.example.spotifyfestival.Tree;
@@ -45,7 +43,5 @@ module com.example.spotifyfestival {
     exports com.example.spotifyfestival.NewFeatures;
     opens com.example.spotifyfestival.NewFeatures to javafx.fxml;
     opens com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
-
-    // Export your application package to javafx.graphics module
 
 }
