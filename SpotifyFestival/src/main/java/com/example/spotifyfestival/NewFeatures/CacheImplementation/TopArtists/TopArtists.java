@@ -88,7 +88,7 @@ public class TopArtists extends CacheFileRepo<String, Artist> {
         }else{
             //if file is empty, initialize data
             if(file.length() == 0){
-                initializeFile();
+                new Thread(this::initializeFile).start();
             }
         }
 

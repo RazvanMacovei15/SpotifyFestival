@@ -27,7 +27,7 @@
 27, Nic D, 7ab5IU6f9rBvhgS4kuQjSh, singer-songwriter pop, https://i.scdn.co/image/ab6761610000e5ebf38fac7a7aa7afa10a500a73, spotify:artist:1XlLhtgJjC4ROQZilBZAvw, 68
 28, 50 Cent, 7ab5IU6f9rBvhgS4kuQjSh, east coast hip hop|gangster rap|hip hop|pop rap|queens hip hop|rap, https://i.scdn.co/image/dd031b9c5d1b6eba4a691cd89c954255aae787f2, spotify:artist:3q7HBObVc0L8jNeTe5Gofh, 83
 29, Godsmack, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|nu metal|post-grunge|rap metal, https://i.scdn.co/image/ab6761610000e5eb3704c6b422c3bd96836fedc1, spotify:artist:6gZq1Q6bdOxsUPUG1TaFbF, 67
-30, Kanye West, 7ab5IU6f9rBvhgS4kuQjSh, chicago rap|hip hop|rap, https://i.scdn.co/image/ab6761610000e5eb867008a971fae0f4d913f63a, spotify:artist:5K4W6rqBFWDnAN6FQUkS6x, 92
+30, Kanye West, 7ab5IU6f9rBvhgS4kuQjSh, chicago rap|hip hop|rap, https://i.scdn.co/image/ab6761610000e5eb867008a971fae0f4d913f63a, spotify:artist:5K4W6rqBFWDnAN6FQUkS6x, 93
 31, JAY-Z, 7ab5IU6f9rBvhgS4kuQjSh, east coast hip hop|gangster rap|hip hop|pop rap|rap, https://i.scdn.co/image/ab6761610000e5ebc75afcd5a9027f60eaebb5e4, spotify:artist:3nFkdlSjzX9mRTtwJOzDYB, 83
 32, The Motans, 7ab5IU6f9rBvhgS4kuQjSh, romanian pop, https://i.scdn.co/image/ab6761610000e5ebdbe3b95bf72c04d0669e0eb1, spotify:artist:05qpk4JDcLSFNJSsPIZ8Ye, 51
 33, Future, 7ab5IU6f9rBvhgS4kuQjSh, atl hip hop|hip hop|rap|southern hip hop|trap, https://i.scdn.co/image/ab6761610000e5eb24e41f491b129093a6fee383, spotify:artist:1RyvyyTE3xzB2ZywiAwp0i, 89

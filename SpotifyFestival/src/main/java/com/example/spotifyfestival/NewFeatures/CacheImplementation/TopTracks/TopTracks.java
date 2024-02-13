@@ -117,7 +117,6 @@ public class TopTracks extends CacheFileRepo<String, Track> {
                 String spotifyId = parts[3].trim();
                 String spotifyLink = parts[4].trim();
                 String imageUrl = parts[5].trim();
-                System.out.println("WIP!");
                 Track track = new Track(id, name, spotifyId, spotifyLink, imageUrl, artistList);
                 super.add(spotifyId, track);
             }
