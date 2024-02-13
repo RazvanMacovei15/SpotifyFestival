@@ -1,11 +1,8 @@
 package com.example.spotifyfestival.DatabasePackage.EntitiesPOJO;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.Serializable;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class Artist extends Entity implements Serializable {
@@ -58,11 +55,10 @@ public class Artist extends Entity implements Serializable {
 
     public void addGenre(Genre genre) throws DuplicateEntityException {
         if (genres == null) {
-            genres = FXCollections.observableArrayList();
             genres.add(genre);
         } else {
             for (Genre genre1 : genres) {
-                if (genre1.getId().equals(genre.getId()))
+                if (genre1.getName().equals(genre.getName()))
                     throw new DuplicateEntityException("Genre already exists!");
             }
             genres.add(genre);
@@ -111,33 +107,31 @@ public class Artist extends Entity implements Serializable {
 
     @Override
     public String toString() {
-        return id + "," +
-                name + "," +
-                spotifyId + "," +
-                genresToString() + "," +
-                encodeImageURL() + "," +
-                encodeSpotifyLink() + "," +
+        return id + ", " +
+                name + ", " +
+                spotifyId + ", " +
+                genresToString() + ", " +
+                imageUrl + ", " +
+                spotifyLink + ", " +
                 popularity;
     }
 
     private String genresToString() {
-        StringBuilder sb = new StringBuilder();
-        if (genres == null)
-            return "";
-        for (Genre genre : genres) {
-            sb.append(genre.getName()).append("|");
+        if(this.genres == null || this.genres.isEmpty()){
+            String s = "null";
+            return s;
+        }else{
+            String[] genresArray = new String[this.genres.size()];
+            for(int i = 0; i< this.genres.size(); i++){
+                genresArray[i] = genres.get(i).getName();
+            }
+            StringBuilder sb = new StringBuilder();
+            for (String genre : genresArray) {
+                sb.append(genre).append("|");
+            }
             sb.deleteCharAt(sb.length() - 1);
+            return sb.toString();
         }
-
-        return sb.toString();
-    }
-
-    private String encodeImageURL() {
-        return this.imageUrl = URLEncoder.encode(imageUrl);
-    }
-
-    private String encodeSpotifyLink() {
-        return this.spotifyLink = URLEncoder.encode(spotifyLink);
     }
 
     @Override

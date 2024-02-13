@@ -1,10 +1,7 @@
 package com.example.spotifyfestival.UIPackage;
 
-import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.NewFeatures.CacheImplementation.TopArtists.LongTermArtists;
-import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
-import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
+import com.example.spotifyfestival.NewFeatures.CacheImplementation.Cache;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.collections.ObservableList;
@@ -13,9 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-
-import java.net.http.HttpResponse;
-import java.util.List;
 
 public class AdminMainController {
     private final String imageURL = "/com/example/spotifyfestival/PNGs/coperta_3.jpeg";
@@ -31,6 +25,8 @@ public class AdminMainController {
     VBox vBox;
     @FXML
     ImageView imageView;
+    private ObservableList<Artist> artists;
+    private Cache cache;
 
     public void initialize() {
 
@@ -38,11 +34,12 @@ public class AdminMainController {
         Helper.mouseHoverUpOnButton(admin);
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);
-        LongTermArtists longTermArtists = new LongTermArtists("longTermArtists.txt");
-        longTermArtists.listFile();
+        cache = Cache.getInstance();
+
     }
 
     public void handleDBButton() {
+        cache.listAll();
         AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 

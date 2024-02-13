@@ -4,10 +4,10 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityE
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenericCacheRepository<K,V > implements CacheInterface<K,V> {
+public class GenericMemoryCacheRepository<K,V > implements CacheInterface<K,V> {
     private final Map<K,V> cache;
 
-    public GenericCacheRepository() {
+    public GenericMemoryCacheRepository() {
         this.cache = new HashMap<>();
     }
 

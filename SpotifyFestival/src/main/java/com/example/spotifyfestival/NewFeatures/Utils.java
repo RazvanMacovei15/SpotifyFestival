@@ -49,7 +49,7 @@ public class Utils {
             imageView.setFitWidth(scaledWidth);
             imageView.setFitHeight(scaledHeight);
             Text textID = new Text(track.getId().toString() + ".");
-            Text textName = new Text(track.toString());
+            Text textName = new Text(track.toStringForUI());
             HBox hBox = new HBox();
             textID.setWrappingWidth(50);
             textName.setWrappingWidth(200);

@@ -1,0 +1,50 @@
+1, Five Finger Death Punch, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|groove metal|nu metal, https://i.scdn.co/image/ab6761610000e5eb1e7f796a17c2dc3c28bdeeb9, spotify:artist:5t28BP42x2axFnqOOMg3CM, 73
+2, Connor Price, 7ab5IU6f9rBvhgS4kuQjSh, singer-songwriter pop, https://i.scdn.co/image/ab6761610000e5eb00835d03b5d032c8b22153f6, spotify:artist:5zixe6AbgXPqt4c1uSl94L, 73
+3, Eminem, 7ab5IU6f9rBvhgS4kuQjSh, detroit hip hop|hip hop|rap, https://i.scdn.co/image/ab6761610000e5eba00b11c129b27a88fc72f36b, spotify:artist:7dGJo4pcD2V6oG8kP0tJRR, 90
+4, Ed Sheeran, 7ab5IU6f9rBvhgS4kuQjSh, pop|singer-songwriter pop|uk pop, https://i.scdn.co/image/ab6761610000e5eb3bcef85e105dfc42399ef0ba, spotify:artist:6eUKZXaKkcviH0Ku9w2n3V, 88
+5, Bullet For My Valentine, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|melodic metalcore|nu metal|post-grunge|uk metalcore|welsh metal, https://i.scdn.co/image/ab6761610000e5eb083627f7d306f40cd7ff8893, spotify:artist:7iWiAD5LLKyiox2grgfmUT, 66
+6, Goodbye to Gravity, 7ab5IU6f9rBvhgS4kuQjSh, romanian metal|romanian rock, https://i.scdn.co/image/ab6761610000e5eb347824ae16d5202159d8cfa9, spotify:artist:6txmCIyGuqpObOtJQGzwKM, 16
+7, Dreamville, 7ab5IU6f9rBvhgS4kuQjSh, hip hop|pop rap|rap, https://i.scdn.co/image/ab6761610000e5eb080d11275f15655a11b2610d, spotify:artist:1iNqsUDUraNWrj00bqssQG, 67
+8, Carla's Dreams, 7ab5IU6f9rBvhgS4kuQjSh, moldovan pop|romanian pop, https://i.scdn.co/image/ab6761610000e5ebb4c7b3f5810d620137969cdb, spotify:artist:1n5LD9Ar3D6RK2X2ewGvXb, 52
+9, Nothing But Thieves, 7ab5IU6f9rBvhgS4kuQjSh, alternative pop rock|modern alternative rock|modern rock, https://i.scdn.co/image/ab6761610000e5eb065faf07b0343e97bf3fba57, spotify:artist:1kDGbuxWknIKx4FlgWxiSp, 69
+10, Drake, 7ab5IU6f9rBvhgS4kuQjSh, canadian hip hop|canadian pop|hip hop|pop rap|rap, https://i.scdn.co/image/ab6761610000e5eb4293385d324db8558179afd9, spotify:artist:3TVXtAsR1Inumwj472S9r4, 96
+11, Avenged Sevenfold, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal, https://i.scdn.co/image/ab6761610000e5eb29ec9d388f7d0f9b3480f316, spotify:artist:0nmQIMXWTXfhgOBdNzhGOs, 75
+12, Dennis Lloyd, 7ab5IU6f9rBvhgS4kuQjSh, israeli pop, https://i.scdn.co/image/ab6761610000e5ebe98ba0e81c76949960dd6c48, spotify:artist:3EOEK57CV77D4ovYVcmiyt, 64
+13, From Ashes to New, 7ab5IU6f9rBvhgS4kuQjSh, null, https://i.scdn.co/image/ab6761610000e5ebfc4184633ca252b3a03f3d12, spotify:artist:4HrkLxQHZ5mgCtIVpiH5QX, 61
+14, Kygo, 7ab5IU6f9rBvhgS4kuQjSh, edm|pop|pop dance|tropical house, https://i.scdn.co/image/ab6761610000e5ebe636670d717588b11d654130, spotify:artist:23fqKkggKUBHNkbKtXEls4, 79
+15, DOC, 7ab5IU6f9rBvhgS4kuQjSh, romanian rap, https://i.scdn.co/image/ab6761610000e5eb199fec54d6d992675cc01859, spotify:artist:6pWa7vRheyK4dmNJ2cg0gA, 39
+16, Pop Smoke, 7ab5IU6f9rBvhgS4kuQjSh, brooklyn drill|rap, https://i.scdn.co/image/ab6761610000e5eb597f9edd2cd1a892d4412b09, spotify:artist:0eDvMgVFoNV3TpwtrVCoTj, 80
+17, G-Eazy, 7ab5IU6f9rBvhgS4kuQjSh, indie pop rap|oakland hip hop|pop rap|rap, https://i.scdn.co/image/ab6761610000e5ebd9cfdc05548d1655bc265f85, spotify:artist:02kJSzxNuaWGqwubyUba0Z, 75
+18, Tyga, 7ab5IU6f9rBvhgS4kuQjSh, hip hop|pop rap|rap|trap, https://i.scdn.co/image/ab6761610000e5eb1d8e3ecf59f556b8e4fafce8, spotify:artist:5LHRHt1k9lMyONurDHEdrp, 78
+19, Daughtry, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|neo mellow|pop rock|post-grunge, https://i.scdn.co/image/ab6761610000e5eb079209ee37431851b0fa0164, spotify:artist:5P5FTygHyx2G57oszR3Wot, 64
+20, Metallica, 7ab5IU6f9rBvhgS4kuQjSh, hard rock|metal|old school thrash|rock|thrash metal, https://i.scdn.co/image/ab6761610000e5eb69ca98dd3083f1082d740e44, spotify:artist:2ye2Wgw4gimLv2eAKyk1NB, 81
+21, Within Temptation, 7ab5IU6f9rBvhgS4kuQjSh, dutch metal|gothic metal|gothic symphonic metal|symphonic metal, https://i.scdn.co/image/ab6761610000e5ebd7fd83f3a54ab822936034b6, spotify:artist:3hE8S8ohRErocpkY7uJW4a, 62
+22, Bad Omens, 7ab5IU6f9rBvhgS4kuQjSh, american metalcore, https://i.scdn.co/image/ab6761610000e5eb1c520452bc445eceacb63b26, spotify:artist:3Ri4H12KFyu98LMjSoij5V, 73
+23, J. Cole, 7ab5IU6f9rBvhgS4kuQjSh, conscious hip hop|hip hop|north carolina hip hop|rap, https://i.scdn.co/image/ab6761610000e5ebadd503b411a712e277895c8a, spotify:artist:6l3HvQ5sa6mXTsMTB19rO5, 86
+24, Anne-Marie, 7ab5IU6f9rBvhgS4kuQjSh, pop, https://i.scdn.co/image/ab6761610000e5eb67013e289b84440ce3d1c88e, spotify:artist:1zNqDE7qDGCsyzJwohVaoX, 78
+25, Bad Meets Evil, 7ab5IU6f9rBvhgS4kuQjSh, detroit hip hop, https://i.scdn.co/image/570d46c60960d93990710d83a5f8012217eb7aec, spotify:artist:77IURH5NC56Jn09QHi76is, 59
+26, David Guetta, 7ab5IU6f9rBvhgS4kuQjSh, big room|dance pop|edm|pop|pop dance, https://i.scdn.co/image/ab6761610000e5ebf150017ca69c8793503c2d4f, spotify:artist:1Cs0zKBU1kc0i8ypK3B9ai, 87
+27, Nic D, 7ab5IU6f9rBvhgS4kuQjSh, singer-songwriter pop, https://i.scdn.co/image/ab6761610000e5ebf38fac7a7aa7afa10a500a73, spotify:artist:1XlLhtgJjC4ROQZilBZAvw, 68
+28, 50 Cent, 7ab5IU6f9rBvhgS4kuQjSh, east coast hip hop|gangster rap|hip hop|pop rap|queens hip hop|rap, https://i.scdn.co/image/dd031b9c5d1b6eba4a691cd89c954255aae787f2, spotify:artist:3q7HBObVc0L8jNeTe5Gofh, 83
+29, Godsmack, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|nu metal|post-grunge|rap metal, https://i.scdn.co/image/ab6761610000e5eb3704c6b422c3bd96836fedc1, spotify:artist:6gZq1Q6bdOxsUPUG1TaFbF, 67
+30, Kanye West, 7ab5IU6f9rBvhgS4kuQjSh, chicago rap|hip hop|rap, https://i.scdn.co/image/ab6761610000e5eb867008a971fae0f4d913f63a, spotify:artist:5K4W6rqBFWDnAN6FQUkS6x, 92
+31, JAY-Z, 7ab5IU6f9rBvhgS4kuQjSh, east coast hip hop|gangster rap|hip hop|pop rap|rap, https://i.scdn.co/image/ab6761610000e5ebc75afcd5a9027f60eaebb5e4, spotify:artist:3nFkdlSjzX9mRTtwJOzDYB, 83
+32, The Motans, 7ab5IU6f9rBvhgS4kuQjSh, romanian pop, https://i.scdn.co/image/ab6761610000e5ebdbe3b95bf72c04d0669e0eb1, spotify:artist:05qpk4JDcLSFNJSsPIZ8Ye, 51
+33, Future, 7ab5IU6f9rBvhgS4kuQjSh, atl hip hop|hip hop|rap|southern hip hop|trap, https://i.scdn.co/image/ab6761610000e5eb24e41f491b129093a6fee383, spotify:artist:1RyvyyTE3xzB2ZywiAwp0i, 89
+34, Volbeat, 7ab5IU6f9rBvhgS4kuQjSh, danish metal|danish rock, https://i.scdn.co/image/ab6761610000e5eb50d73f9e78c8351bde9e7324, spotify:artist:0L5fC7Ogm2YwgqVCRcF1bT, 68
+35, NF, 7ab5IU6f9rBvhgS4kuQjSh, hip hop|pop rap, https://i.scdn.co/image/ab6761610000e5eb1cf142a710a2f3d9b7a62da1, spotify:artist:6fOMl44jA4Sp5b9PpYCkzz, 79
+36, Lil Wayne, 7ab5IU6f9rBvhgS4kuQjSh, hip hop|new orleans rap|pop rap|rap|trap, https://i.scdn.co/image/ab6761610000e5ebc1c08e541eae3cc82c6988c4, spotify:artist:55Aa2cqylxrFIXC767Z865, 85
+37, Post Malone, 7ab5IU6f9rBvhgS4kuQjSh, dfw rap|melodic rap|pop|rap, https://i.scdn.co/image/ab6761610000e5eb6be070445b03e0b63147c2c1, spotify:artist:246dkjvS1zLTtiykXe5h60, 87
+38, Bucovina, 7ab5IU6f9rBvhgS4kuQjSh, balkan folk metal|folk black metal|folk metal|romanian black metal|romanian metal|romanian rock|slavic metal, https://i.scdn.co/image/ab67616d0000b273356f5550131591e950980827, spotify:artist:2Z912EMB8D91VQT4rFUEX1, 26
+39, AC/DC, 7ab5IU6f9rBvhgS4kuQjSh, australian rock|hard rock|rock, https://i.scdn.co/image/ab6761610000e5ebc4c77549095c86acb4e77b37, spotify:artist:711MCceyCBcFnzjGY4Q7Un, 80
+40, Falling In Reverse, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|pop punk|rap metal, https://i.scdn.co/image/ab6761610000e5eb642bb35794af159840a9bd30, spotify:artist:2CmaKO2zEGJ1NWpS1yfVGz, 71
+41, OneRepublic, 7ab5IU6f9rBvhgS4kuQjSh, piano rock|pop, https://i.scdn.co/image/ab6761610000e5eb57138b98e7ddd5a86ee97a9b, spotify:artist:5Pwc4xIPtQLFEnJriah9YJ, 82
+42, George Ezra, 7ab5IU6f9rBvhgS4kuQjSh, folk-pop|neo-singer-songwriter, https://i.scdn.co/image/ab6761610000e5ebbe936a26ceb9cbbdec7df15b, spotify:artist:2ysnwxxNtSgbb9t1m2Ur4j, 72
+43, MRLN, 7ab5IU6f9rBvhgS4kuQjSh, null, https://i.scdn.co/image/ab6761610000e5eb3c8d8f72824675196386823c, spotify:artist:77lVHhCdhj8zfHO4WTSChA, 21
+44, Chris Brown, 7ab5IU6f9rBvhgS4kuQjSh, r&b|rap, https://i.scdn.co/image/ab6761610000e5eba48397e590a1c70e2cda7728, spotify:artist:7bXgB6jMjp9ATFy66eO08Z, 87
+45, I Prevail, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|nu-metalcore|post-grunge, https://i.scdn.co/image/ab6761610000e5ebbdc02d0b1c232af2fa559092, spotify:artist:3Uobr6LgQpBbk6k4QGAb3V, 68
+46, Skillet, 7ab5IU6f9rBvhgS4kuQjSh, alternative metal|christian alternative rock|christian music|christian rock, https://i.scdn.co/image/ab6761610000e5eb21a7fcb28b16068ac7e7680a, spotify:artist:49bzE5vRBRIota4qeHtQM8, 72
+47, Poets of the Fall, 7ab5IU6f9rBvhgS4kuQjSh, finnish alternative rock, https://i.scdn.co/image/ab6761610000e5eb588384c8f17205bfa3d6624c, spotify:artist:1AZ30JnvQU1pbX6sbRE0Yn, 50
+48, Shawn Mendes, 7ab5IU6f9rBvhgS4kuQjSh, canadian pop|pop|viral pop, https://i.scdn.co/image/ab6761610000e5eb93e1fe183be0aebda170283a, spotify:artist:7n2wHs1TKAczGzO7Dd2rGr, 82
+49, Sting, 7ab5IU6f9rBvhgS4kuQjSh, permanent wave|soft rock|sophisti-pop, https://i.scdn.co/image/ab6761610000e5eb9fdb4dab484a9f12e347c216, spotify:artist:0Ty63ceoRnnJKVEYP0VQpk, 71
+50, Tate McRae, 7ab5IU6f9rBvhgS4kuQjSh, alt z|pop, https://i.scdn.co/image/ab6761610000e5eb846308bf9bf7d3183958b3a6, spotify:artist:45dkTj5sMRSjrmBSBeiHym, 86

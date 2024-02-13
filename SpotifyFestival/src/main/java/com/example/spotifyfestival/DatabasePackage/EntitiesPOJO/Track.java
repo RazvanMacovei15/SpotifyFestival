@@ -60,8 +60,7 @@ public class Track extends Entity{
         this.artists = artists;
     }
 
-    @Override
-    public String toString() {
+    public String toStringForUI() {
         StringBuilder sb = new StringBuilder();
         sb.append(name);
         sb.append(", performed by: ");
@@ -75,6 +74,35 @@ public class Track extends Entity{
             sb.append(artists.get(artists.size()-1).getName());
         }
         return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return id + ", " +
+                name + ", " +
+                artistsToString() + ", " +
+                spotifyID + ", " +
+                spotifyLink + ", " +
+                imageURL;
+
+    }
+
+    private String artistsToString(){
+        if(this.artists == null || this.artists.isEmpty()){
+            String s = "null";
+            return s;
+        }else{
+            String[] artistsArray = new String[this.artists.size()];
+            for(int i = 0; i< this.artists.size(); i++){
+                artistsArray[i] = artists.get(i).getName();
+            }
+            StringBuilder sb = new StringBuilder();
+            for (String artist : artistsArray) {
+                sb.append(artist).append("|");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            return sb.toString();
+        }
     }
 
     @Override
