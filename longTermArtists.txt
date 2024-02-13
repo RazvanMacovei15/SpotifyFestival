@@ -1,0 +1,50 @@
+1,Ed Sheeran,6eUKZXaKkcviH0Ku9w2n3V,popsinger-songwriter popuk pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb3bcef85e105dfc42399ef0ba,spotify%3Aartist%3A6eUKZXaKkcviH0Ku9w2n3V,88
+2,Snowgoons,7cTfr9nU9kwlKrVxwghbxN,flick hopunderground rap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebadb20daee8012d9484aa37a0,spotify%3Aartist%3A7cTfr9nU9kwlKrVxwghbxN,42
+3,Daughtry,5P5FTygHyx2G57oszR3Wot,alternative metalneo mellowpop rockpost-grunge,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb079209ee37431851b0fa0164,spotify%3Aartist%3A5P5FTygHyx2G57oszR3Wot,64
+4,Avenged Sevenfold,0nmQIMXWTXfhgOBdNzhGOs,alternative metal,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb29ec9d388f7d0f9b3480f316,spotify%3Aartist%3A0nmQIMXWTXfhgOBdNzhGOs,75
+5,Eminem,7dGJo4pcD2V6oG8kP0tJRR,detroit hip hophip hoprap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eba00b11c129b27a88fc72f36b,spotify%3Aartist%3A7dGJo4pcD2V6oG8kP0tJRR,90
+6,Carla's Dreams,1n5LD9Ar3D6RK2X2ewGvXb,moldovan popromanian pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebb4c7b3f5810d620137969cdb,spotify%3Aartist%3A1n5LD9Ar3D6RK2X2ewGvXb,52
+7,Nothing But Thieves,1kDGbuxWknIKx4FlgWxiSp,alternative pop rockmodern alternative rockmodern rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb065faf07b0343e97bf3fba57,spotify%3Aartist%3A1kDGbuxWknIKx4FlgWxiSp,69
+8,Five Finger Death Punch,5t28BP42x2axFnqOOMg3CM,alternative metalgroove metalnu metal,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb1e7f796a17c2dc3c28bdeeb9,spotify%3Aartist%3A5t28BP42x2axFnqOOMg3CM,73
+9,Dennis Lloyd,3EOEK57CV77D4ovYVcmiyt,israeli pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebe98ba0e81c76949960dd6c48,spotify%3Aartist%3A3EOEK57CV77D4ovYVcmiyt,64
+10,Subcarpaţi,0i0rwrrIFDx2i2bI23GwVG,romanian rapromanian rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb35f6a99239da5ac01fcab573,spotify%3Aartist%3A0i0rwrrIFDx2i2bI23GwVG,39
+11,Volbeat,0L5fC7Ogm2YwgqVCRcF1bT,danish metaldanish rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb50d73f9e78c8351bde9e7324,spotify%3Aartist%3A0L5fC7Ogm2YwgqVCRcF1bT,68
+12,Within Temptation,3hE8S8ohRErocpkY7uJW4a,dutch metalgothic metalgothic symphonic metalsymphonic metal,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebd7fd83f3a54ab822936034b6,spotify%3Aartist%3A3hE8S8ohRErocpkY7uJW4a,62
+13,Dreamville,1iNqsUDUraNWrj00bqssQG,hip hoppop raprap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb080d11275f15655a11b2610d,spotify%3Aartist%3A1iNqsUDUraNWrj00bqssQG,67
+14,Pentakill,2qcGTB5s2t9o2w9SrI719s,melodic power metal,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebd20cdeefce618685212cb98f,spotify%3Aartist%3A2qcGTB5s2t9o2w9SrI719s,52
+15,OneRepublic,5Pwc4xIPtQLFEnJriah9YJ,piano rockpop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb57138b98e7ddd5a86ee97a9b,spotify%3Aartist%3A5Pwc4xIPtQLFEnJriah9YJ,82
+16,Metallica,2ye2Wgw4gimLv2eAKyk1NB,hard rockmetalold school thrashrockthrash metal,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb69ca98dd3083f1082d740e44,spotify%3Aartist%3A2ye2Wgw4gimLv2eAKyk1NB,81
+17,Bad Meets Evil,77IURH5NC56Jn09QHi76is,detroit hip hop,https%3A%2F%2Fi.scdn.co%2Fimage%2F570d46c60960d93990710d83a5f8012217eb7aec,spotify%3Aartist%3A77IURH5NC56Jn09QHi76is,59
+18,Kygo,23fqKkggKUBHNkbKtXEls4,edmpoppop dancetropical house,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebe636670d717588b11d654130,spotify%3Aartist%3A23fqKkggKUBHNkbKtXEls4,79
+19,Connor Price,5zixe6AbgXPqt4c1uSl94L,singer-songwriter pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb00835d03b5d032c8b22153f6,spotify%3Aartist%3A5zixe6AbgXPqt4c1uSl94L,73
+20,Imagine Dragons,53XhwfbYqKCa1cC15pYq2q,modern rockpoprock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb920dc1f617550de8388f368e,spotify%3Aartist%3A53XhwfbYqKCa1cC15pYq2q,86
+21,Bullet For My Valentine,7iWiAD5LLKyiox2grgfmUT,alternative metalmelodic metalcorenu metalpost-grungeuk metalcorewelsh metal,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb083627f7d306f40cd7ff8893,spotify%3Aartist%3A7iWiAD5LLKyiox2grgfmUT,66
+22,The Motans,05qpk4JDcLSFNJSsPIZ8Ye,romanian pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebdbe3b95bf72c04d0669e0eb1,spotify%3Aartist%3A05qpk4JDcLSFNJSsPIZ8Ye,51
+23,Shawn Mendes,7n2wHs1TKAczGzO7Dd2rGr,canadian poppopviral pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb93e1fe183be0aebda170283a,spotify%3Aartist%3A7n2wHs1TKAczGzO7Dd2rGr,82
+24,Peyton Parrish,62uiaKAdkbY94iXJnXyKzc,,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb3b080b6f23046f080b1d1836,spotify%3Aartist%3A62uiaKAdkbY94iXJnXyKzc,64
+25,Chilled Blues,3tkmUdPOck20nGBOoOvMUh,,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb2a78c2f2141f8715717734ad,spotify%3Aartist%3A3tkmUdPOck20nGBOoOvMUh,39
+26,Guns N' Roses,3qm84nBOXUEQ2vnTfUTTFC,glam metalhard rockrock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb50defaf9fc059a1efc541f4c,spotify%3Aartist%3A3qm84nBOXUEQ2vnTfUTTFC,79
+27,AC/DC,711MCceyCBcFnzjGY4Q7Un,australian rockhard rockrock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebc4c77549095c86acb4e77b37,spotify%3Aartist%3A711MCceyCBcFnzjGY4Q7Un,80
+28,B.U.G. Mafia,4RAbHb0oHO62If4S7h18L0,maneleromanian rap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb31bb114dde3c00e6e7aa4594,spotify%3Aartist%3A4RAbHb0oHO62If4S7h18L0,50
+29,Poets of the Fall,1AZ30JnvQU1pbX6sbRE0Yn,finnish alternative rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb588384c8f17205bfa3d6624c,spotify%3Aartist%3A1AZ30JnvQU1pbX6sbRE0Yn,50
+30,Jonathan Roy,62ggJuZV87VvP3sAHM0V3K,canadian folk,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebc9a8134e932795748533fc76,spotify%3Aartist%3A62ggJuZV87VvP3sAHM0V3K,47
+31,Sting,0Ty63ceoRnnJKVEYP0VQpk,permanent wavesoft rocksophisti-pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb9fdb4dab484a9f12e347c216,spotify%3Aartist%3A0Ty63ceoRnnJKVEYP0VQpk,71
+32,The Chainsmokers,69GGBxA162lTqCwzJG5jLp,pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebdb68d678df6d89bf8a55d052,spotify%3Aartist%3A69GGBxA162lTqCwzJG5jLp,79
+33,Disturbed,3TOqt5oJwL9BE2NG9MEwDa,alternative metalnu metalrap metalrock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb012addc95f5b2e7283f45446,spotify%3Aartist%3A3TOqt5oJwL9BE2NG9MEwDa,73
+34,DOC,6pWa7vRheyK4dmNJ2cg0gA,romanian rap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb199fec54d6d992675cc01859,spotify%3Aartist%3A6pWa7vRheyK4dmNJ2cg0gA,39
+35,Trooper,3nQoVVNwutGfczOpMK7HTd,romanian metalromanian rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb85757a74e2458a4d622dd271,spotify%3Aartist%3A3nQoVVNwutGfczOpMK7HTd,23
+36,Two Feet,5sWHDYs0csV6RS48xBl0tH,indie poptimismmodern rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebfcaa268ce48afd467463ef76,spotify%3Aartist%3A5sWHDYs0csV6RS48xBl0tH,69
+37,David Guetta,1Cs0zKBU1kc0i8ypK3B9ai,big roomdance popedmpoppop dance,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebf150017ca69c8793503c2d4f,spotify%3Aartist%3A1Cs0zKBU1kc0i8ypK3B9ai,87
+38,Lost Frequencies,7f5Zgnp2spUuuzKplmRkt7,belgian edmedmpop dancetropical house,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb6a77aaa2cde6783b1ca727e9,spotify%3Aartist%3A7f5Zgnp2spUuuzKplmRkt7,76
+39,Cheloo,6JK8YGmVPJR1FM7P9BSQtE,romanian rap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab67616d0000b2735d2a3c4f6ede1c3c47cdb8b0,spotify%3Aartist%3A6JK8YGmVPJR1FM7P9BSQtE,45
+40,League of Legends,47mIJdHORyRerp4os813jD,speedrunvideo game music,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebe80d1ffb81aa6503ad41c574,spotify%3Aartist%3A47mIJdHORyRerp4os813jD,78
+41,Goodbye to Gravity,6txmCIyGuqpObOtJQGzwKM,romanian metalromanian rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb347824ae16d5202159d8cfa9,spotify%3Aartist%3A6txmCIyGuqpObOtJQGzwKM,16
+42,Three Days Grace,2xiIXseIJcq3nG7C8fHeBj,alternative metalcanadian metalcanadian rocknu metalpost-grungerock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb3626be769b238e2a35010613,spotify%3Aartist%3A2xiIXseIJcq3nG7C8fHeBj,74
+43,50 Cent,3q7HBObVc0L8jNeTe5Gofh,east coast hip hopgangster raphip hoppop rapqueens hip hoprap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fdd031b9c5d1b6eba4a691cd89c954255aae787f2,spotify%3Aartist%3A3q7HBObVc0L8jNeTe5Gofh,83
+44,JAY-Z,3nFkdlSjzX9mRTtwJOzDYB,east coast hip hopgangster raphip hoppop raprap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebc75afcd5a9027f60eaebb5e4,spotify%3Aartist%3A3nFkdlSjzX9mRTtwJOzDYB,83
+45,Skillet,49bzE5vRBRIota4qeHtQM8,alternative metalchristian alternative rockchristian musicchristian rock,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb21a7fcb28b16068ac7e7680a,spotify%3Aartist%3A49bzE5vRBRIota4qeHtQM8,72
+46,Alesso,4AVFqumd2ogHFlRbKIjp1t,dance popedmpoppop danceprogressive electro house,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb85bb0aa225cf7e0dbc9fcefe,spotify%3Aartist%3A4AVFqumd2ogHFlRbKIjp1t,73
+47,Sabaton,3o2dn2O0FCVsWDFSh8qxgG,power metalswedish metalswedish power metal,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb0f468cde238dfde3ba3c921e,spotify%3Aartist%3A3o2dn2O0FCVsWDFSh8qxgG,70
+48,Dermot Kennedy,5KNNVgR6LBIABRIomyCwKJ,folk-popirish popuk pop,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb2cd8d09c5888a19d747f60a2,spotify%3Aartist%3A5KNNVgR6LBIABRIomyCwKJ,71
+49,Drake,3TVXtAsR1Inumwj472S9r4,canadian hip hopcanadian pophip hoppop raprap,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5eb4293385d324db8558179afd9,spotify%3Aartist%3A3TVXtAsR1Inumwj472S9r4,96
+50,From Ashes to New,4HrkLxQHZ5mgCtIVpiH5QX,,https%3A%2F%2Fi.scdn.co%2Fimage%2Fab6761610000e5ebfc4184633ca252b3a03f3d12,spotify%3Aartist%3A4HrkLxQHZ5mgCtIVpiH5QX,61

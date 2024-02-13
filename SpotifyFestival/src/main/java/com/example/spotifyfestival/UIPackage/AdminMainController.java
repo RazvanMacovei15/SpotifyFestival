@@ -2,6 +2,7 @@ package com.example.spotifyfestival.UIPackage;
 
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
+import com.example.spotifyfestival.NewFeatures.CacheImplementation.TopArtists.LongTermArtists;
 import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
@@ -37,7 +38,8 @@ public class AdminMainController {
         Helper.mouseHoverUpOnButton(admin);
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);
-
+        LongTermArtists longTermArtists = new LongTermArtists("longTermArtists.txt");
+        longTermArtists.listFile();
     }
 
     public void handleDBButton() {

@@ -4,13 +4,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.Serializable;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class Artist extends Entity implements Serializable {
 
     protected String name;
 
-    protected ObservableList<Genre> genres ;
+    protected ObservableList<Genre> genres;
     protected String spotifyId;
 
     protected String imageUrl;
@@ -36,7 +38,7 @@ public class Artist extends Entity implements Serializable {
         this.spotifyId = spotify_id;
     }
 
-    public Artist(int id, String name,  String spotifyId, ObservableList<Genre> genres, String imageUrl, String spotifyLink, int popularity) {
+    public Artist(int id, String name, String spotifyId, ObservableList<Genre> genres, String imageUrl, String spotifyLink, int popularity) {
         super(id);
         this.name = name;
         this.genres = genres;
@@ -54,13 +56,13 @@ public class Artist extends Entity implements Serializable {
         this.genres = genres;
     }
 
-    public void addGenre(Genre genre) throws DuplicateEntityException{
-        if(genres == null){
+    public void addGenre(Genre genre) throws DuplicateEntityException {
+        if (genres == null) {
             genres = FXCollections.observableArrayList();
             genres.add(genre);
-        }else{
-            for(Genre genre1 : genres){
-                if(genre1.getId().equals(genre.getId()))
+        } else {
+            for (Genre genre1 : genres) {
+                if (genre1.getId().equals(genre.getId()))
                     throw new DuplicateEntityException("Genre already exists!");
             }
             genres.add(genre);
@@ -109,7 +111,33 @@ public class Artist extends Entity implements Serializable {
 
     @Override
     public String toString() {
-        return id + "," + name + "," + spotifyId;
+        return id + "," +
+                name + "," +
+                spotifyId + "," +
+                genresToString() + "," +
+                encodeImageURL() + "," +
+                encodeSpotifyLink() + "," +
+                popularity;
+    }
+
+    private String genresToString() {
+        StringBuilder sb = new StringBuilder();
+        if (genres == null)
+            return "";
+        for (Genre genre : genres) {
+            sb.append(genre.getName()).append("|");
+            sb.deleteCharAt(sb.length() - 1);
+        }
+
+        return sb.toString();
+    }
+
+    private String encodeImageURL() {
+        return this.imageUrl = URLEncoder.encode(imageUrl);
+    }
+
+    private String encodeSpotifyLink() {
+        return this.spotifyLink = URLEncoder.encode(spotifyLink);
     }
 
     @Override
