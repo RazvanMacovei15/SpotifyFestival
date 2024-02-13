@@ -22,8 +22,12 @@ public abstract class CacheFileRepo<K,V> extends GenericMemoryCacheRepository<K,
     }
 
     @Override
-    public void add(K key, V value) throws DuplicateEntityException {
-        super.add(key, value);
+    public void add(K key, V value) {
+        try {
+            super.add(key, value);
+        } catch (DuplicateEntityException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

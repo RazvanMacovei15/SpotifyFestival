@@ -23,7 +23,7 @@ public class GenericMemoryCacheRepository<K,V > implements CacheInterface<K,V> {
     @Override
     public void add(K key, V value) throws DuplicateEntityException {
         if(cache.containsKey(key)){
-            throw new DuplicateEntityException("The key already exists in the cache");
+            throw new DuplicateEntityException("Key already exists");
         }
         cache.put(key, value);
     }

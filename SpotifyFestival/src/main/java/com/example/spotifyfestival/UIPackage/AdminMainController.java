@@ -2,6 +2,7 @@ package com.example.spotifyfestival.UIPackage;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.Cache;
+import com.example.spotifyfestival.NewFeatures.CacheImplementation.CacheReset;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.collections.ObservableList;
@@ -35,6 +36,9 @@ public class AdminMainController {
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);
         cache = Cache.getInstance();
+
+        CacheReset cacheReset = new CacheReset(cache);
+        cacheReset.checkHoursPassed();
 
     }
 

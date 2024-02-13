@@ -24,13 +24,15 @@ public class Cache {
     }
 
     private Cache() {
-        cacheReset = new CacheReset(instance);
+
         longTermArtists = new TopArtists("long_term_artists.txt");
         mediumTermArtists = new TopArtists("medium_term_artists.txt");
         shortTermArtists = new TopArtists("short_term_artists.txt");
         longTermTracks = new TopTracks("long_term_tracks.txt");
         mediumTermTracks = new TopTracks("medium_term_tracks.txt");
         shortTermTracks = new TopTracks("short_term_tracks.txt");
+
+
     }
     public void listAll(){
         longTermArtists.list();

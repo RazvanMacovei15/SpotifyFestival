@@ -78,11 +78,11 @@ public class Track extends Entity{
 
     @Override
     public String toString() {
-        return id + ", " +
-                name + ", " +
-                artistsToString() + ", " +
-                spotifyID + ", " +
-                spotifyLink + ", " +
+        return id + "<>" +
+                name + "<>" +
+                artistsToString() + "<>" +
+                spotifyID + "<>" +
+                spotifyLink + "<>" +
                 imageURL;
 
     }

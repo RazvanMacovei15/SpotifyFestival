@@ -107,12 +107,12 @@ public class Artist extends Entity implements Serializable {
 
     @Override
     public String toString() {
-        return id + ", " +
-                name + ", " +
-                spotifyId + ", " +
-                genresToString() + ", " +
-                imageUrl + ", " +
-                spotifyLink + ", " +
+        return id + "<>" +
+                name + "<>" +
+                spotifyId + "<>" +
+                genresToString() + "<>" +
+                imageUrl + "<>" +
+                spotifyLink + "<>" +
                 popularity;
     }
 

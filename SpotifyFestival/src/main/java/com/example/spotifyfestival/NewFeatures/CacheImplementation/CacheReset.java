@@ -9,7 +9,7 @@ public class CacheReset {
     public CacheReset(Cache cache) {
         this.cache = cache;
         this.timeCreated = readTimeCreatedFromFile();
-        checkHoursPassed();
+
     }
 
     public void resetCache(){
@@ -47,6 +47,7 @@ public class CacheReset {
         System.out.println("Hours passed: " + hoursPassed);
         System.out.println("Seconds passed: " + secondsPassed);
         if(hoursPassed >= 24){
+            System.out.println("Cache reset in progress...");
             resetCache();
             saveTimeCreatedToFile();
         }

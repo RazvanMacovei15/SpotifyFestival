@@ -98,7 +98,7 @@ public class TopTracks extends CacheFileRepo<String, Track> {
             String line;
             while ((line = r.readLine()) != null) {
 
-                String[] parts = line.split(",");
+                String[] parts = line.split("<>");
 
                 if (parts.length != 6) {
                     throw new IllegalStateException("this format is not allowed!!");
@@ -120,7 +120,7 @@ public class TopTracks extends CacheFileRepo<String, Track> {
                 Track track = new Track(id, name, spotifyId, spotifyLink, imageUrl, artistList);
                 super.add(spotifyId, track);
             }
-        } catch (IOException | DuplicateEntityException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -136,5 +136,14 @@ public class TopTracks extends CacheFileRepo<String, Track> {
             e.printStackTrace();
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void resetFile() {
+        new Thread(()->{
+            System.out.println("resetting file '" + filename + "' on thread: " + Thread.currentThread().getName());
+            super.resetFile();
+            initializeFile();
+        }).start();
     }
 }

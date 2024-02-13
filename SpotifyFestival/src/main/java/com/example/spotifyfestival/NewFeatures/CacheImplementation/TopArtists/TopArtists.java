@@ -96,7 +96,7 @@ public class TopArtists extends CacheFileRepo<String, Artist> {
             String line;
             while ((line = r.readLine()) != null) {
 
-                String[] parts = line.split(",");
+                String[] parts = line.split("<>");
 
                 if(parts.length != 7){
                     throw new IllegalStateException("this format is not allowed!!");
@@ -119,9 +119,9 @@ public class TopArtists extends CacheFileRepo<String, Artist> {
                 int popularity = Integer.parseInt(parts[6].trim());
 
                 Artist a = new Artist(id, name, spotifyId, genresList, imageUrl, spotifyLink, popularity);
-                super.add(spotifyId, a);
+                super.add(name, a);
             }
-        } catch (DuplicateEntityException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -142,7 +142,11 @@ public class TopArtists extends CacheFileRepo<String, Artist> {
 
     @Override
     public void resetFile() {
-        super.resetFile();
-        initializeFile();
+        new Thread(()->{
+            System.out.println("resetting file '" + filename + "' on thread: " + Thread.currentThread().getName());
+            super.resetFile();
+            initializeFile();
+        }).start();
+
     }
 }
