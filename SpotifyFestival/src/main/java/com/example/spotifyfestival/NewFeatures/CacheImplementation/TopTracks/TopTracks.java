@@ -143,7 +143,7 @@ public class TopTracks extends CacheFileRepo<String, Track> {
         new Thread(()->{
             System.out.println("resetting file '" + filename + "' on thread: " + Thread.currentThread().getName());
             super.resetFile();
-            initializeFile();
+//            initializeFile();
         }).start();
     }
 }

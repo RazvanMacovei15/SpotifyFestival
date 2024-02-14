@@ -5,8 +5,9 @@ import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.TopArtists.TopArtists;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.TopTracks.TopTracks;
 
+import java.io.*;
+
 public class Cache {
-    private CacheReset cacheReset;
     //Top Artists
     private CacheFileRepo<String, Artist> longTermArtists;
     private CacheFileRepo<String, Artist> mediumTermArtists;
@@ -15,6 +16,7 @@ public class Cache {
     private CacheFileRepo<String, Track> shortTermTracks;
     private CacheFileRepo<String, Track> mediumTermTracks;
     private static Cache instance;
+    private long timeCreated;
 
     public static Cache getInstance() {
         if(instance == null){
@@ -24,23 +26,30 @@ public class Cache {
     }
 
     private Cache() {
-
-        longTermArtists = new TopArtists("long_term_artists.txt");
-        mediumTermArtists = new TopArtists("medium_term_artists.txt");
-        shortTermArtists = new TopArtists("short_term_artists.txt");
-        longTermTracks = new TopTracks("long_term_tracks.txt");
-        mediumTermTracks = new TopTracks("medium_term_tracks.txt");
-        shortTermTracks = new TopTracks("short_term_tracks.txt");
-
-
+        readTimeCreatedFromFile();
     }
     public void listAll(){
-        longTermArtists.list();
-        mediumTermArtists.list();
-        shortTermArtists.list();
-        longTermTracks.list();
-        mediumTermTracks.list();
-        shortTermTracks.list();
+        longTermArtists.listFile();
+    }
+
+    public void saveTimeCreatedToFile(){
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("timeCreatedCache.txt"))){
+            writer.write(String.valueOf(System.currentTimeMillis()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+    public long readTimeCreatedFromFile(){
+        if(!new File("timeCreatedCache.txt").exists()){
+            saveTimeCreatedToFile();
+        }
+        try(BufferedReader reader = new BufferedReader(new FileReader("timeCreatedCache.txt"))){
+            return Long.parseLong(reader.readLine());
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
     }
 
     public CacheFileRepo<String, Artist> getLongTermArtists() {
@@ -65,6 +74,10 @@ public class Cache {
 
     public CacheFileRepo<String, Track> getMediumTermTracks() {
         return mediumTermTracks;
+    }
+
+    public long getTimeCreated() {
+        return timeCreated;
     }
 
     //TODO: Implement cache

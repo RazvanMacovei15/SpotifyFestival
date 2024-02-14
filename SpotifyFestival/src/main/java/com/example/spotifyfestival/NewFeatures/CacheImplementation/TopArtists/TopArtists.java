@@ -145,7 +145,7 @@ public class TopArtists extends CacheFileRepo<String, Artist> {
         new Thread(()->{
             System.out.println("resetting file '" + filename + "' on thread: " + Thread.currentThread().getName());
             super.resetFile();
-            initializeFile();
+//            initializeFile();
         }).start();
 
     }

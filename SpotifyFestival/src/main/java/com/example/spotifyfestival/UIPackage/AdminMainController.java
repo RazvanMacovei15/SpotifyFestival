@@ -35,15 +35,10 @@ public class AdminMainController {
         Helper.mouseHoverUpOnButton(admin);
         Helper.mouseHoverUpOnButton(festivals);
         Helper.mouseHoverUpOnButton(topLists);
-        cache = Cache.getInstance();
-
-        CacheReset cacheReset = new CacheReset(cache);
-        cacheReset.checkHoursPassed();
 
     }
 
     public void handleDBButton() {
-        cache.listAll();
         AppSwitchScenesMethods.switchScene("/com/example/spotifyfestival/FXML_Files/DatabaseScenes/MainDatabaseScene.fxml");
     }
 
