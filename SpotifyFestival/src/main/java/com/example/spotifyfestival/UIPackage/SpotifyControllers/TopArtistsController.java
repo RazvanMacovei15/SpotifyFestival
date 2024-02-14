@@ -4,7 +4,6 @@ import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowServic
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.Cache;
-import com.example.spotifyfestival.NewFeatures.CacheImplementation.CacheFileRepo;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.TopArtists.TopArtists;
 import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
 import com.example.spotifyfestival.NewFeatures.SpotifyResponseService;
@@ -19,16 +18,21 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 
 import java.net.http.HttpResponse;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class TopArtistsController {
     private Cache cache;
     private boolean loadFromCache;
     private ObservableList<Entity> obsArtists;
+    private String timeRange;
+    private String filename;
     @FXML
     public ScrollPane scrollPane;
     @FXML
     private ImageView imageView;
-    private final String imageURL ="/com/example/spotifyfestival/PNGs/copertaSpotify.png";
+    private final String imageURL = "/com/example/spotifyfestival/PNGs/copertaSpotify.png";
 
     @FXML
     public void initialize() throws JsonProcessingException {
@@ -39,28 +43,37 @@ public class TopArtistsController {
     }
 
     public void newService(int limit, String timeRange, int offset) {
-        if(loadFromCache){
-            //load from cache
+        if (loadFromCache) {
+            Iterable<Entity> artists = cache.getCache(filename);
+            ObservableList<Artist> obsArtists = FXCollections.observableArrayList();
+            ObservableList<Artist> obsArtistsTwo = FXCollections.observableArrayList();
+            for(Entity artist : artists){
+                obsArtists.add((Artist) artist);
+            }
+            List<Entity> myList = obsArtists.stream()
+                            .sorted(Comparator.comparing(Entity::getId))
+                                    .collect(Collectors.toList());
 
-        }else{
-            //load from api and save to cache
-            ObservableList<Artist> artists = getObsList(limit, timeRange, offset);
-            // Populate the scroll pane with the top tracks
-            Utils.populateScrollPaneWithArtists(scrollPane, artists);
-            // Save the top tracks to the cache
+            for(Entity artist : myList){
+                obsArtistsTwo.add((Artist) artist);
+            }
+
+            Utils.populateScrollPaneWithArtists(scrollPane, obsArtistsTwo);
+        } else {
+            ObservableList<Artist> artists = FXCollections.observableArrayList();
+            artists = generateObservableListForScrollPane(limit, timeRange, offset);
+            ObservableList<Entity> obsArtists = FXCollections.observableArrayList();
+            obsArtists.addAll(artists);
             saveToCache(timeRange, obsArtists);
+            Utils.populateScrollPaneWithArtists(scrollPane, artists);
         }
     }
 
-    private void getListFromCache(String filename){
-        CacheFileRepo<String, Entity> cacheFileRepo = new TopArtists(filename);
-    }
-
-    private void resetLoad(){
+    private void resetLoad() {
         loadFromCache = false;
     }
 
-    private ObservableList<Artist> getObsList(int limit, String timeRange, int offset){
+    private ObservableList<Artist> generateObservableListForScrollPane(int limit, String timeRange, int offset) {
         // Get the access token from the SpotifyAuthFlowService
         SpotifyAuthFlowService auth = SpotifyAuthFlowService.getInstance();
         String accessToken = auth.getAccessToken();
@@ -69,54 +82,58 @@ public class TopArtistsController {
         SpotifyAPIJsonParser parser = new SpotifyAPIJsonParser();
         // Get the top tracks from the Spotify API
         HttpResponse<String> topArtists = service.getTopArtists(limit, timeRange, offset);
-        ObservableList<Artist> entities = FXCollections.observableArrayList();
-        entities.addAll(parser.getTopArtists(topArtists));
-        return entities;
+        ObservableList<Artist> artists = FXCollections.observableArrayList();
+
+        artists.addAll(parser.getTopArtists(topArtists));
+        return artists;
     }
 
-    private void saveToCache(String timeRange, ObservableList<Entity> artists){
-        switch (timeRange){
+    private void saveToCache(String timeRange, ObservableList<Entity> artists) {
+        switch (timeRange) {
             case "long_term":
-                TopArtists artistsLong = (TopArtists) cache.getLongTermArtists();
-                artistsLong.initializeFile(artists);
+                cache.initializeFileCache("long_term_artists.txt", artists);
                 break;
             case "medium_term":
-                TopArtists artistsTop = (TopArtists) cache.getMediumTermArtists();
-                artistsTop.initializeFile(artists);
+                cache.initializeFileCache("medium_term_artists.txt", artists);
                 break;
             case "short_term":
-                TopArtists artistsShort = (TopArtists) cache.getShortTermArtists();
-                artistsShort.initializeFile(artists);
+                cache.initializeFileCache("short_term_artists.txt", artists);
                 break;
         }
     }
 
     public void onAllTimeButtonClicked() {
         scrollPane.setContent(null);
+        filename = "long_term_artists.txt";
         resetLoad();
+        timeRange = "long_term";
         loadFromCache = cache.checkIfCacheExists("long_term_artists.txt");
-        obsArtists.addAll(getObsList(50, "long_term", 0));
-
-        new Thread(()->{
+        new Thread(() -> {
             newService(50, "long_term", 0);
         }).start();
     }
 
     public void on6MonthsButtonClicked() {
         scrollPane.setContent(null);
+        filename = "medium_term_artists.txt";
         resetLoad();
+        timeRange = "medium_term";
         loadFromCache = cache.checkIfCacheExists("medium_term_artists.txt");
-        new Thread(()->{
+        new Thread(() -> {
             newService(50, "medium_term", 0);
         }).start();
     }
 
     public void on4WeeksButtonClicked() {
         scrollPane.setContent(null);
+        filename = "short_term_artists.txt";
         resetLoad();
+        timeRange = "short_term";
         loadFromCache = cache.checkIfCacheExists("short_term_artists.txt");
-        new Thread(()->{
+
+        new Thread(() -> {
             newService(50, "short_term", 0);
+
         }).start();
 
     }

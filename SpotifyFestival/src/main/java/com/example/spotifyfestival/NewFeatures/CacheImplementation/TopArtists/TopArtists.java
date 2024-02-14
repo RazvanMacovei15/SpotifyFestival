@@ -8,50 +8,24 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.*;
+import java.util.List;
 
 public class TopArtists extends CacheFileRepo<String, Entity> {
     private int limit;
     private String timeRange;
     private int offset;
 
-    public TopArtists(String filename) {
-        super(filename);
+    public TopArtists(String filename, ObservableList<Entity> list) {
+        super(filename, list);
         this.limit = 50;
         this.offset = 0;
     }
 
-    public void initializeFile(ObservableList<Entity> list) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            for (Entity artistG : list) {
-                if (artistG instanceof Artist) {
-                    writer.write(artistG.toString());
-                    writer.newLine();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void writeToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            Iterable<Entity> artists = super.getAll();
-            for (Entity artistG : artists) {
-                if (artistG instanceof Artist) {
-                    writer.write(artistG.toString());
-                    writer.newLine();
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public void readFromFile() {
+        if(!new File(filename).exists()){
+            initializeFile();
+        }
         try (BufferedReader r = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = r.readLine()) != null) {
@@ -86,7 +60,42 @@ public class TopArtists extends CacheFileRepo<String, Entity> {
         }
     }
 
+    //writer for the initialization of the file
+    @Override
+    public void initializeFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
 
+            for (Entity artist : list) {
+                if (artist instanceof Artist) {
+                    writer.write(artist.toString());
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    //method for add, update, delete
+    @Override
+    public void writeToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+            Iterable<Entity> artists = super.getAll();
+            for (Entity artistG : artists) {
+                if (artistG instanceof Artist) {
+                    writer.write(artistG.toString());
+                    writer.newLine();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    //list method to simulate a print of the file
     @Override
     public void listFile() {
         try (BufferedReader r = new BufferedReader(new FileReader(filename))) {
@@ -99,12 +108,11 @@ public class TopArtists extends CacheFileRepo<String, Entity> {
         }
     }
 
+    //reset file
     @Override
     public void resetFile() {
-        new Thread(() -> {
-            System.out.println("resetting file '" + filename + "' on thread: " + Thread.currentThread().getName());
-            super.resetFile();
-        }).start();
+        System.out.println("resetting file '" + filename + "' on thread: " + Thread.currentThread().getName());
+        super.resetFile();
     }
 
 }

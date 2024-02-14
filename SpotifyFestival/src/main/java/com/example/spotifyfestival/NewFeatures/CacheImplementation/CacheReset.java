@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.NewFeatures.CacheImplementation;
 
+import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,13 +16,44 @@ public class CacheReset implements Runnable{
 
     public void resetCache(){
         System.out.println("Cache reset in progress...");
+        if(cache.checkIfCacheExists("long_term_artists.txt")){
+            cache.getLongTermArtists().resetFile();
+            cache.setLongTermArtistsExists(false);
+            System.out.println("Long term artists cache reset!");
+        }
 
-        cache.getLongTermArtists().resetFile();
-        cache.getMediumTermArtists().resetFile();
-        cache.getShortTermArtists().resetFile();
-        cache.getLongTermTracks().resetFile();
-        cache.getMediumTermTracks().resetFile();
-        cache.getShortTermTracks().resetFile();
+        if(cache.checkIfCacheExists("medium_term_artists.txt"))
+        {
+            cache.getMediumTermArtists().resetFile();
+            cache.setMediumTermArtistsExists(false);
+            System.out.println("Medium term artists cache reset!");
+        }
+        if(cache.checkIfCacheExists("short_term_artists.txt"))
+        {
+            cache.getShortTermArtists().resetFile();
+            cache.setShortTermArtistsExists(false);
+            System.out.println("Short term artists cache reset!");
+        }
+        if(cache.checkIfCacheExists("long_term_tracks.txt"))
+        {
+            cache.getLongTermTracks().resetFile();
+            cache.setLongTermTracksExists(false);
+        }
+        if(cache.checkIfCacheExists("medium_term_tracks.txt"))
+        {
+            cache.getMediumTermTracks().resetFile();
+            cache.setMediumTermTracksExists(false);
+        }
+        if(cache.checkIfCacheExists("short_term_tracks.txt"))
+        {
+            cache.getShortTermTracks().resetFile();
+            cache.setShortTermTracksExists(false);
+        }
+        cache.saveTimeCreated(0);
+
+        System.out.println("Cache reset completed!");
+        cache.setCacheStatusFile();
+        System.out.println("Cache status file updated!");
     }
 
     public void checkHoursPassed(){
@@ -33,17 +65,16 @@ public class CacheReset implements Runnable{
         System.out.println("Hours passed: " + hoursPassed);
         System.out.println("Minutes passed: " + minutesPassed);
         System.out.println("Seconds passed: " + secondsPassed);
-        if(minutesPassed >= 10){
+        if(minutesPassed >= 1){
             resetCache();
-            cache.saveTimeCreated(0);
         }
     }
 
     public void checkReset(){
-        System.out.println("Cache reset started tho check if 24 hours passed...");
+        System.out.println("Cache reset started to check if 10 minutes passed...");
         // Schedule a task to check and regenerate the access token every hour
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::checkHoursPassed, 0, 10, TimeUnit.SECONDS);
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(4);
+        scheduler.scheduleAtFixedRate(this::checkHoursPassed, 60, 5, TimeUnit.SECONDS);
     }
 
     @Override

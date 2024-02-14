@@ -18,8 +18,8 @@ public class TopTracks extends CacheFileRepo<String, Entity> {
     private String timeRange;
     private int offset;
 
-    public TopTracks(String filename) {
-        super(filename);
+    public TopTracks(String filename, ObservableList<Entity> list) {
+        super(filename, list);
         this.limit = 50;
         this.offset = 0;
     }

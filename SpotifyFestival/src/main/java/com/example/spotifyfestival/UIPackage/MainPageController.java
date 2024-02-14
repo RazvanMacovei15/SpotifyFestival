@@ -2,6 +2,7 @@ package com.example.spotifyfestival.UIPackage;
 
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.Cache;
+import com.example.spotifyfestival.NewFeatures.CacheImplementation.CacheReset;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -18,6 +19,8 @@ public class MainPageController {
     public void initialize(){
         Helper.loadCover(imageView, imageURL);
         cache = Cache.getInstance();
+        CacheReset cacheReset = new CacheReset(cache);
+        cacheReset.checkReset();
     }
 
     @FXML

@@ -1,5 +1,6 @@
 package com.example.spotifyfestival.NewFeatures.CacheImplementation;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
+import javafx.collections.ObservableList;
 
 import java.util.HashMap;
 import java.util.Map;

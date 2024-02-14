@@ -1,8 +1,10 @@
 package com.example.spotifyfestival.NewFeatures.CacheImplementation;
 
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.TopArtists.TopArtists;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.TopTracks.TopTracks;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.util.HashMap;
@@ -14,6 +16,31 @@ public class Cache {
     private final String LONG_TERM_ARTISTS = "long_term_artists.txt";
     private CacheFileRepo<String, Entity> longTermArtists;
     private boolean longTermArtistsExists;
+
+    public void setLongTermArtistsExists(boolean longTermArtistsExists) {
+        this.longTermArtistsExists = longTermArtistsExists;
+    }
+
+    public void setMediumTermArtistsExists(boolean mediumTermArtistsExists) {
+        this.mediumTermArtistsExists = mediumTermArtistsExists;
+    }
+
+    public void setShortTermArtistsExists(boolean shortTermArtistsExists) {
+        this.shortTermArtistsExists = shortTermArtistsExists;
+    }
+
+    public void setLongTermTracksExists(boolean longTermTracksExists) {
+        this.longTermTracksExists = longTermTracksExists;
+    }
+
+    public void setShortTermTracksExists(boolean shortTermTracksExists) {
+        this.shortTermTracksExists = shortTermTracksExists;
+    }
+
+    public void setMediumTermTracksExists(boolean mediumTermTracksExists) {
+        this.mediumTermTracksExists = mediumTermTracksExists;
+    }
+
     private final String MEDIUM_TERM_ARTISTS = "medium_term_artists.txt";
     private CacheFileRepo<String, Entity> mediumTermArtists;
     private boolean mediumTermArtistsExists;
@@ -34,7 +61,7 @@ public class Cache {
     private long timeCreated;
 
     public static Cache getInstance() {
-        if(instance == null){
+        if (instance == null) {
             instance = new Cache();
         }
         return instance;
@@ -45,32 +72,42 @@ public class Cache {
         initialize();
     }
 
-    public void initializeFileCache(String filename){
-        switch (filename) {
-            case LONG_TERM_ARTISTS:
-                longTermArtists = new TopArtists(filename);
-                break;
-            case MEDIUM_TERM_ARTISTS:
-                mediumTermArtists = new TopArtists(filename);
-                break;
-            case SHORT_TERM_ARTISTS:
-                shortTermArtists = new TopArtists(filename);
-                break;
-            case LONG_TERM_TRACKS:
-                longTermTracks = new TopTracks(filename);
-                break;
-            case MEDIUM_TERM_TRACKS:
-                mediumTermTracks = new TopTracks(filename);
-                break;
-            case SHORT_TERM_TRACKS:
-                shortTermTracks = new TopTracks(filename);
-                break;
-            default:
-                throw new RuntimeException("Invalid filename");
+
+    public void initialize() {
+        if (!new File("cacheStatus.txt").exists()) {
+            System.out.println("Cache status file does not exist");
+            System.out.println("Initializing cache...");
+            checkExistenceOfCacheFiles();
+            saveTimeCreated(0);
+            setCacheStatusFile();
+        } else {
+            readStatusFile();
+            initializeCachesThatExist();
         }
     }
 
-    private void checkExistenceOfCacheFiles(){
+    private void initializeCachesThatExist() {
+        if (longTermArtistsExists) {
+            longTermArtists = new TopArtists(LONG_TERM_ARTISTS, null);
+        }
+        if (mediumTermArtistsExists) {
+            mediumTermArtists = new TopArtists(MEDIUM_TERM_ARTISTS, null);
+        }
+        if (shortTermArtistsExists) {
+            shortTermArtists = new TopArtists(SHORT_TERM_ARTISTS, null);
+        }
+        if (longTermTracksExists) {
+            longTermTracks = new TopTracks(LONG_TERM_TRACKS, null);
+        }
+        if (mediumTermTracksExists) {
+            mediumTermTracks = new TopTracks(MEDIUM_TERM_TRACKS, null);
+        }
+        if (shortTermTracksExists) {
+            shortTermTracks = new TopTracks(SHORT_TERM_TRACKS, null);
+        }
+    }
+
+    private void checkExistenceOfCacheFiles() {
         longTermArtistsExists = checkIfCacheExists(LONG_TERM_ARTISTS);
         mediumTermArtistsExists = checkIfCacheExists(MEDIUM_TERM_ARTISTS);
         shortTermArtistsExists = checkIfCacheExists(SHORT_TERM_ARTISTS);
@@ -79,40 +116,28 @@ public class Cache {
         mediumTermTracksExists = checkIfCacheExists(MEDIUM_TERM_TRACKS);
     }
 
-    public boolean checkIfCacheExists(String filename){
+    public boolean checkIfCacheExists(String filename) {
         return new File(filename).exists();
     }
 
-    private void initialize(){
-        if(!new File("cacheStatus.txt").exists()){
-            System.out.println("Cache file does not exist");
-            System.out.println("Cache file is not yet created. Initializing empty cache...");
-            checkExistenceOfCacheFiles();
-            saveTimeCreated(0);
-            initializeCacheStatusFile();
-        }else{
-            readStatusFile();
-        }
-    }
-
-    public void saveTimeCreated(int n){
-        if(n == 0){
+    public void saveTimeCreated(int n) {
+        if (n == 0) {
             timeCreated = System.currentTimeMillis();
-        }
-        else if(n == 1){
+        } else if (n == 1) {
             readTimeCreatedFromFile();
         }
     }
 
-    private void readTimeCreatedFromFile(){
-        try(BufferedReader reader = new BufferedReader(new FileReader("cacheStatus.txt"))){
+
+    private void readTimeCreatedFromFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("cacheStatus.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("=",2);
-                if(parts.length == 2){
+                String[] parts = line.split("=", 2);
+                if (parts.length == 2) {
                     String key = parts[0].trim();
                     String value = parts[1].trim();
-                    if(key.equals("timeCreated")){
+                    if (key.equals("timeCreated")) {
                         timeCreated = Long.parseLong(value);
                     }
                 }
@@ -123,8 +148,8 @@ public class Cache {
         }
     }
 
-    private void initializeCacheStatusFile(){
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter("cacheStatus.txt"))){
+    public void setCacheStatusFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("cacheStatus.txt"))) {
             writer.write("timeCreated=" + timeCreated);
             writer.newLine();
             writer.write(LONG_TERM_ARTISTS + "=" + longTermArtistsExists);
@@ -144,12 +169,12 @@ public class Cache {
         }
     }
 
-    private void readStatusFile(){
-        try(BufferedReader reader = new BufferedReader(new FileReader("cacheStatus.txt"))){
+    private void readStatusFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("cacheStatus.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("=",2);
-                if(parts.length == 2){
+                String[] parts = line.split("=", 2);
+                if (parts.length == 2) {
                     String key = parts[0].trim();
                     String value = parts[1].trim();
                     setCredential(key, value);
@@ -160,6 +185,7 @@ public class Cache {
             throw new RuntimeException(e);
         }
     }
+
     private void setCredential(String key, String value) {
         switch (key) {
             case "timeCreated":
@@ -186,6 +212,89 @@ public class Cache {
             default:
                 // Handle unknown key or ignore
                 break;
+        }
+    }
+
+    public void initializeFileCache(String filename, ObservableList<Entity> list) {
+        switch (filename) {
+            case LONG_TERM_ARTISTS:
+                longTermArtists = new TopArtists(filename, list);
+                updateFileStatus(filename);
+                break;
+            case MEDIUM_TERM_ARTISTS:
+                mediumTermArtists = new TopArtists(filename, list);
+                updateFileStatus(filename);
+                break;
+            case SHORT_TERM_ARTISTS:
+                shortTermArtists = new TopArtists(filename, list);
+                updateFileStatus(filename);
+                break;
+            case LONG_TERM_TRACKS:
+                longTermTracks = new TopTracks(filename, list);
+                break;
+            case MEDIUM_TERM_TRACKS:
+                mediumTermTracks = new TopTracks(filename, list);
+                break;
+            case SHORT_TERM_TRACKS:
+                shortTermTracks = new TopTracks(filename, list);
+                break;
+            default:
+                throw new RuntimeException("Invalid filename");
+        }
+    }
+
+    public void updateFileStatus(String filename) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("cacheStatus.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("=", 2);
+                if (parts.length == 2) {
+                    String key = parts[0].trim();
+                    String value = parts[1].trim();
+                    switch (filename) {
+                        case LONG_TERM_ARTISTS:
+                            if (key.equals(LONG_TERM_ARTISTS)) {
+                                value = "true";
+                                longTermArtistsExists = true;
+                            }
+                            break;
+                        case MEDIUM_TERM_ARTISTS:
+                            if (key.equals(MEDIUM_TERM_ARTISTS)) {
+                                value = "true";
+                                mediumTermArtistsExists = true;
+                            }
+                            break;
+                        case SHORT_TERM_ARTISTS:
+                            if (key.equals(SHORT_TERM_ARTISTS)) {
+                                value = "true";
+                                shortTermArtistsExists = true;
+                            }
+                            break;
+                        case LONG_TERM_TRACKS:
+                            if (key.equals(LONG_TERM_TRACKS)) {
+                                value = "true";
+                                longTermTracksExists = true;
+                            }
+                            break;
+                        case MEDIUM_TERM_TRACKS:
+                            if (key.equals(MEDIUM_TERM_TRACKS)) {
+                                value = "true";
+                                mediumTermTracksExists = true;
+                            }
+                            break;
+                        case SHORT_TERM_TRACKS:
+                            if (key.equals(SHORT_TERM_TRACKS)) {
+                                value = "true";
+                                shortTermTracksExists = true;
+                            }
+                            break;
+                    }
+                }
+            }
+            setCacheStatusFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -241,10 +350,13 @@ public class Cache {
         return timeCreated;
     }
 
-    public static void main(String[] args) {
-        Cache cache = Cache.getInstance();
-
-        System.out.println(cache.getTimeCreated());
+    public Iterable<Entity> getCache(String filename) {
+        return switch (filename) {
+            case "long_term_artists.txt" -> longTermArtists.getAll();
+            case "medium_term_artists.txt" -> mediumTermArtists.getAll();
+            case "short_term_artists.txt" -> shortTermArtists.getAll();
+            default -> throw new RuntimeException("Invalid filename");
+        };
     }
 
     //TODO: Implement cache
