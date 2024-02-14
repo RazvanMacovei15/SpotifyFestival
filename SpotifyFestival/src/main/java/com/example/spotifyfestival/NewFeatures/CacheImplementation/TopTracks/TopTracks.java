@@ -2,7 +2,7 @@ package com.example.spotifyfestival.NewFeatures.CacheImplementation.TopTracks;
 
 import com.example.spotifyfestival.API_Packages.SpotifyAPI.SpotifyAuthFlowService;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
+import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Entity;
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Track;
 import com.example.spotifyfestival.NewFeatures.CacheImplementation.CacheFileRepo;
 import com.example.spotifyfestival.NewFeatures.SpotifyAPIJsonParser;
@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TopTracks extends CacheFileRepo<String, Track> {
+public class TopTracks extends CacheFileRepo<String, Entity> {
     private int limit;
     private String timeRange;
     private int offset;
@@ -64,10 +64,12 @@ public class TopTracks extends CacheFileRepo<String, Track> {
     @Override
     public void writeToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
-            Iterable<Track> tracks = super.getAll();
-            for (Track track : tracks) {
-                writer.write(track.toString());
-                writer.newLine();
+            Iterable<Entity> tracks = super.getAll();
+            for (Entity track : tracks) {
+                if(track instanceof Track){
+                    writer.write(track.toString());
+                    writer.newLine();
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

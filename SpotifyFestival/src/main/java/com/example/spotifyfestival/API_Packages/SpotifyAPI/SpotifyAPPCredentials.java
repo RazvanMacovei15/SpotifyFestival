@@ -24,7 +24,7 @@ public final class SpotifyAPPCredentials {
     // Public method to access the single instance
     public static SpotifyAPPCredentials getInstance() {
         if(instance == null){
-            instance = new SpotifyAPPCredentials("/Users/razvanmc15/Desktop/SpotifyAppStuff/spotifyCredentials.txt");
+            instance = new SpotifyAPPCredentials("C:\\Users\\maco_4togx70\\Desktop\\spotifyCredentials.txt");
         }
         return instance;
     }

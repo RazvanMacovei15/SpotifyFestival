@@ -1,11 +1,13 @@
 package com.example.spotifyfestival.NewFeatures.CacheImplementation;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
+import javafx.collections.ObservableList;
 
 import java.io.File;
 
 public abstract class CacheFileRepo<K,V> extends GenericMemoryCacheRepository<K, V>{
     protected String filename;
+    private ObservableList<V> obsList;
     public CacheFileRepo(String filename) {
         this.filename = filename;
         readFromFile();
@@ -55,5 +57,13 @@ public abstract class CacheFileRepo<K,V> extends GenericMemoryCacheRepository<K,
     @Override
     public void list() {
         super.list();
+    }
+
+    public ObservableList<V> getObsList() {
+        return obsList;
+    }
+
+    public void setObsList(ObservableList<V> obsList) {
+        this.obsList = obsList;
     }
 }

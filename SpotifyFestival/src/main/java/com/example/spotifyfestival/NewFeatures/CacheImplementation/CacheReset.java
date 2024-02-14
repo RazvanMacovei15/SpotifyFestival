@@ -1,6 +1,5 @@
 package com.example.spotifyfestival.NewFeatures.CacheImplementation;
 
-import java.io.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,13 +28,14 @@ public class CacheReset implements Runnable{
         long timeCreated = cache.getTimeCreated();
         long timeNow = System.currentTimeMillis();
         long hoursPassed = (timeNow - timeCreated) / 3600000;
+        long minutesPassed = (timeNow - timeCreated) / 60000;
         long secondsPassed = (timeNow - timeCreated) / 1000;
         System.out.println("Hours passed: " + hoursPassed);
+        System.out.println("Minutes passed: " + minutesPassed);
         System.out.println("Seconds passed: " + secondsPassed);
-        if( hoursPassed >= 24){
+        if(minutesPassed >= 10){
             resetCache();
-            cache.saveTimeCreatedToFile();
-            cache.initialize();
+            cache.saveTimeCreated(0);
         }
     }
 
@@ -43,7 +43,7 @@ public class CacheReset implements Runnable{
         System.out.println("Cache reset started tho check if 24 hours passed...");
         // Schedule a task to check and regenerate the access token every hour
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        scheduler.scheduleAtFixedRate(this::checkHoursPassed, 0, 1, TimeUnit.HOURS);
+        scheduler.scheduleAtFixedRate(this::checkHoursPassed, 0, 10, TimeUnit.SECONDS);
     }
 
     @Override
