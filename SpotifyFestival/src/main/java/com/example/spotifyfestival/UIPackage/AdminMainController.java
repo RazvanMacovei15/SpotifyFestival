@@ -1,8 +1,7 @@
 package com.example.spotifyfestival.UIPackage;
 
 import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.NewFeatures.CacheImplementation.Cache;
-import com.example.spotifyfestival.NewFeatures.CacheImplementation.CacheReset;
+
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.collections.ObservableList;
@@ -26,8 +25,6 @@ public class AdminMainController {
     VBox vBox;
     @FXML
     ImageView imageView;
-    private ObservableList<Artist> artists;
-    private Cache cache;
 
     public void initialize() {
 
@@ -49,9 +46,4 @@ public class AdminMainController {
     public void onGetFestivalSuggestionButtonClicked() {
         AppSwitchScenesMethods.switchSceneDatabase("/com/example/spotifyfestival/FXML_Files/UncategorizedScenes/ConcertCanvas/CanvasScene.fxml");
     }
-
-    //TODO - implement cache system for TOP LISTS Functionality so it doesn't make a request every time
-    //TODO - redesign the Database with everything new I learned so far this year by not braking coding concepts
-    //TODO - go back to the concert API Call and simplify the code as I did for the Spotify API
-    //TODO - implement multithreading for the "THIS IS THE WAY" functionality so it doesn't freeze the UI
 }

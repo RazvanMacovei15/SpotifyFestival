@@ -1,7 +1,5 @@
 package com.example.spotifyfestival.UIPackage.SpotifyControllers;
 
-import com.example.spotifyfestival.NewFeatures.CacheImplementation.Cache;
-import com.example.spotifyfestival.NewFeatures.CacheImplementation.CacheReset;
 import com.example.spotifyfestival.UIPackage.HelperClasses.AppSwitchScenesMethods;
 import com.example.spotifyfestival.UIPackage.HelperClasses.Helper;
 import javafx.fxml.FXML;
@@ -18,7 +16,6 @@ public class TopListsController {
     Button tracks;
     @FXML
     Button genres;
-    private Cache cache;
 
     public void initialize(){
         Helper.loadSpotifyCover(imageView, imageURL);
