@@ -6,7 +6,7 @@
 
 ## Scope: 
 
-* create an application for the purpose of learning JavaFX and API calls
+* create an application for the purpose of learning JavaFX, API calls and how to manage a database using JDBC and SQLITE
 
 ## Table of contents:
 
