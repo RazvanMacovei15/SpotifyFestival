@@ -1,7 +1,0 @@
-timeCreated=1707935285239
-long_term_artists.txt=false
-medium_term_artists.txt=false
-short_term_artists.txt=false
-long_term_tracks.txt=false
-medium_term_tracks.txt=false
-short_term_tracks.txt=false

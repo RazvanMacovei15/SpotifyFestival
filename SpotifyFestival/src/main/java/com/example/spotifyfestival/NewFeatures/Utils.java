@@ -17,6 +17,8 @@ import javafx.scene.text.TextAlignment;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,37 +39,46 @@ public class Utils {
         int row = 0;
         int col = 0;
         for (Track track : topTracks) {
-            String url = track.getImageURL();
             // Load an image
-            Image originalImage = new Image(url);
-            // Create an ImageView with the image
-            ImageView imageView = new ImageView(originalImage);
-            // Set the desired width and height to scale down the image
-            double scaledWidth = 50;
-            double scaledHeight = 50;
-            // Set the fitWidth and fitHeight properties to scale the image
-            imageView.setFitWidth(scaledWidth);
-            imageView.setFitHeight(scaledHeight);
-            Text textID = new Text(track.getId().toString() + ".");
-            Text textName = new Text(track.toStringForUI());
-            HBox hBox = new HBox();
-            textID.setWrappingWidth(50);
-            textName.setWrappingWidth(200);
-            hBox.minWidth(300);
-            hBox.minHeight(100);
-            imageView.setOnMouseClicked(event -> {
-                openURL(track.getSpotifyLink());
-            });
-            textID.setTextAlignment(TextAlignment.CENTER); // Center-align the text
-            textName.setTextAlignment(TextAlignment.CENTER); // Center-align the text
-            hBox.getChildren().addAll(textID, imageView, textName);
-            hBox.setAlignment(Pos.CENTER);
-            int finalRow = row;
-            Platform.runLater(()->{
-                gridPane.add(hBox, col, finalRow);
-                gridPane.getRowConstraints().add(new RowConstraints(70));
-            });
-            row++;
+            try {
+                String url = "/com/example/spotifyfestival/PNGs/coperta_1.jpeg";
+                String imageUrl = track.getImageURL();
+
+                URI uri = new URI(imageUrl);
+                Image originalImage = new Image(imageUrl);
+                // Create an ImageView with the image
+                ImageView imageView = new ImageView(originalImage);
+
+                // Set the desired width and height to scale down the image
+                double scaledWidth = 50;
+                double scaledHeight = 50;
+                // Set the fitWidth and fitHeight properties to scale the image
+                imageView.setFitWidth(scaledWidth);
+                imageView.setFitHeight(scaledHeight);
+                Text textID = new Text(track.getId().toString() + ".");
+                Text textName = new Text(track.toStringForUI());
+                HBox hBox = new HBox();
+                textID.setWrappingWidth(50);
+                textName.setWrappingWidth(200);
+                hBox.minWidth(300);
+                hBox.minHeight(100);
+                imageView.setOnMouseClicked(event -> {
+                    openURL(track.getSpotifyLink());
+                });
+                textID.setTextAlignment(TextAlignment.CENTER); // Center-align the text
+                textName.setTextAlignment(TextAlignment.CENTER); // Center-align the text
+                hBox.getChildren().addAll(textID, imageView, textName);
+                hBox.setAlignment(Pos.CENTER);
+                int finalRow = row;
+                Platform.runLater(()->{
+                    gridPane.add(hBox, col, finalRow);
+                    gridPane.getRowConstraints().add(new RowConstraints(70));
+                });
+                row++;
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
