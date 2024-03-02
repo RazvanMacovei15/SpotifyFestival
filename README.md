@@ -37,6 +37,10 @@
 
 ### 4. How it works:
 * The app uses the Spotify API in order to get the user's top artists and tracks. Based on this information it will generate a top genres list.
+* Authorization code flow:
+  
+  ![auth-code-flow](https://github.com/RazvanMacovei15/SpotifyFestival/assets/95320896/cda242a3-6cd3-4b7f-a5ec-c7c1af649101)
+
 * The app uses the Rapid API Concerts - Artists Events Tracker in order to get the concerts/festivals in the user's area.
 * SQLite is used to store the user's information and all the information regarding the festivals
 * In the feature "THIS IS THE WAY" the user will have the option to view all the concerts/festivals in his area and based on his top genres, the app will recommend at which of them he can go to
