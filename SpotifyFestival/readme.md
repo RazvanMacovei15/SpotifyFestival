@@ -47,5 +47,5 @@
 ### 5. Usage:
 1. Normal User:
 
+![photo](/Users/razvanmc15/Desktop/PortofoliuIT/spotify it/final/one_240302_131312_1.jpg)
 2. Admin User:
-3. 
