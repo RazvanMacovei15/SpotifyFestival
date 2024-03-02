@@ -45,6 +45,12 @@
 
 ### 5. Usage:
 1. Normal User:
+
 ![one_240302_131312_1](https://github.com/RazvanMacovei15/SpotifyFestival/assets/95320896/1fc6725c-a530-4863-845e-38c9f3061611)
 
+![two_240302_133720_1 copy](https://github.com/RazvanMacovei15/SpotifyFestival/assets/95320896/ac29d108-13b5-4ccb-ae8e-5f189f4903f0)
+
 2. Admin User:
+
+![Three_1 copy](https://github.com/RazvanMacovei15/SpotifyFestival/assets/95320896/630f1162-0144-48ae-b382-70680a152595)
+
