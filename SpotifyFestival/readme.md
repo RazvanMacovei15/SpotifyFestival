@@ -27,6 +27,7 @@
 * SQLite
 * JDBC
 
+
 ### 2. The need:
 * The need came from a discussion with a friend that had trouble finding bands to go to at Electric Festival. He was overwhelmed by the amount of bands and didn't know where to start. That sparked the idea of creating an app that would help him find the best bands to go to based on his listening habits on Spotify.
 
