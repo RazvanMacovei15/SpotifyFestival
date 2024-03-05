@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.RepoTests;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
+import com.example.spotifyfestival.database.entities.pojo.Artist;
+import com.example.spotifyfestival.database.entities.pojo.DuplicateEntityException;
 import com.example.spotifyfestival.RepositoryPackage.TextFileRepos.ArtistTextRepo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

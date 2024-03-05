@@ -8,7 +8,7 @@
 
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.example.spotifyfestival.UIPackage.DatabaseControllers.ArtistTableController">
+          fx:controller="com.example.spotifyfestival.ui.database.controllers.ArtistTableController">
     <rowConstraints>
         <RowConstraints percentHeight="95"/>
         <RowConstraints percentHeight="5"/>

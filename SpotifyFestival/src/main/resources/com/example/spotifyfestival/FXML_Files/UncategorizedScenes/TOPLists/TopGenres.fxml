@@ -10,7 +10,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
-<GridPane fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.TopGenresController"
+<GridPane fx:controller="com.example.spotifyfestival.ui.spotify.controllers.TopGenresController"
           xmlns:fx="http://javafx.com/fxml" alignment="CENTER" gridLinesVisible="false">
 
     <rowConstraints>

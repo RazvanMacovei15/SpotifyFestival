@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.DomainEntities;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
+import com.example.spotifyfestival.database.entities.pojo.Genre;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

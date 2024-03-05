@@ -9,7 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <GridPane xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.spotifyfestival.UIPackage.DatabaseControllers.DatabaseController">
+      fx:controller="com.example.spotifyfestival.ui.database.controllers.DatabaseController">
 
     <ImageView GridPane.rowIndex="0" GridPane.columnIndex="0" fx:id="imageView"/>
 

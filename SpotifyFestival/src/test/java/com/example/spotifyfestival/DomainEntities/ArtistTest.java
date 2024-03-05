@@ -1,8 +1,8 @@
 package com.example.spotifyfestival.DomainEntities;
 
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Artist;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.Genre;
-import com.example.spotifyfestival.DatabasePackage.EntitiesPOJO.DuplicateEntityException;
+import com.example.spotifyfestival.database.entities.pojo.Artist;
+import com.example.spotifyfestival.database.entities.pojo.Genre;
+import com.example.spotifyfestival.database.entities.pojo.DuplicateEntityException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.junit.jupiter.api.BeforeEach;

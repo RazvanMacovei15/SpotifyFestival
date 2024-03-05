@@ -14,7 +14,7 @@
 <?import javafx.scene.shape.Line?>
 <GridPane xmlns="http://javafx.com/javafx"
           xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.example.spotifyfestival.UIPackage.SpotifyControllers.CanvasController"
+          fx:controller="com.example.spotifyfestival.ui.spotify.controllers.CanvasController"
           alignment="CENTER"
           fx:id="mainGridPane">
 

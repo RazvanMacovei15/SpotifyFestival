@@ -153,7 +153,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.spotifyfestival/com.example.spotifyfestival.MainPackage.App
+                            <mainClass>com.example.spotifyfestival/com.example.spotifyfestival.main.App
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
