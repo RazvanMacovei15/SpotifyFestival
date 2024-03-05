@@ -2,7 +2,7 @@ package com.example.spotifyfestival.ui.spotify.controllers;
 
 import com.example.spotifyfestival.api.rapidapi.RapidAPIConcertsAPI;
 import com.example.spotifyfestival.api.rapidapi.RapidAPIParameters;
-import com.example.spotifyfestival.api.spotifyapi.SpotifyAuthFlowService;
+import com.example.spotifyfestival.api.spotify.SpotifyAuthFlowService;
 import com.example.spotifyfestival.database.dao.ConcertDAO;
 import com.example.spotifyfestival.database.dao.FestivalDAO;
 import com.example.spotifyfestival.database.dao.FestivalStageDAO;

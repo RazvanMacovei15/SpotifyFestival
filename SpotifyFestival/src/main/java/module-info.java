@@ -16,8 +16,8 @@ module com.example.spotifyfestival {
     opens com.example.spotifyfestival.api.urls to javafx.fxml;
     exports com.example.spotifyfestival.api.rapidapi;
     opens com.example.spotifyfestival.api.rapidapi to javafx.fxml;
-    exports com.example.spotifyfestival.api.spotifyapi;
-    opens com.example.spotifyfestival.api.spotifyapi to javafx.fxml;
+    exports com.example.spotifyfestival.api.spotify;
+    opens com.example.spotifyfestival.api.spotify to javafx.fxml;
     exports com.example.spotifyfestival.ui.database.controllers;
     opens com.example.spotifyfestival.ui.database.controllers to javafx.fxml;
     exports com.example.spotifyfestival.database.helpers;

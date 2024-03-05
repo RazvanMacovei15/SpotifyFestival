@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.api.spotifyapi;
+package com.example.spotifyfestival.api.spotify;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

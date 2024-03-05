@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.ui;
 
-import com.example.spotifyfestival.api.spotifyapi.SpotifyAuthFlowService;
+import com.example.spotifyfestival.api.spotify.SpotifyAuthFlowService;
 
 import com.example.spotifyfestival.ui.helper.classes.Helper;
 import javafx.fxml.FXML;

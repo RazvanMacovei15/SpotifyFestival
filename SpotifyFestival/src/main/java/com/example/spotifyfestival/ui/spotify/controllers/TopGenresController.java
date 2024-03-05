@@ -1,7 +1,7 @@
 // Import statements for necessary packages and classes
 package com.example.spotifyfestival.ui.spotify.controllers;
 
-import com.example.spotifyfestival.api.spotifyapi.SpotifyAuthFlowService;
+import com.example.spotifyfestival.api.spotify.SpotifyAuthFlowService;
 import com.example.spotifyfestival.database.entities.pojo.Artist;
 import com.example.spotifyfestival.database.entities.pojo.Genre;
 import com.example.spotifyfestival.newfeatures.SpotifyAPIJsonParser;

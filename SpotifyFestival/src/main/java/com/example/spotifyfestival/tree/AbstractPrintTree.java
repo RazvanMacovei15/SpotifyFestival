@@ -1,7 +1,7 @@
 package com.example.spotifyfestival.tree;
 
 import com.example.spotifyfestival.api.services.ConcertAPIService;
-import com.example.spotifyfestival.api.spotifyapi.SpotifyAuthFlowService;
+import com.example.spotifyfestival.api.spotify.SpotifyAuthFlowService;
 import com.example.spotifyfestival.database.dao.ConcertDAO;
 import com.example.spotifyfestival.database.dao.FestivalDAO;
 import com.example.spotifyfestival.database.dao.FestivalStageDAO;

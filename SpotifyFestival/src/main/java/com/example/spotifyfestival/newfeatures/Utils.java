@@ -1,6 +1,6 @@
 package com.example.spotifyfestival.newfeatures;
 
-import com.example.spotifyfestival.api.spotifyapi.SpotifyAuthFlowService;
+import com.example.spotifyfestival.api.spotify.SpotifyAuthFlowService;
 import com.example.spotifyfestival.database.entities.pojo.Artist;
 import com.example.spotifyfestival.database.entities.pojo.Genre;
 import com.example.spotifyfestival.database.entities.pojo.Track;

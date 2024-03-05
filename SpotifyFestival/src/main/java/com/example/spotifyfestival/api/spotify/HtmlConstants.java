@@ -1,6 +1,6 @@
-package com.example.spotifyfestival.api.spotifyapi;
+package com.example.spotifyfestival.api.spotify;
 
-public class HtmlCONSTANTS {
+public class HtmlConstants {
     public static final String HTML_PAGE =
             "<!DOCTYPE html>\n" +
                     "<html>\n" +

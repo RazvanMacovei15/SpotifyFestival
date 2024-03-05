@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.api.spotifyapi;
+package com.example.spotifyfestival.api.spotify;
 
 import com.example.spotifyfestival.database.entities.pojo.User;
 import com.example.spotifyfestival.database.dao.UserDAO;
@@ -166,7 +166,7 @@ public class SpotifyAuthFlowService {
             checkUserAuthorization();
             bool = true;//set bool to true
 
-            return HtmlCONSTANTS.HTML_PAGE;
+            return HtmlConstants.HTML_PAGE;
         });
     }
 
