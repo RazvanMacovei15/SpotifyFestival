@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.RepoTests;
+package com.example.spotifyfestival.repo;
 
 import com.example.spotifyfestival.database.entities.pojo.Artist;
 import com.example.spotifyfestival.database.entities.pojo.DuplicateEntityException;

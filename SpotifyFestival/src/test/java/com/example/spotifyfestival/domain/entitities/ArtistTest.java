@@ -1,4 +1,4 @@
-package com.example.spotifyfestival.DomainEntities;
+package com.example.spotifyfestival.domain.entitities;
 
 import com.example.spotifyfestival.database.entities.pojo.Artist;
 import com.example.spotifyfestival.database.entities.pojo.Genre;
